@@ -107,8 +107,9 @@ class ArticleController extends Controller
      * @param Article $article
      * @return JsonResponse
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request)
     {
+        //dd($request->all());
         if(Auth::user()->can('article-edit')) {
 
             return $this->articleService->updateItem($request);

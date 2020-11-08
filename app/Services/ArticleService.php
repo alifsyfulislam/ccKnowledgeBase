@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Helpers\Helper;
+use App\Models\Media;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -130,10 +131,7 @@ class ArticleService
     {
 
         $validator = Validator::make($request->all(),[
-
-            'name' => 'required',
-            'parent_id' => 'required',
-
+            'en_title' => 'required|string',
         ]);
 
         if($validator->fails()) {
@@ -141,21 +139,50 @@ class ArticleService
             return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
 
         }
+        $input = $request->all();
 
         DB::beginTransaction();
 
         try {
 
-            $this->articleRepository->update([
-                'name' => $request->input('title'),
-                'parent_id' => $request->input('parent_id')
-            ], $request->id);
+            $this->articleRepository->update($input, $input['id']);
 
-            $article = $this->articleRepository->get($request->id);
+            $article = $this->getItemById($request->id);
+
+            $mediaList = Media::where('mediable_id', $request->id)->get();
+            if (count($mediaList) > 0)
+            {
+                foreach($mediaList as $media)
+                {
+                    $mediaName =  substr($media->url, strpos($media->url, "media") );
+                    unlink(public_path().'/'.$mediaName );
+                    $media->delete();
+                }
+            }
+
+
+            if(isset($request->image_file)) {
+
+                $thumbImageList = $request->image_file;
+
+                if(count($thumbImageList) > 0) {
+                    for ($i = 1; $i <= count($thumbImageList); $i++) {
+                        $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+                    }
+                }
+            }
+
+            foreach ($thumbFile as $image):
+
+                $article->media()->create([
+
+                    'url' => $image
+
+                ]);
+
+            endforeach;
             // $category->syncPermissions($request->input('permission'));
-            DB::commit();
 
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
 
         } catch (Exception $e) {
 
@@ -164,6 +191,10 @@ class ArticleService
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
+
+        DB::commit();
+
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
     }
 
 
