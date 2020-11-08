@@ -44,6 +44,7 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->category_id = $data['category_id'];
         $dataObj->en_title = $data['en_title'];
         $dataObj->bn_title = $data['bn_title'];
+        $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
         $dataObj->en_short_summary = $data['en_short_summary'];
         $dataObj->bn_short_summary = $data['bn_short_summary'];
