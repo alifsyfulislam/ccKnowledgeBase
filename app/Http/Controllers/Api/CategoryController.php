@@ -149,6 +149,7 @@ class CategoryController extends Controller
     public function destroy(Request $request)
     {
 
+
         if(Auth::user()->can('category-delete')) {
 
             return  $this->categoryService->deleteItem($request->id);

@@ -91,7 +91,7 @@ class ArticleService
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
@@ -146,23 +146,24 @@ class ArticleService
 
         try {
 
-            $this->articleRepository->update(['name' => $request->input('title'),
-                'parent_id' => $request->input('parent_id') ], $request->id);
-            $category = $this->articleRepository->get($request->id);
+            $this->articleRepository->update([
+                'name' => $request->input('title'),
+                'parent_id' => $request->input('parent_id')
+            ], $request->id);
+
+            $article = $this->articleRepository->get($request->id);
             // $category->syncPermissions($request->input('permission'));
+            DB::commit();
+
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
 
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
-
-        DB::commit();
-
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
-
     }
 
 
@@ -182,14 +183,14 @@ class ArticleService
 
             DB::rollBack();
 
-            Log::info($e->getMessage());
-            //return $this->error($e->getMessage(), $e->getCode());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
 
         DB::commit();
 
-        //return $this->success(config('status.status_code.200'), "Category Deleted" );
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
 
     }
 

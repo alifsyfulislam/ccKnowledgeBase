@@ -124,7 +124,7 @@ class ArticleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
     public function destroy(Request $request)
     {

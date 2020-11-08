@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Models\Article;
+use App\Models\Media;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticleRepository implements RepositoryInterface
@@ -25,11 +26,8 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-
         return Article::with('media')->find($id);
-
     }
-
 
     /**
      * @param array $data
