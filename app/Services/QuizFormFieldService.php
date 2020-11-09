@@ -5,29 +5,27 @@ namespace App\Services;
 
 
 use App\Helpers\Helper;
-use App\Repositories\QuizFormRepository;
-use Illuminate\Support\Facades\Validator;
+use App\Repositories\QuizFormFieldRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
+use Illuminate\Support\Facades\Validator;
 
-class QuizFormService
+class QuizFormFieldService
 {
-
     /**
-     * @var QuizFormRepository
+     * @var quizFormFieldRepository
      */
-    protected $quizFormRepository;
+    protected $quizFormFieldRepository;
 
 
     /**
      * QuizFormService constructor.
-     * @param QuizFormRepository $quizFormRepository
+     * @param QuizFormFieldRepository $quizFormFieldRepository
      */
-    public function __construct(QuizFormRepository $quizFormRepository)
+    public function __construct(QuizFormFieldRepository $quizFormFieldRepository)
     {
 
-        $this->quizFormRepository = $quizFormRepository;
+        $this->quizFormFieldRepository = $quizFormFieldRepository;
 
     }
 
@@ -37,7 +35,7 @@ class QuizFormService
      */
     public function getAll()
     {
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_list'=>$this->quizFormRepository->all()]);
+        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_field_list'=>$this->quizFormFieldRepository->all()]);
     }
 
 
@@ -48,8 +46,8 @@ class QuizFormService
     public function getById($id)
     {
 
-        if($this->quizFormRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'permission_info'=>$this->quizFormRepository->get($id)]);
+        if($this->quizFormFieldRepository->get($id))
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'permission_info'=>$this->quizFormFieldRepository->get($id)]);
 
         return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'permission_info'=>"Data not found"]);
 
@@ -76,7 +74,7 @@ class QuizFormService
         $input = $request->all();
         $input['slug'] = Helper::slugify($input['name']);
 
-        $this->quizFormRepository->create($input);
+        $this->quizFormFieldRepository->create($input);
 
         return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
     }
@@ -108,7 +106,7 @@ class QuizFormService
             $input = $request->all();
             $input['slug'] = Helper::slugify($input['name']);
 
-            $this->quizFormRepository->update($input, $request->id);
+            $this->quizFormFieldRepository->update($input, $request->id);
 
         } catch (Exception $e) {
 
@@ -136,7 +134,7 @@ class QuizFormService
 
         try {
 
-            $this->quizFormRepository->delete($id);
+            $this->quizFormFieldRepository->delete($id);
 
         } catch (Exception $e) {
 
@@ -160,7 +158,7 @@ class QuizFormService
     public function paginateData()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_list'=>$this->quizFormRepository->getWithPagination()]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_field_list'=>$this->quizFormFieldRepository->getWithPagination()]);
 
     }
 }
