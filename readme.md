@@ -3,11 +3,10 @@
 ### 1. Clone the repo to htdocs or www folder
 
 ```
-git clone ....
+git clone gslgit@192.168.10.63:/home/gslgit/ccKnowledgeBase.git
 ```
 
 ### 2. go to the directory 
-
 ```
 cd ccKnowledgeBase
 ```
@@ -17,14 +16,23 @@ cd ccKnowledgeBase
 composer install
 ```
 
-### 4. Enable Permission (for Linux User)
+### 4. Create .env File
+```
+cp .env.example .env
+```
+
+### 5. Generate Key
+```
+php artisan key:generate
+```
+
+### 6. Enable Permission (for Linux User)
 
 ```
 sudo chmod -R 777 storage
-
 ```
 
-## 5. Database Section
+## 7. Database Section
 
 ```
 Create db kbs
@@ -33,16 +41,16 @@ Create db kbs
 php artisan migrate
 ```
 ```
- php artisan db:seed --class=PermissionTableSeeder
+php artisan db:seed --class=PermissionTableSeeder
 ```
 ```
- php artisan db:seed --class=RoleTableSeeder
+php artisan db:seed --class=RoleTableSeeder
 ```
 ```
- php artisan db:seed --class=UserTableSeeder
+php artisan db:seed --class=UserTableSeeder
 ```
 
-## 6. Authentication
+## 8. Authentication
 
 ```
 php artisan passport:install
@@ -50,19 +58,18 @@ php artisan passport:install
 
 # Great ! Done! 
 
-## 7. From Browser
+## 9. From Browser
 ```html
 http://localhost/ccKnowledgeBase/public
 ```
 
-### 8. From Postman ### post request
+### 10. From Postman ### post request
 ```html
 http://localhost/ccKnowledgeBase/public/api/login
 
 body: 
     username: admin
     password: 123456
-
 ```
 
 

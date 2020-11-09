@@ -35,7 +35,7 @@ class PermissionController extends Controller
     public function index()
     {
 
-        if(Auth::user()->can('permission-list')) {
+        if(Auth::user()->can('quiz-form-list')) {
 
             return $this->permissionService->paginateData();
 
@@ -67,7 +67,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
 
-        if(Auth::user()->can('permission-create')) {
+        if(Auth::user()->can('quiz-form-create')) {
 
             return $this->permissionService->createItem($request);
 
@@ -101,7 +101,7 @@ class PermissionController extends Controller
     public function show($id)
     {
 
-        if(Auth::user()->can('permission-list')) {
+        if(Auth::user()->can('quiz-form-list')) {
 
             return $this->permissionService->getById($id);
 
@@ -121,7 +121,7 @@ class PermissionController extends Controller
     public function update(Request $request)
     {
 
-        if(Auth::user()->can('permission-edit')) {
+        if(Auth::user()->can('quiz-form-edit')) {
 
             return $this->permissionService->updateItem($request);
 
@@ -141,7 +141,7 @@ class PermissionController extends Controller
     public function destroy(Request $request)
     {
 
-        if(Auth::user()->can('permission-delete')) {
+        if(Auth::user()->can('quiz-form-delete')) {
 
             return $this->permissionService->deleteItem($request->id);
 
