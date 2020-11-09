@@ -40,6 +40,7 @@ class QuizFormRepository
     {
 
         $dataObj =  new QuizForm;
+        $dataObj->id = $data['id'];
         $dataObj->name = $data['name'];
         $dataObj->slug = $data['slug'];
 

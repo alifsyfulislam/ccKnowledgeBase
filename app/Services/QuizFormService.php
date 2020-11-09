@@ -49,9 +49,9 @@ class QuizFormService
     {
 
         if($this->quizFormRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'permission_info'=>$this->quizFormRepository->get($id)]);
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_info'=>$this->quizFormRepository->get($id)]);
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'permission_info'=>"Data not found"]);
+        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_info'=>"Data not found"]);
 
     }
 
@@ -64,7 +64,7 @@ class QuizFormService
     {
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|unique:permissions,name',
+            'name' => 'required|unique:quiz_forms,name',
 
         ]);
 
@@ -75,6 +75,7 @@ class QuizFormService
 
         $input = $request->all();
         $input['slug'] = Helper::slugify($input['name']);
+        $input['id'] = time().rand(1000,9000);
 
         $this->quizFormRepository->create($input);
 
@@ -113,7 +114,7 @@ class QuizFormService
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
@@ -142,7 +143,7 @@ class QuizFormService
 
             DB::rollBack();
 
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }

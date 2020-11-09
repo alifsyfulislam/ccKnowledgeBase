@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\QuizFormService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class QuizFormController extends Controller
 {

@@ -46,6 +46,11 @@ class PermissionTableSeeder extends Seeder
             'Quiz Form Edit',
             'Quiz Form Delete',
 
+            'Quiz Form Field List',
+            'Quiz Form Field Create',
+            'Quiz Form Field Edit',
+            'Quiz Form Field Delete',
+
         ];
 
 

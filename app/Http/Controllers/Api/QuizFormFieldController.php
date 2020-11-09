@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\QuizFormField;
 use App\Services\QuizFormFieldService;
-use App\Services\QuizFormService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,7 +35,7 @@ class QuizFormFieldController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->can('quiz-form-list')) {
+        if(Auth::user()->can('quiz-form-field-list')) {
 
             return $this->quizFormFieldService->paginateData();
 
@@ -65,7 +64,7 @@ class QuizFormFieldController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->can('quiz-form-create')) {
+        if(Auth::user()->can('quiz-form-field-create')) {
 
             return $this->quizFormFieldService->createItem($request);
 
@@ -83,7 +82,7 @@ class QuizFormFieldController extends Controller
      */
     public function show($id)
     {
-        if(Auth::user()->can('quiz-form-list')) {
+        if(Auth::user()->can('quiz-form-field-list')) {
 
             return $this->quizFormFieldService->getById($id);
 
@@ -114,7 +113,7 @@ class QuizFormFieldController extends Controller
      */
     public function update(Request $request)
     {
-        if(Auth::user()->can('quiz-form-edit')) {
+        if(Auth::user()->can('quiz-form-field-edit')) {
 
             return $this->quizFormFieldService->updateItem($request);
 
@@ -133,7 +132,7 @@ class QuizFormFieldController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(Auth::user()->can('quiz-form-delete')) {
+        if(Auth::user()->can('quiz-form-field-delete')) {
 
             return $this->quizFormFieldService->deleteItem($request->id);
 
