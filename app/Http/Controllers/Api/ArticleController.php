@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ArticleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -16,10 +17,7 @@ class ArticleController extends Controller
     public function __construct(ArticleService $articleService)
     {
 
-        $this->middleware('permission:article-list');
-        $this->middleware('permission:article-create', ['only' => ['create','store']]);
-        $this->middleware('permission:article-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:article-delete', ['only' => ['destroy']]);
+        $this->middleware("auth");
         $this->articleService = $articleService;
 
     }
@@ -31,7 +29,16 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return $this->articleService->paginateData();
+        if(Auth::user()->can('article-list')) {
+
+            return $this->articleService->paginateData();
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
     /**
@@ -52,20 +59,34 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth::user()->can('article-create')) {
 
-        return $this->articleService->createItem($request);
+            return $this->articleService->createItem($request);
 
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
      * Display the specified resource.
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        if(Auth::user()->can('article-list')) {
+
+            return $this->articleService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
@@ -84,21 +105,38 @@ class ArticleController extends Controller
      *
      * @param Request $request
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request)
     {
-        //
+        //dd($request->all());
+        if(Auth::user()->can('article-edit')) {
+
+            return $this->articleService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function destroy(Article $article)
+    public function destroy(Request $request)
     {
-        //
+        if(Auth::user()->can('article-delete')) {
+
+            return  $this->articleService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 }
