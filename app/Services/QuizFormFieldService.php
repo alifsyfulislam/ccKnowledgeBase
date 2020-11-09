@@ -62,7 +62,12 @@ class QuizFormFieldService
     {
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|unique:permissions,name',
+            'quiz_form_id' => 'required',
+            'f_label' => 'required',
+            'f_name' => 'required',
+            'f_id' => 'required',
+            'f_class' => 'required',
+            'f_type' => 'required',
 
         ]);
 
@@ -72,7 +77,8 @@ class QuizFormFieldService
         }
 
         $input = $request->all();
-        $input['slug'] = Helper::slugify($input['name']);
+
+        $input['id'] = time().rand(1000,9000);
 
         $this->quizFormFieldRepository->create($input);
 
