@@ -38,8 +38,17 @@ class QuizFormFieldRepository
     {
 
         $dataObj =  new QuizFormField;
-        $dataObj->name = $data['name'];
-        $dataObj->slug = $data['slug'];
+        $dataObj->quiz_form_id = $data['quiz_form_id'];
+        $dataObj->f_label = $data['f_label'];
+        $dataObj->f_name = $data['f_name'];
+        $dataObj->f_id = $data['f_id'];
+        $dataObj->f_class = $data['f_class'];
+        $dataObj->f_type = $data['f_type'];
+        $dataObj->f_option_value = $data['f_option_value'];
+        $dataObj->f_default_value = $data['f_default_value'];
+        $dataObj->f_max_value = $data['f_max_value'];
+        $dataObj->f_sort_order = $data['f_sort_order'];
+        $dataObj->f_required = $data['f_required'];
 
         return $dataObj->save();
     }

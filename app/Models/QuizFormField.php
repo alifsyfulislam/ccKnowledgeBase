@@ -10,6 +10,8 @@ class QuizFormField extends Model
         "f_max_value", "f_sort_order", "f_required",];
 
     public function quizForm(){
+
         return $this->belongsToMany(QuizForm::class);
+
     }
 }

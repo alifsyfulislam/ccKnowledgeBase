@@ -47,9 +47,9 @@ class QuizFormFieldService
     {
 
         if($this->quizFormFieldRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'permission_info'=>$this->quizFormFieldRepository->get($id)]);
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_field_info'=>$this->quizFormFieldRepository->get($id)]);
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'permission_info'=>"Data not found"]);
+        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_field_info'=>"Data not found"]);
 
     }
 
