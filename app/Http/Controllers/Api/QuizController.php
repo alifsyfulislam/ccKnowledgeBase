@@ -4,83 +4,151 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
+use App\Services\QuizFormService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var QuizFormService
+     */
+    protected $quizFromService;
+
+
+    /**
+     * PermissionController constructor.
+     * @param QuizFormService $quizFromService
+     */
+    public function __construct(QuizFormService $quizFromService)
+    {
+        $this->middleware('auth');
+        $this->quizFromService = $quizFromService;
+
+    }
+
+
+    /**
+     * @return mixed
      */
     public function index()
     {
-        //
+
+        if(Auth::user()->can('quiz-form-list')) {
+
+            return $this->quizFromService->paginateData();
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
+
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+
+        /*$permissions = $this->quizFromService->getAll();
+        return view('permissions.create',compact('permissions'));*/
+
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        //
+
+        if(Auth::user()->can('quiz-form-create')) {
+
+            return $this->quizFromService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Quiz $quiz)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return void
      */
-    public function edit(Quiz $quiz)
+    public function edit($id)
     {
-        //
+
+        /*$quiz-forms = $this->quizFromService->getById($id);
+
+        return view('quiz-forms.edit',compact('quiz-forms'));*/
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Quiz $quiz)
-    {
-        //
-    }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return mixed
      */
-    public function destroy(Quiz $quiz)
+    public function show($id)
     {
-        //
+
+        if(Auth::user()->can('quiz-form-list')) {
+
+            return $this->quizFromService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request)
+    {
+
+        if(Auth::user()->can('quiz-form-edit')) {
+
+            return $this->quizFromService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function destroy(Request $request)
+    {
+
+        if(Auth::user()->can('quiz-form-delete')) {
+
+            return $this->quizFromService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 }

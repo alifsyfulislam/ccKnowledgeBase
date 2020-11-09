@@ -29,18 +29,27 @@ class PermissionTableSeeder extends Seeder
             'Permission Create',
             'Permission Edit',
             'Permission Delete',
+
             'Category List',
             'Category Create',
             'Category Edit',
             'Category Delete',
+
             'Article List',
             'Article Create',
             'Article Edit',
             'Article Delete',
+
             'Team List',
             'Team Create',
             'Team Edit',
             'Team Delete',
+
+            'Quiz List',
+            'Quiz Create',
+            'Quiz Edit',
+            'Quiz Delete',
+
             'Quiz Form List',
             'Quiz Form Create',
             'Quiz Form Edit',
