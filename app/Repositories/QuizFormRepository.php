@@ -28,9 +28,7 @@ class QuizFormRepository
      */
     public function get($id)
     {
-
         return QuizForm::findOrFail($id);
-
     }
 
 
@@ -42,21 +40,10 @@ class QuizFormRepository
     {
 
         $dataObj =  new QuizForm;
-        $dataObj->id = $data['id'];
-        $dataObj->user_id = $data['user_id'];
-        $dataObj->category_id = $data['category_id'];
-        $dataObj->en_title = $data['en_title'];
-        $dataObj->bn_title = $data['bn_title'];
-        $dataObj->slug = Helper::slugify($data['en_title']);
-        $dataObj->en_short_summary = $data['en_short_summary'];
-        $dataObj->bn_short_summary = $data['bn_short_summary'];
-        $dataObj->en_body = $data['en_body'];
-        $dataObj->bn_body = $data['bn_body'];
-        $dataObj->status = $data['status'];
-        $dataObj->publish_date = $data['publish_date'];
+        $dataObj->name = $data['name'];
+        $dataObj->slug = $data['slug'];
 
         return $dataObj->save();
-
     }
 
 
@@ -85,7 +72,7 @@ class QuizFormRepository
      */
     public function getWithPagination()
     {
-        return QuizForm::orderBy('created_at', 'DESC')->paginate(10);
+        return QuizForm::with('quizFormField')->orderBy('created_at', 'DESC')->paginate(10);
     }
 
 }

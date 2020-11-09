@@ -73,7 +73,6 @@ class QuizFormController extends Controller
         } else {
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
         }
 
     }
