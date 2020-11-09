@@ -147,21 +147,20 @@ class ArticleService
 
             $this->articleRepository->update($input, $input['id']);
 
-            $article = $this->getItemById($request->id);
-
-            $mediaList = Media::where('mediable_id', $request->id)->get();
-            if (count($mediaList) > 0)
-            {
-                foreach($mediaList as $media)
-                {
-                    $mediaName =  substr($media->url, strpos($media->url, "media") );
-                    unlink(public_path().'/'.$mediaName );
-                    $media->delete();
-                }
-            }
-
-
             if(isset($request->image_file)) {
+
+                $article = $this->getItemById($request->id);
+
+                $mediaList = Media::where('mediable_id', $request->id)->get();
+                if (count($mediaList) > 0)
+                {
+                    foreach($mediaList as $media)
+                    {
+                        $mediaName =  substr($media->url, strpos($media->url, "media") );
+                        unlink(public_path().'/'.$mediaName );
+                        $media->delete();
+                    }
+                }
 
                 $thumbImageList = $request->image_file;
 
@@ -170,17 +169,19 @@ class ArticleService
                         $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
                     }
                 }
+
+                foreach ($thumbFile as $image):
+
+                    $article->media()->create([
+
+                        'url' => $image
+
+                    ]);
+
+                endforeach;
             }
 
-            foreach ($thumbFile as $image):
 
-                $article->media()->create([
-
-                    'url' => $image
-
-                ]);
-
-            endforeach;
             // $category->syncPermissions($request->input('permission'));
 
 
