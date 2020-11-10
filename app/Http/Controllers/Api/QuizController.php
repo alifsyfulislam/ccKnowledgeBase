@@ -3,28 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Quiz;
-use App\Services\QuizFormService;
+use App\Services\QuizService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    /**
-     * @var QuizFormService
-     */
-    protected $quizFromService;
+
+    private $quizService;
 
 
     /**
      * PermissionController constructor.
-     * @param QuizFormService $quizFromService
+     * @param QuizService $quizService
      */
-    public function __construct(QuizFormService $quizFromService)
+    public function __construct(QuizService $quizService)
     {
         $this->middleware('auth');
-        $this->quizFromService = $quizFromService;
+        $this->quizService = $quizService;
 
     }
 
@@ -35,9 +32,9 @@ class QuizController extends Controller
     public function index()
     {
 
-        if(Auth::user()->can('quiz-form-list')) {
+        if(Auth::user()->can('quiz-list')) {
 
-            return $this->quizFromService->paginateData();
+            return $this->quizService->paginateData();
 
         } else {
 
@@ -54,7 +51,7 @@ class QuizController extends Controller
     public function create()
     {
 
-        /*$permissions = $this->quizFromService->getAll();
+        /*$permissions = $this->quizService->getAll();
         return view('permissions.create',compact('permissions'));*/
 
     }
@@ -67,9 +64,9 @@ class QuizController extends Controller
     public function store(Request $request)
     {
 
-        if(Auth::user()->can('quiz-form-create')) {
+        if(Auth::user()->can('quiz-create')) {
 
-            return $this->quizFromService->createItem($request);
+            return $this->quizService->createItem($request);
 
         } else {
 
@@ -86,7 +83,7 @@ class QuizController extends Controller
     public function edit($id)
     {
 
-        /*$quiz-forms = $this->quizFromService->getById($id);
+        /*$quiz-forms = $this->quizService->getById($id);
 
         return view('quiz-forms.edit',compact('quiz-forms'));*/
 
@@ -100,9 +97,9 @@ class QuizController extends Controller
     public function show($id)
     {
 
-        if(Auth::user()->can('quiz-form-list')) {
+        if(Auth::user()->can('quiz-list')) {
 
-            return $this->quizFromService->getById($id);
+            return $this->quizService->getById($id);
 
         } else {
 
@@ -120,9 +117,9 @@ class QuizController extends Controller
     public function update(Request $request)
     {
 
-        if(Auth::user()->can('quiz-form-edit')) {
+        if(Auth::user()->can('quiz-edit')) {
 
-            return $this->quizFromService->updateItem($request);
+            return $this->quizService->updateItem($request);
 
         } else {
 
@@ -140,9 +137,9 @@ class QuizController extends Controller
     public function destroy(Request $request)
     {
 
-        if(Auth::user()->can('quiz-form-delete')) {
+        if(Auth::user()->can('quiz-delete')) {
 
-            return $this->quizFromService->deleteItem($request->id);
+            return $this->quizService->deleteItem($request->id);
 
         } else {
 

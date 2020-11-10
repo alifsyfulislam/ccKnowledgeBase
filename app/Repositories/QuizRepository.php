@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\Models\QuizForm;
+use App\Models\Quiz;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class QuizRepository
@@ -15,7 +15,7 @@ class QuizRepository
     public function all()
     {
 
-        return QuizForm::orderBy('created_at', 'DESC')->get();
+        return Quiz::with('QuizForm')->orderBy('created_at', 'DESC')->get();
 
     }
 
@@ -26,7 +26,7 @@ class QuizRepository
      */
     public function get($id)
     {
-        return QuizForm::findOrFail($id);
+        return Quiz::findOrFail($id);
     }
 
 
@@ -37,10 +37,17 @@ class QuizRepository
     public function create(array $data)
     {
 
-        $dataObj =  new QuizForm;
-        $dataObj->id = $data['id'];
+        $dataObj =  new Quiz;
+
+        $dataObj->id  = $data['id'];
+        $dataObj->article_id = $data['article_id'];
+        $dataObj->quiz_form_id = $data['quiz_form_id'];
         $dataObj->name = $data['name'];
         $dataObj->slug = $data['slug'];
+        $dataObj->duration = $data['duration'];
+        $dataObj->total_marks = $data['total_marks'];
+        $dataObj->number_of_questions = $data['number_of_questions'];
+        $dataObj->status = $data['status'];
 
         return $dataObj->save();
     }
@@ -53,7 +60,7 @@ class QuizRepository
      */
     public function update(array $data, $id)
     {
-        return QuizForm::find($id)->update($data);
+        return Quiz::find($id)->update($data);
     }
 
 
@@ -62,7 +69,7 @@ class QuizRepository
      */
     public function delete($id)
     {
-        return QuizForm::find($id)->delete();
+        return Quiz::find($id)->delete();
     }
 
 
@@ -71,6 +78,6 @@ class QuizRepository
      */
     public function getWithPagination()
     {
-        return QuizForm::with('quizFormField')->orderBy('created_at', 'DESC')->paginate(10);
+        return Quiz::with('QuizForm')->orderBy('created_at', 'DESC')->paginate(10);
     }
 }

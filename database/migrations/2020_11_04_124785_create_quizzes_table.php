@@ -20,8 +20,8 @@ class CreateQuizzesTable extends Migration
             $table->uuid('quiz_form_id');
             $table->string('name')->index();
             $table->string('slug');
-            $table->string('duration');
-            $table->integer('total_marks');
+            $table->string('duration',10);
+            $table->decimal('total_marks',10,2);
             $table->integer('number_of_questions');
             $table->tinyInteger('status');
             $table->timestamps();
