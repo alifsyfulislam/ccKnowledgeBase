@@ -12,7 +12,7 @@ class Quiz extends Model
 
     public function quizForm(){
 
-        return $this->hasOne(QuizForm::class);
+        return $this->belongsTo(QuizForm::class);
 
     }
 }

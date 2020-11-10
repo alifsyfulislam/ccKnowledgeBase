@@ -47,9 +47,9 @@ class QuizService
     {
 
         if($this->quizRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_info'=>$this->quizRepository->get($id)]);
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_info'=>$this->quizRepository->get($id)]);
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_info'=>"Data not found"]);
+        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_info'=>"Data not found"]);
 
     }
 
@@ -62,7 +62,13 @@ class QuizService
     {
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required',
+            'article_id' => 'required',
+            'quiz_form_id' => 'required',
+            'name' => 'required|unique:quizzes,name',
+            'duration' => 'required',
+            'total_marks' => 'required',
+            'number_of_questions' => 'required',
+            'status' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -90,7 +96,13 @@ class QuizService
 
         $validator = Validator::make($request->all(),[
 
+            'article_id' => 'required',
+            'quiz_form_id' => 'required',
             'name' => 'required',
+            'duration' => 'required',
+            'total_marks' => 'required',
+            'number_of_questions' => 'required',
+            'status' => 'required',
 
         ]);
 
@@ -158,7 +170,7 @@ class QuizService
     public function paginateData()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_list'=>$this->quizRepository->getWithPagination()]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_list'=>$this->quizRepository->getWithPagination()]);
 
     }
 }
