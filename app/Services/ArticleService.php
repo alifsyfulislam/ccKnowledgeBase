@@ -229,10 +229,10 @@ class ArticleService
     /**
      * @return JsonResponse
      */
-    public function paginateData()
+    public function paginateData($request)
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->getWithPagination()]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->getWithPagination($request)]);
 
     }
 

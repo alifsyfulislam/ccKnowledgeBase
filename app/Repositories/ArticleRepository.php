@@ -3,12 +3,14 @@
 namespace App\Repositories;
 
 use App\Helpers\Helper;
+use App\Http\Traits\QueryTrait;
 use App\Models\Article;
 use App\Models\Media;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticleRepository implements RepositoryInterface
 {
+    use QueryTrait;
     /**
      * @return mixed
      */
@@ -18,7 +20,6 @@ class ArticleRepository implements RepositoryInterface
         return Article::with('media')->orderBy('en_title', 'ASC')->get();
 
     }
-
 
     /**
      * @param $id
@@ -79,9 +80,28 @@ class ArticleRepository implements RepositoryInterface
     /**
      * @return LengthAwarePaginator
      */
-    public function getWithPagination()
+    public function getWithPagination($request)
     {
-        return Article::with('media')->orderBy('en_title', 'ASC')->paginate(10);
+        $query = Article::with('media');
+        $whereFilterList = ['category_id', 'status'];
+        $likeFilterList = ['en_title', 'tag'];
+        $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
+
+        return $query->orderBy('en_title', 'ASC')
+            ->paginate(10);
+        //return Article::with('media')->orderBy('en_title', 'ASC')->paginate(10);
+    }
+
+    private static function filterArticle($request, $query, array $whereFilterList, array $likeFilterList)
+    {
+        $query = self::likeQueryFilter($request, $query, $likeFilterList);
+        $query = self::whereQueryFilter($request, $query, $whereFilterList);
+
+        if($request->filled('publish_date')){
+            $query->whereDate('publish_date', '=', $request->publish_date);
+        }
+
+        return $query;
     }
 
 }

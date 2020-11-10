@@ -27,11 +27,11 @@ class ArticleController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->can('article-list')) {
 
-            return $this->articleService->paginateData();
+            return $this->articleService->paginateData($request);
 
         } else {
 
