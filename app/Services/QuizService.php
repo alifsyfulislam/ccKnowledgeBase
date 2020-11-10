@@ -167,10 +167,10 @@ class QuizService
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function paginateData()
+    public function paginateData($request)
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_list'=>$this->quizRepository->getWithPagination()]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_list'=>$this->quizRepository->getWithPagination($request)]);
 
     }
 }

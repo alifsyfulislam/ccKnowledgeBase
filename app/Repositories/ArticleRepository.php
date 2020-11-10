@@ -92,7 +92,7 @@ class ArticleRepository implements RepositoryInterface
         //return Article::with('media')->orderBy('en_title', 'ASC')->paginate(10);
     }
 
-    private static function filterArticle($request, $query, array $whereFilterList, array $likeFilterList)
+    public static function filterArticle($request, $query, array $whereFilterList, array $likeFilterList)
     {
         $query = self::likeQueryFilter($request, $query, $likeFilterList);
         $query = self::whereQueryFilter($request, $query, $whereFilterList);

@@ -4,11 +4,13 @@
 namespace App\Repositories;
 
 
+use App\Http\Traits\QueryTrait;
 use App\Models\Quiz;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class QuizRepository
 {
+    use QueryTrait;
     /**
      * @return mixed
      */
@@ -76,8 +78,22 @@ class QuizRepository
     /**
      * @return LengthAwarePaginator
      */
-    public function getWithPagination()
+    public function getWithPagination($request)
     {
-        return Quiz::with('QuizForm')->orderBy('created_at', 'DESC')->paginate(10);
+        $query = Quiz::with('QuizForm');
+        $whereFilterList = ['article_id', 'status'];
+        $likeFilterList  = ['name'];
+        $query = self::filterQuiz($request, $query, $whereFilterList, $likeFilterList);
+
+        return $query->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    }
+
+    public static function filterQuiz($request, $query, array $whereFilterList, array $likeFilterList)
+    {
+        $query = self::likeQueryFilter($request, $query, $likeFilterList);
+        $query = self::whereQueryFilter($request, $query, $whereFilterList);
+
+        return $query;
     }
 }

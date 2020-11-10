@@ -29,12 +29,12 @@ class QuizController extends Controller
     /**
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
 
         if(Auth::user()->can('quiz-list')) {
 
-            return $this->quizService->paginateData();
+            return $this->quizService->paginateData($request);
 
         } else {
 
