@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,6 +22,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('permissions', 'Api\PermissionController');
     Route::apiResource('categories','Api\CategoryController');
     Route::apiResource('articles','Api\ArticleController');
+    Route::apiResource('faqs','Api\FaqController');
     Route::apiResource('quiz-forms','Api\QuizFormController');
     Route::apiResource('quiz-form-fields','Api\QuizFormFieldController');
     Route::apiResource('quizzes','Api\QuizController');

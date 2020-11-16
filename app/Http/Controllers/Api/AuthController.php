@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Repositories\UserRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -29,7 +30,7 @@ class AuthController
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function __invoke(Request $request)
     {

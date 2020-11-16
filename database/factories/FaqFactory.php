@@ -2,11 +2,11 @@
 
 /** @var Factory $factory */
 
-use App\Permission;
+use App\Models\Faq;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
-$factory->define(Permission::class, function (Faker $faker) {
+$factory->define(Faq::class, function (Faker $faker) {
     return [
         //
     ];

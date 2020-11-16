@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class RoleRepository implements RepositoryInterface
 {
@@ -29,7 +31,7 @@ class RoleRepository implements RepositoryInterface
 
     /**
      * @param array $data
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return Builder|Model
      */
     public function create(array $data)
     {
@@ -48,6 +50,7 @@ class RoleRepository implements RepositoryInterface
 
     /**
      * @param $id
+     * @return mixed
      */
     public function delete($id)
     {

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Repositories\QuizFormFieldRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,7 @@ class QuizFormFieldService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAll()
     {
@@ -41,7 +42,7 @@ class QuizFormFieldService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getById($id)
     {
@@ -56,7 +57,7 @@ class QuizFormFieldService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createItem($request)
     {
@@ -89,7 +90,7 @@ class QuizFormFieldService
     /**
      * @param $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateItem($request)
     {
@@ -135,7 +136,7 @@ class QuizFormFieldService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteItem($id)
     {
@@ -163,7 +164,7 @@ class QuizFormFieldService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function paginateData()
     {

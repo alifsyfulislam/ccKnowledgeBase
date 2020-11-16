@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 
 use App\Models\Permission;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class PermissionRepository implements RepositoryInterface
 {
@@ -29,7 +31,7 @@ class PermissionRepository implements RepositoryInterface
 
     /**
      * @param array $data
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return Builder|Model
      */
     public function create(array $data)
     {
@@ -48,12 +50,17 @@ class PermissionRepository implements RepositoryInterface
 
     /**
      * @param $id
+     * @return mixed
      */
     public function delete($id)
     {
         return Permission::find($id)->delete();
     }
 
+
+    /**
+     * @return mixed
+     */
     public function getWithPagination()
     {
         return Permission::orderBy('id', 'DESC')->paginate(10);

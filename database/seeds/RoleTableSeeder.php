@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Helper;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
@@ -26,7 +27,7 @@ class RoleTableSeeder extends Seeder
 
         foreach ($roles as $role) {
 
-            Role::Create(['name' => $role, 'slug' => \App\Helpers\Helper::slugify($role)]);
+            Role::Create(['name' => $role, 'slug' => Helper::slugify($role)]);
 
         }
 

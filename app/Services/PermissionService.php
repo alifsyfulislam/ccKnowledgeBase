@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Repositories\PermissionRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +32,7 @@ class PermissionService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAll()
     {
@@ -41,7 +42,7 @@ class PermissionService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getById($id)
     {
@@ -56,7 +57,7 @@ class PermissionService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createItem($request)
     {
@@ -83,7 +84,7 @@ class PermissionService
     /**
      * @param $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateItem($request)
     {
@@ -125,7 +126,7 @@ class PermissionService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteItem($id)
     {
@@ -153,7 +154,7 @@ class PermissionService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function paginateData()
     {

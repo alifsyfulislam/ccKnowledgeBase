@@ -1,18 +1,41 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
 interface RepositoryInterface
 {
 
-  public function all();
+    /**
+     * @return mixed
+     */
+    public function all();
 
-  public function get($id);
 
-  public function create(array $data);
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function get($id);
 
-  public function update(array $data, $id);
 
-  public function delete($id);
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data);
+
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed
+     */
+    public function update(array $data, $id);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);
 
 }

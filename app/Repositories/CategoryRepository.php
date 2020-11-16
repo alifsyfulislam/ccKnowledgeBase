@@ -62,6 +62,7 @@ class CategoryRepository implements RepositoryInterface
 
     /**
      * @param $id
+     * @return mixed
      */
     public function delete($id)
     {
@@ -85,7 +86,9 @@ class CategoryRepository implements RepositoryInterface
     }
 
 
-
+    /**
+     * @param $category_id
+     */
     public function deleteSubcategory($category_id){
        $request = Category::where('parent_id', '=', $category_id)->pluck('id');
        //print_r($request);

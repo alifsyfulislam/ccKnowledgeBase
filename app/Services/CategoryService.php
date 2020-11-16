@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Repositories\CategoryRepository;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +31,7 @@ class CategoryService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAll()
     {
@@ -41,7 +42,7 @@ class CategoryService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getById($id)
     {
@@ -56,7 +57,7 @@ class CategoryService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createItem($request)
     {
@@ -83,10 +84,7 @@ class CategoryService
 
         try {
 
-
             $this->categoryRepository->create($input);
-
-
 
         } catch (Exception $e) {
 
@@ -105,7 +103,7 @@ class CategoryService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateItem($request)
     {
@@ -129,8 +127,8 @@ class CategoryService
 
             $this->categoryRepository->update(['name' => $request->input('title'),
                                                 'parent_id' => $request->input('parent_id') ], $request->id);
-            $category = $this->categoryRepository->get($request->id);
-            // $category->syncPermissions($request->input('permission'));
+            $this->categoryRepository->get($request->id);
+
 
         } catch (Exception $e) {
 
@@ -149,7 +147,7 @@ class CategoryService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteItem($id)
     {
@@ -159,25 +157,22 @@ class CategoryService
 
             $this->categoryRepository->delete($id);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             DB::rollBack();
 
             Log::info($e->getMessage());
-            //return $this->error($e->getMessage(), $e->getCode());
+
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
         }
 
         DB::commit();
 
-        //return $this->success(config('status.status_code.200'), "Category Deleted" );
-
-
     }
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function paginateData()
     {

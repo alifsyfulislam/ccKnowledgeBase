@@ -3,9 +3,7 @@
 
 namespace App\Services;
 
-use App\Helpers\Helper;
-use App\Models\Media;
-use App\Repositories\ArticleRepository;
+use App\Repositories\FaqRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Exception;
@@ -13,17 +11,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class ArticleService
+class FaqService
 {
     /**
-     * @var ArticleRepository
+     * @var FaqRepository
      */
-    protected $articleRepository;
+    protected $faqRepository;
 
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(FaqRepository $faqRepository)
     {
 
-        $this->articleRepository = $articleRepository;
+        $this->faqRepository = $faqRepository;
 
     }
 
@@ -33,7 +31,7 @@ class ArticleService
     public function getAll()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->all()]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_list'=>$this->faqRepository->all()]);
 
     }
 
@@ -43,8 +41,6 @@ class ArticleService
      */
     public function createItem(Request $request)
     {
-
-        $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
 
@@ -65,29 +61,7 @@ class ArticleService
 
         try {
 
-            $this->articleRepository->create($input);
-            $article = $this->getItemById($input['id']);
-
-            if(isset($request->image_file)) {
-
-                $thumbImageList = $request->image_file;
-
-                if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= count($thumbImageList); $i++) {
-                        $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-                    }
-                }
-            }
-
-            foreach ($thumbFile as $image):
-
-                $article->media()->create([
-
-                    'url' => $image
-
-                ]);
-
-            endforeach;
+            $this->faqRepository->create($input);
 
         } catch (Exception $e) {
 
@@ -107,7 +81,7 @@ class ArticleService
     public function getItemById($id)
     {
 
-        return $this->articleRepository->get($id);
+        return $this->faqRepository->get($id);
     }
 
     /**
@@ -116,10 +90,10 @@ class ArticleService
      */
     public function getById($id)
     {
-        if($this->articleRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_info'=>$this->articleRepository->get($id)]);
+        if($this->faqRepository->get($id))
+            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_info'=>$this->faqRepository->get($id)]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_info'=>"Data not found"]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_info'=>"Data not found"]);
 
     }
 
@@ -145,45 +119,7 @@ class ArticleService
 
         try {
 
-            $this->articleRepository->update($input, $input['id']);
-
-            if(isset($request->image_file)) {
-
-                $article = $this->getItemById($request->id);
-
-                $mediaList = Media::where('mediable_id', $request->id)->get();
-                if (count($mediaList) > 0)
-                {
-                    foreach($mediaList as $media)
-                    {
-                        $mediaName =  substr($media->url, strpos($media->url, "media") );
-                        unlink(public_path().'/'.$mediaName );
-                        $media->delete();
-                    }
-                }
-
-                $thumbImageList = $request->image_file;
-
-                if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= count($thumbImageList); $i++) {
-                        $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-                    }
-                }
-
-                foreach ($thumbFile as $image):
-
-                    $article->media()->create([
-
-                        'url' => $image
-
-                    ]);
-
-                endforeach;
-            }
-
-
-            // $category->syncPermissions($request->input('permission'));
-
+            $this->faqRepository->update($input, $input['id']);
 
         } catch (Exception $e) {
 
@@ -209,7 +145,7 @@ class ArticleService
 
         try {
 
-            $this->articleRepository->delete($id);
+            $this->faqRepository->delete($id);
 
         } catch (Exception $e) {
 
@@ -229,10 +165,10 @@ class ArticleService
     /**
      * @return JsonResponse
      */
-    public function paginateData($request)
+    public function paginateData(Request $request)
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->getWithPagination($request)]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_list'=>$this->faqRepository->getWithPagination($request)]);
 
     }
 

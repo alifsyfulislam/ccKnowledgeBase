@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Helpers\Helper;
 use App\Repositories\UserRepository;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,7 @@ class UserService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAll()
     {
@@ -46,7 +47,7 @@ class UserService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getById($id)
     {
@@ -61,7 +62,7 @@ class UserService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createItem($request)
     {
@@ -130,7 +131,7 @@ class UserService
 
     /**
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateItem($request)
     {
@@ -191,7 +192,7 @@ class UserService
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteItem($id)
     {
@@ -217,7 +218,7 @@ class UserService
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function paginateData()
     {

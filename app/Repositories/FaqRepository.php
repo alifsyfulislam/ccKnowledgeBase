@@ -4,11 +4,10 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
-use App\Models\Article;
-use App\Models\Media;
+use App\Models\Faq;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ArticleRepository implements RepositoryInterface
+class FaqRepository implements RepositoryInterface
 {
     use QueryTrait;
     /**
@@ -17,7 +16,7 @@ class ArticleRepository implements RepositoryInterface
     public function all()
     {
 
-        return Article::with('media')->orderBy('en_title', 'ASC')->get();
+        return Faq::orderBy('en_title', 'ASC')->get();
 
     }
 
@@ -27,7 +26,7 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('media')->find($id);
+        return Faq::find($id);
     }
 
     /**
@@ -37,7 +36,7 @@ class ArticleRepository implements RepositoryInterface
     public function create(array $data)
     {
 
-        $dataObj =  new Article;
+        $dataObj =  new Faq;
         $dataObj->id = $data['id'];
         $dataObj->user_id = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
@@ -45,8 +44,6 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->bn_title = $data['bn_title'];
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
-        $dataObj->en_short_summary = $data['en_short_summary'];
-        $dataObj->bn_short_summary = $data['bn_short_summary'];
         $dataObj->en_body = $data['en_body'];
         $dataObj->bn_body = $data['bn_body'];
         $dataObj->status = $data['status'];
@@ -64,19 +61,21 @@ class ArticleRepository implements RepositoryInterface
      */
     public function update(array $data, $id)
     {
-        return Article::find($id)->update($data);
+
+        return Faq::find($id)->update($data);
+
     }
 
 
     /**
      * @param $id
-     * @return mixed
      */
     public function delete($id)
     {
-        return Article::find($id)->delete();
-    }
 
+        return Faq::find($id)->delete();
+
+    }
 
     /**
      * @param $request
@@ -84,16 +83,16 @@ class ArticleRepository implements RepositoryInterface
      */
     public function getWithPagination($request)
     {
-        $query = Article::with('media');
+
+        $query = Faq::all();
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList = ['en_title', 'tag'];
-        $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
+        $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
         return $query->orderBy('en_title', 'ASC')
             ->paginate(10);
-        //return Article::with('media')->orderBy('en_title', 'ASC')->paginate(10);
-    }
 
+    }
 
     /**
      * @param $request
@@ -102,16 +101,20 @@ class ArticleRepository implements RepositoryInterface
      * @param array $likeFilterList
      * @return mixed
      */
-    public static function filterArticle($request, $query, array $whereFilterList, array $likeFilterList)
+    public static function filterFaq($request, $query, array $whereFilterList, array $likeFilterList)
     {
+
         $query = self::likeQueryFilter($request, $query, $likeFilterList);
         $query = self::whereQueryFilter($request, $query, $whereFilterList);
 
-        if($request->filled('publish_date')){
+        if($request->filled('publish_date')) {
+
             $query->whereDate('publish_date', '=', $request->publish_date);
+
         }
 
         return $query;
+
     }
 
 }

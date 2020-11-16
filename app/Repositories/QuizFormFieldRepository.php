@@ -68,6 +68,7 @@ class QuizFormFieldRepository
 
     /**
      * @param $id
+     * @return mixed
      */
     public function delete($id)
     {

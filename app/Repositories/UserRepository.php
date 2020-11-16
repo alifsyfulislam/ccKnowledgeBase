@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserRepository implements RepositoryInterface
 {
@@ -68,6 +69,7 @@ class UserRepository implements RepositoryInterface
 
     /**
      * @param $id
+     * @return mixed
      */
     public function delete($id)
     {
@@ -76,7 +78,7 @@ class UserRepository implements RepositoryInterface
 
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
     public function getWithPagination()
     {

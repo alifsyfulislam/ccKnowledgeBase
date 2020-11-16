@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Helper;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
@@ -40,6 +41,11 @@ class PermissionTableSeeder extends Seeder
             'Article Edit',
             'Article Delete',
 
+            'Faq List',
+            'Faq Create',
+            'Faq Edit',
+            'Faq Delete',
+
             'Team List',
             'Team Create',
             'Team Edit',
@@ -65,7 +71,7 @@ class PermissionTableSeeder extends Seeder
 
         foreach ($Permissions as $Permission) {
 
-            Permission::Create(['name' => $Permission, 'slug' => \App\Helpers\Helper::slugify($Permission)]);
+            Permission::Create(['name' => $Permission, 'slug' => Helper::slugify($Permission)]);
 
         }
 
