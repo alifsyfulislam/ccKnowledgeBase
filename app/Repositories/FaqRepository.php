@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Faq;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FaqRepository implements RepositoryInterface
 {
@@ -45,7 +44,7 @@ class FaqRepository implements RepositoryInterface
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
         $dataObj->en_body = $data['en_body'];
-        $dataObj->bn_body = $data['bn_body'];
+        $dataObj->bn_body = $data['bn_body'] ?? null;
         $dataObj->status = $data['status'];
         $dataObj->publish_date = $data['publish_date'];
 
@@ -84,9 +83,9 @@ class FaqRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
 
-        $query = Faq::all();
+        $query = Faq::query();
         $whereFilterList = ['category_id', 'status'];
-        $likeFilterList = ['en_title', 'tag'];
+        $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
         return $query->orderBy('en_title', 'ASC')
@@ -103,14 +102,12 @@ class FaqRepository implements RepositoryInterface
      */
     public static function filterFaq($request, $query, array $whereFilterList, array $likeFilterList)
     {
-
         $query = self::likeQueryFilter($request, $query, $likeFilterList);
         $query = self::whereQueryFilter($request, $query, $whereFilterList);
 
         if($request->filled('publish_date')) {
 
             $query->whereDate('publish_date', '=', $request->publish_date);
-
         }
 
         return $query;

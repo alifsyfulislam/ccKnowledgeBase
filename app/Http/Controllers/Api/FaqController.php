@@ -4,84 +4,115 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use App\Services\FaqService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
+    protected $faqService;
+    public function __construct(FaqService $faqService)
     {
-        //
+        $this->middleware('auth');
+        $this->faqService = $faqService;
+
+    }
+
+    public function index(Request $request)
+    {
+        if(Auth::user()->can('faq-list')) {
+
+            return $this->faqService->paginateData($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * @return void
      */
     public function create()
     {
-        //
+
+        /*return view('categorys.create',compact('permissions'));*/
+
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        //
+
+        if(Auth::user()->can('faq-create')) {
+
+            return $this->faqService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Faq $faq
-     * @return Response
+     * @param $id
+     * @return void
      */
-    public function show(Faq $faq)
+    public function edit($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Faq $faq
-     * @return Response
-     */
-    public function edit(Faq $faq)
+
+    public function show($id)
     {
-        //
+        if(Auth::user()->can('faq-list')) {
+
+            return $this->faqService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Faq $faq
-     * @return Response
-     */
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request)
     {
-        //
+
+        if(Auth::user()->can('faq-edit')) {
+
+            return $this->faqService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Faq $faq
-     * @return Response
-     */
-    public function destroy(Faq $faq)
+
+    public function destroy(Request $request)
     {
-        //
+        if(Auth::user()->can('faq-delete')) {
+
+            return  $this->faqService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 }

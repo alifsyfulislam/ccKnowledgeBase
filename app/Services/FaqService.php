@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Helpers\Helper;
 use App\Repositories\FaqRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -114,6 +115,7 @@ class FaqService
 
         }
         $input = $request->all();
+        $input['slug'] = Helper::slugify($input['en_title']);
 
         DB::beginTransaction();
 
