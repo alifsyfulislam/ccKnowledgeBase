@@ -27,7 +27,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('quiz-form-fields','Api\QuizFormFieldController');
     Route::apiResource('quizzes','Api\QuizController');
 
-
 });
 
 
