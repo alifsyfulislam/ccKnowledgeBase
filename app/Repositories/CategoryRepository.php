@@ -45,7 +45,7 @@ class CategoryRepository implements RepositoryInterface
         $dataObj->id = $data['id'];
         $dataObj->name = $data['name'];
         $dataObj->slug = Helper::slugify($data['name']);
-        $dataObj->parent_id = $data['parent_id'];
+        $dataObj->parent_id = $data['parent_id'] ?? 0;
 
         return $dataObj->save();
     }
