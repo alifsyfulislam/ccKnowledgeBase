@@ -25,22 +25,23 @@ class CategoryController extends Controller
      */
     public function __construct(CategoryService $categoryService)
     {
-
         $this->middleware('auth');
         $this->categoryService = $categoryService;
-
     }
 
 
     /**
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
 
         if(Auth::user()->can('category-list')) {
 
-            return $this->categoryService->getAll();
+            if ($request->filled('isAdmin'))
+                return $this->categoryService->paginateData($request);
+            else
+                return $this->categoryService->getAll();
 
         } else {
 
@@ -50,17 +51,14 @@ class CategoryController extends Controller
 
     }
 
-
     /**
      * @return void
      */
     public function create()
     {
-
         /*return view('categorys.create',compact('permissions'));*/
 
     }
-
 
     /**
      * @param Request $request
@@ -128,6 +126,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
+        //dd($request->all());
 
         if(Auth::user()->can('category-edit')) {
 
@@ -138,7 +137,6 @@ class CategoryController extends Controller
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
         }
-
     }
 
 
@@ -148,8 +146,7 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-
-
+        //dd($request->id);
         if(Auth::user()->can('category-delete')) {
 
             return  $this->categoryService->deleteItem($request->id);
@@ -157,7 +154,6 @@ class CategoryController extends Controller
         } else {
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
         }
 
     }

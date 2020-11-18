@@ -36,7 +36,10 @@ class CategoryService
     public function getAll()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'category_list'=>$this->categoryRepository->all()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'category_list' => $this->categoryRepository->all()]);
     }
 
 
@@ -65,20 +68,20 @@ class CategoryService
         $validator = Validator::make($request->all(),[
 
             'name' => 'required',
-            'parent_id' => 'required',
-
 
         ]);
 
         if($validator->fails()) {
-
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
 
         }
 
         $input = $request->all();
         $input['id'] = time().rand(1000,9000);
-
 
         DB::beginTransaction();
 
@@ -111,24 +114,32 @@ class CategoryService
         $validator = Validator::make($request->all(),[
 
             'name' => 'required',
-            'parent_id' => 'required',
+           // 'parent_id' => 'required',
 
         ]);
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
 
         }
 
         DB::beginTransaction();
 
         try {
+            $input = $request->all();
 
-            $this->categoryRepository->update(['name' => $request->input('title'),
-                                                'parent_id' => $request->input('parent_id') ], $request->id);
-            $this->categoryRepository->get($request->id);
+            $this->categoryRepository->update([
+                'name' => $request->input('name'),
+                'parent_id' => $request->input('parent_id') ?? 0
+            ],
+                $request->id);
 
+           // $this->categoryRepository->get($request->id);
 
         } catch (Exception $e) {
 
@@ -140,15 +151,14 @@ class CategoryService
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => "Category Updated Successfully"
+        ]);
 
     }
 
 
-    /**
-     * @param $id
-     * @return JsonResponse
-     */
     public function deleteItem($id)
     {
         DB::beginTransaction();
@@ -168,17 +178,29 @@ class CategoryService
 
         DB::commit();
 
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>"Category Deleted Successfully"
+        ]);
+
     }
 
 
     /**
      * @return JsonResponse
      */
-    public function paginateData()
+    public function paginateData($request)
     {
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'category_list' => $this->categoryRepository->getWithPagination($request)]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'category_list'=>$this->categoryRepository->getWithPagination()]);
-
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'category_list'=>$this->categoryRepository->getWithPagination($request)
+        ]);
     }
 
 }

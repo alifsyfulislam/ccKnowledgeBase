@@ -14,8 +14,10 @@ class CategoryRepository implements RepositoryInterface
      */
     public function all()
     {
-
-        return Category::with('childrenRecursive')->where('parent_id', '=', 0)->orderBy('name', 'ASC')->get();
+        return Category::with('childrenRecursive')
+            ->where('parent_id', '=', 0)
+            ->orderBy('name', 'ASC')
+            ->get();
 
     }
 
@@ -57,7 +59,14 @@ class CategoryRepository implements RepositoryInterface
      */
     public function update(array $data, $id)
     {
-        return Category::find($id)->update($data);
+       // dd($data);
+        $categoryData =  Category::where('id', $id )->update([
+            'name' => $data['name'],
+            'parent_id' => $data['parent_id'] ?? 0
+        ]);
+        //->update($data)
+        return $categoryData;
+       // dd($categoryData);
     }
 
     /**
@@ -66,22 +75,8 @@ class CategoryRepository implements RepositoryInterface
      */
     public function delete($id)
     {
+
         self::deleteSubcategory($id);
-
-        $selectedCategory = Category::where('id', $id)->get();
-        $child = Category::where('parent_id', $id)->get();
-
-        if(count($selectedCategory) == 0):
-
-            echo json_encode ($this->error("Category Not Found!", "400"));
-
-        elseif(count($child) == 0 ):
-            echo json_encode($this->success("No Child!! Deleted..",'', 200));
-            return Category::find($id)->delete();
-        else:
-            echo json_encode($this->error(count($child)." subcategories Found!! You cann't delete this", 400));
-
-        endif;
 
     }
 
@@ -89,26 +84,26 @@ class CategoryRepository implements RepositoryInterface
     /**
      * @param $category_id
      */
-    public function deleteSubcategory($category_id){
+    public static function deleteSubcategory($category_id){
        $request = Category::where('parent_id', '=', $category_id)->pluck('id');
-       //print_r($request);
-       //echo count($request);
+
        foreach ($request as $cat){
-           //echo 444;
-           echo('Id :'.$cat.',  ');
 
            self::deleteSubcategory($cat);
 
         }
         //echo 'hi';
-        echo Category::where('id', '=', $category_id)->delete();
-
+        Category::where('id', '=', $category_id)->delete();
 
     }
-    /*
-    public function getWithPagination()
+
+    public function getWithPagination($request)
     {
-        return Category::orderBy('id', 'DESC')->paginate(10);
+        return Category::with('parentRecursive')
+            ->orderBy('name', 'ASC')
+            ->paginate(10);
+
+
     }
-    */
+
 }

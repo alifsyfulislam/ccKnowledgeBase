@@ -182,9 +182,6 @@ class ArticleService
             }
 
 
-            // $category->syncPermissions($request->input('permission'));
-
-
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -208,7 +205,6 @@ class ArticleService
         DB::beginTransaction();
 
         try {
-
             $this->articleRepository->delete($id);
 
         } catch (Exception $e) {
@@ -232,7 +228,11 @@ class ArticleService
     public function paginateData($request)
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->getWithPagination($request)]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'article_list'=>$this->articleRepository->getWithPagination($request)
+        ]);
 
     }
 
