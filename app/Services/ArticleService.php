@@ -117,9 +117,17 @@ class ArticleService
     public function getById($id)
     {
         if($this->articleRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_info'=>$this->articleRepository->get($id)]);
+            return response()->json([
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'article_info'=>$this->articleRepository->get($id)
+            ]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_info'=>"Data not found"]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'article_info'=>"Data not found"
+        ]);
 
     }
 
@@ -218,7 +226,10 @@ class ArticleService
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=> "Article Deleted Successfully"
+        ]);
 
     }
 
