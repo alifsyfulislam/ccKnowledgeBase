@@ -49,7 +49,7 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->bn_short_summary = $data['bn_short_summary'];
         $dataObj->en_body = $data['en_body'];
         $dataObj->bn_body = $data['bn_body'];
-        $dataObj->status = $data['status'];
+        $dataObj->status = $data['status'] ?? 'draft';
         $dataObj->publish_date = $data['publish_date'];
 
         return $dataObj->save();

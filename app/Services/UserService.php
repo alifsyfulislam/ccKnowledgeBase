@@ -53,7 +53,11 @@ class UserService
     {
 
         if($this->userRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'user_info'=>$this->userRepository->get($id)]);
+            return response()->json([
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'user_info'=>$this->userRepository->get($id)
+            ]);
 
         return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'user_info'=>"Data not found"]);
 
@@ -80,7 +84,11 @@ class UserService
 
         if($validator->fails()) {
 
-           return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+           return response()->json([
+               'status_code' => '400',
+               'messages'=>config('status.status_code.400'),
+               'error' =>  $validator->errors()->first()
+           ]);
 
         }
 
