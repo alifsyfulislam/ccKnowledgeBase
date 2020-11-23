@@ -42,7 +42,6 @@ class FaqService
      */
     public function createItem(Request $request)
     {
-
         $validator = Validator::make($request->all(),[
 
             'en_title' => 'required|string',
@@ -51,12 +50,18 @@ class FaqService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
 
         }
 
         $input = $request->all();
         $input['id'] = time().rand(1000,9000);
+        $input['user_id'] = auth()->user()->id;
+        $input['publish_date'] = date('Y-m-d H:i:s');
 
         DB::beginTransaction();
 

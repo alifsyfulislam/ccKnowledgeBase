@@ -42,11 +42,11 @@ class FaqRepository implements RepositoryInterface
         $dataObj->user_id = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
         $dataObj->en_title = $data['en_title'];
-        $dataObj->bn_title = $data['bn_title'];
+        //$dataObj->bn_title = $data['bn_title'];
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
         $dataObj->en_body = $data['en_body'];
-        $dataObj->bn_body = $data['bn_body'] ?? null;
+        //$dataObj->bn_body = $data['bn_body'] ?? null;
         $dataObj->status = $data['status'];
         $dataObj->publish_date = $data['publish_date'];
 

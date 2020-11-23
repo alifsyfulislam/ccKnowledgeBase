@@ -50,8 +50,9 @@ class FaqController extends Controller
     public function store(Request $request)
     {
 
-        if(Auth::user()->can('faq-create')) {
 
+        if(Auth::user()->can('faq-create')) {
+            //dd("hello");
             return $this->faqService->createItem($request);
 
         } else {
