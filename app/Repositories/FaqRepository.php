@@ -15,7 +15,9 @@ class FaqRepository implements RepositoryInterface
     public function all()
     {
 
-        return Faq::orderBy('en_title', 'ASC')->get();
+        return Faq::with( 'user', 'category')
+        ->orderBy('en_title', 'ASC')
+        ->get();
 
     }
 
@@ -25,7 +27,7 @@ class FaqRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Faq::find($id);
+        return Faq::with( 'user', 'category')->find($id);
     }
 
     /**
@@ -83,7 +85,7 @@ class FaqRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
 
-        $query = Faq::query();
+        $query = Faq::with( 'user', 'category');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
