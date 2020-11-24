@@ -50,7 +50,6 @@ class FaqController extends Controller
     public function store(Request $request)
     {
 
-
         if(Auth::user()->can('faq-create')) {
             //dd("hello");
             return $this->faqService->createItem($request);
@@ -58,7 +57,6 @@ class FaqController extends Controller
         } else {
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
         }
 
     }

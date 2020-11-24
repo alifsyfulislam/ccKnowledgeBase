@@ -136,7 +136,6 @@ class UserService
 
     }
 
-
     /**
      * @param $request
      * @return JsonResponse
@@ -160,6 +159,8 @@ class UserService
 
 
         $input = $request->all();
+        $input['slug'] = Helper::slugify($request->first_name.$request->last_name) ;
+
         if(!empty($input['password'])) {
 
             $input['password'] = Hash::make($input['password']);

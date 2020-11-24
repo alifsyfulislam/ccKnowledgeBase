@@ -25,7 +25,6 @@ class QuizController extends Controller
 
     }
 
-
     /**
      * @return mixed
      */
@@ -44,7 +43,6 @@ class QuizController extends Controller
 
     }
 
-
     /**
      *
      */
@@ -55,7 +53,6 @@ class QuizController extends Controller
         return view('permissions.create',compact('permissions'));*/
 
     }
-
 
     /**
      * @param Request $request

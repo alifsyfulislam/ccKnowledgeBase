@@ -54,7 +54,11 @@ class ArticleService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
 
         }
 
@@ -149,7 +153,9 @@ class ArticleService
             return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
 
         }
+
         $input = $request->all();
+        $input['slug'] = Helper::slugify($input['en_title']);
 
         DB::beginTransaction();
 

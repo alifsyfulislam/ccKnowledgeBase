@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Helpers\Helper;
 use App\Repositories\CategoryRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -134,12 +135,13 @@ class CategoryService
             $input = $request->all();
 
             $this->categoryRepository->update([
-                'name' => $request->input('name'),
-                'parent_id' => $request->input('parent_id') ?? 0
-            ],
-                $request->id);
 
-           // $this->categoryRepository->get($request->id);
+                'name' => $request->input('name'),
+                'slug' => Helper::slugify($request->input('name')),
+                'parent_id' => $request->input('parent_id') ?? 0
+
+            ], $request->id);
+
 
         } catch (Exception $e) {
 
@@ -184,7 +186,6 @@ class CategoryService
         ]);
 
     }
-
 
     /**
      * @return JsonResponse
