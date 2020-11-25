@@ -77,7 +77,7 @@ class UserService
             'last_name' => 'required|string|max:100',
             'username' => 'required|string|max:50|unique:users',
             'email' => 'required|string|email|max:60|unique:users',
-            'password' => 'required|same:confirm-password',
+            'password' => 'required|same:confirm_password',
             'roles' => 'required'
 
         ]);
