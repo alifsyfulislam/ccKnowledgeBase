@@ -60,6 +60,8 @@ class RoleRepository implements RepositoryInterface
 
     public function getWithPagination()
     {
-        return Role::orderBy('id', 'DESC')->paginate(10);
+        return Role::with('permissions', 'users')
+            ->orderBy('id', 'DESC')
+            ->get();
     }
 }
