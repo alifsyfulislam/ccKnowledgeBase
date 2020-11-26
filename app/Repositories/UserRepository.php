@@ -14,7 +14,10 @@ class UserRepository implements RepositoryInterface
     public function all()
     {
 
-        return User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->orderBy('created_at', 'DESC')->get();
+        return User::with([
+            'roles' => function($q) {$q->select('id', 'name');}, 'media'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
     }
 
@@ -82,7 +85,10 @@ class UserRepository implements RepositoryInterface
      */
     public function getWithPagination()
     {
-        return User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->orderBy('created_at', 'DESC')->paginate(10);
+        return User::with([
+            'roles' => function($q) {$q->select('id', 'name');}, 'media'])
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
     }
 
 }
