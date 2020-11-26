@@ -63,6 +63,6 @@ class PermissionRepository implements RepositoryInterface
      */
     public function getWithPagination()
     {
-        return Permission::orderBy('id', 'DESC')->paginate(10);
+        return Permission::orderBy('id', 'DESC')->get();
     }
 }
