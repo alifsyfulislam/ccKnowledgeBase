@@ -150,7 +150,11 @@ class ArticleService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
 
         }
 
@@ -163,7 +167,7 @@ class ArticleService
 
             $this->articleRepository->update($input, $input['id']);
 
-            if(isset($request->image_file)) {
+            if(isset($request->image_file) && count($request->image_file)>0) {
 
                 $article = $this->getItemById($request->id);
 

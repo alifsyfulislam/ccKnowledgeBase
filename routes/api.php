@@ -21,7 +21,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('roles','Api\RoleController');
     Route::apiResource('permissions', 'Api\PermissionController');
     Route::apiResource('categories','Api\CategoryController');
-    Route::apiResource('articles','Api\ArticleController');
+
+    Route::apiResource('articles','Api\ArticleController', ['except' => ['update']]);
+
+    Route::post('article/update-data', 'Api\ArticleController@update');
     Route::apiResource('faqs','Api\FaqController');
     Route::apiResource('quiz-forms','Api\QuizFormController');
     Route::apiResource('quiz-form-fields','Api\QuizFormFieldController');
