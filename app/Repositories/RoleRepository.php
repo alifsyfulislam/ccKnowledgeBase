@@ -60,7 +60,7 @@ class RoleRepository implements RepositoryInterface
 
     public function getWithPagination()
     {
-        return Role::with('permissions', 'users')
+        return Role::with(['permissions', 'users'])
             ->orderBy('id', 'DESC')
             ->get();
     }
