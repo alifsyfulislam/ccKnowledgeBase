@@ -25,7 +25,7 @@ class RoleRepository implements RepositoryInterface
     public function get($id)
     {
 
-        return Role::with(['permissions' => function($q) {$q->select('id', 'name');}])->findOrFail($id);
+        return Role::with(['permissions' => function($q) {$q->select('id', 'name');}, 'users'])->findOrFail($id);
 
     }
 
