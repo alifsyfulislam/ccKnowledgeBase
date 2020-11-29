@@ -63,7 +63,13 @@ class ArticleService
 
         }
 
+
+
         $input = $request->all();
+        $thumbImageList = $request->uploaded_file;
+
+        dd($thumbImageList);
+        
         $input['id'] = time().rand(1000,9000);
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
@@ -75,9 +81,9 @@ class ArticleService
             $this->articleRepository->create($input);
             $article = $this->getItemById($input['id']);
 
-            if(isset($request->image_file)) {
+            if(isset($request->uploaded_file)) {
 
-                $thumbImageList = $request->image_file;
+               
 
                 if(count($thumbImageList) > 0) {
                     for ($i = 1; $i <= count($thumbImageList); $i++) {
@@ -258,7 +264,7 @@ class ArticleService
 
             'status_code' => 200,
             'messages'=> "Article Deleted Successfully"
-            
+
         ]);
 
     }
