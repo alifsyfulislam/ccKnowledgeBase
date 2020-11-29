@@ -94,14 +94,14 @@ class ArticleService
                             $file = $thumbImageList[$fileLength-$i];
 
                             $url = "article/video";
-                            $fileName = time().$file->getClientOriginalExtension();
+                            $fileName = time().'.'.$file->getClientOriginalExtension();
                             $dir = "media/".$url."/";
 
                             if (!file_exists(public_path ($dir))) {
 
                                 mkdir(public_path ($dir), 0755, true);
                             }
-                            $file->move(public_path($dir. $fileName ));
+                            $file->move(public_path($dir), $fileName );
                             $thumbFile[] = url('/').'/'.$dir.$fileName;
 
 
