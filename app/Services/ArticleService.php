@@ -87,28 +87,11 @@ class ArticleService
                     for ($i = 1; $i <= $fileLength; $i++) {
 
                        $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
-                       //dd($mime);
 
-                        if(strstr($mime, "video/")) {
-
-                            $file = $thumbImageList[$fileLength-$i];
-
-                            $url = "article/video";
-                            $fileName = time().'.'.$file->getClientOriginalExtension();
-                            $dir = "media/".$url."/";
-
-                            if (!file_exists(public_path ($dir))) {
-
-                                mkdir(public_path ($dir), 0755, true);
-                            }
-                            $file->move(public_path($dir), $fileName );
-                            $thumbFile[] = url('/').'/'.$dir.$fileName;
-
-                        }
+                        if(strstr($mime, "video/"))
+                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
                         else
-                        {
                             $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-                        }
 
                     }
                 }
@@ -201,7 +184,7 @@ class ArticleService
 
             $this->articleRepository->update($input, $input['id']);
 
-            if(isset($request->image_file) && count($request->image_file)>0) {
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
 
                 $article = $this->getItemById($request->id);
 
@@ -221,16 +204,31 @@ class ArticleService
 
                 }
 
-                $thumbImageList = $request->image_file;
+                $thumbImageList = $request->uploaded_file;
+
+                $fileLength = count($thumbImageList);
 
                 if(count($thumbImageList) > 0) {
+                    for ($i = 1; $i <= $fileLength; $i++) {
+
+                        $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
+
+                        if(strstr($mime, "video/"))
+                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
+                        else
+                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+
+                    }
+                }
+
+              /*  if(count($thumbImageList) > 0) {
 
                     for ($i = 1; $i <= count($thumbImageList); $i++) {
 
                         $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
 
                     }
-                }
+                }*/
 
                 foreach ($thumbFile as $image):
 

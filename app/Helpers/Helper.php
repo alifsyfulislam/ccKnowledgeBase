@@ -44,6 +44,23 @@ class Helper
         return url('/').'/'.$dir.$fileName;
     }
 
+    public static function videoUpload($url, $video)
+    {
+        $file = $video;
+        $fileName = time().'.'.$file->getClientOriginalExtension();
+        $dir = "media/".$url."/";
+
+        if (!file_exists(public_path ($dir))) {
+
+            mkdir(public_path ($dir), 0755, true);
+        }
+
+        $file->move(public_path($dir), $fileName );
+
+        return url('/').'/'.$dir.$fileName;
+
+    }
+
 
     /**
      * @param $url
