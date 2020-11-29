@@ -49,6 +49,7 @@ class ArticleService
         $validator = Validator::make($request->all(),[
 
             'en_title' => 'required|string',
+            'category_id' => 'required',
 
        ]);
 
@@ -145,15 +146,20 @@ class ArticleService
     {
 
         $validator = Validator::make($request->all(),[
+
             'en_title' => 'required|string',
+            'category_id' => 'required',
+            
         ]);
 
         if($validator->fails()) {
 
             return response()->json([
+
                 'status_code' => '400',
                 'messages'=>config('status.status_code.400'),
                 'error' =>  $validator->errors()->first()
+
             ]);
 
         }
@@ -172,21 +178,29 @@ class ArticleService
                 $article = $this->getItemById($request->id);
 
                 $mediaList = Media::where('mediable_id', $request->id)->get();
+
                 if (count($mediaList) > 0)
                 {
+
                     foreach($mediaList as $media)
                     {
+
                         $mediaName =  substr($media->url, strpos($media->url, "media") );
                         unlink(public_path().'/'.$mediaName );
                         $media->delete();
+
                     }
+
                 }
 
                 $thumbImageList = $request->image_file;
 
                 if(count($thumbImageList) > 0) {
+
                     for ($i = 1; $i <= count($thumbImageList); $i++) {
+
                         $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+
                     }
                 }
 
@@ -225,6 +239,7 @@ class ArticleService
         DB::beginTransaction();
 
         try {
+
             $this->articleRepository->delete($id);
 
         } catch (Exception $e) {
@@ -234,13 +249,16 @@ class ArticleService
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+
         }
 
         DB::commit();
 
         return response()->json([
+
             'status_code' => 200,
             'messages'=> "Article Deleted Successfully"
+            
         ]);
 
     }
@@ -252,9 +270,11 @@ class ArticleService
     {
 
         return response()->json([
+
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
             'article_list'=>$this->articleRepository->getWithPagination($request)
+
         ]);
 
     }
