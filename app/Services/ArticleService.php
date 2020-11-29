@@ -63,13 +63,11 @@ class ArticleService
 
         }
 
-
-
         $input = $request->all();
+
+        //dd($input);
         $thumbImageList = $request->uploaded_file;
 
-        dd($thumbImageList);
-        
         $input['id'] = time().rand(1000,9000);
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
@@ -83,11 +81,36 @@ class ArticleService
 
             if(isset($request->uploaded_file)) {
 
-               
+                $fileLength = count($thumbImageList);
 
                 if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= count($thumbImageList); $i++) {
-                        $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+                    for ($i = 1; $i <= $fileLength; $i++) {
+
+                       $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
+                       //dd($mime);
+
+                        if(strstr($mime, "video/")) {
+
+                            $file = $thumbImageList[$fileLength-$i];
+
+                            $url = "article/video";
+                            $fileName = time().$file->getClientOriginalExtension();
+                            $dir = "media/".$url."/";
+
+                            if (!file_exists(public_path ($dir))) {
+
+                                mkdir(public_path ($dir), 0755, true);
+                            }
+                            $file->move(public_path($dir. $fileName ));
+                            $thumbFile[] = url('/').'/'.$dir.$fileName;
+
+
+                        }
+                        else
+                        {
+                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+                        }
+
                     }
                 }
             }
@@ -155,7 +178,7 @@ class ArticleService
 
             'en_title' => 'required|string',
             'category_id' => 'required',
-            
+
         ]);
 
         if($validator->fails()) {
