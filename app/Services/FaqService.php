@@ -175,7 +175,11 @@ class FaqService
     public function paginateData(Request $request)
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_list'=>$this->faqRepository->getWithPagination($request)]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'faq_list'=>$this->faqRepository->getWithPagination($request)
+        ]);
 
     }
 
