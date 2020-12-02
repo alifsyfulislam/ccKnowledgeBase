@@ -36,7 +36,10 @@ class PermissionService
      */
     public function getAll()
     {
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'permission_list'=>$this->permissionRepository->all()]);
+        return response()->json(['status_code' => 302,
+            'messages'=>config('status.status_code.302'),
+            'permission_list'=>$this->permissionRepository->all()
+        ]);
     }
 
 
@@ -48,9 +51,14 @@ class PermissionService
     {
 
         if($this->permissionRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'permission_info'=>$this->permissionRepository->get($id)]);
+            return response()->json(['status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'permission_info'=>$this->permissionRepository->get($id)
+            ]);
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'permission_info'=>"Data not found"]);
+        return response()->json(['status_code' => 302,
+            'messages'=>config('status.status_code.302'),
+            'permission_info'=>"Data not found"]);
 
     }
 
@@ -69,7 +77,9 @@ class PermissionService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json(['status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()]);
         }
 
         $input = $request->all();
@@ -97,7 +107,9 @@ class PermissionService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json(['status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()]);
         }
 
         DB::beginTransaction();
@@ -114,7 +126,9 @@ class PermissionService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json(['status_code' => '424',
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()]);
         }
 
         DB::commit();
@@ -143,7 +157,9 @@ class PermissionService
 
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json(['status_code' => '424',
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()]);
         }
 
         DB::commit();
@@ -162,7 +178,7 @@ class PermissionService
         return response()->json([
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
-            'user_list'=>$this->permissionRepository->getWithPagination()
+            'permission_list'=>$this->permissionRepository->getWithPagination()
         ]);
 
     }
