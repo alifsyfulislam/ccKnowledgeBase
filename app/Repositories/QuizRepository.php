@@ -17,7 +17,9 @@ class QuizRepository
     public function all()
     {
 
-        return Quiz::with('QuizForm')->orderBy('created_at', 'DESC')->get();
+        return Quiz::with('QuizForm', 'article')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
     }
 
@@ -81,7 +83,7 @@ class QuizRepository
      */
     public function getWithPagination($request)
     {
-        $query = Quiz::with('QuizForm');
+        $query = Quiz::with('QuizForm', 'article');
         $whereFilterList = ['article_id', 'status'];
         $likeFilterList  = ['name'];
         $query = self::filterQuiz($request, $query, $whereFilterList, $likeFilterList);
