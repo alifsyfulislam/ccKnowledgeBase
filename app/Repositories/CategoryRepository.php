@@ -102,8 +102,6 @@ class CategoryRepository implements RepositoryInterface
         return Category::with('parentRecursive')
             ->orderBy('name', 'ASC')
             ->paginate(10);
-
-
     }
 
 }
