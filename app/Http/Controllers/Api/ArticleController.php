@@ -17,7 +17,7 @@ class ArticleController extends Controller
     public function __construct(ArticleService $articleService)
     {
 
-        $this->middleware("auth");
+        //$this->middleware("auth");
         $this->articleService = $articleService;
 
     }
@@ -138,7 +138,11 @@ class ArticleController extends Controller
         }
     }
 
-
+    /**
+     * @param Request $request
+     * @param Article $article
+     * @return JsonResponse
+     */
     public function articleSearch($request)
     {
 
