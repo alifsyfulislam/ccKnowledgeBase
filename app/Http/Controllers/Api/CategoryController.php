@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function __construct(CategoryService $categoryService)
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->categoryService = $categoryService;
     }
 
@@ -155,6 +155,13 @@ class CategoryController extends Controller
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
         }
+
+    }
+
+    public function categoryList() 
+    {
+
+        return $this->categoryService->getAll();
 
     }
 }
