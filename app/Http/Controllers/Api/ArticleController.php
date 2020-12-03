@@ -143,7 +143,7 @@ class ArticleController extends Controller
      * @param Article $article
      * @return JsonResponse
      */
-    public function articleSearch($request)
+    public function articleSearch(Request $request)
     {
 
         return $this->articleService->searchArticle($request);
