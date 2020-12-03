@@ -137,4 +137,12 @@ class ArticleController extends Controller
 
         }
     }
+
+
+    public function articleSearch($request)
+    {
+
+        return $this->articleService->searchArticle($request);
+
+    }
 }

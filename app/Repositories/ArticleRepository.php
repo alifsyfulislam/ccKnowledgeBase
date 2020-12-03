@@ -113,4 +113,14 @@ class ArticleRepository implements RepositoryInterface
         return $query;
     }
 
+
+    public function search(string $query = "")
+    {
+        return Article::where('en_title', 'like', "%{$query}%")
+            ->orWhere('tag', 'like', "%{$query}%")
+            ->orWhere('en_short_summary', 'like', "%{$query}%")
+            ->orWhere('en_body', 'like', "%{$query}%")
+            ->get();
+    }
+
 }
