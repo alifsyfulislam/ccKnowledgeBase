@@ -123,4 +123,13 @@ class ArticleRepository implements RepositoryInterface
             ->get();
     }
 
+
+
+    public function searchCategoryArticle($id = '')
+    {
+
+        return Article::where('category_id', $id)->get();        
+
+    }
+
 }

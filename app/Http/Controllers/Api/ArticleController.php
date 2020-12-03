@@ -149,4 +149,12 @@ class ArticleController extends Controller
         return $this->articleService->searchArticle($request);
 
     }
+
+
+    public function articleCategory($id) 
+    {
+
+        return $this->articleService->categoryArticle($id);        
+
+    }
 }

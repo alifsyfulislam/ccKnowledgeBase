@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
+Route::get('article/category/{id}','Api\ArticleController@articleCategory');
 Route::post('article/search', 'Api\ArticleController@articleSearch');
 
 Route::middleware(['auth:api'])->group(function () {
