@@ -78,7 +78,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        if(Auth::user()->can('article-list')) {
+        /* if(Auth::user()->can('article-list')) {
 
             return $this->articleService->getById($id);
 
@@ -86,7 +86,9 @@ class ArticleController extends Controller
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        }
+        } */
+
+        return $this->articleService->getById($id);
     }
 
     /**

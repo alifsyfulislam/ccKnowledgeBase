@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
-Route::get('article/category/{id}','Api\ArticleController@articleCategory');
-Route::post('article/search', 'Api\ArticleController@articleSearch');
 Route::get('category-article-list', 'Api\CategoryController@categoryArticleList');
+Route::get('article/category/{id}','Api\ArticleController@articleCategory');
+Route::get('article/category/{id}','Api\ArticleController@articleCategory');
+Route::get('article/{id}', 'Api\ArticleController@show');
+
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
