@@ -43,4 +43,12 @@ class User extends Authenticatable
     {
         return $this->morphOne(Media::class, 'mediable');
     }
+
+
+    public function article()
+    {
+
+        return $this->hasMany(Article::class);
+
+    }
 }

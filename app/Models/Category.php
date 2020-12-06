@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+//use Illuminate\Database\Eloquent\Relations\BelongsTo;
+//use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -46,5 +46,13 @@ class Category extends Model
     public function parentRecursive()
     {
         return $this->parent()->with('parentRecursive');
+    }
+
+
+    public function article()
+    {
+
+        return $this->hasMany(Article::class);
+
     }
 }

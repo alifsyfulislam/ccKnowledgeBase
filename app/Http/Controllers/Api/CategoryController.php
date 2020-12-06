@@ -164,4 +164,13 @@ class CategoryController extends Controller
         return $this->categoryService->getAll();
 
     }
+
+
+    public function categoryArticleList()
+    {
+        
+        return $this->categoryService->categoryArticles();
+
+
+    } 
 }

@@ -15,11 +15,17 @@ class Article extends Model
         return $this->morphMany(Media::class, 'mediable');
     }
 
-    public function user(){
+    public function user()
+    {
+
         return $this->belongsTo(User::class);
+        
     }
 
-    public function category(){
+    public function category()
+    {
+
         return $this->belongsTo(Category::class);
+
     }
 }

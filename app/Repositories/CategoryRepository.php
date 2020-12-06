@@ -104,4 +104,18 @@ class CategoryRepository implements RepositoryInterface
             ->paginate(10);
     }
 
+
+
+    public function categoryArticles() 
+    {
+
+        return Category::with(['article'])->get()->map(function ($query) {
+
+                $query->setRelation('article', $query->article->take(5));
+                return $query;
+
+            });
+            
+    }
+
 }

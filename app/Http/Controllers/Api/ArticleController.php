@@ -157,4 +157,11 @@ class ArticleController extends Controller
         return $this->articleService->categoryArticle($id);        
 
     }
+
+
+    public function categoryArticleList()
+    {
+
+        return $this-
+    }
 }
