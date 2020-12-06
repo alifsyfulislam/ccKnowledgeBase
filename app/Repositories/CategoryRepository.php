@@ -111,7 +111,7 @@ class CategoryRepository implements RepositoryInterface
 
         return Category::with(['article'])->get()->map(function ($query) {
 
-                $query->setRelation('article', $query->article->take(5));
+                $query->setRelation('article', $query->article->take(-5));
                 return $query;
 
             });
