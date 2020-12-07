@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
+    
     protected $faqService;
+
     public function __construct(FaqService $faqService)
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->faqService = $faqService;
 
     }
 
     public function index(Request $request)
     {
-        if(Auth::user()->can('faq-list')) {
+        /* if(Auth::user()->can('faq-list')) {
 
             return $this->faqService->paginateData($request);
 
@@ -29,7 +31,10 @@ class FaqController extends Controller
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        }
+        } */
+
+        return $this->faqService->paginateData($request);
+
     }
 
     /**
@@ -73,7 +78,7 @@ class FaqController extends Controller
 
     public function show($id)
     {
-        if(Auth::user()->can('faq-list')) {
+        /* if(Auth::user()->can('faq-list')) {
 
             return $this->faqService->getById($id);
 
@@ -81,7 +86,9 @@ class FaqController extends Controller
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        }
+        } */
+
+        return $this->faqService->getById($id);
 
     }
 
