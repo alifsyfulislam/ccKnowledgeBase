@@ -305,15 +305,14 @@ class ArticleService
 
     }
 
-    public function searchArticle($request)
+    public function searchArticle($searchString)
     {
-        $query = $request->query_string;
         
         return response()->json([
 
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
-            'article_list'=>$this->articleRepository->search($query)
+            'article_list'=>$this->articleRepository->search($searchString)
 
         ]);
 

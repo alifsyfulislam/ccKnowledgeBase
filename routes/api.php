@@ -18,7 +18,7 @@ Route::get('category-list','Api\CategoryController@categoryList');
 Route::get('category-article-list', 'Api\CategoryController@categoryArticleList');
 Route::get('article/category/{id}','Api\ArticleController@articleCategory');
 Route::get('article/{id}', 'Api\ArticleController@show');
-Route::post('article/search','Api\ArticleController@articleSearch');
+Route::get('article/search/{any}','Api\ArticleController@articleSearch');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
