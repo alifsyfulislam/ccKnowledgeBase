@@ -120,7 +120,7 @@ class ArticleRepository implements RepositoryInterface
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")
-            ->get();
+            ->orderBy('created_at', 'DESC')->get();
     }
 
 
@@ -128,10 +128,10 @@ class ArticleRepository implements RepositoryInterface
     public function searchCategoryArticle($id = '')
     {
 
-        return Article::where('category_id', $id)->get();        
+        return Article::where('category_id', $id)->get();
 
     }
 
-    
+
 
 }
