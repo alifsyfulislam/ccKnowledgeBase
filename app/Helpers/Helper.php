@@ -4,7 +4,8 @@
 namespace App\Helpers;
 
 use Auth;
-use Image;
+use Intervention\Image\Facades\Image as Image;
+
 
 class Helper
 {

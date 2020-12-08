@@ -106,16 +106,16 @@ class CategoryRepository implements RepositoryInterface
 
 
 
-    public function categoryArticles() 
+    public function categoryArticles()
     {
 
-        return Category::with(['article'])->get()->map(function ($query) {
+        return Category::with(['article'])->orderBy('created_at','DESC')->get()->map(function ($query) {
 
-                $query->setRelation('article', $query->article->take(-5));
+                $query->setRelation('article', $query->article->take(-3));
                 return $query;
 
-            });
-            
+        });
+
     }
 
 }
