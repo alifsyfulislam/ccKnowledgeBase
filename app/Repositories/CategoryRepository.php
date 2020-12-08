@@ -16,7 +16,7 @@ class CategoryRepository implements RepositoryInterface
     {
         return Category::with('childrenRecursive')
             ->where('parent_id', '=', 0)
-            ->orderBy('name', 'ASC')
+            ->orderBy('id','DESC')
             ->get();
 
     }
@@ -100,7 +100,7 @@ class CategoryRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
         return Category::with('parentRecursive')
-            ->orderBy('name', 'ASC')
+            ->orderBy('id','DESC')
             ->paginate(10);
     }
 

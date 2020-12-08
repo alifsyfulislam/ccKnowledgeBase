@@ -18,7 +18,7 @@ class QuizRepository
     {
 
         return Quiz::with('QuizForm', 'article')
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->get();
 
     }
@@ -83,20 +83,23 @@ class QuizRepository
      */
     public function getWithPagination($request)
     {
+
         $query = Quiz::with('QuizForm', 'article');
         $whereFilterList = ['article_id', 'status'];
         $likeFilterList  = ['name'];
         $query = self::filterQuiz($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('created_at', 'DESC')
-            ->paginate(10);
+        return $query->orderBy('id', 'DESC')->paginate(10);
+
     }
 
     public static function filterQuiz($request, $query, array $whereFilterList, array $likeFilterList)
     {
+        
         $query = self::likeQueryFilter($request, $query, $likeFilterList);
         $query = self::whereQueryFilter($request, $query, $whereFilterList);
 
         return $query;
+        
     }
 }

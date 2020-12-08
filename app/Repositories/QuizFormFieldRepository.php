@@ -15,7 +15,7 @@ class QuizFormFieldRepository
     public function all()
     {
 
-        return QuizFormField::orderBy('created_at', 'DESC')->get();
+        return QuizFormField::orderBy('id', 'DESC')->get();
 
     }
 
@@ -81,6 +81,6 @@ class QuizFormFieldRepository
      */
     public function getWithPagination()
     {
-        return QuizFormField::orderBy('created_at', 'DESC')->paginate(10);
+        return QuizFormField::orderBy('id', 'DESC')->paginate(10);
     }
 }

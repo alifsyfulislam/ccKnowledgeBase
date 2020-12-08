@@ -16,7 +16,7 @@ class FaqRepository implements RepositoryInterface
     {
 
         return Faq::with( 'user', 'category')
-        ->orderBy('en_title', 'ASC')
+        ->orderBy('id','DESC')
         ->get();
 
     }
@@ -90,8 +90,7 @@ class FaqRepository implements RepositoryInterface
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('created_at', 'DESC')
-            ->paginate(10);
+        return $query->orderBy('id','DESC')->paginate(10);
 
     }
 

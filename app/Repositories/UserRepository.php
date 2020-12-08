@@ -16,7 +16,7 @@ class UserRepository implements RepositoryInterface
 
         return User::with([
             'roles' => function($q) {$q->select('id', 'name');}, 'media'])
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->get();
 
     }
@@ -87,7 +87,7 @@ class UserRepository implements RepositoryInterface
     {
         return User::with([
             'roles' => function($q) {$q->select('id', 'name');}, 'media'])
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->paginate(10);
     }
 
