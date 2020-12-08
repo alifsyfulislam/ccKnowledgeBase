@@ -60,13 +60,11 @@ class CategoryRepository implements RepositoryInterface
     public function update(array $data, $id)
     {
        // dd($data);
-        $categoryData =  Category::where('id', $id )->update([
+        return Category::where('id', $id )->update([
             'name' => $data['name'],
             'parent_id' => $data['parent_id'] ?? 0
         ]);
-        //->update($data)
-        return $categoryData;
-       // dd($categoryData);
+
     }
 
     /**
