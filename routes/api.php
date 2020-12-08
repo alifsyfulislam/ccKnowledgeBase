@@ -19,6 +19,8 @@ Route::get('category-article-list', 'Api\CategoryController@categoryArticleList'
 Route::get('article/category/{id}','Api\ArticleController@articleCategory');
 Route::get('article/{id}', 'Api\ArticleController@show');
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');
+Route::get('faqs','Api\FaqController@index');
+Route::get('faqs/{any}','Api\FaqController@show');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {

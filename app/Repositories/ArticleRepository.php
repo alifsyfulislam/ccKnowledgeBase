@@ -17,7 +17,7 @@ class ArticleRepository implements RepositoryInterface
     public function all()
     {
 
-        return Article::with('media')->orderBy('en_title', 'ASC')->get();
+        return Article::with('media')->orderBy('id', 'DESC')->get();
 
     }
 
@@ -84,13 +84,14 @@ class ArticleRepository implements RepositoryInterface
      */
     public function getWithPagination($request)
     {
+
         $query = Article::with('media', 'user', 'category');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList = ['en_title', 'tag'];
         $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('created_at', 'DESC')
-            ->paginate(10);
+        return $query->orderBy('id', 'DESC')->paginate(10);
+
     }
 
 
@@ -120,7 +121,7 @@ class ArticleRepository implements RepositoryInterface
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")
-            ->get();
+            ->orderBy('id', 'DESC')->get();
     }
 
 
@@ -128,7 +129,7 @@ class ArticleRepository implements RepositoryInterface
     public function searchCategoryArticle($id = '')
     {
 
-        return Article::where('category_id', $id)->get();        
+        return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();        
 
     }
 
