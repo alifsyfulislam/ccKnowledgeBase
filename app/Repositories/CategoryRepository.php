@@ -109,7 +109,7 @@ class CategoryRepository implements RepositoryInterface
 
         return Category::with(['article'])->orderBy('id','DESC')->get()->map(function ($query) {
 
-                $query->setRelation('article', $query->article->take(-5));
+                $query->setRelation('article', $query->article->take(-3));
                 return $query;
 
         });

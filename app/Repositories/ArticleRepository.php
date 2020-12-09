@@ -24,7 +24,7 @@ class ArticleRepository implements RepositoryInterface
     public function five()
     {
 
-        return Article::with('media')->orderBy('created_at', 'DESC')->take(3)->get();
+        return Article::with('media')->orderBy('created_at', 'DESC')->take(5)->get();
 
     }
 
@@ -137,7 +137,7 @@ class ArticleRepository implements RepositoryInterface
     {
 
 //        return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();
-        return Article::where('category_id', $id)->orderBy('id', 'DESC')->paginate(3);
+        return Article::where('category_id', $id)->orderBy('id', 'DESC')->paginate(5);
 
     }
 }
