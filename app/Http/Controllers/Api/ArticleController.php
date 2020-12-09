@@ -163,7 +163,7 @@ class ArticleController extends Controller
     public function articleList()
     {
 
-        return $this->articleService->getAll();
+        return $this->articleService->getFive();
 
     }
 
