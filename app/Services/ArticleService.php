@@ -307,7 +307,7 @@ class ArticleService
 
     public function searchArticle($searchString)
     {
-        
+
         return response()->json([
 
             'status_code' => 200,
@@ -321,7 +321,7 @@ class ArticleService
 
     public function categoryArticle($id)
     {
-        
+
         return response()->json([
 
             'status_code' => 200,
@@ -331,5 +331,4 @@ class ArticleService
         ]);
 
     }
-
 }
