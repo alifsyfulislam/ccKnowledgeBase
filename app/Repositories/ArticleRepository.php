@@ -124,8 +124,11 @@ class ArticleRepository implements RepositoryInterface
             ->orderBy('id', 'DESC')->get();
     }
 
+
+
     public function searchCategoryArticle($id = '')
     {
+
         return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();
 
     }
