@@ -164,6 +164,14 @@ class ArticleController extends Controller
     }
 
 
+    public function articleList()
+    {
+
+        return $this->articleService->getFive();
+
+    }
+
+    
     public function saveFiles(Request $request)
     {
 
