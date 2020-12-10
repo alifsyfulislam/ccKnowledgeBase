@@ -193,19 +193,19 @@ class CategoryService
     public function paginateData($request)
     {
         return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
+            'status_code'   => 200,
+            'messages'      => config('status.status_code.200'),
             'category_list' => $this->categoryRepository->getWithPagination($request)]);
 
     }
 
 
-    public function categoryArticles() 
+    public function categoryArticles()
     {
 
         return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
+            'status_code'   => 200,
+            'messages'      => config('status.status_code.200'),
             'category_list' => $this->categoryRepository->categoryArticles()]);
 
     }

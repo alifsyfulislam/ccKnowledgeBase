@@ -97,9 +97,22 @@ class CategoryRepository implements RepositoryInterface
 
     public function getWithPagination($request)
     {
-        return Category::with('parentRecursive')
-            ->orderBy('id','DESC')
-            ->paginate(10);
+        if ($request->filled('without_pagination')) {
+
+            return Category::with('parentRecursive')
+                ->orderBy('id','DESC')
+                ->get();
+
+        }
+        else{
+
+            return Category::with('parentRecursive')
+                ->orderBy('id','DESC')
+                ->paginate(10);
+
+        }
+
+
     }
 
 
