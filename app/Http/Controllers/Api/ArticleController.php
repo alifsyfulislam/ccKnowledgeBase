@@ -59,6 +59,8 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+
+
         if(Auth::user()->can('article-create')) {
 
             return $this->articleService->createItem($request);
@@ -68,6 +70,7 @@ class ArticleController extends Controller
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
         }
+
     }
 
     /**
@@ -160,10 +163,19 @@ class ArticleController extends Controller
 
     }
 
+
     public function articleList()
     {
 
         return $this->articleService->getFive();
+
+    }
+
+    
+    public function saveFiles(Request $request)
+    {
+
+        return $this->articleService->saveFiles($request);
 
     }
 

@@ -80,7 +80,7 @@ class Helper
         }
 
         $small_image = Image::make($image);
-        $thumbImage = $small_image->resize(null, 500, function ($e) {
+        $thumbImage = $small_image->resize(350, null, function ($e) {
 
             $e->aspectRatio();
 
@@ -90,5 +90,4 @@ class Helper
 
         return url('/').'/'.$dir.$fileName;
     }
-
 }
