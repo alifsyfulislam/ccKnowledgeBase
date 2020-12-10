@@ -71,11 +71,11 @@ class Helper
     public static function base64ImageUpload($url, $image)
     {
         $fileName = uniqid().".jpg";
-        $dir = "media/".$url."/";
 
-        if (!file_exists(public_path ($dir))) {
 
-            mkdir(public_path ($dir), 0755, true);
+        if (!file_exists(public_path ($url))) {
+
+            mkdir(public_path ($url), 0755, true);
 
         }
 
@@ -86,9 +86,9 @@ class Helper
 
         });
 
-        $thumbImage->save(public_path($dir. $fileName ));
+        $thumbImage->save(public_path($url. $fileName ));
 
-        return url('/').'/'.$dir.$fileName;
+        return url('/').'/'.$url.$fileName;
     }
 
 }

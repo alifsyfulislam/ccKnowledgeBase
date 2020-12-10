@@ -44,6 +44,8 @@ class ArticleService
     public function createItem(Request $request)
     {
 
+//        dd($request->all());
+
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
@@ -307,7 +309,7 @@ class ArticleService
 
     public function searchArticle($searchString)
     {
-        
+
         return response()->json([
 
             'status_code' => 200,
@@ -321,7 +323,7 @@ class ArticleService
 
     public function categoryArticle($id)
     {
-        
+
         return response()->json([
 
             'status_code' => 200,
@@ -331,5 +333,25 @@ class ArticleService
         ]);
 
     }
+
+
+    public function saveFiles($request)
+    {
+
+
+        if(isset($request->file)) {
+
+            return response()->json([
+
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'file_path'=> Helper::base64ImageUpload($request->attachment_save_path, $request->file)
+
+            ]);
+
+        }
+
+    }
+
 
 }
