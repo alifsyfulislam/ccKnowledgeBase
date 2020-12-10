@@ -124,11 +124,11 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Article::where('en_title', 'like', "%{$query}%")
+        return Article::with('category')->where('en_title', 'like', "%{$query}%")
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")
-            ->orderBy('id', 'DESC')->get();
+            ->orderBy('id', 'DESC')->paginate(5);
     }
 
 
