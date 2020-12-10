@@ -21,6 +21,13 @@ class ArticleRepository implements RepositoryInterface
 
     }
 
+    public function five()
+    {
+
+        return Article::with('media')->orderBy('created_at', 'DESC')->take(5)->get();
+
+    }
+
     /**
      * @param $id
      * @return mixed
@@ -117,11 +124,11 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Article::where('en_title', 'like', "%{$query}%")
+        return Article::with('category')->where('en_title', 'like', "%{$query}%")
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")
-            ->orderBy('id', 'DESC')->get();
+            ->orderBy('id', 'DESC')->paginate(5);
     }
 
 
@@ -129,10 +136,8 @@ class ArticleRepository implements RepositoryInterface
     public function searchCategoryArticle($id = '')
     {
 
-        return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();        
+//        return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();
+        return Article::where('category_id', $id)->orderBy('id', 'DESC')->paginate(5);
 
     }
-
-
-
 }
