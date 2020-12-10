@@ -163,18 +163,11 @@ class ArticleController extends Controller
 
     }
 
-<<<<<<< HEAD
 
     public function saveFiles(Request $request)
     {
 
         return $this->articleService->saveFiles($request);
-=======
-    public function articleList()
-    {
-
-        return $this->articleService->getFive();
->>>>>>> 34268aa53aa171b1edc5a39abdf0d54a548ddca9
 
     }
 
