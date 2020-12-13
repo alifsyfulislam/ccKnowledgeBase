@@ -25,7 +25,6 @@ class CategoryController extends Controller
      */
     public function __construct(CategoryService $categoryService)
     {
-        //$this->middleware('auth');
         $this->categoryService = $categoryService;
     }
 
@@ -158,7 +157,7 @@ class CategoryController extends Controller
 
     }
 
-    public function categoryList() 
+    public function categoryList()
     {
 
         return $this->categoryService->getAll();
@@ -168,9 +167,9 @@ class CategoryController extends Controller
 
     public function categoryArticleList()
     {
-        
+
         return $this->categoryService->categoryArticles();
 
 
-    } 
+    }
 }

@@ -11,7 +11,7 @@ class Category extends Model
     /**
      * @var string[]
      */
-    public $fillable = ['title','parent_id', 'slug'];
+    protected $fillable = ['title','parent_id', 'slug'];
 
 
     /**
