@@ -34,7 +34,7 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('user')->find($id);
+        return Article::with('user','category')->find($id);
     }
 
     /**
