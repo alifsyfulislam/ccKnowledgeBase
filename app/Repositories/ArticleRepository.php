@@ -17,14 +17,14 @@ class ArticleRepository implements RepositoryInterface
     public function all()
     {
 
-        return Article::with('media')->orderBy('id', 'DESC')->get();
+        return Article::orderBy('id', 'DESC')->get();
 
     }
 
     public function five()
     {
 
-        return Article::with('media')->orderBy('created_at', 'DESC')->take(5)->get();
+        return Article::orderBy('created_at', 'DESC')->take(5)->get();
 
     }
 
@@ -34,7 +34,7 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('media', 'user', 'category')->find($id);
+        return Article::find($id);
     }
 
     /**

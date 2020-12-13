@@ -51,8 +51,6 @@ class ArticleService
     public function createItem(Request $request)
     {
 
-//        dd($request->all());
-
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
@@ -74,9 +72,6 @@ class ArticleService
 
         $input = $request->all();
 
-        //dd($input);
-        $thumbImageList = $request->uploaded_file;
-
         $input['id'] = time().rand(1000,9000);
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
@@ -86,35 +81,6 @@ class ArticleService
         try {
 
             $this->articleRepository->create($input);
-            $article = $this->getItemById($input['id']);
-
-             if(isset($request->uploaded_file)) {
-
-                $fileLength = count($thumbImageList);
-
-                if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= $fileLength; $i++) {
-
-                       $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
-
-                        if(strstr($mime, "video/"))
-                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
-                        else
-                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-
-                    }
-                }
-            }
-
-            foreach ($thumbFile as $image):
-
-                $article->media()->create([
-
-                    'url' => $image
-
-                ]);
-
-            endforeach;
 
         } catch (Exception $e) {
 
@@ -192,64 +158,6 @@ class ArticleService
         try {
 
             $this->articleRepository->update($input, $input['id']);
-
-            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
-
-                $article = $this->getItemById($request->id);
-
-                $mediaList = Media::where('mediable_id', $request->id)->get();
-
-                if (count($mediaList) > 0)
-                {
-
-                    foreach($mediaList as $media)
-                    {
-
-                        $mediaName =  substr($media->url, strpos($media->url, "media") );
-                        unlink(public_path().'/'.$mediaName );
-                        $media->delete();
-
-                    }
-
-                }
-
-                $thumbImageList = $request->uploaded_file;
-
-                $fileLength = count($thumbImageList);
-
-                if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= $fileLength; $i++) {
-
-                        $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
-
-                        if(strstr($mime, "video/"))
-                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
-                        else
-                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-
-                    }
-                }
-
-              /*  if(count($thumbImageList) > 0) {
-
-                    for ($i = 1; $i <= count($thumbImageList); $i++) {
-
-                        $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-
-                    }
-                }*/
-
-                foreach ($thumbFile as $image):
-
-                    $article->media()->create([
-
-                        'url' => $image
-
-                    ]);
-
-                endforeach;
-            }
-
 
         } catch (Exception $e) {
 
@@ -352,6 +260,27 @@ class ArticleService
                 'status_code' => 200,
                 'messages'=>config('status.status_code.200'),
                 'file_path'=> Helper::base64ImageUpload($request->attachment_save_path, $request->file)
+
+            ]);
+
+        }
+
+    }
+
+
+    public function deleteFiles($request)
+    {
+
+        if(isset($request->img_src)) {
+
+            substr($request->img_src, strpos($request->img_src, "kbs"));
+
+            unlink($request->img_src);
+
+            return response()->json([
+
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
 
             ]);
 

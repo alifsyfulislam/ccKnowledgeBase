@@ -179,4 +179,11 @@ class ArticleController extends Controller
 
     }
 
+    public function deleteFiles(Request $request)
+    {
+
+        return $this->articleService->deleteFiles($request);
+
+    }
+
 }
