@@ -29,6 +29,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
+
         if(Auth::user()->can('article-list')) {
 
             return $this->articleService->paginateData($request);
@@ -60,7 +61,6 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
 
-
         if(Auth::user()->can('article-create')) {
 
             return $this->articleService->createItem($request);
@@ -81,15 +81,6 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        /* if(Auth::user()->can('article-list')) {
-
-            return $this->articleService->getById($id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        } */
 
         return $this->articleService->getById($id);
     }
@@ -114,6 +105,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request)
     {
+
         if(Auth::user()->can('article-edit')) {
 
             return $this->articleService->updateItem($request);
@@ -171,7 +163,7 @@ class ArticleController extends Controller
 
     }
 
-    
+
     public function saveFiles(Request $request)
     {
 

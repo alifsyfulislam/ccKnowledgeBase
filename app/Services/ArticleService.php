@@ -109,7 +109,9 @@ class ArticleService
      */
     public function getById($id)
     {
+        
         if($this->articleRepository->get($id))
+
             return response()->json([
                 'status_code' => 200,
                 'messages'=>config('status.status_code.200'),
@@ -273,9 +275,9 @@ class ArticleService
 
         if(isset($request->img_src)) {
 
-            substr($request->img_src, strpos($request->img_src, "kbs"));
+            $mediaName = substr($request->img_src, strpos($request->img_src, "media"));
 
-            unlink($request->img_src);
+            unlink(public_path().'/'.$mediaName );
 
             return response()->json([
 

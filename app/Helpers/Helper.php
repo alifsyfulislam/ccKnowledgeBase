@@ -70,7 +70,7 @@ class Helper
      */
     public static function base64ImageUpload($url, $image)
     {
-        $fileName = uniqid().".jpg";
+        $fileName = uniqid().'.'.$image->getClientOriginalExtension();
         $dir = "media/".$url."/";
 
         if (!file_exists(public_path ($dir))) {
