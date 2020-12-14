@@ -1,0 +1,516 @@
+.login-wrapper {
+    position: relative;
+
+    &:before {
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 0;
+        height: 5px;
+        width: 100%;
+        background: $tmpcolor;
+    }
+
+    // &.login-wrapper-2,
+    // &.login-wrapper-3 {
+    //     &:before {
+    //         background: $red-2;
+    //     }
+
+    //     .account-type-status {
+    //         &:before,
+    //         &:after {
+    //             background: $red-2;
+    //         }
+    //     }
+
+    //     .form-group {
+    //         &.floating-input {        
+    //             .progress-border {
+    //                 &:before {
+    //                     background: $red-2;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     .with-icon {        
+    //         &.user-icon {
+    //             &:before {
+    //                 background-image: url(../img/user-icon.png);
+    //             }
+    //         }
+        
+    //         &.password-icon {
+    //             &:before {
+    //                 background-image: url(../img/password-icon.png);
+    //             }
+    //         }
+    //     }
+
+    //     .btn-common {        
+    //         &.btn-primary {
+    //             background-color: $red-2;
+    //             border-color: $red-2;
+    //         }
+    //     }
+    // }
+
+    &.login-wrapper-2,
+    &.login-wrapper-3 {
+        .login-right-area {
+            box-shadow: none;
+        }
+    }
+
+    &.login-wrapper-3 {
+        background-size: cover;
+        background-position: center left;
+        background-repeat: no-repeat;
+
+        .login-right-area {
+            background-position: inherit;
+            background-repeat: inherit;
+            box-shadow: none;
+        }
+
+        .login-left-area {
+            background: transparent;
+        }
+
+        .login-form-middle-wrapper {
+            background: $white;
+        }
+    }
+
+    
+    // For Centered Login Design
+    &.login-wrapper-with-centered-items {
+        background-size: cover;
+        background-position: center left;
+        background-repeat: no-repeat;
+
+        &.middle-shape {
+            &:before {
+                background: transparent url(../img/gradient-shape/dot-2.svg) no-repeat center/cover !important;
+            }
+        }
+
+        &:before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            background: transparent url(../img/gradient-shape/dot.svg);
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .centered-login-area {
+            position: relative;
+            width: 750px;
+            background: $white;
+            border-radius: 15px;
+            box-shadow: 0 30px 45px rgba(16,30,54,.25);
+            z-index: 1;
+            @extend .transition;
+
+            .form-group {
+                &.floating-input {
+                    .form-control {
+                        background: transparent !important;
+                    }
+                }
+            }
+
+            .centered-login-bg {
+                background-size: cover;
+                background-position: center left;
+                background-repeat: no-repeat;
+            }
+
+            .client-logo {
+                .img-fluid {
+                    max-width: 150px;
+                }
+            }
+
+            .client-info {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .powered-by {
+                font-size: 14px;
+            }
+
+            .gplex-logo {
+                .img-fluid {
+                    max-width: 150px;
+                }
+            }
+
+            &:hover {
+                .account-type-status {
+                    &:before,
+                    &:after {
+                        width: 80px;
+                    }
+                }
+        
+                box-shadow: 0px 0px 30px rgba($tmpcolor, 0.29);
+            }
+        }
+    }
+    // End
+}
+
+.login-form-middle-wrapper {
+    background: rgba($light-bg,0.5);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(black, 0.29);
+    @extend .transition;
+
+    .form-group {
+        &.floating-input {
+            .form-control {
+                background: transparent !important;
+            }
+        }
+    }
+
+    &:hover {
+        .account-type-status {
+            &:before,
+            &:after {
+                width: 80px;
+            }
+        }
+
+        box-shadow: 0px 0px 20px rgba(black, 0.39);
+    }
+}
+
+.login-right-area {
+    background-position: top left;
+    background-repeat: no-repeat;
+    width: calc(100% - 578px);
+    // box-shadow: -5px 0px 10px rgba(black, 0.29);
+    box-shadow: 0px 0px 20px rgba(#dedede, 0.65);
+}
+
+.login-left-area {
+    background: #ffffff;
+    width: 578px;
+}
+
+.account-type-status {
+    position: relative;
+    width: 100%;
+    // margin: 0 auto;
+    // background: rgba(116, 116, 116, .05);
+    font-size: 24px;
+    color: #4B4B4B;
+    font-weight: 400;
+    // border-radius: 10px;
+    // border: 1px solid transparent;
+    @extend .transition;
+
+    &:before,
+    &:after {
+        position: absolute;
+        content: "";
+        bottom: 0;
+        height: 2px;
+        width: 50px;
+        background: $tmpcolor;
+        @extend .transition;
+    }
+
+    &:before {
+        left: 50%;
+    }
+    
+    &:after {
+        right: 50%;
+    }
+
+    .acc-type {
+        font-weight: 900;
+    }
+}
+
+.login-form {
+    .btn-common,
+    .btn-common-2 {
+        min-width: 200px;
+        font-weight: 300;
+        padding-right: 75px !important;
+        line-height: 1;
+        font-size: 20px;
+
+        &.btn-with-rightside-icon {
+            span {
+                &:before {
+                    top: 16px;
+                    height: 18px;
+                    width: 20px;
+                }
+            }
+        }
+    }
+}
+
+.with-icon {
+    position: relative;
+    &:before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 14px;
+        height: 18px;
+        width: 18px;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    &.user-icon {
+        &:before {
+            background-image: url(../img/user-icon.png);
+        }
+    }
+
+    &.password-icon {
+        &:before {
+            background-image: url(../img/password-icon.png);
+        }
+
+        .password-show-hide {
+            overflow: hidden;
+            &:before {
+                position: absolute;
+                content: "";
+                right: 0;
+                bottom: 14px;
+                height: 15px;
+                width: 23px;
+                background-image: url(../img/eye-on-off-icon.png);
+                background-repeat: no-repeat;
+                background-position: 0 0;
+                display: block;
+                // @extend .transition;
+            }
+
+            &.show {
+                &:before {
+                    background-position: -25px 0;
+                }
+            }
+        }
+    }
+}
+
+.powered-by {
+    font-size: 18px;
+    color: $body-color;
+}
+
+.client-info {
+    font-size: 18px;
+    color: $black;
+    letter-spacing: 8px;
+}
+
+@media (max-width: 1440px){
+    .login-form-wrapper {
+        &.pt-md-120 {
+            padding-top: 50px !important;
+        }
+
+        .account-type-status {
+            &.mt-md-80 {
+                margin-top: 40px !important;
+            }
+        }
+        
+        .login-form {
+            &.pt-md-80 {
+                padding-top: 40px !important;
+            }
+        }
+    }
+
+    .login-right-area {
+        .information-wrapper {
+            .client-logo {
+                &.pt-md-120 {
+                    padding-top: 50px !important;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .login-left-area {
+        width: 400px;
+    }
+
+    .login-right-area {
+        width: calc(100% - 400px);
+    }
+
+    .powered-by,
+    .client-info {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 767px) {
+    .powered-by,
+    .client-info {
+        font-size: 16px;
+    }
+
+    .client-info {
+        letter-spacing: normal;
+    }
+
+    .client-logo {
+        padding-left: 15px;
+    }
+
+    .login-wrapper {
+        &:before {
+            display: none;
+        }
+
+        &.login-wrapper-with-centered-items {   
+            &:before {
+                display: block;
+            }
+
+            .centered-login-area {
+                width: calc(100% - 40px);
+            }
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    .login-wrapper {
+        &.login-wrapper-2,
+        &.login-wrapper-3 {
+            &.h-100vh {
+                height: 100vh;
+            }
+        }
+        
+        &.h-100vh {
+            height: inherit;
+        }
+
+        &.login-wrapper-with-centered-items {
+            padding-bottom: 50px;
+    
+            .centered-login-area {
+                margin: 50px 20px 0;
+                .client-info {
+                    letter-spacing: 0px;
+                }
+            }
+
+            &.h-100vh {
+                height: 100vh;
+            }
+        }
+    }
+    .login-left-area {
+        &.h-100vh {
+            height: inherit;
+        }
+
+        .login-form-wrapper {
+            &.h-100vh {
+                height: inherit;
+            }
+        }
+
+        .account-type-status {
+            font-size: 20px;
+            width: auto;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+    }
+
+    .login-right-area {
+        display: none;
+    }
+    
+    .login-left-area {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 379px) {
+    .gplex-logo {
+        img {
+            max-width: 200px;
+        }
+    }
+
+    .login-wrapper {
+        &.login-wrapper-2,
+        &.login-wrapper-3 {
+            &.h-100vh {
+                height: 100%;
+            }
+        }
+
+        &.login-wrapper-with-centered-items {
+            &.h-100vh {
+                height: 100%;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 375px) {
+    .login-wrapper {
+        &.login-wrapper-2,
+        &.login-wrapper-3 {
+            &.h-100vh {
+                height: 100vh;
+            }
+        }
+        
+        &.login-wrapper-with-centered-items {
+            &.h-100vh {
+                height: 100vh;
+            }
+        }
+    }
+}
+
+@media (max-width: 350px) {
+    .login-wrapper {
+        &.login-wrapper-2,
+        &.login-wrapper-3 {
+            &.h-100vh {
+                height: 100%;
+            }
+        }
+
+        &.login-wrapper-with-centered-items {
+            &.h-100vh {
+                height: 100%;
+            }
+        }
+    }
+}
