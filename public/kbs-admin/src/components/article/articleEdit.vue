@@ -244,14 +244,15 @@ export default {
             },
             params :
                 {
-                  isAdmin : 1
+                    isAdmin : 1,
+                    without_pagination : 1
                 },
 
           })
           .then(function (response) {
             if(response.data.status_code === 200){
               console.log(response.data);
-              _that.categoryList = response.data.category_list.data;
+              _that.categoryList = response.data.category_list;
             }
             else{
               _that.success_message = "";
@@ -291,8 +292,9 @@ export default {
 
               _that.enBodyData  = _that.articleData.en_body;
               _that.bnBodyData  = _that.articleData.bn_body;
-              _that.isMounted = true;
-              console.log('enBody', _that.enBodyData);
+              _that.isMounted   = true;
+
+              console.log('enBody',  + _that.enBodyData);
 
             } else {
               _that.success_message = "";

@@ -136,16 +136,18 @@ export default {
       categoryList    : '',
       selectedCategory  : '',
       userInfo        : '',
+
       articleData        : {
         en_title  : '',
         bn_title  : '',
-        tag  : '',
+        tag       : '',
         en_short_summary  : '',
         bn_short_summary  : '',
         en_body  : '',
         bn_body  : '',
-        status  : 'draft',
+        status   : 'draft',
       },
+
       images: [],
       files: [],
       url : '',
@@ -172,7 +174,6 @@ export default {
       } else {
          bnBody  = document.getElementById('bn_Body').value;
       }
-
 
       formData.append('category_id', this.selectedCategory);
       formData.append('en_title', this.articleData.en_title);
@@ -201,7 +202,6 @@ export default {
           _that.$emit('article-data', _that.articleData);
 
           document.body.classList.remove('open-side-slider')
-          console.log(formData);
 
         } else {
 
@@ -229,14 +229,15 @@ export default {
             },
             params :
                 {
-                  isAdmin : 1
+                    isAdmin : 1,
+                    without_pagination : 1
                 },
 
           })
           .then(function (response) {
             if(response.data.status_code === 200){
               console.log(response.data);
-              _that.categoryList = response.data.category_list.data;
+              _that.categoryList = response.data.category_list;
             }
             else{
               _that.success_message = "";
