@@ -14,3 +14,5 @@ npm-debug.log
 yarn-error.log
 /public/kbs-admin/node_modules
 /public/kbs-front/node_modules
+/public/kbs-admin/dist
+/public/kbs-front/dist
