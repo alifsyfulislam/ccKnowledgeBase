@@ -14,7 +14,7 @@
       <div class="content-area">
         <div class="content-title-wrapper px-15 py-10 d-md-flex justify-content-between align-items-center">
           <h2 class="content-title text-uppercase m-0">Article Details</h2>
-          <router-link :to="{ name: 'articleList'}" class="btn btn-primary btn-xs m-1 px-15 py-2">
+          <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
             <i class="fas fa-arrow-left"></i> Back
           </router-link>
         </div>
@@ -61,30 +61,6 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import axios from "axios";
 
-
-/*export default {
-  name: "articleDetails.vue",
-  components: {
-    Header,
-    Menu
-  },
-
-  data() {
-    return {
-      category_parent_id : '',
-      category_name   : '',
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      articleDetails    : '',
-      article_id :  '',
-      userInfo        : '',
-      filter : {
-        isAdmin : 1
-      }
-    }
-  },*/
-
   export default {
     name: "articleDetails.vue",
     components: {
@@ -108,6 +84,7 @@ import axios from "axios";
     },
 
   methods: {
+
     articleSearch(v){
       let _that = this;
       let articleID = v;
@@ -118,10 +95,12 @@ import axios from "axios";
             console.log(_that.aArticle);
           })
     },
+
     searchData(){
       let _that = this;
       _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
     },
+
     getRecentArticleList(){
       let _that = this;
       axios.get('article-list')
@@ -129,6 +108,7 @@ import axios from "axios";
             _that.allArticle = response.data.article_list;
           })
     },
+
     getCategoryArticleList()
     {
       let _that =this;
@@ -145,28 +125,6 @@ import axios from "axios";
             }
           })
     },
-    /*getArticleDetails() {
-      let _that = this;
-      let articleID = this.article_id;
-      console.log("article Id " + articleID);
-      let apiUrl = "admin/articles/";
-
-      axios.get(apiUrl+articleID,
-          {
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-            },
-          })
-          .then(function (response) {
-            if (response.data.status_code === 200) {
-              console.log(response.data);
-              _that.articleDetails = response.data.article_info;
-            } else {
-              _that.success_message = "";
-              _that.error_message = response.data.error;
-            }
-          })
-    },*/
 
   },
 
@@ -175,10 +133,6 @@ import axios from "axios";
     this.articleSearch(this.articleID);
     this.getCategoryArticleList();
     this.getRecentArticleList();
-
-    /*this.article_id = this.$route.params.id;
-    console.log(this.article_id);
-    this.getArticleDetails();*/
   }
 }
 

@@ -1,183 +1,4 @@
 <template>
-<!--  <div class="col-md-12 wrapper d-flex align-items-stretch">
-    <Menu></Menu>
-
-    &lt;!&ndash; Page Content  &ndash;&gt;
-    <div class="col-md-9" style="margin-left:40px; ">
-
-      <Header></Header>
-
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header bg-primary">
-              <h4 class="mb-0">
-                Search
-              </h4>
-            </div>
-            <div class="card-body">
-              <div class="row mt-3">
-
-                <div class="form-row col-md-12">
-                  <div class="form-group col-md-4">
-                    <label class="form-label" >Title</label>
-                    <input type="text" class="form-control" v-model="filter.en_title" >
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label class="form-label" >Tag</label>
-                    <input type="text" class="form-control" v-model="filter.tag">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label class="form-label" >Select A Category</label>
-
-                    <select class="form-control" v-model="filter.category_id">
-                      <option value="">Select A Category</option>
-                      <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
-                        {{a_category.name}}
-                      </option>
-                    </select>
-
-                  </div>
-                </div>
-
-                <div class="form-row col-md-12">
-
-                  <div class="form-group col-md-4">
-                    <label class="form-label" >Select A Status</label>
-
-                    <select class="form-control" v-model="filter.status">
-                      <option value="">Select A Status</option>
-                      <option value="draft">Draft</option>
-                      <option value="hide">Hide</option>
-                      <option value="private">Private</option>
-                      <option value="public">Public</option>
-                    </select>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="card-footer clearfix">
-              <div class="btn-toolbar">
-                <a class="btn btn-danger btn-sm" @click="clearFilter()"> Clear</a>
-                <div class="col-md-1">
-                  <button type="button" class="btn btn-success btn-sm" @click="getFaqList()">Filter</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <div v-if="success_message" class="alert alert-success" role="alert">
-            {{ success_message }}
-          </div>
-          <div v-if="error_message" class="alert alert-danger" role="alert">
-            {{ error_message }}
-          </div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <h4 class="card-title ">
-                    Faq List
-                  </h4>
-                </div>
-
-                <div class="col-sm-9 text-right">
-                  <router-link :to="{ name: 'faqAdd'}" class="btn btn-primary">
-                    + Add New
-                  </router-link>
-                </div>
-
-              </div>
-
-              <div class="row mt-4">
-                <div class="col">
-                  <div class="table-responsive text-nowrap">
-                    <table class="table">
-                      <thead>
-                      <tr>
-                        <th>Title</th>
-                        <th>User</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Tag</th>
-                        <th>Publish Date</th>
-                        <th>Action</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-
-                      <tr v-for="an_faq in faqList" :key="an_faq">
-                        <td>{{ an_faq.en_title  }}</td>
-                        <td>{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
-                        <td>{{ an_faq.category ? an_faq.category.name : ''  }}</td>
-                        <td>{{ an_faq.status  }}</td>
-                        <td>{{ an_faq.tag  }}</td>
-                        <td>{{ an_faq.publish_date  }}</td>
-
-                        <td>
-                          <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-success ">
-                            Details
-                          </router-link>
-
-                          <router-link :to="{ name: 'faqEdit', params: { id: an_faq.id }}" class="btn btn-info ">
-                            Edit
-                          </router-link>
-
-                          <a href="#" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal_'+ an_faq.id">Delete</a>
-
-                          <div class="modal col-md-offset-2 fade" :id="'deleteModal_'+ an_faq.id" role="dialog">
-                            <div class="modal-dialog">
-
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h4 class="modal-title">Confirmation for Deleting Category</h4>
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                  <div class="col-md-12">
-                                    <div class="col-md-10">
-                                      <h6>Are You Sure to delete?</h6>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                  <button @click="deleteFaq(an_faq.id)" type="button" class="btn btn-success" data-dismiss="modal">Delete</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                        </td>
-
-                      </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>&lt;!&ndash;col&ndash;&gt;
-              </div>&lt;!&ndash;row&ndash;&gt;
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>-->
-
   <div class="main-wrapper d-flex">
     <!-- sidebar -->
     <Menu></Menu>
@@ -198,24 +19,22 @@
         <div class="content-wrapper bg-white">
           <!-- list top area -->
           <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
-            <div class="adding-btn-area d-md-flex align-items-center">
-              <div class="d-flex align-items-center">
-
+            <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
+              <div>
                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
                   <i class="fas fa-plus"></i>
                   Add FAQ
                 </button>
 
+                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isSearch=true">
+                  <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                </button>
+              </div>
+
+              <div>
                 <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
                   <i class="fa fa-refresh"></i>
                   Refresh
-                </button>
-
-              </div>
-
-              <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
-                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
-                  <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                 </button>
               </div>
             </div>
@@ -231,29 +50,27 @@
               <table class="table table-bordered gsl-table">
                 <thead>
                 <tr>
-
                     <th class="text-center">Title</th>
                     <th class="text-center">User</th>
                     <th class="text-center">Category</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Tag</th>
                     <th class="text-center">Publish Date</th>
-                    <th class="text-center">Action</th>
-
+                    <th class="text-center" style="width:120px">Action</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr v-for="an_faq in faqList" :key="an_faq">
 
-                    <td class="text-center">{{ an_faq.en_title  }}</td>
+                    <td>{{ an_faq.en_title  }}</td>
                     <td class="text-center">{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
                     <td class="text-center">{{ an_faq.category ? an_faq.category.name : ''  }}</td>
                     <td class="text-center">{{ an_faq.status  }}</td>
                     <td class="text-center">{{ an_faq.tag  }}</td>
                     <td class="text-center">{{ an_faq.publish_date  }}</td>
 
-                    <td class="text-center" style="min-width: 120px">
+                    <td class="text-center" style="width:120px">
                         <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-primary btn-xs m-1">
                           <i class="fas fa-eye"></i>
                         </router-link>
@@ -383,7 +200,7 @@
 
     <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-edit-data="getFaqDataFromEdit"></FaqEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>
@@ -581,7 +398,7 @@ name: "faqList.vue",
 
       let _that = this;
 
-      axios.delete('faqs/delete',
+      axios.delete('admin/faqs/delete',
           {
             data:
                 {
@@ -592,11 +409,16 @@ name: "faqList.vue",
             },
           }).then(function (response) {
 
-        if (response.data.status_code == 200)
-        {
-          _that.getFaqList();
-          _that.error_message   = '';
-          _that.success_message = response.data.messages;
+        if (response.data.status_code === 200) {
+
+            _that.getFaqList();
+            _that.error_message   = '';
+            _that.clearAllChecker();
+
+            document.body.classList.remove('open-side-slider');
+            _that.success_message = "Successfully deleted the FAQ";
+            _that.setTimeoutElements();
+
         }
         else
         {
@@ -609,6 +431,13 @@ name: "faqList.vue",
       });
 
     },
+
+      setTimeoutElements() {
+
+          setTimeout(() => this.success_message = "", 3000);
+          setTimeout(() => this.error_message = "", 3000);
+
+      },
 
   },
   created() {

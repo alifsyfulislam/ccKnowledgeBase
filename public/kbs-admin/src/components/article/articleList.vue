@@ -19,26 +19,23 @@
         <div class="content-wrapper bg-white">
           <!-- list top area -->
           <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
-            <div class="adding-btn-area d-md-flex align-items-center">
-              <div class="d-flex align-items-center">
+            <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
+                <div>
+                  <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                    <i class="fas fa-plus"></i>
+                    Add Article
+                  </button>
 
-                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
-                  <i class="fas fa-plus"></i>
-                  Add Article
-                </button>
-
-                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
-                  <i class="fa fa-refresh"></i>
-                  Refresh
-                </button>
-
-              </div>
-
-              <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
-                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
-                  <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                </button>
-              </div>
+                  <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
+                      <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                  </button>
+                </div>
+                <div>
+                  <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
+                    <i class="fa fa-refresh"></i>
+                    Refresh
+                  </button>
+                </div>
             </div>
           </div>
           <!-- list top area end -->
@@ -57,20 +54,20 @@
                   <th class="text-center">Status</th>
                   <th class="text-center">Tag</th>
                   <th class="text-center">Publish Date</th>
-                  <th class="text-center">Action</th>
+                  <th class="text-center" style="width:120px">Action</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr v-for="an_article in articleList" :key="an_article">
-                  <td class="text-center">{{ an_article.en_title  }}</td>
+                  <td>{{ an_article.en_title  }}</td>
                   <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                   <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                   <td class="text-center">{{ an_article.status  }}</td>
                   <td class="text-center">{{ an_article.tag  }}</td>
                   <td class="text-center">{{ an_article.publish_date  }}</td>
 
-                  <td class="text-center" style="min-width: 120px">
+                  <td class="text-center" style="width:120px">
                     <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
                       <i class="fas fa-eye"></i>
                     </router-link>
@@ -199,7 +196,7 @@
 
     <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-data="getArticleDataFromEdit"></ArticleEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>
@@ -425,9 +422,7 @@ name: "articleList.vue",
         {
           _that.getArticleList();
           _that.error_message   = '';
-          _that.isAddCheck      = false;
-          _that.isDelete        = false;
-          _that.isSearch        = false;
+          _that.clearAllChecker();
 
           document.body.classList.remove('open-side-slider');
           _that.success_message = "Successfully deleted the Article";
