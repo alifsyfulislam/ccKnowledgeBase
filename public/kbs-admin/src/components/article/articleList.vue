@@ -19,46 +19,24 @@
         <div class="content-wrapper bg-white">
           <!-- list top area -->
           <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
-            <div class="adding-btn-area d-md-flex align-items-center">
-              <div class="d-flex align-items-center">
-
-<!--                <button class="btn common-gradient-btn ripple-btn new-agent right-side-common-form circle-btn text-white mb-10 mb-md-0">
-                  <i class="fas fa-plus"></i>
-                </button>-->
-
-                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
-                  <i class="fas fa-plus"></i>
-                  Add Article
-                </button>
-
-                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
-                  <i class="fa fa-refresh"></i>
-                  Refresh
-                </button>
-
-              </div>
-
-              <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
-                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
-                  <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                </button>
-              </div>
-            </div>
-
-<!--            <div class="reload-download-expand-area">
-              <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
-                <li>
-                  <button class="reload-btn">
-                    <div class="d-flex jsutify-content-center align-items-center">
-                      <i class="fas fa-sync"></i> <span class="hide-on-responsive">Reload</span>
-                    </div>
+            <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
+                <div>
+                  <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                    <i class="fas fa-plus"></i>
+                    Add Article
                   </button>
-                </li>
-                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                <li><button class="screen-expand-btn Full Screen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
-              </ul>
-            </div>-->
 
+                  <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
+                      <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                  </button>
+                </div>
+                <div>
+                  <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
+                    <i class="fa fa-refresh"></i>
+                    Refresh
+                  </button>
+                </div>
+            </div>
           </div>
           <!-- list top area end -->
 
@@ -76,20 +54,20 @@
                   <th class="text-center">Status</th>
                   <th class="text-center">Tag</th>
                   <th class="text-center">Publish Date</th>
-                  <th class="text-center">Action</th>
+                  <th class="text-center" style="width:120px">Action</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr v-for="an_article in articleList" :key="an_article">
-                  <td class="text-center">{{ an_article.en_title  }}</td>
+                  <td>{{ an_article.en_title  }}</td>
                   <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                   <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                   <td class="text-center">{{ an_article.status  }}</td>
                   <td class="text-center">{{ an_article.tag  }}</td>
                   <td class="text-center">{{ an_article.publish_date  }}</td>
 
-                  <td class="text-center" style="min-width: 120px">
+                  <td class="text-center" style="width:120px">
                     <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
                       <i class="fas fa-eye"></i>
                     </router-link>
@@ -106,28 +84,29 @@
             <!-- Table Data End -->
 
             <!-- Pagination -->
-            <div v-if="pagination.total > pagination.per_page" class="pagination-wrapper d-flex justify-content-between align-items-center mt-10 w-100">
-              <nav aria-label="Page navigation">
-                <ul class="pagination mb-0">
-                  <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item">
-                    <a @click.prevent="getArticleList(pagination.first_page_url)" href="#">First</a>
-                  </li>
-                  <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item">
-                    <a @click.prevent="getArticleList(pagination.prev_page_url)" href="#">Previous</a>
-                  </li>
-                  <li v-for="n in pagination.last_page" class="page-item"  :key="n">
-                    <a @click.prevent="getArticleList('admin/articles?page='+n)" href="#">{{ n }}</a>
-                  </li>
 
-                  <li :class="[{disabled:!pagination.next_page_url}]" class="page-item">
-                    <a @click.prevent="getArticleList(pagination.next_page_url)" href="#">Next</a>
-                  </li>
-                  <li :class="[{disabled:!pagination.next_page_url}]" class="page-item">
-                    <a @click.prevent="getArticleList(pagination.last_page_url)" href="#">Last</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+              <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
+                  <nav aria-label="Page navigation">
+                      <ul class="pagination mb-0">
+                          <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
+                              <a @click.prevent="getArticleList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
+                          </li>
+                          <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
+                              <a @click.prevent="getArticleList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
+                          </li>
+                          <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
+                              <a @click.prevent="getArticleList('admin/articles?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">{{ n }}</a>
+                          </li>
+
+                          <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
+                              <a @click.prevent="getArticleList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
+                          </li>
+                          <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
+                              <a @click.prevent="getArticleList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
+                          </li>
+                      </ul>
+                  </nav>
+              </div>
 
             <!-- Pagination End -->
           </div>
@@ -217,7 +196,7 @@
 
     <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-data="getArticleDataFromEdit"></ArticleEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>
@@ -258,8 +237,6 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import ArticleAdd from "@/components/article/articleAdd";
 import ArticleEdit from "@/components/article/articleEdit";
-
-/*import Search from "@/components/sidebar-forms/search.vue";*/
 import axios from "axios";
 
 export default {
@@ -315,19 +292,21 @@ name: "articleList.vue",
   },
   methods: {
 
-  removingRightSideWrapper()
-  {
+    removingRightSideWrapper() {
+
     this.isAddCheck = false;
     this.isDelete   = false;
     this.isSearch   = false;
     document.body.classList.remove('open-side-slider');
-  },
 
-    clearAllChecker()
-    {
+    },
+
+    clearAllChecker() {
+
       this.isAddCheck = false;
       this.isDelete   = false;
       this.isSearch   = false;
+
     },
 
     getArticleDataFromAdd (newData) {
@@ -335,19 +314,16 @@ name: "articleList.vue",
       //this.articleList.push(newData);
       this.isAddCheck = false;
       this.getArticleList();
-      //this.inboundData.formData = newData
     },
 
     getArticleDataFromEdit (newEditData) {
       console.log(newEditData)
-      //this.articleList.push(newData);
       this.isEditCheck = false;
       this.getArticleList();
-      //this.inboundData.formData = newData
     },
 
-    clearFilter()
-    {
+    clearFilter() {
+
       this.filter.category_id = "";
       this.filter.status   = "";
       this.filter.en_title = "";
@@ -355,10 +331,11 @@ name: "articleList.vue",
       this.success_message = "";
       this.error_message   = "";
       this.getArticleList();
+
     },
 
-    getCategoryList()
-    {
+    getCategoryList() {
+
       let _that =this;
 
       axios.get('admin/categories',
@@ -369,17 +346,13 @@ name: "articleList.vue",
             params :
                 {
                   isAdmin     : 1,
-                  category_id : this.filter.category_id,
-                  status      : this.filter.status,
-                  en_title    : this.filter.en_title,
-                  tag         : this.filter.tag,
+                  without_pagination : 1
                 },
-
           })
           .then(function (response) {
             if(response.data.status_code === 200){
-              console.log(response.data);
-              _that.categoryList = response.data.category_list.data;
+              //console.log(response.data);
+              _that.categoryList = response.data.category_list;
             }
             else{
               _that.success_message = "";
@@ -388,8 +361,7 @@ name: "articleList.vue",
           })
     },
 
-    getArticleList(pageUrl)
-    {
+    getArticleList(pageUrl) {
       let _that =this;
 
       pageUrl = pageUrl == undefined ? 'admin/articles' : pageUrl;
@@ -424,13 +396,15 @@ name: "articleList.vue",
           })
     },
 
-    setTimeoutElements()
-    {
+    setTimeoutElements() {
+
       setTimeout(() => this.success_message = "", 3000);
       setTimeout(() => this.error_message = "", 3000);
+
     },
 
     deleteArticle() {
+
       let _that = this;
 
       axios.delete('admin/articles/delete',
@@ -473,7 +447,6 @@ name: "articleList.vue",
   created() {
     this.getArticleList();
     this.getCategoryList();
-    console.log("i am in article list");
   }
 }
 </script>

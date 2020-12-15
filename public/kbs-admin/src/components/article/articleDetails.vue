@@ -14,7 +14,7 @@
       <div class="content-area">
         <div class="content-title-wrapper px-15 py-10 d-md-flex justify-content-between align-items-center">
           <h2 class="content-title text-uppercase m-0">Article Details</h2>
-          <router-link :to="{ name: 'articleList'}" class="btn btn-primary btn-xs m-1 px-15 py-2">
+          <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
             <i class="fas fa-arrow-left"></i> Back
           </router-link>
         </div>
