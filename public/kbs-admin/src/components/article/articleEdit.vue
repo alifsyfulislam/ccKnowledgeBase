@@ -306,7 +306,6 @@ export default {
   },
 
   created() {
-
     this.articleData.id = this.articleId;
 
     console.log("article_id" + this.articleId);

@@ -243,11 +243,10 @@ export default {
   },
   methods: {
 
-      clearAllChecker()
-      {
-          this.isAdd = false;
-          this.$emit('faq-data', this.isAdd);
-      },
+          clearAllChecker() {
+              this.isAdd = false;
+              this.$emit('faq-data', this.isAdd);
+          },
 
         faqAdd() {
 
@@ -259,6 +258,7 @@ export default {
             } else {
                 bnBody  = document.getElementById('bn_Body').value;
             }
+
             axios.post('admin/faqs', {
                 category_id   : this.selectedCategory,
                 en_title      : this.faqData.en_title,

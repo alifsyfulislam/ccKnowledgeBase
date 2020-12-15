@@ -21,7 +21,7 @@
                     <span class="progress-border"></span>
                   </div>
                   <div class="form-group floating-input with-icon password-icon mb-30 mb-md-50">
-                    <input class="form-control" type="password" v-model="formData.password" id="userPassword">
+                    <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="customerLogin()">
                     <label for="userPassword">Password</label>
                     <span class="password-show-hide"></span>
                     <span class="progress-border"></span>

@@ -219,7 +219,7 @@
                 <p class="text-center"> Confirmation for Deleting FAQ</p>
 
                 <div class="form-group d-flex justify-content-center align-items-center">
-                  <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="getFaqList"><i class="fas fa-trash"></i> Confirm</button>
+                  <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteFaq()"><i class="fas fa-trash"></i> Confirm</button>
                   <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                 </div>
               </div>
@@ -384,8 +384,8 @@ name: "faqList.vue",
           })
           .then(function (response) {
             if(response.data.status_code === 200){
-             // console.log(response.data);
-             _that.faqList = response.data.faq_list.data;
+                _that.faqList = response.data.faq_list.data;
+                _that.pagination  = response.data.faq_list;
             }
             else{
               _that.success_message = "";

@@ -195,7 +195,7 @@
 
 
                     <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="faqAdd()">Add</button>
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="faqUpdate()">Update</button>
                     </div>
                 </div>
 
@@ -275,8 +275,8 @@ export default {
                 en_title      : this.faqData.en_title,
                 tag           : this.faqData.tag,
                 en_body       : enBody,
-                bn_body       : this.faqData.en_body,
-                status        : bnBody,
+                bn_body       : bnBody,
+                status        : this.faqData.status,
               },
               {
                 headers: {
