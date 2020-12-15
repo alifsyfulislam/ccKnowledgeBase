@@ -22,16 +22,16 @@
                                     <i class="fas fa-plus"></i>
                                     Add User
                                 </button>
-<!--                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">-->
-<!--                                    <i class="fa fa-refresh"></i>-->
-<!--                                    Refresh-->
-<!--                                </button>-->
+                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
+                                    <i class="fa fa-refresh"></i>
+                                    Refresh
+                                </button>
                             </div>
-<!--                            <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">-->
-<!--                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">-->
-<!--                                    <i class="fas fa-search"></i> <span class="ml-1">Search</span>-->
-<!--                                </button>-->
-<!--                            </div>-->
+                            <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
+                                    <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -42,10 +42,12 @@
                     <div class="data-content-area px-15 py-10">
                         <!-- Table Data -->
                         <div class="table-responsive">
-                            <table class="table table-bordered gsl-table">
+                            <table class="table table-bordered gsl-table" v-if="userList">
                                 <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
+                                    <th class="text-center">Username</th>
+                                    <th class="text-center">Roles</th>
                                     <th class="text-center">First Name</th>
                                     <th class="text-center">Last Name</th>
                                     <th class="text-center">Email</th>
@@ -57,6 +59,8 @@
 
                                 <tr v-for="(a_user,index) in userList" :key="a_user.id">
                                     <td class="text-center">{{++index}}</td>
+                                    <td class="text-center">{{ a_user.username }}</td>
+                                    <td class="text-center">{{ a_user.roles[0].name }}</td>
                                     <td class="text-center">{{ a_user.first_name }}</td>
                                     <td class="text-center">{{ a_user.last_name }}</td>
                                     <td class="text-center">{{ a_user.email }}</td>
@@ -65,7 +69,7 @@
                                     <td class="text-center" style="min-width: 120px">
 
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true" v-if="a_user.roles[0].name!='Super Admin'"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
 
@@ -73,9 +77,82 @@
                             </table>
                         </div>
                         <!-- Table Data End -->
-                    </div>
+<!--                        pagination-->
+                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination mb-0">
+                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
+                                        <a @click.prevent="getUsersList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
+                                    </li>
+                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
+                                        <a @click.prevent="getUsersList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
+                                    </li>
+                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
+                                        <a @click.prevent="getUsersList('admin/users?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">{{ n }}</a>
+                                    </li>
 
+                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
+                                        <a @click.prevent="getUsersList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
+                                    </li>
+                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
+                                        <a @click.prevent="getUsersList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                     <!-- Content Area End -->
+                </div>
+            </div>
+
+            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isSearch===true">
+                <div class="close-bar d-flex align-items-center justify-content-end">
+                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+                </div>
+
+                <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+                    <div class="right-sidebar-content-area px-2">
+
+                        <div class="form-wrapper" >
+                            <h2 class="section-title text-uppercase mb-20">Search</h2>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-15">
+                                        <label for="title">Username</label>
+                                        <input class="form-control" type="text" placeholder="Enter username here!" v-model="filter.username"  id="title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-15">
+                                        <label for="closedReasonCode">Email</label>
+                                        <input class="form-control" type="email" placeholder="Enter email here!" v-model="filter.email" id="closedReasonCode">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="role">Select A Roles</label>
+
+                                        <select class="form-control" v-model="filter.role" id="role">
+                                            <option value="">Select A Roles</option>
+                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">
+                                                {{a_role.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group text-right">
+                                <button class="btn common-gradient-btn ripple-btn px-50" @click="getUsersList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -86,12 +163,11 @@
             <div class="action-modal-wraper-error" v-if="error_message">
                 <span>{{ error_message }}</span>
             </div>
-
+<!--            add-->
             <CustomerAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @customer-data="getUserDataFromAdd"></CustomerAdd>
-
+<!--            edit-->
             <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @customer-edit-data="getCustomerDataFromEdit"></CustomerEdit>
-
-
+<!--            delete-->
             <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
@@ -149,6 +225,7 @@
                 isAddCheck      : false,
                 isEditCheck     : false,
                 isDelete        : false,
+                isSearch        : false,
 
                 success_message : '',
                 error_message   : '',
@@ -158,12 +235,27 @@
                 userList        : '',
                 userRole        : '',
                 customer_id     : '',
+                userAllRoles       : '',
 
 
                 filter : {
                     isAdmin     : 1,
-                    status      : '',
-                }
+                    username    : '',
+                    email       : '',
+                    role        : ''
+                },
+                pagination:{
+                    from: '',
+                    to: '',
+                    first_page_url: '',
+                    last_page: '',
+                    last_page_url: '',
+                    next_page_url:'',
+                    prev_page_url: '',
+                    path: '',
+                    per_page: 10,
+                    total: ''
+                },
             }
         },
         methods: {
@@ -212,18 +304,22 @@
 
             },
 
+            removingRightSideWrapper() {
 
-            removingRightSideWrapper()
-            {
                 this.isAddCheck = false;
                 this.isDelete   = false;
-                // this.isSearch   = false;
+                this.isSearch   = false;
                 document.body.classList.remove('open-side-slider');
+
             },
 
-            clearAllChecker()
-            {
+
+            clearAllChecker() {
+
                 this.isAddCheck = false;
+                this.isDelete   = false;
+                this.isSearch   = false;
+
             },
             // clearFilter()
             // {
@@ -250,35 +346,31 @@
                 //this.inboundData.formData = newData
             },
 
-            getUsersList()
+            getUsersList(pageUrl)
             {
                 let _that =this;
 
-                axios.get('admin/users',
+                pageUrl = pageUrl == undefined ? 'admin/users' : pageUrl;
+
+                axios.get(pageUrl,
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
+                        params :
+                            {
+                                isAdmin : 1,
+                                username : this.filter.username,
+                                email : this.filter.email,
+                                // role : this.filter.role
+                            },
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                          let tempUserData = [];
-                          (response.data.user_list.data).forEach( user => {
-                            if ((user.roles).length > 0)
-                            {
-                              if((user.roles[0].name) != 'Super Admin')
-                              {
-                                tempUserData.push(user);
-                              }
-                            }
-                            else
-                            {
-                              tempUserData.push(user);
-                            }
-                          });
-                          _that.userList   = tempUserData;
-                          _that.success_message = "";
-                            console.log(_that.userList);
+                            console.log(response.data.user_list.data);
+                            _that.pagination  = response.data.user_list;
+                            _that.userList   = response.data.user_list.data;
+                            _that.success_message = "";
                         }
                         else{
                             _that.success_message = "";
@@ -286,7 +378,26 @@
                         }
                     })
             },
+            getUserRoles(){
+                let _that =this;
 
+                axios.get('admin/roles',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            _that.userAllRoles = response.data.role_list;
+                            // console.log(_that.userRoles);
+                        }
+                        else{
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
+                    })
+            },
             deleteUser(userId) {
                 let _that = this;
 
@@ -322,6 +433,7 @@
         },
         created() {
             this.getUsersList();
+            this.getUserRoles();
         }
     }
 </script>
