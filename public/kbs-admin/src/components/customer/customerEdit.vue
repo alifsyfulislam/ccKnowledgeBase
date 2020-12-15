@@ -170,6 +170,10 @@
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
+                        params : {
+                            isAdmin : 1,
+                            without_pagination : 1
+                        },
 
                     })
                     .then(function (response) {

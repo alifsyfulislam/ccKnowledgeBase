@@ -378,6 +378,7 @@
                         }
                     })
             },
+
             getUserRoles(){
                 let _that =this;
 
@@ -385,6 +386,10 @@
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params : {
+                            isAdmin : 1,
+                            without_pagination : 1
                         },
                     })
                     .then(function (response) {
@@ -412,11 +417,12 @@
                         },
                     }).then(function (response) {
 
-                    if (response.data.status_code == 200)
-                    {
+                    if (response.data.status_code == 200) {
                         _that.getUsersList();
                         _that.error_message   = '';
-                        _that.success_message = response.data.messages;
+                        _that.success_message = "User Deleted Successfully";
+                        _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
                     }
                     else
                     {
