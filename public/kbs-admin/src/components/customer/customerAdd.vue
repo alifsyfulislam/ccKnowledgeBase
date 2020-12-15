@@ -172,7 +172,7 @@
                         _that.userData          = '';
                         _that.error_message    = '';
                         _that.success_message  = "New Customer Added Successfully";
-                        _that.$emit('customer-data', _that.articleData);
+                        _that.$emit('customer-data', _that.userData);
                         document.body.classList.remove('open-side-slider')
                     }
                     else

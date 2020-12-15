@@ -1,94 +1,84 @@
 <template>
-    <div class="col-md-12 wrapper d-flex align-items-stretch">
-        <Menu></Menu>
 
-        <!-- Page Content  -->
-        <div id="content" style="margin-left:50px; ">
+    <div v-cloak class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
+        <div class="close-bar d-flex align-items-center justify-content-end">
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+        </div>
 
-            <Header></Header>
+        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
+            <div class="right-sidebar-content-area px-2">
 
-            <div class="col-md-12">
-                <div v-if="success_message_2" class="alert alert-warning" role="alert">
-                    {{ success_message_2 }}
-                </div>
-                <div v-else class="hide" role="alert"></div>
-                <div v-if="success_message" class="alert alert-success" role="alert">
-                    {{ success_message }}
-                </div>
-                <div v-if="error_message" class="alert alert-danger" role="alert">
-                    {{ error_message }}
-                </div>
-            </div>
+                <div class="form-wrapper">
+                    <h2 class="section-title text-uppercase mb-20">Quiz Form Edit</h2>
 
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title text-left">Edit Quiz Form</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div v-if="success_message" class="alert alert-success" role="alert">
+                                {{ success_message }}
+                            </div>
+                            <div v-if="error_message" class="alert alert-danger" role="alert">
+                                {{ error_message }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormName">Quiz Form Name<span class="required">*</span></label>
+                                <input class="form-control" v-on:keyup.enter="quizFormUpdate()" type="text" v-model="quizFormDetails.name"  id="quizFormName" placeholder="Enter first name here!!" required>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-8">
+                            <div class="form-group text-left">
+                                <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormUpdate()">Update</button>
                             </div>
                         </div>
                     </div>
-                    <div  class="card card-bordered card-preview">
-                        <div class="card-body">
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Name</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="quizform_details.name" class="form-control form-control-lg" placeholder="">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3" >
-                                    <button class="btn btn-info" @click="quizformUpdate()">Save</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
-    import axios from 'axios'
-    import Menu from '@/layouts/common/Menu.vue'
-    import Header from '@/layouts/common/Header.vue'
+    import axios from "axios";
+
     export default {
-        name: "quizFormEdit",
+
+        name: "articleEdit.vue",
         components: {
-            Header,
-            Menu
         },
-        data(){
+        props: ['isEditCheck', 'quizFormId'],
+
+        data() {
             return {
-                formData:{
-                    name: '',
-                },
+                isMounted : false,
+                isEdit : false,
                 success_message : '',
                 error_message   : '',
-                quizform_ID:'',
-                quizform_details:''
+                token           : '',
+                selectedId:'',
+                quizFormDetails:'',
+                roles:'',
+                userRoles:'',
+                filter : {
+                    isAdmin : 1
+                }
             }
         },
-        methods:{
-            quizformUpdate() {
 
+        methods: {
+            quizFormUpdate() {
                 let _that = this;
-                let quizformID = this.quizform_ID;
+                let quizFormID = _that.selectedId;
 
                 axios.put('admin/quiz-forms/update',
                     {
-                        id    : quizformID,
-                        name  : this.quizform_details.name,
+                        id        : quizFormID,
+                        name      : _that.quizFormDetails.name,
                     },
                     {
                         headers: {
@@ -98,8 +88,9 @@
                     if (response.data.status_code == 200)
                     {
                         _that.error_message    = '';
-                        _that.success_message  = "Updated Successfully";
-                        _that.$router.push('/admin/quizFormList');
+                        _that.success_message  = " Updated Successfully";
+                        _that.$emit('quiz-form-edit-data', _that.quizFormDetails);
+                        document.body.classList.remove('open-side-slider');
                     }
                     else
                     {
@@ -112,11 +103,12 @@
                 });
 
             },
-            quizformDetails() {
-                let _that = this;
-                let quizformID = this.quizform_ID;
 
-                axios.get("admin/quiz-forms/"+quizformID,
+            getQuizFormDetails() {
+                let _that = this;
+                let quizFormID = this.selectedId;
+
+                axios.get("admin/quiz-forms/"+quizFormID,
                     {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
@@ -124,18 +116,25 @@
                     })
                     .then(function (response) {
                         if (response.data.status_code === 200) {
-                            console.log(response.data.quiz_form_info)
-                            _that.quizform_details= response.data.quiz_form_info
+                            _that.quizFormDetails = response.data.quiz_form_info;
                         } else {
                             _that.success_message = "";
                             _that.error_message = response.data.error;
                         }
                     })
             },
+
+            clearAllChecker()
+            {
+                this.isEdit = false;
+                this.$emit('quiz-form-edit-data', this.isEdit);
+            },
         },
+
         created() {
-            this.quizform_ID = this.$route.params.id;
-            this.quizformDetails();
+            this.selectedId = this.quizFormId;
+            this.isEdit = this.isEditCheck;
+            this.getQuizFormDetails();
         }
     }
 </script>

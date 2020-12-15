@@ -9,7 +9,6 @@ import categoryList from '../components/category/categoryList.vue'
 
 import articleList from '../components/article/articleList.vue'
 
-
 import articleDetails from '../components/article/articleDetails.vue'
 
 import faqList from '../components/faq/faqList.vue'
@@ -22,8 +21,6 @@ import roleEdit from '../components/roles/roleEdit.vue'
 import roleAdd from '../components/roles/roleAdd.vue'
 
 import quizFormList from '@/components/quiz-form/quizFormList.vue'
-import quizFormAdd from '@/components/quiz-form/quizFormAdd.vue'
-import quizFormEdit from '@/components/quiz-form/quizFormEdit.vue'
 
 import quizList from '@/components/quiz/quizList.vue'
 import quizAdd from '@/components/quiz/quizAdd.vue'
@@ -105,23 +102,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/quizFormEdit/:id',
-      name: 'quizFormEdit',
-      component: quizFormEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/quizFormAdd',
-      name: 'quizFormAdd',
-      component: quizFormAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/quizFormList',
+      path: '/admin/quiz-form-list',
       name: 'quizFormList',
       component: quizFormList,
       meta: {
