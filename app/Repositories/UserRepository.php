@@ -3,11 +3,13 @@
 namespace App\Repositories;
 
 use App\Helpers\Helper;
+use App\Http\Traits\QueryTrait;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserRepository implements RepositoryInterface
 {
+    use QueryTrait;
     /**
      * @return mixed
      */
@@ -83,12 +85,26 @@ class UserRepository implements RepositoryInterface
     /**
      * @return LengthAwarePaginator
      */
-    public function getWithPagination()
+    public function getWithPagination($request)
     {
-        return User::with([
-            'roles' => function($q) {$q->select('id', 'name');}, 'media'])
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+        $query = User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media']);
+        $whereFilterList = ['email'];
+        $likeFilterList  = ['username'];
+        $query = self::filterUser($request, $query, $whereFilterList, $likeFilterList);
+
+        return $query->orderBy('id','DESC')
+               ->paginate(2);
+
+    }
+
+
+    public static function filterUser($request, $query, array $whereFilterList, array $likeFilterList)
+    {
+        $query = self::likeQueryFilter($request, $query, $likeFilterList);
+        $query = self::whereQueryFilter($request, $query, $whereFilterList);
+
+        return $query;
+
     }
 
 }
