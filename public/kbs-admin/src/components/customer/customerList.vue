@@ -132,20 +132,20 @@
 
                             </div>
 
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="role">Select A Roles</label>-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="role">Select A Roles</label>
 
-<!--                                        <select class="form-control" v-model="filter.role" id="role">-->
-<!--                                            <option value="">Select A Roles</option>-->
-<!--                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">-->
-<!--                                                {{a_role.name}}-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                        <select class="form-control" v-model="filter.role" id="role">
+                                            <option value="">Select A Roles</option>
+                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">
+                                                {{a_role.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group text-right">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="getUsersList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
