@@ -44,21 +44,6 @@
                 </button>
               </div>
             </div>
-
-<!--            <div class="reload-download-expand-area">
-              <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
-                <li>
-                  <button class="reload-btn">
-                    <div class="d-flex jsutify-content-center align-items-center">
-                      <i class="fas fa-sync"></i> <span class="hide-on-responsive">Reload</span>
-                    </div>
-                  </button>
-                </li>
-                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                <li><button class="screen-expand-btn Full Screen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
-              </ul>
-            </div>-->
-
           </div>
           <!-- list top area end -->
 
