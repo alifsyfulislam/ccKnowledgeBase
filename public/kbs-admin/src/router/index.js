@@ -158,7 +158,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/customerEdit/:id',
+      path: '/admin/customer-edit/:id',
       name: 'customerEdit',
       component: customerEdit,
       meta: {
@@ -167,7 +167,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/customerList',
+      path: '/admin/customer-list',
       name: 'customerList',
       component: customerList,
       meta: {
@@ -176,7 +176,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/customerAdd',
+      path: '/admin/customer-add',
       name: 'customerAdd',
       component: customerAdd,
       meta: {
