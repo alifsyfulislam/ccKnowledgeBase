@@ -422,9 +422,7 @@ name: "articleList.vue",
         {
           _that.getArticleList();
           _that.error_message   = '';
-          _that.isAddCheck      = false;
-          _that.isDelete        = false;
-          _that.isSearch        = false;
+          _that.clearAllChecker();
 
           document.body.classList.remove('open-side-slider');
           _that.success_message = "Successfully deleted the Article";
