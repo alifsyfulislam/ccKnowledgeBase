@@ -28,7 +28,7 @@
                                 <div class="topics-category-title mb10">
                                     <!--                  work-->
                                     <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
-                                        <h4>{{a_cate_art.name}}</h4>
+                                        <h4 class="mb-3">{{a_cate_art.name}}</h4>
                                     </router-link>
                                 </div>
                                 <div class="topics-category-items pb-10" style="min-height: 190px">
@@ -42,9 +42,8 @@
                                     </ul>
                                 </div>
                                 <div class="topics-category-footer mt-20 pb-20">
-                                    <!--                  <a class="btn btn-outline-primary btn-block" href="category.php">Explore All</a>-->
-                                    <router-link class="btn btn-outline-primary btn-block" :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
-                                        <h4>Explore All</h4>
+                                    <router-link class="btn btn-outline-primary btn-block py-3" :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
+                                        <h4 class="mb-0">Explore All</h4>
                                     </router-link>
                                 </div>
                             </div>

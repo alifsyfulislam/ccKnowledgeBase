@@ -38,3 +38,35 @@
     left: 3px;
     top: 9px;
 }
+
+.recent-articles li {
+    position: relative;
+    margin-bottom: 0 !important;
+    padding-top: 5px;
+}
+
+.recent-articles li a {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+
+.recent-articles li:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    height: 100%;
+    width: 0;
+    background: #2496a2;
+    opacity: 1;
+    transition: 0.4s all;
+}
+
+.recent-articles li:hover:before {
+    width: 100%;
+}
+
+.recent-articles li:hover a {
+    color: #ffffff;
+}

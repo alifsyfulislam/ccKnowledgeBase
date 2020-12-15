@@ -6,6 +6,8 @@ import VueAxios from 'vue-axios'
 import $ from 'jquery'
 
 // import
+import '@/assets/fonts/nunito/font.css'
+
 import '@/assets/css/bundle.css'
 import '@/assets/css/style.css'
 import '@/assets/css/custom.css'
