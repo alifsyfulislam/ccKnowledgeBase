@@ -75,7 +75,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/quizFormFieldAdd/:id',
+      path: '/admin/quiz-form-field-add/',
       name: 'quizFormFieldAdd',
       component: quizFormFieldAdd,
       meta: {

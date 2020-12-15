@@ -22,8 +22,8 @@
 
                         <div class="col-md-9">
                             <div class="form-group">
-                                <label for="quizFormName">Quiz Form Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormName" placeholder="Enter quiz form name here!!" required>
+                                <label for="quizFormID">Quiz Form ID <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormID" placeholder="Enter quiz form name here!!" required>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
 
 
     export default {
-        name: "customerAdd.vue",
+        name: "quizFormAdd.vue",
         props: ['isAddCheck'],
         components: {
 
