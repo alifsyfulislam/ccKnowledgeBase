@@ -212,7 +212,7 @@
 
         <RoelAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-data="getRoleDataFromAdd"></RoelAdd>
 
-        <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roelId="role_id" @role-edit-data="getRoleDataFromEdit"></RoleEdit>
+        <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-edit-data="getRoleDataFromEdit"></RoleEdit>
 
         <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
             <div class="close-bar d-flex align-items-center justify-content-end">

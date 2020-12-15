@@ -1,76 +1,4 @@
 <template>
-<!--    <div class="col-md-12 wrapper d-flex align-items-stretch">
-        <Menu></Menu>
-
-        &lt;!&ndash; Page Content  &ndash;&gt;
-        <div id="content" style="margin-left:50px; ">
-
-            <Header></Header>
-
-          <div v-if="isLoading" class="loader-overlay">
-            <div class="loader"></div>
-            <span class="text" >Hello Loader</span>
-          </div>
-
-&lt;!&ndash;          <div  v-if="isLoading">
-            <div class="full-screen overlay">
-              <div class="center">
-                <img  src="@/assets/image2.png" alt="loading image">
-              </div>
-            </div>
-
-          </div>&ndash;&gt;
-
-            <div class="col-md-12">
-                <div v-if="success_message" class="alert alert-success" role="alert">
-                    {{ success_message }}
-                </div>
-                <div v-if="error_message" class="alert alert-danger" role="alert">
-                    {{ error_message }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title text-left">Add a New Role</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div  class="card card-bordered card-preview">
-                        <div class="card-body">
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Role Name</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="roles" class="form-control" placeholder="Add a unique role">
-                                </div>
-                            </div>
-                            <h3 class="text-center">Add Permission</h3>
-
-                            <div class="row">
-                                <div v-for="permission in allPermissions" :key="permission" class="text-left col-md-8 offset-4">
-                                    <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id" v-bind:id="permission.id" ><label>{{ permission.name }} </label><br><br>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3" >
-                                    <button class="btn btn-info" @click="addRole()">Add</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>-->
 
     <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
         <div class="close-bar d-flex align-items-center justify-content-end">
@@ -131,15 +59,10 @@
     export default {
         name: "rolesAdd.vue",
         props: ['isAddCheck'],
-        components: {
-          /*  Header,
-            Menu*/
-        },
-
         data() {
             return {
 
-                isAdd     : false,
+                isAdd          : false,
                /* refCount  : 0,
                 isLoading : false,*/
 
@@ -165,7 +88,7 @@
             clearAllChecker() {
 
                 this.isAdd = false;
-                this.$emit('category-data', this.isAdd);
+                this.$emit('role-data', this.isAdd);
 
             },
 
@@ -195,7 +118,7 @@
                     console.log(response.data);
                     if (response.data.status_code === 200) {
                         _that.success_message = "Add a role with permission!";
-
+                        _that.isAdd = false;
                         _that.$emit('role-data', "Add a role with permission!");
                         document.body.classList.remove('open-side-slider')
                     } else {

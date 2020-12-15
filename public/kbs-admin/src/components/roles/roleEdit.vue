@@ -1,8 +1,8 @@
 <template>
-    <div class="col-md-12 wrapper d-flex align-items-stretch">
+<!--    <div class="col-md-12 wrapper d-flex align-items-stretch">
         <Menu></Menu>
 
-        <!-- Page Content  -->
+        &lt;!&ndash; Page Content  &ndash;&gt;
         <div id="content" style="margin-left:50px; ">
 
             <Header></Header>
@@ -37,9 +37,9 @@
                             </div>
                             <h3 class="text-center">Edit Permission</h3>
                               <div class="row">
-<!--                                <div v-for="a_access in allAccess" :key="a_access" class="text-left col-md-8 offset-4">
+&lt;!&ndash;                                <div v-for="a_access in allAccess" :key="a_access" class="text-left col-md-8 offset-4">
                                   <input checked type="checkbox" :value="a_access.id"  v-model="selectedCheckboxes"> <label>{{ a_access.name }} </label><br><br>
-                                </div>-->
+                                </div>&ndash;&gt;
 
                                 <div v-for="permission in allPermissions" :key="permission" class="text-left col-md-8 offset-4">
                                   <div v-if="allSelectedPermissionIds.includes(permission.id)">
@@ -54,7 +54,7 @@
 
                               </div>
 
-<!--                            <div class="row">
+&lt;!&ndash;                            <div class="row">
 &lt;!&ndash;                                <span v-for="a_access in allAccess" :key="a_access">{{a_access.id}}</span>&ndash;&gt;
                                 <div v-for="permission in allPermissions" :key="permission" :value="permission.id" class="text-left col-md-8 offset-4">
                                     <div v-for="a_access in allAccess" :key="a_access">
@@ -67,7 +67,7 @@
 
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>&ndash;&gt;
                             <div class="row">
                                 <div class="col-md-3" >
                                     <button class="btn btn-info" @click="updateRole()">Update</button>
@@ -81,28 +81,83 @@
             </div>
 
         </div>
+    </div>-->
+
+
+    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
+        <div class="close-bar d-flex align-items-center justify-content-end">
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+        </div>
+
+        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
+            <div class="right-sidebar-content-area px-2">
+
+                <div class="form-wrapper">
+                    <h2 class="section-title text-uppercase mb-20">Role Update</h2>
+
+                    <div v-if="success_message" class="alert alert-success" role="alert">
+                        {{ success_message }}
+                    </div>
+                    <div v-if="error_message" class="alert alert-danger" role="alert">
+                        {{ error_message }}
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Role Name <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="storeName" id="name" placeholder="Enter Role Name" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label> Edit Permissions</label>
+
+                                <div v-for="permission in allPermissions" :key="permission" class="text-left col-md-8 offset-2">
+                                    <div v-if="allSelectedPermissionIds.includes(permission.id)">
+                                        <input  checked type="checkbox" :value="permission.id"  v-model="selectedCheckboxes" @change="showSelectedItem()"> <label> {{ permission.name }} </label><br><br>
+                                    </div>
+                                    <div v-else>
+                                        <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id"  @change="showSelectedItem()"> <label> {{ permission.name }} </label><br><br>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-right">
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="updateRole()">Update</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import Header from "@/layouts/common/Header";
-    import Menu from "@/layouts/common/Menu";
     import axios from "axios";
 
     export default {
         name: "rolesEdit.vue",
-        components: {
-            Header,
-            Menu
-        },
+        props: ['isEditCheck', 'roleId'],
 
         data() {
             return {
+                isEdit : false,
+
                 success_message : '',
                 error_message   : '',
                 token           : '',
                 rolesDetails      : '',
-                roles_ID          :  '',
+                role_id          :  '',
                 allRoles  :'',
                 allPermissions  : [],
                 roles_info:'',
@@ -118,18 +173,24 @@
         },
 
         methods: {
-          showSelectedItem()
-          {
-            console.log(this.selectedCheckboxes);
-          },
+
+            clearAllChecker() {
+                this.isEdit = false;
+                this.$emit('role-edit-data', this.isEdit);
+            },
+
+            showSelectedItem() {
+                console.log(this.selectedCheckboxes);
+            },
+
             updateRole() {
                 let _that = this;
-                let rolesID = this.roles_ID;
+                let rolesID = this.role_id;
 
                 axios.put('admin/roles/update',
                     {
                         id        : rolesID,
-                        name      : _that.storeName,
+                        name      : this.storeName,
                         permission: this.selectedCheckboxes
                     },
                     {
@@ -141,7 +202,8 @@
                     {
                         _that.error_message    = '';
                         _that.success_message  = "Role Updated Successfully";
-                        _that.$router.push('/admin/roleList');
+                        _that.$emit('role-edit-data', "Role Updated Successfully");
+                        document.body.classList.remove('open-side-slider')
                     }
                     else
                     {
@@ -157,7 +219,7 @@
 
             geRolesDetails() {
                 let _that = this;
-                let rolesID = this.roles_ID;
+                let rolesID = this.role_id;
 
                 axios.get("admin/roles/"+rolesID,
                     {
@@ -191,7 +253,7 @@
 
           getAllPermission() {
             let _that = this;
-            axios.get('permissions',
+            axios.get('admin/permissions',
                 {
                   headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('authToken')
@@ -250,11 +312,13 @@
         },
 
         created() {
-            this.roles_ID = this.$route.params.id;
-            this.isIndex = this.$route.params.id;
+            this.category_id = this.categoryId;
+            this.role_id = this.roleId;
+           // this.isIndex = this.$route.params.id;
             this.getRolesList();
             this.geRolesDetails();
             this.getAllPermission();
+            this.isEdit  = this.isEditCheck;
         }
     }
 </script>

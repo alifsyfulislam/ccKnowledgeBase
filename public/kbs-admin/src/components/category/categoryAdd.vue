@@ -1,71 +1,4 @@
 <template>
-<!--  <div class="col-md-12 wrapper d-flex align-items-stretch">
-    <Menu></Menu>
-
-    &lt;!&ndash; Page Content  &ndash;&gt;
-    <div id="content" style="margin-left:50px; ">
-
-      <Header></Header>
-
-      <div class="col-md-12">
-        <div v-if="success_message" class="alert alert-success" role="alert">
-          {{ success_message }}
-        </div>
-        <div v-if="error_message" class="alert alert-danger" role="alert">
-          {{ error_message }}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-9">
-          <div class="nk-block-head nk-block-head-sm">
-            <div class="nk-block-between">
-              <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title text-left">Add New Category</h3>
-              </div>
-            </div>
-          </div>
-          <div  class="card card-bordered card-preview">
-            <div class="card-body">
-
-                <div class="row form-group">
-                  <div class="col-md-4">
-                    <label class="form-label" >Name</label>
-                  </div>
-                  <div class="col-md-8">
-                    <input type="text" class="form-control form-control-lg" v-model="categoryData.name" placeholder="Enter Category Name">
-                  </div>
-
-                </div>
-
-                <div class="row form-group">
-                  <div class="col-md-4">
-                    <label class="form-label">Select A Parent</label>
-                  </div>
-                  <div class="col-md-8">
-                    <select class="form-control" v-model="selectedCategory">
-                      <option value="">Select A Parent Category</option>
-                      <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
-                        {{a_category.name}}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3" >
-                      <button class="btn btn-info" @click="categoryAdd()">Save</button>
-                    </div>
-                </div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>-->
 
   <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
     <div class="close-bar d-flex align-items-center justify-content-end">
@@ -170,6 +103,8 @@ export default {
           _that.categoryData     = '';
           _that.selectedCategory = '';
           _that.error_message    = '';
+
+          _that.isAdd = false;
           _that.success_message  = "New Category Added Successfully";
           _that.$emit('category-data', _that.categoryData);
           document.body.classList.remove('open-side-slider')
