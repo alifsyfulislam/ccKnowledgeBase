@@ -43,7 +43,7 @@
               <table class="table table-bordered gsl-table">
                 <thead>
                   <tr>
-                    <th class="text-center">Category ID </th>
+                    <th class="text-center">SL</th>
                     <th class="text-center">Name</th>
                     <th class="text-center">Parent Name</th>
                     <th class="text-center">Created Date</th>
@@ -52,8 +52,8 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="a_category in categoryList" :key="a_category">
-                  <td class="text-center">{{ a_category.id }}</td>
+                <tr v-for="(a_category,index) in categoryList" :key="a_category">
+                  <td class="text-center">{{ ++index }}</td>
                   <td class="text-center">{{ a_category.name }}</td>
                   <td class="text-center">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
                   <td class="text-center">{{ a_category.created_at }}</td>

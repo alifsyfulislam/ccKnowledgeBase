@@ -4,21 +4,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import About from '../views/About.vue'
 import dashboard from '../components/dashboard/dashboard.vue'
 import login from '../components/login.vue'
-import categoryList from '../components/category/categoryList.vue'
-import categoryAdd from '../components/category/categoryAdd.vue'
-import articleList from '../components/article/articleList.vue'
-import articleAdd from '../components/article/articleAdd.vue'
-import articleDetails from '../components/article/articleDetails.vue'
-import articleEdit from '../components/article/articleEdit.vue'
-import faqList from '../components/faq/faqList.vue'
-import faqAdd from '../components/faq/faqAdd.vue'
-import faqDetails from '../components/faq/faqDetails.vue'
-import faqEdit from '../components/faq/faqEdit.vue'
 
+import categoryList from '../components/category/categoryList.vue'
+
+import articleList from '../components/article/articleList.vue'
+
+
+import articleDetails from '../components/article/articleDetails.vue'
+
+import faqList from '../components/faq/faqList.vue'
+import faqDetails from '../components/faq/faqDetails.vue'
 
 import customerList from '../components/customer/customerList.vue'
-import customerAdd from '../components/customer/customerAdd.vue'
-import customerEdit from '../components/customer/customerEdit.vue'
 
 import roleList from '../components/roles/roleList.vue'
 import roleEdit from '../components/roles/roleEdit.vue'
@@ -158,15 +155,6 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/customer-edit/:id',
-      name: 'customerEdit',
-      component: customerEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
       path: '/admin/customer-list',
       name: 'customerList',
       component: customerList,
@@ -175,26 +163,9 @@ let router = createRouter({
       }
     },
 
-    {
-      path: '/admin/customer-add',
-      name: 'customerAdd',
-      component: customerAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
 
     {
-      path: '/admin/faqAdd',
-      name: 'faqAdd',
-      component: faqAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/faqList',
+      path: '/admin/faq-list',
       name: 'faqList',
       component: faqList,
       meta: {
@@ -203,7 +174,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/faqDetails/:id',
+      path: '/admin/faq-details/:id',
       name: 'faqDetails',
       component: faqDetails,
       meta: {
@@ -211,69 +182,31 @@ let router = createRouter({
       }
     },
 
-    {
-      path: '/admin/faqEdit/:id',
-      name: 'faqEdit',
-      component: faqEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
 
     {
-      path: '/admin/articleList',
+      path: '/admin/article-list',
       name: 'articleList',
       component: articleList,
       meta: {
         requiresAuth: true
       }
     },
-
     {
-      path: '/admin/articleAdd',
-      name: 'articleAdd',
-      component: articleAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/articleDetails/:id',
+      path: '/admin/article-details/:id',
       name: 'articleDetails',
       component: articleDetails,
       meta: {
         requiresAuth: true
       }
     },
-
     {
-      path: '/admin/articleEdit/:id',
-      name: 'articleEdit',
-      component: articleEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/categoryList',
+      path: '/admin/category-list',
       name: 'categoryList',
       component: categoryList,
       meta: {
         requiresAuth: true
       }
     },
-
-    {
-      path: '/admin/categoryAdd',
-      name: 'categoryAdd',
-      component: categoryAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
     {
       path: '/admin/dashboard',
       name: 'dashboard',
@@ -296,7 +229,7 @@ let router = createRouter({
 
   ],
   mode: `history`,
-    base: "kbs",
+  base: "kbs",
 });
 
 router.beforeEach((to, from, next) => {
