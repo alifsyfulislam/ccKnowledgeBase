@@ -200,7 +200,7 @@
 
     <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-edit-data="getFaqDataFromEdit"></FaqEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>
@@ -398,7 +398,7 @@ name: "faqList.vue",
 
       let _that = this;
 
-      axios.delete('faqs/delete',
+      axios.delete('admin/faqs/delete',
           {
             data:
                 {
@@ -409,11 +409,16 @@ name: "faqList.vue",
             },
           }).then(function (response) {
 
-        if (response.data.status_code == 200)
-        {
-          _that.getFaqList();
-          _that.error_message   = '';
-          _that.success_message = response.data.messages;
+        if (response.data.status_code === 200) {
+
+            _that.getFaqList();
+            _that.error_message   = '';
+            _that.clearAllChecker();
+
+            document.body.classList.remove('open-side-slider');
+            _that.success_message = "Successfully deleted the FAQ";
+            _that.setTimeoutElements();
+
         }
         else
         {
@@ -426,6 +431,13 @@ name: "faqList.vue",
       });
 
     },
+
+      setTimeoutElements() {
+
+          setTimeout(() => this.success_message = "", 3000);
+          setTimeout(() => this.error_message = "", 3000);
+
+      },
 
   },
   created() {
