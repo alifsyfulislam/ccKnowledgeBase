@@ -30,10 +30,10 @@ class UserController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        return $this->userService->paginateData();
+        return $this->userService->paginateData($request);
 
 
     }
@@ -114,6 +114,6 @@ class UserController extends Controller
     }
 
 
-    
+
 
 }

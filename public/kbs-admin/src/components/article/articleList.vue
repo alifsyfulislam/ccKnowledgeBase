@@ -255,8 +255,6 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import ArticleAdd from "@/components/article/articleAdd";
 import ArticleEdit from "@/components/article/articleEdit";
-
-/*import Search from "@/components/sidebar-forms/search.vue";*/
 import axios from "axios";
 
 export default {
@@ -338,7 +336,6 @@ name: "articleList.vue",
 
     getArticleDataFromEdit (newEditData) {
       console.log(newEditData)
-      //this.articleList.push(newData);
       this.isEditCheck = false;
       this.getArticleList();
     },
@@ -372,7 +369,7 @@ name: "articleList.vue",
           })
           .then(function (response) {
             if(response.data.status_code === 200){
-              console.log(response.data);
+              //console.log(response.data);
               _that.categoryList = response.data.category_list;
             }
             else{
