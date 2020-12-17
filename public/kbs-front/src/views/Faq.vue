@@ -49,7 +49,7 @@
                 axios.get('faqs')
                     .then(function (response) {
                         console.log(response.data.faq_list.data);
-                        // _that.all_Faqs = response.data.faq_list.data;
+                        _that.all_Faqs = response.data.faq_list.data;
                     })
             },
         },
