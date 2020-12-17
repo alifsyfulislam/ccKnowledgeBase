@@ -263,8 +263,8 @@
         methods: {
             setTimeoutElements()
             {
-                setTimeout(() => this.success_message = "", 3000);
-                setTimeout(() => this.error_message = "", 3000);
+                setTimeout(() => this.success_message = "", 4e3);
+                setTimeout(() => this.error_message = "", 4e3);
             },
 
             deleteCustomer() {
@@ -284,11 +284,8 @@
                     if (response.data.status_code == 200)
                     {
                         _that.getUsersList();
+                        _that.clearAllChecker();
                         _that.error_message   = '';
-                        _that.isAddCheck      = false;
-                        _that.isDelete        = false;
-                        _that.isSearch        = false;
-
                         document.body.classList.remove('open-side-slider');
                         _that.success_message = "Successfully deleted the User";
                         _that.setTimeoutElements();
