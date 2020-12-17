@@ -150,7 +150,6 @@
                             <div class="form-group">
                                 <label for="name">Title <span class="required">*</span></label>
                                 <input type="text" class="form-control" v-model="quizData.name" id="name" placeholder="Enter Quiz Title" required>
-<!--                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>-->
                             </div>
                         </div>
 
@@ -179,6 +178,40 @@
                                 </select>
 
                             </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Duration</label>
+                                <input type="text" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex. 2 hours, 5 hours">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="total_marks">Total Marks<span class="required">*</span></label>
+                                <input type="number" class="form-control " v-model="quizData.total_marks" id="total_marks">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="number_of_questions">Number Of Questions<span class="required">*</span></label>
+                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="number_of_questions">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Select Quiz Form</label>
+
+                                <select class="form-control" v-model="quizData.status">
+                                    <option value="">Select A Status</option>
+                                    <option value="0">Inactive</option>
+                                    <option value="1">Active</option>
+                                </select>
+                            </div>
+
                         </div>
 
                     </div>
