@@ -34,7 +34,7 @@
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Publish Date</th>
                                     <th class="text-center">Quiz Form Field</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center" style="width:120px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -101,7 +101,9 @@
             <!--            delete-->
             <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
-                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                        <img src="../../assets/img/cancel.svg" alt="cancel">
+                    </button>
                 </div>
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
                     <div class="right-sidebar-content-area px-2">

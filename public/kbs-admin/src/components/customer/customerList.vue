@@ -16,7 +16,7 @@
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
-                        <div class="adding-btn-area d-md-flex align-items-center">
+                        <!-- <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
@@ -30,6 +30,24 @@
                             <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
                                 <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                                </button>
+                            </div>
+                        </div> -->
+                        <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
+                            <div>
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                    <i class="fas fa-plus"></i>
+                                    Add User
+                                </button>
+
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
+                                    <i class="fas fa-search"></i> <span class="ml-1">Search</span>
+                                </button>
+                                </div>
+                                <div>
+                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
+                                    <i class="fa fa-refresh"></i>
+                                    Refresh
                                 </button>
                             </div>
                         </div>
@@ -52,7 +70,7 @@
                                     <th class="text-center">Last Name</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Enroll Date</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center" style="width:120px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -109,7 +127,9 @@
 
             <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isSearch===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
-                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                        <img src="../../assets/img/cancel.svg" alt="cancel">
+                    </button>
                 </div>
 
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
@@ -172,7 +192,9 @@
             <!--            delete-->
             <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
-                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                        <img src="../../assets/img/cancel.svg" alt="cancel">
+                    </button>
                 </div>
 
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden">

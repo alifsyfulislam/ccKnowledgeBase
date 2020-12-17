@@ -20,8 +20,8 @@ import '@/assets/fontawesome-5/css/all.css'
 /*import $ from 'jquery'*/
 
 import {createApp} from "@vue/runtime-dom";
-axios.defaults.baseURL  = 'http://localhost/kbs1.1/public/api';
-//axios.defaults.baseURL = 'http://192.168.10.64/kbs/kbs-base/public/api/';
+// axios.defaults.baseURL  = 'http://localhost/ccKnowledgeBase/public/api';
+axios.defaults.baseURL = 'http://192.168.10.64/kbs/kbs-base/public/api/';
 
 const app2 = createApp(App)
 

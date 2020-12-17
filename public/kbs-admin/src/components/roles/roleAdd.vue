@@ -2,7 +2,9 @@
 
     <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
         <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                <img src="../../assets/img/cancel.svg" alt="cancel">
+            </button>
         </div>
 
         <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
@@ -31,10 +33,11 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label> Add Permissions</label>
-
-                                <div v-for="permission in allPermissions" :key="permission" class="text-left col-md-8">
-                                    <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id" v-bind:id="permission.id" > <label> {{ permission.name }} </label><br><br>
-                                </div>
+                                <ul class="list-unstyled permission-list m-0 p-0">
+                                    <li v-for="permission in allPermissions" :key="permission" class="text-left pb-2">
+                                        <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id" v-bind:id="permission.id" > <label class="pl-2 mb-0"> {{ permission.name }} </label>
+                                    </li>
+                                </ul>
 
                             </div>
                         </div>
