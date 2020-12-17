@@ -209,9 +209,7 @@
                     {
                         _that.getQuizFormList();
                         _that.error_message   = '';
-                        _that.isAddCheck      = false;
-                        _that.isDelete        = false;
-                        _that.isSearch        = false;
+                        _that.clearAllChecker();
                         document.body.classList.remove('open-side-slider');
                         _that.success_message = "Successfully deleted the Quiz Form";
                         _that.setTimeoutElements();
@@ -240,6 +238,8 @@
             clearAllChecker() {
                 this.isAddCheck = false;
                 this.isDelete   = false;
+                this.isEditCheck     = false;
+                this.isAddFieldCheck      = false;
             },
 
             getQuizFormDataFromAdd (newData) {
