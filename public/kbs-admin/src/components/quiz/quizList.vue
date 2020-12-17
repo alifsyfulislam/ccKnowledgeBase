@@ -236,8 +236,8 @@
 
                                     <td class="text-center">
                                         <!--                    <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1"><i class="fas fa-eye"></i></button>-->
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="category_id=a_category.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="category_id=a_category.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=a_quiz.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=a_quiz.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
 <!--                                    <td>
@@ -427,134 +427,141 @@ name: "quizList",
   },
   methods: {
       removingRightSideWrapper(){
-        this.isAddCheck = false;
-        this.isDelete   = false;
-        this.isSearch   = false;
-        document.body.classList.remove('open-side-slider');
+          this.isAddCheck = false;
+          this.isDelete   = false;
+          this.isSearch   = false;
+          document.body.classList.remove('open-side-slider');
       },
 
-    clearAllChecker() {
-      this.isAddCheck = false;
-      this.isDelete   = false;
-      this.isSearch   = false;
+      clearAllChecker() {
+          this.isAddCheck = false;
+          this.isDelete   = false;
+          this.isSearch   = false;
       },
 
-    getDataFromAdd (newData) {
-      console.log(newData)
-      this.isAddCheck = false;
-      this.getQuizList();
+      getQuizDataFromAdd (newData) {
+          console.log(newData)
+          this.isAddCheck = false;
+          this.getQuizList();
 
-  },
+      },
 
-  getQuizDataFromEdit (newEditData) {
+      getQuizDataFromEdit (newEditData) {
 
-      console.log(newEditData)
-      this.isEditCheck = false;
-      this.getQuizList();
+          console.log(newEditData)
+          this.isEditCheck = false;
+          this.getQuizList();
 
-  },
+      },
 
-    clearFilter()
-    {
-      this.filter.article_id = "";
-      this.filter.status   = "";
-      this.filter.name     = "";
-      this.success_message = "";
-      this.error_message   = "";
-      this.getQuizList();
-    },
+      clearFilter()
+      {
+          this.filter.article_id = "";
+          this.filter.status   = "";
+          this.filter.name     = "";
+          this.success_message = "";
+          this.error_message   = "";
+          this.getQuizList();
+      },
 
-    getArticleList()
-    {
-      let _that =this;
+      getArticleList()
+      {
+          let _that =this;
 
-      axios.get('admin/articles',
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-            params :
-                {
-                  isAdmin : 1
-                },
+          axios.get('admin/articles',
+              {
+                  headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params :
+                      {
+                          isAdmin : 1
+                      },
 
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-              console.log(response.data);
-              _that.articleList = response.data.article_list.data;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
+              })
+              .then(function (response) {
+                  if(response.data.status_code === 200){
+                      console.log(response.data);
+                      _that.articleList = response.data.article_list.data;
+                  }
+                  else{
+                      _that.success_message = "";
+                      _that.error_message   = response.data.error;
+                  }
+              })
+      },
 
-    getQuizList(pageUrl){
+      getQuizList(pageUrl){
 
-        let _that =this;
+          let _that =this;
 
-        pageUrl = pageUrl == undefined ? 'admin/quizzes' : pageUrl;
+          pageUrl = pageUrl == undefined ? 'admin/quizzes' : pageUrl;
 
-        axios.get(pageUrl,
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-            params :
-                {
-                  isAdmin : 1,
-                  article_id : this.filter.article_id,
-                  status     : this.filter.status,
-                  name       : this.filter.name
-                },
+          axios.get(pageUrl,
+              {
+                  headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params :
+                      {
+                          isAdmin : 1,
+                          article_id : this.filter.article_id,
+                          status     : this.filter.status,
+                          name       : this.filter.name
+                      },
 
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-              console.log(response.data);
-              _that.quizList = response.data.quiz_list.data;
-              _that.pagination   = response.data.quiz_list;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
+              })
+              .then(function (response) {
+                  if(response.data.status_code === 200){
+                      console.log(response.data);
+                      _that.quizList = response.data.quiz_list.data;
+                      _that.pagination   = response.data.quiz_list;
+                  }
+                  else{
+                      _that.success_message = "";
+                      _that.error_message   = response.data.error;
+                  }
+              })
+      },
 
-    deleteQuiz(quizId) {
-      let _that = this;
+      deleteQuiz() {
+          let _that = this;
 
-      axios.delete('quizzes/delete',
-          {
-            data:
-                {
-                  id      : quizId
-                },
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-            },
-          }).then(function (response) {
+          axios.delete('admin/quizzes/delete',
+              {
+                  data:
+                      {
+                          id      : this.quiz_id
+                      },
+                  headers: {
+                      'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                  },
+              }).then(function (response) {
 
-        if (response.data.status_code == 200)
-        {
-          _that.getQuizList();
-          _that.error_message   = '';
-          _that.success_message = "Quiz Deleted Successfully";
-        }
-        else
-        {
-          _that.success_message = "";
-          _that.error_message   = response.data.error;
-        }
+              if (response.data.status_code == 200) {
+                  _that.getQuizList();
+                  _that.error_message   = '';
+                  _that.success_message = "Successfully deleted the Quiz";
+                  _that.removingRightSideWrapper();
+                  _that.setTimeoutElements();
+              }
+              else
+              {
+                  _that.success_message = "";
+                  _that.error_message   = response.data.error;
+              }
 
-      }).catch(function (error) {
-        console.log(error);
-      });
+          }).catch(function (error) {
+              console.log(error);
+          });
 
-    },
+      },
+
+      setTimeoutElements() {
+
+          setTimeout(() => this.success_message = "", 3000);
+          setTimeout(() => this.error_message = "", 3000);
+      },
 
   },
   created() {

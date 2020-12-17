@@ -194,25 +194,25 @@
                 let _that = this;
                 axios.post('admin/quiz-form-fields',
                     {
-                        quiz_form_id            :_that.selectedFormID,
-                        f_label                 :_that.quizFormFieldData.quizlabelName,
-                        f_name                  :_that.quizFormFieldData.quizfieldName,
-                        f_id                    :_that.quizFormFieldData.quizfieldID,
-                        f_class                 :_that.quizFormFieldData.quizfieldClass,
-                        f_type                  :_that.quizFormFieldData.quizfieldType,
-                        f_option_value          :_that.quizFormFieldData.quizfieldOptionValue,
-                        f_default_value         :_that.quizFormFieldData.quizfieldDefaultValue,
-                        f_max_value             :_that.quizFormFieldData.quizfieldMaxValue,
-                        f_sort_order            :_that.quizFormFieldData.quizfieldSortValue,
-                        f_required              :_that.quizFormFieldData.quizfieldRequired,
+                        quiz_form_id    : _that.selectedFormID,
+                        f_label         : _that.quizFormFieldData.quizlabelName,
+                        f_name          : _that.quizFormFieldData.quizfieldName,
+                        f_id            : _that.quizFormFieldData.quizfieldID,
+                        f_class         : _that.quizFormFieldData.quizfieldClass,
+                        f_type          : _that.quizFormFieldData.quizfieldType,
+                        f_option_value  : _that.quizFormFieldData.quizfieldOptionValue,
+                        f_default_value : _that.quizFormFieldData.quizfieldDefaultValue,
+                        f_max_value     : _that.quizFormFieldData.quizfieldMaxValue,
+                        f_sort_order    : _that.quizFormFieldData.quizfieldSortValue,
+                        f_required      : _that.quizFormFieldData.quizfieldRequired,
                     },
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    if (response.data.status_code == 201)
-                    {
+                    if (response.data.status_code == 201) {
+
                         _that.error_message    = '';
                         _that.success_message  = "Field Add Successfully";
                         _that.$emit('quiz-form-field-data', _that.quizFormFieldData);

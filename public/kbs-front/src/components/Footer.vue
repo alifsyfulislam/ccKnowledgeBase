@@ -4,8 +4,16 @@
       <div class="row">
         <div class="col-sm-6 order-sm-2 text-sm-right text-center mb-10 mb-sm-0">
           <ul class="list-inline mb-0">
-            <li class="list-inline-item"><a href="/kbs/faq">FAQ</a></li>
-            <li class="list-inline-item"><a href="/kbs/contact">Contact</a></li>
+              <li class="list-inline-item">
+                  <router-link class="nav-item" :to="{ name: 'Faq'}">
+                      <span>Faq</span>
+                  </router-link>
+              </li>
+              <li class="list-inline-item">
+                  <router-link class="nav-item" :to="{ name: 'Contact'}">
+                      <span>Contact</span>
+                  </router-link>
+              </li>
           </ul>
         </div>
         <div class="col-sm-6 order-sm-1 text-sm-left text-center">
