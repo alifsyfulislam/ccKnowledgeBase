@@ -6,14 +6,14 @@ import CategoryList from '../views/CategoryList'
 import Contact from '../views/Contact'
 import Faq from '../views/Faq.vue'
 import Search from '../views/Search'
-import NotFound from '../views/NotFound'
+// import NotFound from '../views/NotFound'
 
 
 let router = createRouter({
     scrollBehavior() {
         return {x: 0, y: 0};
     },
-    history: createWebHistory(process.env.BASE_URL+'kbs'),
+    history: createWebHistory(process.env.BASE_URL),
     routes: [
         {
             path: '/',
@@ -45,13 +45,14 @@ let router = createRouter({
             name: 'Search',
             component: Search
         },
-        {
-            path: "/:catchAll(.*)",
-            name: 'NotFound',
-            component: NotFound
-        },
+        // {
+        //     path: "/:catchAll(.*)",
+        //     name: 'NotFound',
+        //     component: NotFound
+        // },
     ],
     mode: 'history',
+    base:'kbs'
 });
 
 export default router
