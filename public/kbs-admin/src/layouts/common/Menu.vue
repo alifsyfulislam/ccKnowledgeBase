@@ -129,17 +129,20 @@
             <span class="menu-title">Quizz</span>
           </a>
           <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
-            <li>
-                <router-link :to="{ name: 'quizFormList'}">
-                    <span class="menu-sub-title">Quiz Forms</span>
-                </router-link>
-            </li>
 
-            <li>
-<!--                <router-link :to="{ name: 'quizFormFieldList'}">-->
-<!--                    <span class="menu-sub-title">Quiz Forms</span>-->
-<!--                </router-link>-->
-            </li>
+          <li>
+              <router-link :to="{ name: 'quizList'}">
+                  <span class="menu-sub-title">Quizzes</span>
+              </router-link>
+          </li>
+
+          <li>
+             <router-link :to="{ name: 'quizFormList'}">
+                <span class="menu-sub-title">Quiz Forms</span>
+             </router-link>
+          </li>
+
+
 
 <!--            <li>
               <a href="#"><span class="menu-sub-title">Quiz Form Fields</span></a>

@@ -60,7 +60,7 @@
                                 <tr v-for="(a_user,index) in userList" :key="a_user.id">
                                     <td class="text-center">{{ ++index }}</td>
                                     <td class="text-center">{{ a_user.username }}</td>
-                                    <td class="text-center">{{ a_user.roles[0].name }}</td>
+                                    <td class="text-center">{{ ((a_user.roles).length > 0) ? a_user.roles[0].name : '' }}</td>
                                     <td class="text-center">{{ a_user.first_name }}</td>
                                     <td class="text-center">{{ a_user.last_name }}</td>
                                     <td class="text-center">{{ a_user.email }}</td>
@@ -69,7 +69,9 @@
                                     <td class="text-center" style="min-width: 120px">
 
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true" v-if="a_user.roles[0].name!='Super Admin'"><i class="fas fa-trash-restore-alt"></i></button>
+
+
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
 
@@ -168,7 +170,7 @@
             <!--            edit-->
             <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @customer-edit-data="getCustomerDataFromEdit"></CustomerEdit>
             <!--            delete-->
-            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
                 </div>
@@ -370,6 +372,7 @@
                             console.log(response.data.user_list.data);
                             _that.pagination  = response.data.user_list;
                             _that.userList   = response.data.user_list.data;
+
                             _that.success_message = "";
                         }
                         else{

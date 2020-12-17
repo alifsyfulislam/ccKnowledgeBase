@@ -1,8 +1,8 @@
 <template>
-  <div class="col-md-12 wrapper d-flex align-items-stretch">
+<!--  <div class="col-md-12 wrapper d-flex align-items-stretch">
     <Menu></Menu>
 
-    <!-- Page Content  -->
+    &lt;!&ndash; Page Content  &ndash;&gt;
     <div id="content" style="margin-left:50px; ">
 
       <Header></Header>
@@ -122,133 +122,210 @@
       </div>
 
     </div>
-  </div>
+  </div>-->
+
+    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
+        <div class="close-bar d-flex align-items-center justify-content-end">
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+        </div>
+
+        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
+            <div class="right-sidebar-content-area px-2">
+
+                <div class="form-wrapper">
+                    <h2 class="section-title text-uppercase mb-20">Add New Quiz</h2>
+
+                    <div class="col-md-12">
+                        <div v-if="success_message" class="alert alert-success" role="alert">
+                            {{ success_message }}
+                        </div>
+                        <div v-if="error_message" class="alert alert-danger" role="alert">
+                            {{ error_message }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Title <span class="required">*</span></label>
+                                <input type="text" class="form-control" v-model="quizData.name" id="name" placeholder="Enter Quiz Title" required>
+<!--                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Select An Article</label>
+
+                                <select class="form-control" v-model="quizData.article_id">
+                                    <option value="">Select One</option>
+                                    <option v-for="a_article in articleList" :value="a_article.id" :key="a_article">
+                                        {{a_article.en_title}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Select Quiz Form</label>
+
+                                <select class="form-control" v-model="quizData.quiz_form_id">
+                                    <option value="">Select A Quiz Form</option>
+                                    <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
+                                        {{a_quiz_form.name}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-right">
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="quizAdd()">Add</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </template>
 
 <script>
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
+
 import axios from "axios";
 
 export default {
-name: "quizAdd",
-  components: {
-    Header,
-    Menu
-  },
+    name: "quizAdd",
+    props: ['isAddCheck'],
+    components: {
+
+     },
 
   data() {
-    return {
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      articleList     : '',
-      quizformList   : '',
+      return {
 
-      quizData        :
-          {
-            name          : '',
-            article_id    : '',
-            quiz_form_id  : '',
-            duration      : '',
-            total_marks   : '',
-            status        : '',
-            number_of_questions   : '',
+          isAdd : false,
+          success_message : '',
+          error_message   : '',
+          token           : '',
+          articleList     : '',
+          quizformList   : '',
+
+          quizData        :{
+              name          : '',
+              article_id    : '',
+              quiz_form_id  : '',
+              duration      : '',
+              total_marks   : '',
+              status        : '',
+              number_of_questions   : '',
           },
-    }
+      }
   },
   methods: {
 
-    quizAdd() {
-      let _that = this;
+      clearAllChecker() {
 
-      axios.post('admin/quizzes',
-          {
-            article_id    : this.quizData.article_id,
-            name          : this.quizData.name,
-            quiz_form_id  : this.quizData.quiz_form_id,
-            duration      : this.quizData.duration,
-            total_marks   : this.quizData.total_marks,
-            status        : this.quizData.status,
-            number_of_questions   : this.quizData.number_of_questions,
-          },
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            }
-          }).then(function (response) {
-        if (response.data.status_code == 201)
-        {
-          _that.quizData         = '';
-          _that.error_message    = '';
-          _that.success_message  = "New Quiz Added Successfully";
-          _that.$router.push('/admin/quizList');
-        }
-        else
-        {
-          _that.success_message = "";
-          _that.error_message   = response.data.error;
-        }
+          this.isAdd = false;
+          this.$emit('quiz-data', this.isAdd);
 
-      }).catch(function (error) {
-        console.log(error);
-      });
+      },
 
-    },
+      quizAdd() {
+          let _that = this;
 
-    getArticleList()
-    {
-      let _that =this;
+          axios.post('admin/quizzes',
+              {
+                  article_id    : this.quizData.article_id,
+                  name          : this.quizData.name,
+                  quiz_form_id  : this.quizData.quiz_form_id,
+                  duration      : this.quizData.duration,
+                  total_marks   : this.quizData.total_marks,
+                  status        : this.quizData.status,
+                  number_of_questions   : this.quizData.number_of_questions,
+              },
+              {
+                  headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  }
+              }).then(function (response) {
+              if (response.data.status_code == 201)
+              {
+                  _that.quizData         = '';
+                  _that.error_message    = '';
+                  _that.success_message  = "New Quiz Added Successfully";
+                  _that.$router.push('/admin/quizList');
+              }
+              else
+              {
+                  _that.success_message = "";
+                  _that.error_message   = response.data.error;
+              }
 
-      axios.get('admin/articles',
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-            params :
-                {
-                  isAdmin : 1
-                },
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-              console.log(response.data);
-              _that.articleList = response.data.article_list.data;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
+          }).catch(function (error) {
+              console.log(error);
+          });
 
-    getQuizFormList(){
-      let _that =this;
+      },
 
-      axios.get('admin/quiz-forms',
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-              console.log(response.data.quiz_form_list);
-              _that.quizformList = response.data.quiz_form_list.data;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
+      getArticleList()
+      {
+          let _that =this;
+
+          axios.get('admin/articles',
+              {
+                  headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params :
+                      {
+                          isAdmin : 1
+                      },
+              })
+              .then(function (response) {
+                  if(response.data.status_code === 200){
+                      console.log(response.data);
+                      _that.articleList = response.data.article_list.data;
+                  }
+                  else{
+                      _that.success_message = "";
+                      _that.error_message   = response.data.error;
+                  }
+              })
+      },
+
+      getQuizFormList(){
+          let _that =this;
+
+          axios.get('admin/quiz-forms',
+              {
+                  headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+              })
+              .then(function (response) {
+                  if(response.data.status_code === 200){
+                      console.log(response.data.quiz_form_list);
+                      _that.quizformList = response.data.quiz_form_list.data;
+                  }
+                  else{
+                      _that.success_message = "";
+                      _that.error_message   = response.data.error;
+                  }
+              })
+      },
 
   },
-  created() {
-    this.getArticleList();
-    this.getQuizFormList();
-  }
+    created() {
+        this.isAdd = this.isAddCheck;
+        console.log(this.isAddCheck)
+        this.getArticleList();
+        this.getQuizFormList();
+    }
 }
 </script>
 

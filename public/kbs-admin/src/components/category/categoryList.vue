@@ -209,22 +209,20 @@ export default {
   },
   methods: {
 
-    removingRightSideWrapper()
-    {
+    removingRightSideWrapper(){
       this.isAddCheck = false;
       this.isDelete   = false;
       this.isSearch   = false;
       document.body.classList.remove('open-side-slider');
     },
 
-    clearAllChecker()
-    {
+    clearAllChecker() {
       this.isAddCheck = false;
       this.isDelete   = false;
       this.isSearch   = false;
     },
 
-    getCategoryDataFromAdd (newData) {
+    getDataFromAdd (newData) {
       console.log(newData)
       this.isAddCheck = false;
       this.getCategoryList();
