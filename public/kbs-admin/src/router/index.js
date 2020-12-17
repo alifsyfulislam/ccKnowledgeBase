@@ -26,9 +26,9 @@ import quizList from '@/components/quiz/quizList.vue'
 import quizAdd from '@/components/quiz/quizAdd.vue'
 import quizEdit from '@/components/quiz/quizEdit.vue'
 
-import quizFormFieldAdd from '@/components/quiz-form-fields/quizFormFieldAdd.vue'
+
 import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.vue'
-import quizFormFieldEdit from '@/components/quiz-form-fields/quizFormFieldEdit.vue'
+
 
 import Display from '@/components/front/Display.vue'
 
@@ -75,27 +75,9 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/quiz-form-field-add/',
-      name: 'quizFormFieldAdd',
-      component: quizFormFieldAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/quizFormFieldList/:id',
+      path: '/admin/quiz-form-field-list/',
       name: 'quizFormFieldList',
       component: quizFormFieldList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/quizFormFieldEdit/:id',
-      name: 'quizFormFieldEdit',
-      component: quizFormFieldEdit,
       meta: {
         requiresAuth: true
       }

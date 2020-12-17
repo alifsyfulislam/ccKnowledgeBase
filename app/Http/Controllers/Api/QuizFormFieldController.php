@@ -35,11 +35,11 @@ class QuizFormFieldController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->can('quiz-form-field-list')) {
 
-            return $this->quizFormFieldService->paginateData();
+            return $this->quizFormFieldService->paginateData($request);
 
         } else {
 

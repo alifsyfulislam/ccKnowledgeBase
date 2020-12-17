@@ -257,8 +257,11 @@ export default {
               {
                   _that.quizData         = '';
                   _that.error_message    = '';
+
+                  _that.isAdd = false;
                   _that.success_message  = "New Quiz Added Successfully";
-                  _that.$router.push('/admin/quizList');
+                  _that.$emit('quiz-data', "New Quiz Added Successfully");
+                  document.body.classList.remove('open-side-slider')
               }
               else
               {
@@ -322,7 +325,6 @@ export default {
   },
     created() {
         this.isAdd = this.isAddCheck;
-        console.log(this.isAddCheck)
         this.getArticleList();
         this.getQuizFormList();
     }

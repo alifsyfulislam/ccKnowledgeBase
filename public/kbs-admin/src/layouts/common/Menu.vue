@@ -130,6 +130,7 @@
           </a>
           <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
 
+
           <li>
               <router-link :to="{ name: 'quizList'}">
                   <span class="menu-sub-title">Quizzes</span>
@@ -143,11 +144,11 @@
           </li>
 
 
-
-<!--            <li>
-              <a href="#"><span class="menu-sub-title">Quiz Form Fields</span></a>
-            </li>-->
-
+         <li>
+            <router-link :to="{ name: 'quizFormFieldList'}">
+                <span class="menu-sub-title">Quiz Form Field</span>
+            </router-link>
+         </li>
 
           </ul>
         </li>

@@ -48,7 +48,7 @@
 
     export default {
 
-        name: "articleEdit.vue",
+        name: "quizFormEdit.vue",
         components: {
         },
         props: ['isEditCheck', 'quizFormId'],

@@ -80,7 +80,7 @@
 
     export default {
 
-        name: "articleEdit.vue",
+        name: "customerEdit.vue",
         components: {
         },
         props: ['isEditCheck', 'customerId'],
