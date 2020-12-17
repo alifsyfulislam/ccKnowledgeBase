@@ -4,10 +4,9 @@
         <nav class="navbar navbar-expand-md navbar-light bg-light">
           <div class="container">
             <div class="logo">
-              <a href="/" class="text-uppercase">
-                <!-- <img src="assets/img/logo.png" alt="kbs"> -->
-                kbs
-              </a>
+                <router-link class="nav-item" :to="{ name: 'Display'}">
+                    <span>KBS</span>
+                </router-link>
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,8 +15,11 @@
 
             <div class="collapse navbar-collapse" id="mainNavigation">
               <ul class="navbar-nav ml-auto align-items-center">
-<!--                <li class="nav-item"><a class="nav-link" href="/category-list">CATEGORY</a></li>-->
-                <li class="nav-item"><a class="nav-link" href="/faq">FAQ</a></li>
+                  <li class="nav-item">
+                      <router-link class="nav-link" :to="{ name: 'Faq'}">
+                          <span>FAQ</span>
+                      </router-link>
+                  </li>
                 <li class="nav-item"><a class="nav-link nav-button bordered" href="#">LOGIN</a></li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">

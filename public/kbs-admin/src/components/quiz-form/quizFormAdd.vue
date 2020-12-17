@@ -1,7 +1,9 @@
 <template>
     <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
         <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                <img src="../../assets/img/cancel.svg" alt="cancel">
+            </button>
         </div>
         <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
             <div class="right-sidebar-content-area px-2">
@@ -16,7 +18,7 @@
                                 {{ error_message }}
                             </div>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="quizFormID">Quiz Form ID <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormID" placeholder="Enter quiz form name here!!" required>
@@ -24,7 +26,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-12">
                             <div class="form-group text-left">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormAdd()">Add</button>
                             </div>
