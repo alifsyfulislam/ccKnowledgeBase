@@ -95,6 +95,21 @@
             <span class="menu-title">FAQ</span>
           </router-link>
         </li>
+        <li>
+          <router-link :to="{ name: 'roleList'}">
+            <span class="anim">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
+                    <g>
+                        <path id="Icon_simple-crunchyroll_1_" class="st0" d="M3.2,10.8C3,7.3,5.6,4.2,9.2,3.9s6.7,2.4,7,5.9c0,0.2,0,0.4,0,0.5V9.9
+                            c0-4.1-3.3-7.4-7.4-7.4S1.4,5.9,1.4,9.9s3.3,7.4,7.4,7.4h0.5C5.9,17.1,3.3,14.2,3.2,10.8L3.2,10.8z M12.8,11.2
+                            c-1.1,0-2.1-0.9-2.1-2c0-0.9,0.5-1.6,1.4-1.9c-0.6-0.3-1.3-0.5-2.1-0.5c-2.5,0-4.5,2-4.5,4.5s2,4.5,4.5,4.5s4.5-2,4.5-4.5
+                            c0-0.3,0-0.6-0.1-0.9C14.1,10.9,13.5,11.2,12.8,11.2z"/>
+                    </g>
+                </svg>
+            </span>
+            <span class="menu-title">Roles</span>
+          </router-link>
+        </li>
 
         <li>
           <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
@@ -114,22 +129,26 @@
             <span class="menu-title">Quizz</span>
           </a>
           <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
-            <li>
+
+
+          <li>
               <router-link :to="{ name: 'quizList'}">
-                <span class="menu-sub-title">Quizzes</span>
+                  <span class="menu-sub-title">Quizzes</span>
               </router-link>
-            </li>
+          </li>
 
-            <li>
-              <router-link :to="{ name: 'quizFormList'}">
+          <li>
+             <router-link :to="{ name: 'quizFormList'}">
                 <span class="menu-sub-title">Quiz Forms</span>
-              </router-link>
-            </li>
+             </router-link>
+          </li>
 
-<!--            <li>
-              <a href="#"><span class="menu-sub-title">Quiz Form Fields</span></a>
-            </li>-->
 
+         <li>
+            <router-link :to="{ name: 'quizFormFieldList'}">
+                <span class="menu-sub-title">Quiz Form Field</span>
+            </router-link>
+         </li>
 
           </ul>
         </li>

@@ -1,230 +1,222 @@
 <template>
-    <div class="col-md-12 wrapper d-flex align-items-stretch">
-        <Menu></Menu>
+    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
+        <div class="close-bar d-flex align-items-center justify-content-end">
+            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
+        </div>
 
-        <!-- Page Content  -->
-        <div id="content" style="margin-left:50px; ">
+        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
+            <div class="right-sidebar-content-area px-2">
 
-            <Header></Header>
+                <div class="form-wrapper">
+                    <h2 class="section-title text-uppercase mb-20">Add New Quiz Field in <span class="text-info">{{quizform_details.name}}</span></h2>
 
-            <div class="col-md-12">
-                <div v-if="success_message_2" class="alert alert-warning" role="alert">
-                    {{ success_message_2 }}
-                </div>
-                <div v-else class="hide" role="alert"></div>
-                <div v-if="success_message" class="alert alert-success" role="alert">
-                    {{ success_message }}
-                </div>
-                <div v-if="error_message" class="alert alert-danger" role="alert">
-                    {{ error_message }}
-                </div>
-            </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div v-if="success_message" class="alert alert-success" role="alert">
+                                {{ success_message }}
+                            </div>
+                            <div v-if="error_message" class="alert alert-danger" role="alert">
+                                {{ error_message }}
+                            </div>
+                        </div>
 
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title text-left">Add Quiz Form Field</h3>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormID">Quiz Form ID <span class="required">*</span></label>
+                                <input id="quizFormID" type="text" readonly v-model="selectedFormID" class="form-control" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormName">Quiz Form Name <span class="required">*</span></label>
+                                <input id="quizFormName" type="text" readonly v-model="quizform_details.name" class="form-control" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldLabel">Field Label <span class="required">*</span></label>
+                                <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldData.quizlabelName" class="form-control" placeholder="Enter Label Name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldName">Field Name <span class="required">*</span></label>
+                                <input id="quizFormFieldName" type="text" v-model="quizFormFieldData.quizfieldName" class="form-control" placeholder="Enter Field Name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldID">Field ID <span class="required">*</span></label>
+                                <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID">
+<!--                                <input id="quizFormFieldName" type="text" v-model="quizform_details.quizfieldName" class="form-control form-control-lg" placeholder="Enter Field Name">-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldClass">Field Class <span class="required">*</span></label>
+                                <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class">
+<!--                                <input id="quizFormFieldName" type="text" v-model="quizform_details.quizfieldName" class="form-control form-control-lg" placeholder="Enter Field Name">-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldType">Field Type <span class="required">*</span></label>
+                                <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldData.quizfieldType">
+                                    <option disabled>--Select A Type--</option>
+                                    <option value="Text">Text</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Password">Password</option>
+                                    <option value="Number">Number</option>
+                                    <option value="Textarea">Textarea</option>
+                                    <option value="Radio">Radio</option>
+                                    <option value="Checkbox">Checkbox</option>
+                                    <option value="Select/Dropdown">Select/Dropdown</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldOptionValue">Field Option Value <span class="required">*</span></label>
+                                <input id="quizFormFieldOptionValue" type="text" v-model="quizFormFieldData.quizfieldOptionValue"  class="form-control" placeholder="Enter Field Option Value">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldOptionDefaultValue">Field Option Default Value <span class="required">*</span></label>
+                                <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldData.quizfieldDefaultValue"  class="form-control" placeholder="Enter Field Option Default Value">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldMaxValue">Field Max Value <span class="required">*</span></label>
+                                <input id="quizFormFieldMaxValue" type="number" v-model="quizFormFieldData.quizfieldMaxValue"  class="form-control" placeholder="Enter Max Number">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldSortValue">Field Sort Value <span class="required">*</span></label>
+                                <input id="quizFormFieldSortValue" type="number" v-model="quizFormFieldData.quizfieldSortValue"  class="form-control" placeholder="Enter Sort Number">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="quizFormFieldRequired">Field Required <span class="required">*</span></label>
+
+
+                                <select id="quizFormFieldRequired" class="form-control" v-model="quizFormFieldData.quizfieldRequired">
+                                    <option disabled>--Select Status--</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+
                             </div>
                         </div>
                     </div>
-                    <div  class="card card-bordered card-preview">
-                        <div class="card-body">
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Quiz Form ID</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" readonly v-model="quizform_ID" class="form-control form-control-lg" placeholder="">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Quiz Form Title</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" readonly v-model="quizform_details.name" class="form-control form-control-lg" placeholder="">
-                                </div>
-                            </div>
 
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Label Name</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizlabelName" class="form-control form-control-lg" placeholder="Enter Label Name">
-                                </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group text-left">
+                                <button class="btn common-gradient-btn ripple-btn px-50" @click="quizformfieldStore()">Add</button>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Name</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizfieldName" class="form-control form-control-lg" placeholder="Enter Field Name">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field ID</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizfieldID"  class="form-control form-control-lg" placeholder="Enter Field ID">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Class</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizfieldClass" class="form-control form-control-lg" placeholder="Enter Field Class">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Type</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="formData.quizfieldType">
-                                        <option>--Select Type--</option>
-                                        <option value="Text">Text</option>
-                                        <option value="Email">Email</option>
-                                        <option value="Password">Password</option>
-                                        <option value="Number">Number</option>
-                                        <option value="Textarea">Textarea</option>
-                                        <option value="Radio">Radio</option>
-                                        <option value="Checkbox">Checkbox</option>
-                                        <option value="Select/Dropdown">Select/Dropdown</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Option Value</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizfieldOptionValue"  class="form-control form-control-lg" placeholder="Enter Field Option Value">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Default Value</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="formData.quizfieldDefaultValue"  class="form-control form-control-lg" placeholder="Enter Field Default Value">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Max Value</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="number" v-model="formData.quizfieldMaxValue"  class="form-control form-control-lg" placeholder="Enter Field Max Value">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Sort Value</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="number"  v-model="formData.quizfieldSortValue" class="form-control form-control-lg" placeholder="Enter Field Sort Value">
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label class="form-label">Field Required</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="formData.quizfieldRequired">
-                                        <option>--Select Status--</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3" >
-                                    <button class="btn btn-info" @click="quizformfieldStore()">Save</button>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+
+
 </template>
 
 <script>
     import axios from 'axios'
-    import Menu from '@/layouts/common/Menu.vue'
-    import Header from '@/layouts/common/Header.vue'
+    // import $ from 'jquery'
+
+
     export default {
-        name: "storeQuizFormField",
+        name: "quizFormFieldAdd.vue",
+        props: ['isAddFieldCheck','quizFormId'],
         components: {
-            Header,
-            Menu
+
         },
-        data(){
+        data() {
             return {
-                formData:{
-                    quizformfieldID: '',
-                    quizlabelName:'',
-                    quizfieldName:'',
-                    quizfieldID:'',
-                    quizfieldClass:'',
-                    quizfieldType:'--Select Type--',
+                isAdd                   : false,
+                isSearch                : false,
+
+                success_message         : '',
+                error_message           : '',
+                token                   : '',
+                quizform_details        :'',
+                selectedFormID          : '',
+
+
+                quizFormFieldData       : {
+                    quizformfieldID     : '',
+                    quizlabelName       :'',
+                    quizfieldName       :'',
+                    quizfieldID         :'',
+                    quizfieldClass      :'',
+                    quizfieldType       :'--Select A Type--',
                     quizfieldOptionValue:'',
                     quizfieldDefaultValue:'',
-                    quizfieldMaxValue:'',
-                    quizfieldSortValue:'',
-                    quizfieldRequired:'--Select Status--',
+                    quizfieldMaxValue   :'',
+                    quizfieldSortValue  :'',
+                    quizfieldRequired   :'--Select Status--',
                 },
-                success_message : '',
-                error_message   : '',
-                quizform_ID:'',
-                quizform_details:''
+
             }
         },
-        methods:{
+
+        methods: {
+            clearAllChecker()
+            {
+                this.isAdd = false;
+                this.$emit('quiz-form-field-data', this.isAdd);
+
+            },
             quizformfieldStore() {
                 let _that = this;
                 axios.post('admin/quiz-form-fields',
                     {
-                        quiz_form_id            :this.quizform_ID,
-                        f_label                 :this.formData.quizlabelName,
-                        f_name                  :this.formData.quizfieldName,
-                        f_id                    :this.formData.quizfieldID,
-                        f_class                 :this.formData.quizfieldClass,
-                        f_type                  :this.formData.quizfieldType,
-                        f_option_value          :this.formData.quizfieldOptionValue,
-                        f_default_value         :this.formData.quizfieldDefaultValue,
-                        f_max_value             :this.formData.quizfieldMaxValue,
-                        f_sort_order            :this.formData.quizfieldSortValue,
-                        f_required              :this.formData.quizfieldRequired,
+                        quiz_form_id            :_that.selectedFormID,
+                        f_label                 :_that.quizFormFieldData.quizlabelName,
+                        f_name                  :_that.quizFormFieldData.quizfieldName,
+                        f_id                    :_that.quizFormFieldData.quizfieldID,
+                        f_class                 :_that.quizFormFieldData.quizfieldClass,
+                        f_type                  :_that.quizFormFieldData.quizfieldType,
+                        f_option_value          :_that.quizFormFieldData.quizfieldOptionValue,
+                        f_default_value         :_that.quizFormFieldData.quizfieldDefaultValue,
+                        f_max_value             :_that.quizFormFieldData.quizfieldMaxValue,
+                        f_sort_order            :_that.quizFormFieldData.quizfieldSortValue,
+                        f_required              :_that.quizFormFieldData.quizfieldRequired,
                     },
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    console.log(response.data.status_code)
                     if (response.data.status_code == 201)
                     {
-                        console.log(response.data.status_code)
-                        _that.$router.push('/admin/quizFormList');
                         _that.error_message    = '';
-                        _that.success_message  = "Updated Successfully";
+                        _that.success_message  = "Field Add Successfully";
+                        _that.$emit('quiz-form-field-data', _that.quizFormFieldData);
+                       // _that.router.push('/admin/quiz-form-field-list/');
+                        document.body.classList.remove('open-side-slider')
+
 
                     }
                     else
@@ -239,8 +231,8 @@
 
             },
             quizformDetails() {
-                let _that = this;
-                let quizformID = this.quizform_ID;
+                let _that       = this;
+                let quizformID  = _that.selectedFormID;
 
                 axios.get("admin/quiz-forms/"+quizformID,
                     {
@@ -250,7 +242,6 @@
                     })
                     .then(function (response) {
                         if (response.data.status_code === 200) {
-                            console.log(response.data.quiz_form_info)
                             _that.quizform_details= response.data.quiz_form_info
                         } else {
                             _that.success_message = "";
@@ -260,7 +251,8 @@
             },
         },
         created() {
-            this.quizform_ID = this.$route.params.id;
+            this.isAdd = this.isAddFieldCheck;
+            this.selectedFormID = this.quizFormId;
             this.quizformDetails();
         }
     }

@@ -39,11 +39,11 @@ class RoleController extends Controller
     /**
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->can('role-list')) {
 
-            return $this->roleService->paginateData();
+            return $this->roleService->paginateData($request);
 
         } else {
 

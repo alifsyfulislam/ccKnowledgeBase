@@ -48,6 +48,7 @@
               <table class="table table-bordered gsl-table">
                 <thead>
                 <tr>
+                  <th class="text-center">ID</th>
                   <th class="text-center">Title</th>
                   <th class="text-center">Author</th>
                   <th class="text-center">Category</th>
@@ -59,8 +60,10 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="an_article in articleList" :key="an_article">
-                  <td>{{ an_article.en_title  }}</td>
+                <tr v-for="an_article in articleList" :key="an_article.id">
+
+                  <td class="text-center">{{ an_article.id }}</td>
+                  <td class="text-center">{{ an_article.en_title  }}</td>
                   <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                   <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                   <td class="text-center">{{ an_article.status  }}</td>
@@ -251,7 +254,6 @@ name: "articleList.vue",
 
   data() {
     return {
-
       isEditCheck     : false,
       isAddCheck      : false,
       isDelete        : false,

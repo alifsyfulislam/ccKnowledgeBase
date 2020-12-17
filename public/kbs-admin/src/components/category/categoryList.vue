@@ -43,7 +43,7 @@
               <table class="table table-bordered gsl-table">
                 <thead>
                   <tr>
-                    <th class="text-center">Category ID </th>
+                    <th class="text-center">SL</th>
                     <th class="text-center">Name</th>
                     <th class="text-center">Parent Name</th>
                     <th class="text-center">Created Date</th>
@@ -52,8 +52,8 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="a_category in categoryList" :key="a_category">
-                  <td class="text-center">{{ a_category.id }}</td>
+                <tr v-for="(a_category,index) in categoryList" :key="a_category">
+                  <td class="text-center">{{ ++index }}</td>
                   <td class="text-center">{{ a_category.name }}</td>
                   <td class="text-center">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
                   <td class="text-center">{{ a_category.created_at }}</td>
@@ -118,7 +118,7 @@
 
     <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-edit-data="getCategoryDataFromEdit"></CategoryEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>
@@ -209,22 +209,20 @@ export default {
   },
   methods: {
 
-    removingRightSideWrapper()
-    {
+    removingRightSideWrapper(){
       this.isAddCheck = false;
       this.isDelete   = false;
       this.isSearch   = false;
       document.body.classList.remove('open-side-slider');
     },
 
-    clearAllChecker()
-    {
+    clearAllChecker() {
       this.isAddCheck = false;
       this.isDelete   = false;
       this.isSearch   = false;
     },
 
-    getCategoryDataFromAdd (newData) {
+    getDataFromAdd (newData) {
       console.log(newData)
       this.isAddCheck = false;
       this.getCategoryList();

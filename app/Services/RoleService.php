@@ -182,13 +182,13 @@ class RoleService
     /**
      * @return JsonResponse
      */
-    public function paginateData()
+    public function paginateData($request)
     {
 
         return response()->json([
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
-            'role_list'=>$this->roleRepository->getWithPagination()
+            'role_list' => $this->roleRepository->getWithPagination($request)
         ]);
 
     }

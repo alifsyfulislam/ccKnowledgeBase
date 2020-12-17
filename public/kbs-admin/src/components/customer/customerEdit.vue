@@ -80,7 +80,7 @@
 
     export default {
 
-        name: "articleEdit.vue",
+        name: "customerEdit.vue",
         components: {
         },
         props: ['isEditCheck', 'customerId'],
@@ -169,6 +169,10 @@
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params : {
+                            isAdmin : 1,
+                            without_pagination : 1
                         },
 
                     })

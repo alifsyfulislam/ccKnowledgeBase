@@ -63,15 +63,16 @@ export default {
   props: ['isAddCheck'],
   data() {
     return {
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      categoryList    : '',
-      selectedCategory  : '',
-      userInfo        : '',
-      categoryData        : {
-        name  : '',
-      },
+        isAdd : false,
+        success_message : '',
+        error_message   : '',
+        token           : '',
+        categoryList    : '',
+        selectedCategory  : '',
+        userInfo        : '',
+        categoryData        : {
+            name  : '',
+        },
     }
   },
   methods: {
@@ -102,6 +103,8 @@ export default {
           _that.categoryData     = '';
           _that.selectedCategory = '';
           _that.error_message    = '';
+
+          _that.isAdd = false;
           _that.success_message  = "New Category Added Successfully";
           _that.$emit('category-data', _that.categoryData);
           document.body.classList.remove('open-side-slider')

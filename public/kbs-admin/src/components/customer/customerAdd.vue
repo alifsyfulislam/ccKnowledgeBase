@@ -172,7 +172,7 @@
                         _that.userData          = '';
                         _that.error_message    = '';
                         _that.success_message  = "New Customer Added Successfully";
-                        _that.$emit('customer-data', _that.articleData);
+                        _that.$emit('customer-data', _that.userData);
                         document.body.classList.remove('open-side-slider')
                     }
                     else
@@ -194,6 +194,10 @@
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params : {
+                            isAdmin : 1,
+                            without_pagination : 1
                         },
                     })
                     .then(function (response) {

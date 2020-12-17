@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-12 wrapper d-flex align-items-stretch">
+    <div class="main-wrapper d-flex">
         <Menu></Menu>
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
             <!-- Topbar -->
@@ -58,9 +58,9 @@
                                 <tbody>
 
                                 <tr v-for="(a_user,index) in userList" :key="a_user.id">
-                                    <td class="text-center">{{++index}}</td>
+                                    <td class="text-center">{{ ++index }}</td>
                                     <td class="text-center">{{ a_user.username }}</td>
-                                    <td class="text-center">{{ a_user.roles[0].name }}</td>
+                                    <td class="text-center">{{ ((a_user.roles).length > 0) ? a_user.roles[0].name : '' }}</td>
                                     <td class="text-center">{{ a_user.first_name }}</td>
                                     <td class="text-center">{{ a_user.last_name }}</td>
                                     <td class="text-center">{{ a_user.email }}</td>
@@ -69,7 +69,9 @@
                                     <td class="text-center" style="min-width: 120px">
 
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true" v-if="a_user.roles[0].name!='Super Admin'"><i class="fas fa-trash-restore-alt"></i></button>
+
+
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
 
@@ -77,7 +79,7 @@
                             </table>
                         </div>
                         <!-- Table Data End -->
-<!--                        pagination-->
+                        <!--                        pagination-->
                         <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination mb-0">
@@ -132,20 +134,20 @@
 
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="role">Select A Roles</label>
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="role">Select A Roles</label>-->
 
-                                        <select class="form-control" v-model="filter.role" id="role">
-                                            <option value="">Select A Roles</option>
-                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">
-                                                {{a_role.name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+<!--                                        <select class="form-control" v-model="filter.role" id="role">-->
+<!--                                            <option value="">Select A Roles</option>-->
+<!--                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">-->
+<!--                                                {{a_role.name}}-->
+<!--                                            </option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
                             <div class="form-group text-right">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="getUsersList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
@@ -163,12 +165,12 @@
             <div class="action-modal-wraper-error" v-if="error_message">
                 <span>{{ error_message }}</span>
             </div>
-<!--            add-->
+            <!--            add-->
             <CustomerAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @customer-data="getUserDataFromAdd"></CustomerAdd>
-<!--            edit-->
+            <!--            edit-->
             <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @customer-edit-data="getCustomerDataFromEdit"></CustomerEdit>
-<!--            delete-->
-            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+            <!--            delete-->
+            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
                 </div>
@@ -235,7 +237,7 @@
                 userList        : '',
                 userRole        : '',
                 customer_id     : '',
-                userAllRoles       : '',
+                userAllRoles    : '',
 
 
                 filter : {
@@ -321,16 +323,16 @@
                 this.isSearch   = false;
 
             },
-            // clearFilter()
-            // {
-            //     this.filter.category_id = "";
-            //     this.filter.status   = "";
-            //     this.filter.en_title = "";
-            //     this.filter.tag      = "";
-            //     this.success_message = "";
-            //     this.error_message   = "";
-            //     this.getUsersList();
-            // },
+
+            clearFilter()
+            {
+                this.filter.username = "";
+                this.filter.email   = "";
+                this.filter.role = "";
+                this.success_message = "";
+                this.error_message   = "";
+                this.getUsersList();
+            },
 
             getUserDataFromAdd (newData) {
                 console.log(newData)
@@ -370,6 +372,7 @@
                             console.log(response.data.user_list.data);
                             _that.pagination  = response.data.user_list;
                             _that.userList   = response.data.user_list.data;
+
                             _that.success_message = "";
                         }
                         else{
@@ -378,6 +381,7 @@
                         }
                     })
             },
+
             getUserRoles(){
                 let _that =this;
 
@@ -385,6 +389,10 @@
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params : {
+                            isAdmin : 1,
+                            without_pagination : 1
                         },
                     })
                     .then(function (response) {
@@ -412,11 +420,12 @@
                         },
                     }).then(function (response) {
 
-                    if (response.data.status_code == 200)
-                    {
+                    if (response.data.status_code == 200) {
                         _that.getUsersList();
                         _that.error_message   = '';
-                        _that.success_message = response.data.messages;
+                        _that.success_message = "User Deleted Successfully";
+                        _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
                     }
                     else
                     {
