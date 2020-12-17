@@ -3,13 +3,10 @@
         <div class="close-bar d-flex align-items-center justify-content-end">
             <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
         </div>
-
         <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
             <div class="right-sidebar-content-area px-2">
-
                 <div class="form-wrapper">
                     <h2 class="section-title text-uppercase mb-20">Add New Quiz Form</h2>
-
                     <div class="row">
                         <div class="col-md-12">
                             <div v-if="success_message" class="alert alert-success" role="alert">
@@ -19,7 +16,6 @@
                                 {{ error_message }}
                             </div>
                         </div>
-
                         <div class="col-md-9">
                             <div class="form-group">
                                 <label for="quizFormID">Quiz Form ID <span class="required">*</span></label>
@@ -27,7 +23,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group text-left">
@@ -40,8 +35,6 @@
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
@@ -58,34 +51,29 @@
 
         data() {
             return {
-                isAdd : false,
+                isAdd           : false,
                 isSearch        : false,
-
                 success_message : '',
                 error_message   : '',
                 token           : '',
                 userRoles       :'',
 
-                quizFormData        : {
-                    name  : '',
+                quizFormData    : {
+                    name        : '',
                 },
-
             }
         },
 
 
         methods: {
-
             clearAllChecker()
             {
                 this.isAdd = false;
                 this.$emit('quiz-form-data', this.isAdd);
 
             },
-
             quizFormAdd() {
                 let _that = this;
-
                 axios.post('admin/quiz-forms',
                     {
                         name: this.quizFormData.name,
@@ -111,7 +99,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-
             },
         },
         created() {

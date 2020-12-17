@@ -166,12 +166,12 @@ class QuizFormFieldService
     /**
      * @return JsonResponse
      */
-    public function paginateData()
+    public function paginateData($request)
     {
 
         return response()->json(['status_code' => 200,
             'messages'=>config('status.status_code.200'),
-            'quiz_form_field_list'=>$this->quizFormFieldRepository->getWithPagination()
+            'quiz_form_field_list'=>$this->quizFormFieldRepository->getWithPagination($request)
         ]);
 
     }

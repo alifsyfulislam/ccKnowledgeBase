@@ -136,9 +136,9 @@
             </li>
 
             <li>
-<!--                <router-link :to="{ name: 'quizFormFieldList'}">-->
-<!--                    <span class="menu-sub-title">Quiz Forms</span>-->
-<!--                </router-link>-->
+                <router-link :to="{ name: 'quizFormFieldList'}">
+                    <span class="menu-sub-title">Quiz Form Field</span>
+                </router-link>
             </li>
 
 <!--            <li>

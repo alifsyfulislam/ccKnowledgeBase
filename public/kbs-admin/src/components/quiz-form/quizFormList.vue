@@ -43,7 +43,7 @@
                                     <td class="text-center">{{ a_quiz_field.name }}</td>
                                     <td class="text-center">{{ a_quiz_field.created_at }}</td>
                                     <td class="text-center">
-                                        <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="quiz_form_id = a_quiz_field.id, isAddFieldCheck=true">
+                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isAddFieldCheck=true">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </td>
@@ -125,8 +125,6 @@
             </div>
             <!-- Content Area End -->
             <QuizFromFieldAdd v-if="isAddFieldCheck" :isAddFieldCheck= "isAddFieldCheck" :quizFormId="quiz_form_id" @quiz-form-field-data="getQuizFormFieldDataFromAdd"></QuizFromFieldAdd>
-
-<!--            <QuizFromFieldAdd v-if="isFieldAddCheck" :isFieldAddCheck= "isFieldAddCheck" @quiz-form-field-data="getQuizFormFieldDataFromAdd"></QuizFromFieldAdd>-->
         </div>
     </div>
 </template>
@@ -165,7 +163,6 @@
                 allQuizField    : '',
 
                 allQuizFieldFrom : '',
-
 
                 filter : {
                     isAdmin     : 1,

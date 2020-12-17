@@ -162,14 +162,13 @@ name: "quizAdd",
 
     quizAdd() {
       let _that = this;
-
       axios.post('admin/quizzes',
           {
-            article_id    : this.quizData.article_id,
-            name          : this.quizData.name,
-            quiz_form_id  : this.quizData.quiz_form_id,
-            duration      : this.quizData.duration,
-            total_marks   : this.quizData.total_marks,
+            article_id          : this.quizData.article_id,
+            name                : this.quizData.name,
+            quiz_form_id        : this.quizData.quiz_form_id,
+            duration            : this.quizData.duration,
+            total_marks         : this.quizData.total_marks,
             status        : this.quizData.status,
             number_of_questions   : this.quizData.number_of_questions,
           },
