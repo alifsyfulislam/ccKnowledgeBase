@@ -341,8 +341,8 @@ export default {
 
     },
 
-    setTimeoutElements()
-    {
+    setTimeoutElements() {
+
       setTimeout(() => this.success_message = "", 3000);
       setTimeout(() => this.error_message = "", 3000);
     },
