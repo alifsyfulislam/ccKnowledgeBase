@@ -214,7 +214,7 @@
 
         <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-edit-data="getRoleDataFromEdit"></RoleEdit>
 
-        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
             </div>
@@ -230,10 +230,10 @@
                                 <figure class="mx-auto text-center">
                                     <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                 </figure>
-                                <p class="text-center"> Confirmation for Deleting Category</p>
+                                <p class="text-center"> Confirmation for Deleting Role</p>
 
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteRole"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteRole()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -270,6 +270,9 @@
                 isAddCheck      : false,
                 isDelete        : false,
                 isSearch        : false,
+
+                success_message : '',
+                error_message   : '',
 
                 role_id   : '',
                 userRoles : '',
@@ -359,11 +362,13 @@
                   },
                 }).then(function (response) {
 
-              if (response.data.status_code == 200)
-              {
-                _that.getRolesList();
-                _that.error_message   = '';
-                _that.success_message = "Role Deleted Successfully";
+              if (response.data.status_code == 200){
+
+                  _that.getRolesList();
+                  _that.error_message   = '';
+                  _that.success_message = "Successfully deleted the Role";
+                  _that.removingRightSideWrapper();
+                  _that.setTimeoutElements();
               }
               else
               {
@@ -376,6 +381,12 @@
             });
 
           },
+
+        setTimeoutElements() {
+            setTimeout(() => this.success_message = "", 3000);
+            setTimeout(() => this.error_message = "", 3000);
+        },
+
         },
         created() {
             this.getRolesList();

@@ -118,7 +118,7 @@
 
     <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-edit-data="getCategoryDataFromEdit"></CategoryEdit>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+    <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
       <div class="close-bar d-flex align-items-center justify-content-end">
         <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker"></button>
       </div>

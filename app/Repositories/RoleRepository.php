@@ -69,7 +69,7 @@ class RoleRepository implements RepositoryInterface
         }else{
             return Role::with(['permissions', 'users'])
                 ->orderBy('id', 'DESC')
-                ->paginate(4);
+                ->paginate(10);
         }
 
     }
