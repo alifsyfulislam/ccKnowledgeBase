@@ -145,14 +145,14 @@
             },
             categorySearch(v) {
                 let _that = this;
-                let category_ID = v;
+                _that.categoryID = v;
                 let pageUrl;
-                pageUrl = pageUrl == undefined ? 'article/category/'+category_ID+'?page=1' : pageUrl;
-                console.log(pageUrl);
+                pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
                 axios.get(pageUrl)
                     .then(function (response) {
                         _that.selectedCategory = response.data.article_list.data;
                         _that.pagination  = response.data.article_list;
+                        _that.$router.push('/category-list/'+_that.categoryID)
                     })
             },
             changeCategoryArticlePage(categoryID,pageUrl){

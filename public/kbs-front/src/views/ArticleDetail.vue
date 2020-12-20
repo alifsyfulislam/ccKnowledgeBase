@@ -99,11 +99,11 @@
         methods:{
             articleSearch(v){
                 let _that = this;
-                let articleID = v;
-                axios.get('article/'+articleID)
+                _that.articleID = v;
+                axios.get('article/'+_that.articleID)
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
-                        console.log(_that.aArticle);
+                        _that.$router.push('/article-detail/'+_that.articleID)
                     })
             },
             searchData(){
