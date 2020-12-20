@@ -15,7 +15,7 @@
               </button>
             </div>
           </div>
-          <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+          <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
         </div>
       </div>
     </section>
@@ -105,8 +105,11 @@
                 allCategoryArticle:'',
                 categoryHasArticle:[],
                 categoryID:'',
+                categoryIDArr:[],
                 selectedCategory:'',
+                selectedCategoryArr : [],
                 query_string:'',
+                backCounter : 0,
                 pagination:{
                     from: '',
                     to: '',
@@ -139,7 +142,6 @@
                                     _that.categoryHasArticle.push(val);
                                 }
                             })
-                            console.log(_that.categoryHasArticle);
                         }
                     })
             },
@@ -148,6 +150,13 @@
                 _that.categoryID = v;
                 let pageUrl;
                 pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
+
+
+                _that.backCounter++;
+                console.log(_that.backCounter);
+                _that.selectedCategoryArr.push(_that.categoryID);
+
+
                 axios.get(pageUrl)
                     .then(function (response) {
                         _that.selectedCategory = response.data.article_list.data;
@@ -158,13 +167,41 @@
             changeCategoryArticlePage(categoryID,pageUrl){
                 console.log(categoryID,pageUrl);
                 let _that =this;
-                pageUrl = pageUrl == undefined ? 'admin/articles'+categoryID : pageUrl;
+                _that.categoryID = categoryID;
+                pageUrl = pageUrl == undefined ? 'admin/articles'+_that.categoryID : pageUrl;
                 axios.get(pageUrl)
                     .then(function (response) {
                         _that.selectedCategory = response.data.article_list.data;
                         _that.pagination  = response.data.article_list;
+                        _that.$router.push('/category-list/'+_that.categoryID)
                     })
             },
+
+            dynamicBackFunc(){
+                // let _that = this;
+
+                if (this.backCounter == 1){
+                    this.$router.go(-1);
+                }
+                else{
+                    let _that = this;
+                    _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
+
+                    let pageUrl;
+                    pageUrl = pageUrl == undefined ? 'article/category/'+_that.selectedCategoryArr[_that.selectedCategoryArr.length-1]+'?page=1' : pageUrl;
+
+                    if (_that.selectedCategoryArr[_that.selectedCategoryArr.length-1]){
+                        axios.get(pageUrl)
+                            .then(function (response) {
+                                _that.selectedCategory = response.data.article_list.data;
+                                _that.pagination  = response.data.article_list;
+                                // _that.$router.push('/category-list/'+_that.categoryID)
+                            })
+                    }else{
+                        _that.$router.push('/');
+                    }
+                }
+            }
         },
         created() {
             this.categoryID = this.$route.params.categoryID;
