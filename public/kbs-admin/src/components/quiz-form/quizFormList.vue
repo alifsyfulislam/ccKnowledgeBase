@@ -153,7 +153,7 @@
 
         data() {
             return {
-                isAddFieldCheck      : false,
+                isAddFieldCheck : false,
 
                 isAddCheck      : false,
                 isEditCheck     : false,
@@ -251,9 +251,13 @@
             },
 // work
             getQuizFormFieldDataFromAdd (newData) {
-                console.log(newData)
+
+                console.log("from quiz form field add");
+                console.log(newData);
                 this.isAddFieldCheck = false;
-                this.getQuizFormList();
+                if(newData === true){
+                    this.$router.push('/admin/quiz-form-field-list');
+                }
             },
             getQuizFormDataFromEdit (newEditData) {
                 console.log(newEditData)

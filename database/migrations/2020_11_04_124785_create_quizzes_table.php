@@ -15,8 +15,6 @@ class CreateQuizzesTable extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('article_id');
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->uuid('quiz_form_id');
             $table->string('name')->index();
             $table->string('slug');

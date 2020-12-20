@@ -144,120 +144,125 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    // import $ from 'jquery'
+import axios from 'axios'
+// import $ from 'jquery'
 
 
-    export default {
-        name: "quizFormFieldAdd.vue",
-        props: ['isAddFieldCheck','quizFormId'],
-        components: {
+export default {
+    name: "quizFormFieldAdd.vue",
+    props: ['isAddFieldCheck','quizFormId'],
+    components: {
 
-        },
-        data() {
-            return {
-                isAdd                   : false,
-                isSearch                : false,
+    },
+    data() {
+        return {
+            isAdd                   : false,
+            isSearch                : false,
 
-                success_message         : '',
-                error_message           : '',
-                token                   : '',
-                quizform_details        :'',
-                selectedFormID          : '',
+            success_message         : '',
+            error_message           : '',
+            token                   : '',
+            quizform_details        :'',
+            selectedFormID          : '',
+
+            isFormFieldList         : false,
 
 
-                quizFormFieldData       : {
-                    quizformfieldID     : '',
-                    quizlabelName       :'',
-                    quizfieldName       :'',
-                    quizfieldID         :'',
-                    quizfieldClass      :'',
-                    quizfieldType       :'--Select A Type--',
-                    quizfieldOptionValue:'',
-                    quizfieldDefaultValue:'',
-                    quizfieldMaxValue   :'',
-                    quizfieldSortValue  :'',
-                    quizfieldRequired   :'--Select Status--',
-                },
-
-            }
-        },
-
-        methods: {
-            clearAllChecker()
-            {
-                this.isAdd = false;
-                this.$emit('quiz-form-field-data', this.isAdd);
-
+            quizFormFieldData       : {
+                quizformfieldID     : '',
+                quizlabelName       :'',
+                quizfieldName       :'',
+                quizfieldID         :'',
+                quizfieldClass      :'',
+                quizfieldType       :'--Select A Type--',
+                quizfieldOptionValue:'',
+                quizfieldDefaultValue:'',
+                quizfieldMaxValue   :'',
+                quizfieldSortValue  :'',
+                quizfieldRequired   :'--Select Status--',
             },
-            quizformfieldStore() {
-                let _that = this;
-                axios.post('admin/quiz-form-fields',
-                    {
-                        quiz_form_id    : _that.selectedFormID,
-                        f_label         : _that.quizFormFieldData.quizlabelName,
-                        f_name          : _that.quizFormFieldData.quizfieldName,
-                        f_id            : _that.quizFormFieldData.quizfieldID,
-                        f_class         : _that.quizFormFieldData.quizfieldClass,
-                        f_type          : _that.quizFormFieldData.quizfieldType,
-                        f_option_value  : _that.quizFormFieldData.quizfieldOptionValue,
-                        f_default_value : _that.quizFormFieldData.quizfieldDefaultValue,
-                        f_max_value     : _that.quizFormFieldData.quizfieldMaxValue,
-                        f_sort_order    : _that.quizFormFieldData.quizfieldSortValue,
-                        f_required      : _that.quizFormFieldData.quizfieldRequired,
-                    },
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
-                    if (response.data.status_code == 201) {
 
-                        _that.error_message    = '';
-                        _that.success_message  = "Field Add Successfully";
-                        _that.$emit('quiz-form-field-data', _that.quizFormFieldData);
-                       // _that.router.push('/admin/quiz-form-field-list/');
-                        document.body.classList.remove('open-side-slider')
-
-
-                    }
-                    else
-                    {
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
-            },
-            quizformDetails() {
-                let _that       = this;
-                let quizformID  = _that.selectedFormID;
-
-                axios.get("admin/quiz-forms/"+quizformID,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    })
-                    .then(function (response) {
-                        if (response.data.status_code === 200) {
-                            _that.quizform_details= response.data.quiz_form_info
-                        } else {
-                            _that.success_message = "";
-                            _that.error_message = response.data.error;
-                        }
-                    })
-            },
-        },
-        created() {
-            this.isAdd = this.isAddFieldCheck;
-            this.selectedFormID = this.quizFormId;
-            this.quizformDetails();
         }
+    },
+
+    methods: {
+        clearAllChecker() {
+
+            this.isAdd = false;
+            this.isFormFieldList = false;
+
+            this.$emit('quiz-form-field-data', this.isFormFieldList);
+
+        },
+        quizformfieldStore() {
+            let _that = this;
+            axios.post('admin/quiz-form-fields',
+                {
+                    quiz_form_id    : _that.selectedFormID,
+                    f_label         : _that.quizFormFieldData.quizlabelName,
+                    f_name          : _that.quizFormFieldData.quizfieldName,
+                    f_id            : _that.quizFormFieldData.quizfieldID,
+                    f_class         : _that.quizFormFieldData.quizfieldClass,
+                    f_type          : _that.quizFormFieldData.quizfieldType,
+                    f_option_value  : _that.quizFormFieldData.quizfieldOptionValue,
+                    f_default_value : _that.quizFormFieldData.quizfieldDefaultValue,
+                    f_max_value     : _that.quizFormFieldData.quizfieldMaxValue,
+                    f_sort_order    : _that.quizFormFieldData.quizfieldSortValue,
+                    f_required      : _that.quizFormFieldData.quizfieldRequired,
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                }).then(function (response) {
+                if (response.data.status_code == 201) {
+
+                    _that.error_message    = '';
+                    _that.success_message  = "Field Added Successfully";
+
+                    _that.isFormFieldList = true;
+                    _that.$emit('quiz-form-field-data', _that.isFormFieldList);
+                    document.body.classList.remove('open-side-slider')
+
+
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+        quizformDetails() {
+            let _that       = this;
+            let quizformID  = _that.selectedFormID;
+
+            axios.get("admin/quiz-forms/"+quizformID,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                })
+                .then(function (response) {
+                    if (response.data.status_code === 200) {
+                        _that.quizform_details= response.data.quiz_form_info
+                    } else {
+                        _that.success_message = "";
+                        _that.error_message = response.data.error;
+                    }
+                })
+        },
+    },
+    created() {
+        this.isAdd = this.isAddFieldCheck;
+        this.selectedFormID = this.quizFormId;
+        this.quizformDetails();
     }
+}
 </script>
 
 <style scoped>

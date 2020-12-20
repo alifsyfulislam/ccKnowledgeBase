@@ -256,8 +256,8 @@
             getQuizFormFieldDataFromEdit (newEditData) {
                 console.log(newEditData)
                 this.isEditCheck = false;
-                this.router.push('/admin/quiz-form-field-list/');
-                //this.getQuizFormFieldList();
+                //this.router.push('/admin/quiz-form-field-list/');
+                this.getQuizFormFieldList();
             },
 
             getQuizFormFieldList(pageUrl)
