@@ -116,15 +116,16 @@ export default {
             username          : this.formData.username,
             password          : this.formData.password,
           }).then(function (response) {
-            console.log(response)
+
             if (response.data.status_code == 200)
             {
               _that.userInfo        = response.data.user_info;
               _that.token           = response.data.token;
               _that.error_message   = '';
               _that.success_message = response.data.messages;
+              console.log(response.data.user_info);
               localStorage.setItem('authToken', _that.token);
-              localStorage.setItem('userInformatioin', _that.userInfo);
+              localStorage.setItem('userInformation', JSON.stringify(response.data.user_info));
               _that.$router.push('/admin/dashboard');
             }
             else

@@ -56,7 +56,7 @@
                                     <td class="text-center">{{ a_role.created_at }}</td>
 
                                     <td class="text-center">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="role_id=a_role.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button v-if="a_role.name!='Super Admin' " class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="role_id=a_role.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
                                         <button  v-if="a_role.name!='Super Admin' " class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="role_id=a_role.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
