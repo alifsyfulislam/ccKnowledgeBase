@@ -46,7 +46,7 @@
                   <label>Category <span class="required">*</span></label>
 
                   <select class="form-control" v-model="selectedCategory">
-                    <option value="">Select A Category</option>
+                    <option value="" disabled>Select A Category</option>
                     <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                       {{a_category.name}}
                     </option>

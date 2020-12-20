@@ -169,6 +169,11 @@
     column-gap: 40px;
 }
 
+.permission-list li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
 @media (max-width: 1600px) {
     .close-bar .right-side-close-btn {
         margin-right: 0;
