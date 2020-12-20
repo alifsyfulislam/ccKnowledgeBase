@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label for="roles">Roles <span class="required">*</span></label>
                                 <select class="form-control" v-model="roles" id="roles">
-                                    <option value="">Select A Role</option>
+                                    <option value="" disabled>Select A Role</option>
                                     <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
                                 </select>
                             </div>

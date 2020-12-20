@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+<!--                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Select An Article</label>
 
@@ -42,14 +42,14 @@
                                     </option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Select Quiz Form</label>
 
                                 <select class="form-control" v-model="quizData.quiz_form_id">
-                                    <option value="">Select A Quiz Form</option>
+                                    <option value="" disabled>Select A Quiz Form</option>
                                     <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
                                         {{a_quiz_form.name}}
                                     </option>
@@ -84,7 +84,7 @@
                                 <label>Select Quiz Form</label>
 
                                 <select class="form-control" v-model="quizData.status">
-                                    <option value="">Select A Status</option>
+                                    <option value="" disabled>Select A Status</option>
                                     <option value="0">Inactive</option>
                                     <option value="1">Active</option>
                                 </select>
@@ -151,7 +151,7 @@ export default {
 
           axios.post('admin/quizzes',
               {
-                  article_id    : this.quizData.article_id,
+                  //article_id    : this.quizData.article_id,
                   name          : this.quizData.name,
                   quiz_form_id  : this.quizData.quiz_form_id,
                   duration      : this.quizData.duration,

@@ -43,7 +43,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Name</th>
-                                        <th class="text-center">Article</th>
+<!--                                        <th class="text-center">Article</th>-->
                                         <th class="text-center">Duration</th>
                                         <th class="text-center">Total Marks</th>
                                         <th class="text-center">Number of Questions</th>
@@ -56,7 +56,7 @@
                                 <tr v-for="a_quiz in quizList" :key="a_quiz">
 
                                     <td class="text-center"> {{ a_quiz.name  }} </td>
-                                    <td class="text-center"> {{ a_quiz.article ? a_quiz.article.en_title : '' }} </td>
+<!--                                    <td class="text-center"> {{ a_quiz.article ? a_quiz.article.en_title : '' }} </td>-->
                                     <td class="text-center"> {{ a_quiz.duration }} </td>
                                     <td class="text-center"> {{ a_quiz.total_marks  }} </td>
                                     <td class="text-center"> {{ a_quiz.number_of_questions  }} </td>
@@ -196,7 +196,7 @@ name: "quizList",
 
         filter : {
             isAdmin      : 1,
-            article_id  : '',
+           // article_id  : '',
             status    : '',
             name      : '',
         },
@@ -246,7 +246,7 @@ name: "quizList",
 
       clearFilter()
       {
-          this.filter.article_id = "";
+          //this.filter.article_id = "";
           this.filter.status   = "";
           this.filter.name     = "";
           this.success_message = "";
@@ -295,7 +295,7 @@ name: "quizList",
                   params :
                       {
                           isAdmin : 1,
-                          article_id : this.filter.article_id,
+                        //  article_id : this.filter.article_id,
                           status     : this.filter.status,
                           name       : this.filter.name
                       },

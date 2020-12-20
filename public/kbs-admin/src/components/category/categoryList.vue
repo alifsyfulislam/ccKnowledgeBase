@@ -224,7 +224,7 @@ export default {
       this.isSearch   = false;
     },
 
-    getDataFromAdd (newData) {
+      getCategoryDataFromAdd (newData) {
       console.log(newData)
       this.isAddCheck = false;
       this.getCategoryList();

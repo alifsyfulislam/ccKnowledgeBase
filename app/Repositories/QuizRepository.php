@@ -44,7 +44,7 @@ class QuizRepository
         $dataObj =  new Quiz;
 
         $dataObj->id  = $data['id'];
-        $dataObj->article_id = $data['article_id'];
+       // $dataObj->article_id = $data['article_id'];
         $dataObj->quiz_form_id = $data['quiz_form_id'];
         $dataObj->name = $data['name'];
         $dataObj->slug = $data['slug'];
@@ -84,8 +84,8 @@ class QuizRepository
     public function getWithPagination($request)
     {
 
-        $query = Quiz::with('QuizForm', 'article');
-        $whereFilterList = ['article_id', 'status'];
+        $query = Quiz::with('QuizForm');
+        $whereFilterList = ['status'];
         $likeFilterList  = ['name'];
         $query = self::filterQuiz($request, $query, $whereFilterList, $likeFilterList);
 
@@ -95,11 +95,11 @@ class QuizRepository
 
     public static function filterQuiz($request, $query, array $whereFilterList, array $likeFilterList)
     {
-        
+
         $query = self::likeQueryFilter($request, $query, $likeFilterList);
         $query = self::whereQueryFilter($request, $query, $whereFilterList);
 
         return $query;
-        
+
     }
 }
