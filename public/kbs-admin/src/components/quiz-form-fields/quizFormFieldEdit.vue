@@ -82,14 +82,14 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="quizFormFieldOptionValue">Field Option Value <span class="required">*</span></label>
+                                <label for="quizFormFieldOptionValue">Field Option Value</label>
                                 <input id="quizFormFieldOptionValue" type="text" v-model="quizFormFieldDetails.f_option_value"  class="form-control" placeholder="Enter Field Option Value">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="quizFormFieldOptionDefaultValue">Field Option Default Value <span class="required">*</span></label>
+                                <label for="quizFormFieldOptionDefaultValue">Field Option Default Value</label>
                                 <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldDetails.f_default_value"  class="form-control" placeholder="Enter Field Option Default Value">
                             </div>
                         </div>
@@ -97,14 +97,14 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="quizFormFieldMaxValue">Field Max Value <span class="required">*</span></label>
+                                <label for="quizFormFieldMaxValue">Field Max Value</label>
                                 <input id="quizFormFieldMaxValue" type="number" v-model="quizFormFieldDetails.f_max_value"  class="form-control" placeholder="Enter Max Number">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="quizFormFieldSortValue">Field Sort Value <span class="required">*</span></label>
+                                <label for="quizFormFieldSortValue">Field Sort Value</label>
                                 <input id="quizFormFieldSortValue" type="number" v-model="quizFormFieldDetails.f_sort_order"  class="form-control" placeholder="Enter Sort Number">
                             </div>
                         </div>

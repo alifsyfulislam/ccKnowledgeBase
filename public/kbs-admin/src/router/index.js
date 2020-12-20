@@ -26,11 +26,8 @@ import quizList from '@/components/quiz/quizList.vue'
 import quizAdd from '@/components/quiz/quizAdd.vue'
 import quizEdit from '@/components/quiz/quizEdit.vue'
 
-
 import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.vue'
 
-
-import Display from '@/components/front/Display.vue'
 
 let router = createRouter({
   scrollBehavior() {
@@ -38,17 +35,9 @@ let router = createRouter({
   },
   history: createWebHistory(process.env.BASE_URL),
   routes: [
-    {
-      path: '/display',
-      name: 'Display',
-      component: Display,
-      meta: {
-        requiresAuth: false
-      }
-    },
 
     {
-      path: '/admin/quizAdd',
+      path: '/admin/quiz-add',
       name: 'quizAdd',
       component: quizAdd,
       meta: {
@@ -57,7 +46,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/quizList',
+      path: '/admin/quiz-list',
       name: 'quizList',
       component: quizList,
       meta: {
@@ -66,7 +55,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/quizEdit/:id',
+      path: '/admin/quiz-edit/:id',
       name: 'quizEdit',
       component: quizEdit,
       meta: {
@@ -93,7 +82,7 @@ let router = createRouter({
     },
 
     {
-      path: '/admin/roleAdd',
+      path: '/admin/role-add',
       name: 'roleAdd',
       component: roleAdd,
       meta: {
@@ -101,7 +90,7 @@ let router = createRouter({
       }
     },
     {
-      path: '/admin/roleList',
+      path: '/admin/role-list',
       name: 'roleList',
       component: roleList,
       meta: {
@@ -109,7 +98,7 @@ let router = createRouter({
       }
     },
     {
-      path: '/admin/roleEdit/:id',
+      path: '/admin/role-edit/:id',
       name: 'roleEdit',
       component: roleEdit,
       meta: {

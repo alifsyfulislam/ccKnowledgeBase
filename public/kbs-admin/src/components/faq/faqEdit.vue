@@ -272,12 +272,11 @@ export default {
   created() {
       this.faq_id = this.faqId;
 
-      console.log("faq_id" + this.faq_id);
+     // console.log("faq_id" + this.faq_id);
       this.getFaqDetails();
       this.getCategoryList();
       this.isEdit = this.isEditCheck;
 
-      console.log(this.isEditCheck)
   }
 }
 </script>

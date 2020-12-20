@@ -325,14 +325,12 @@ name: "faqList.vue",
 
   getFaqDataFromAdd (newData) {
       console.log(newData)
-      //this.faqList.push(newData);
       this.isAddCheck = false;
       this.getFaqList();
   },
 
   getFaqDataFromEdit (newEditData) {
       console.log(newEditData)
-      //this.articleList.push(newData);
       this.isEditCheck = false;
       this.getFaqList();
   },

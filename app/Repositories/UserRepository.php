@@ -93,7 +93,7 @@ class UserRepository implements RepositoryInterface
         $query = self::filterUser($request, $query, $whereFilterList, $likeFilterList);
 
         return $query->orderBy('id','DESC')
-               ->paginate(2);
+               ->paginate(10);
 
     }
 

@@ -95,10 +95,7 @@
                 <span>{{ error_message }}</span>
             </div>
 
-
-
-
-            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                         <img src="../../assets/img/cancel.svg" alt="cancel">
@@ -246,7 +243,6 @@
                 this.isDelete   = false;
             },
 
-// work
             getQuizFormFieldDataFromAdd (newData) {
                 console.log(newData)
                 this.isAddFieldCheck = false;
@@ -256,7 +252,6 @@
             getQuizFormFieldDataFromEdit (newEditData) {
                 console.log(newEditData)
                 this.isEditCheck = false;
-                //this.router.push('/admin/quiz-form-field-list/');
                 this.getQuizFormFieldList();
             },
 
@@ -272,7 +267,7 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data.quiz_form_field_list.data);
+                           // console.log(response.data.quiz_form_field_list.data);
                             _that.pagination  = response.data.quiz_form_field_list;
                             _that.allFields   = response.data.quiz_form_field_list.data;
                             // _that.success_message = "";

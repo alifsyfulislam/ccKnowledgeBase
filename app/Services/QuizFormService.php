@@ -146,7 +146,11 @@ class QuizFormService
 
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => '424',
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -162,7 +166,10 @@ class QuizFormService
     public function paginateData()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_list'=>$this->quizFormRepository->getWithPagination()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'quiz_form_list'=>$this->quizFormRepository->getWithPagination()]);
 
     }
 }

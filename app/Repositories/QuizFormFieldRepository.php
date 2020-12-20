@@ -81,6 +81,6 @@ class QuizFormFieldRepository
      */
     public function getWithPagination($request)
     {
-        return QuizFormField::orderBy('id', 'DESC')->paginate(2);
+        return QuizFormField::orderBy('id', 'DESC')->paginate(10);
     }
 }
