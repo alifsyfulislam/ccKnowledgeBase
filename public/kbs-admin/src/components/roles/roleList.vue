@@ -45,7 +45,7 @@
                                 <tr>
                                     <th class="text-center">Role Type</th>
                                     <th class="text-center">Created Date</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center" style="width: 120px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -117,17 +117,16 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label> Edit Permissions</label>
-
-                                <div v-for="permission in allPermissions" :key="permission" class="text-left col-md-8 offset-2">
-                                    <div v-if="allSelectedPermissionIds.includes(permission.id)">
-                                        <input  checked type="checkbox" :value="permission.id"  v-model="selectedCheckboxes" @change="showSelectedItem()"> <label> {{ permission.name }} </label><br><br>
-                                    </div>
-                                    <div v-else>
-                                        <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id"  @change="showSelectedItem()"> <label> {{ permission.name }} </label><br><br>
-                                    </div>
-
-
-                                </div>
+                                <ul class="list-unstyled permission-list m-0 p-0">
+                                    <li  class="text-left pb-2" v-for="permission in allPermissions" :key="permission">
+                                        <div v-if="allSelectedPermissionIds.includes(permission.id)" class="d-flex align-items-start">
+                                            <input  checked type="checkbox" :value="permission.id"  v-model="selectedCheckboxes" @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
+                                        </div>
+                                        <div v-else class="d-flex align-items-start">
+                                            <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id"  @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
+                                        </div>
+                                    </li>
+                                </ul>
 
                             </div>
                         </div>
