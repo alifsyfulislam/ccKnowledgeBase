@@ -33,14 +33,22 @@ class ArticleService
     public function getAll()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->all()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'article_list'=>$this->articleRepository->all()
+        ]);
 
     }
 
     public function getFive()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'article_list'=>$this->articleRepository->five()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'article_list'=>$this->articleRepository->five()
+        ]);
 
     }
 
@@ -109,7 +117,7 @@ class ArticleService
      */
     public function getById($id)
     {
-        
+
         if($this->articleRepository->get($id))
 
             return response()->json([

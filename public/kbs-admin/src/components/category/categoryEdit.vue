@@ -96,6 +96,7 @@ export default {
 
           _that.error_message    = '';
           _that.success_message  = response.data.messages;
+          _that.isEdit = false;
           _that.$emit('category-edit-data',"category updated successfully");
           document.body.classList.remove('open-side-slider')
 

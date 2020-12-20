@@ -120,7 +120,7 @@
 
         <QuizzAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @quiz-data="getQuizDataFromAdd"></QuizzAdd>
 
-        <QuizzEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizId="quiz_id" @quiz-edit-data="getQuizDataFromFromEdit"></QuizzEdit>
+        <QuizzEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizId="quiz_id" @quiz-edit-data="getQuizDataFromEdit"></QuizzEdit>
 
         <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
             <div class="close-bar d-flex align-items-center justify-content-end">
@@ -143,7 +143,7 @@
                                 <p class="text-center"> Confirmation for Deleting Quiz</p>
 
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteQuiz"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteQuiz()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
