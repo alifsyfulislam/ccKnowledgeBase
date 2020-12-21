@@ -146,7 +146,7 @@
                         axios.get('article/'+_that.articleIDArr[_that.articleIDArr.length-1])
                             .then(function (response) {
                                 _that.aArticle = response.data.article_info;
-                                _that.$router.push('/article-detail/'+_that.articleID)
+                                _that.$router.push('/article-detail/'+_that.articleIDArr[_that.articleIDArr.length-1])
                             })
                     }
                     else{

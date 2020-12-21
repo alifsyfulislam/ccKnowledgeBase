@@ -27,7 +27,7 @@
             <div class="topics-category-categories my-20">
               <ul class="nav nav-pills flex-column">
                 <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
-                  <a class="nav-link" href="#" @click.prevent="categorySearch(a_cat_art.id)">
+                  <a class="nav-link" :class = "(categoryID==a_cat_art.id)?'active':''" href="#" @click.prevent="categorySearch(a_cat_art.id)">
                     <h6>{{a_cat_art.name}}</h6>
                   </a>
                 </li>
@@ -183,10 +183,14 @@
                 else{
                     _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
 
-                    let pageUrl;
-                    pageUrl = pageUrl == undefined ? 'article/category/'+_that.selectedCategoryArr[_that.selectedCategoryArr.length-1]+'?page=1' : pageUrl;
+                    _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
 
-                    if (_that.selectedCategoryArr[_that.selectedCategoryArr.length-1]){
+                    let pageUrl;
+                    pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
+
+
+
+                    if (_that.categoryID){
                         axios.get(pageUrl)
                             .then(function (response) {
                                 _that.selectedCategory = response.data.article_list.data;
