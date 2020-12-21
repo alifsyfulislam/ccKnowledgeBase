@@ -15,7 +15,7 @@
                   </button>
                 </div>
               </div>
-<!--              <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
+              <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
             </div>
           </div>
         </section>
@@ -90,6 +90,8 @@
             return{
                 articleID:'',
                 aArticle:'',
+                articleIDArr:[],
+                articleCounter:0,
                 allCategoryArticle:'',
                 categoryHasArticle:[],
                 allArticle:'',
@@ -100,6 +102,8 @@
             articleSearch(v){
                 let _that = this;
                 _that.articleID = v;
+                _that.articleCounter++;
+                _that.articleIDArr.push(_that.articleID);
                 axios.get('article/'+_that.articleID)
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
@@ -132,6 +136,24 @@
                         }
                     })
             },
+            dynamicBackFunc() {
+                let _that =this;
+                if (_that.articleCounter == 1){
+                    _that.$router.go(-1);
+                }else{
+                    _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
+                    if (_that.articleIDArr[_that.articleIDArr.length-1]){
+                        axios.get('article/'+_that.articleIDArr[_that.articleIDArr.length-1])
+                            .then(function (response) {
+                                _that.aArticle = response.data.article_info;
+                                _that.$router.push('/article-detail/'+_that.articleID)
+                            })
+                    }
+                    else{
+                        _that.$router.push('/');
+                    }
+                }
+            }
         },
         created() {
             this.articleID = this.$route.params.articleID;

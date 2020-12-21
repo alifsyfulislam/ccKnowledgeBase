@@ -151,11 +151,8 @@
                 let pageUrl;
                 pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
 
-
                 _that.backCounter++;
-                console.log(_that.backCounter);
                 _that.selectedCategoryArr.push(_that.categoryID);
-
 
                 axios.get(pageUrl)
                     .then(function (response) {
@@ -178,13 +175,12 @@
             },
 
             dynamicBackFunc(){
-                // let _that = this;
+                let _that = this;
 
-                if (this.backCounter == 1){
-                    this.$router.go(-1);
+                if (_that.backCounter == 1){
+                    _that.$router.go(-1);
                 }
                 else{
-                    let _that = this;
                     _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
 
                     let pageUrl;
@@ -195,7 +191,6 @@
                             .then(function (response) {
                                 _that.selectedCategory = response.data.article_list.data;
                                 _that.pagination  = response.data.article_list;
-                                // _that.$router.push('/category-list/'+_that.categoryID)
                             })
                     }else{
                         _that.$router.push('/');
