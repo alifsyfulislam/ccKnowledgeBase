@@ -70,3 +70,43 @@
 .recent-articles li:hover a {
     color: #ffffff;
 }
+
+.topics-category-categories .nav-pills .nav-link {
+    position: relative;
+}
+
+.topics-category-categories .nav-pills .nav-link:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    content: "";
+    background: #3fc6d4;
+    opacity: 0;
+    transition: all 0.4s;
+}
+
+.topics-category-categories .nav-pills .nav-link h6 {
+    position: relative;
+    margin-bottom: 0;
+    transition: all 0.4s;
+}
+
+.topics-category-categories .nav-pills .nav-link {
+    border-left: 2px solid #3fc6d4;
+}
+
+.topics-category-categories .nav-pills .nav-link:hover:before {
+    opacity: 1;
+    width: 100%;
+}
+
+.topics-category-categories .nav-pills .nav-link.active:before {
+    opacity: 1;
+    width: 100%;
+}
+
+.topics-category-categories .nav-pills .nav-link:hover h6 {
+    color: #ffffff;
+}

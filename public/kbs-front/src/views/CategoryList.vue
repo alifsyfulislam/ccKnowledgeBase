@@ -27,7 +27,7 @@
             <div class="topics-category-categories my-20">
               <ul class="nav nav-pills flex-column">
                 <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
-                  <a class="nav-link active" href="#" @click.prevent="categorySearch(a_cat_art.id)">
+                  <a class="nav-link" href="#" @click.prevent="categorySearch(a_cat_art.id)">
                     <h6>{{a_cat_art.name}}</h6>
                   </a>
                 </li>
