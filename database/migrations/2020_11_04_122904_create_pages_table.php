@@ -15,10 +15,10 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->text('logo_url');
-            $table->enum('position', ['left', 'right', 'center']);
+            $table->text('logo')->nullable();
+            $table->enum('position', ['left', 'right', 'center'])->default('left');;
             $table->string('title');
-            $table->text('banner_url')->nullable();
+            $table->text('banner')->nullable();
             $table->binary('description')->nullable();
             $table->timestamps();
         });

@@ -3,28 +3,28 @@
 
 namespace App\Services;
 
-
 use App\Helpers\Helper;
-use App\Repositories\QuizRepository;
+use App\Repositories\PageRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 class PageService
 {
 
     /**
-     * @var QuizRepository
+     * @var $pageRepository
      */
     protected $pageRepository;
 
 
     /**
      * QuizFormService constructor.
-     * @param QuizRepository $pageRepository
+     * @param PageRepository $pageRepository
      */
-    public function __construct(QuizRepository $pageRepository)
+    public function __construct(PageRepository $pageRepository)
     {
 
         $this->pageRepository = $pageRepository;
@@ -81,12 +81,19 @@ class PageService
         }
 
         $input = $request->all();
-        $input['slug'] = Helper::slugify($input['name']);
         $input['id'] = time().rand(1000,9000);
+
+        if($request->hasFile('logo')) {
+            $request['logo_url']  = Helper::base64ImageUpload("page/images", $request->logo);
+        }
+
+        if($request->hasFile('banner')) {
+            $request['banner_url'] = Helper::base64ImageUpload("page/images", $request->banner);
+        }
 
         $this->pageRepository->create($input);
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
     }
 
 
@@ -99,15 +106,7 @@ class PageService
     {
 
         $validator = Validator::make($request->all(),[
-
-            // 'article_id' => 'required',
-            'quiz_form_id' => 'required',
-            'name' => 'required',
-            'duration' => 'required',
-            'total_marks' => 'required',
-            'number_of_questions' => 'required',
-            'status' => 'required',
-
+            'title' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -115,7 +114,9 @@ class PageService
             return response()->json([
                 'status_code' => '400',
                 'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()]);
+                'error' =>  $validator->errors()->first()
+            ]);
+
         }
 
         DB::beginTransaction();
@@ -123,7 +124,16 @@ class PageService
         try {
 
             $input = $request->all();
-            $input['slug'] = Helper::slugify($input['name']);
+
+            if($request->hasFile('logo')) {
+                $input['logo']  = Helper::base64ImageUpload("page/images", $request->logo);
+            }
+
+            if($request->hasFile('banner')) {
+                $input['banner'] = Helper::base64ImageUpload("page/images", $request->banner);
+            }
+
+           // $this->pageRepository->create($input);
 
             $this->pageRepository->update($input, $request->id);
 
@@ -132,7 +142,11 @@ class PageService
             DB::rollBack();
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => '424',
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -161,7 +175,10 @@ class PageService
 
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json(['status_code' => '424',
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();

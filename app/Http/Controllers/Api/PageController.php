@@ -53,7 +53,7 @@ class PageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -71,7 +71,7 @@ class PageController extends Controller
      * Display the specified resource.
      *
      * @param Page $page
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -103,7 +103,7 @@ class PageController extends Controller
      *
      * @param Request $request
      * @param Page $page
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request)
     {
