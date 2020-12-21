@@ -15,18 +15,11 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('parent_id')->nullable()->index();
-            $table->integer('position')->nullable();
-            $table->integer('left')->nullable()->index();
-            $table->integer('right')->nullable()->index();
-            $table->integer('depth')->nullable();
-            $table->string('name')->index();
-            $table->string('slug');
-            $table->string('outline')->longText()->nullable();
+            $table->text('logo_url');
+            $table->enum('position', ['left', 'right', 'center']);
+            $table->string('title');
+            $table->text('banner_url')->nullable();
             $table->binary('description')->nullable();
-            $table->integer('user_id')->unsigned();
-            $table->integer('article_id')->unsigned();
-            $table->integer('team_id')->unsigned();
             $table->timestamps();
         });
     }
