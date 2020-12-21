@@ -4,19 +4,39 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Page;
+use App\Services\PageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
+    private $pageService;
+
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * PermissionController constructor.
+     * @param PageService $pageService
      */
+
+    public function __construct(PageService $pageService)
+    {
+
+        $this->pageService = $pageService;
+
+    }
+
     public function index()
     {
-        //
+        if(Auth::user()->can('page-list')) {
+
+            return $this->pageService->getAll();
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
@@ -37,7 +57,14 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(Auth::user()->can('page-create')) {
+
+            return $this->pageService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+        }
     }
 
     /**
@@ -46,9 +73,18 @@ class PageController extends Controller
      * @param Page $page
      * @return Response
      */
-    public function show(Page $page)
+    public function show($id)
     {
-        //
+        if(Auth::user()->can('page-list')) {
+
+            return $this->pageService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 
     /**
@@ -69,9 +105,18 @@ class PageController extends Controller
      * @param Page $page
      * @return Response
      */
-    public function update(Request $request, Page $page)
+    public function update(Request $request)
     {
-        //
+
+        if(Auth::user()->can('page-edit')) {
+
+            return $this->pageService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
