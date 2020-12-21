@@ -138,20 +138,18 @@
             },
             dynamicBackFunc() {
                 let _that =this;
-                if (_that.articleCounter == 1){
-                    _that.$router.go(-1);
-                }else{
-                    _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
-                    if (_that.articleIDArr[_that.articleIDArr.length-1]){
-                        axios.get('article/'+_that.articleIDArr[_that.articleIDArr.length-1])
-                            .then(function (response) {
-                                _that.aArticle = response.data.article_info;
-                                _that.$router.push('/article-detail/'+_that.articleIDArr[_that.articleIDArr.length-1])
-                            })
-                    }
-                    else{
-                        _that.$router.push('/');
-                    }
+
+                _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
+                _that.articleID = _that.articleIDArr[_that.articleIDArr.length-1];
+                if (_that.articleID){
+                    axios.get('article/'+_that.articleID)
+                        .then(function (response) {
+                            _that.aArticle = response.data.article_info;
+                            _that.$router.push('/article-detail/'+_that.articleID)
+                        })
+                }
+                else{
+                    _that.$router.push('/');
                 }
             }
         },

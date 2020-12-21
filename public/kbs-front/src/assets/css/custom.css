@@ -107,6 +107,7 @@
     width: 100%;
 }
 
-.topics-category-categories .nav-pills .nav-link:hover h6 {
+.topics-category-categories .nav-pills .nav-link:hover h6,
+.topics-category-categories .nav-pills .nav-link.active h6 {
     color: #ffffff;
 }

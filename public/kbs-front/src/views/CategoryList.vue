@@ -177,28 +177,21 @@
             dynamicBackFunc(){
                 let _that = this;
 
-                if (_that.backCounter == 1){
-                    _that.$router.go(-1);
-                }
-                else{
-                    _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
+                _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
 
-                    _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
+                _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
 
-                    let pageUrl;
-                    pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
+                let pageUrl;
+                pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
 
-
-
-                    if (_that.categoryID){
-                        axios.get(pageUrl)
-                            .then(function (response) {
-                                _that.selectedCategory = response.data.article_list.data;
-                                _that.pagination  = response.data.article_list;
-                            })
-                    }else{
-                        _that.$router.push('/');
-                    }
+                if (_that.categoryID){
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.selectedCategory = response.data.article_list.data;
+                            _that.pagination  = response.data.article_list;
+                        })
+                }else{
+                    _that.$router.push('/');
                 }
             }
         },
