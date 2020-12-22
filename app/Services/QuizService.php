@@ -37,7 +37,11 @@ class QuizService
      */
     public function getAll()
     {
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_list'=>$this->quizRepository->all()]);
+        return response()->json([
+            'status_code' => 302,
+            'messages'=>config('status.status_code.302'),
+            'quiz_form_list'=>$this->quizRepository->all()
+        ]);
     }
 
 

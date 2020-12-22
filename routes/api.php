@@ -25,6 +25,8 @@ Route::get('faqs/{any}','Api\FaqController@show');
 Route::post('save-file', 'Api\ArticleController@saveFiles');
 Route::post('delete-file', 'Api\ArticleController@deleteFiles');
 
+Route::get('quiz-list','Api\QuizController@getQuizList');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
