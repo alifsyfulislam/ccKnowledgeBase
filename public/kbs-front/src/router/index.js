@@ -7,6 +7,7 @@ import Contact from '../views/Contact'
 import Faq from '../views/Faq.vue'
 import Search from '../views/Search'
 import NotFound from '../views/NotFound'
+import Quiz from '../views/Quiz'
 
 
 let router = createRouter({
@@ -44,6 +45,11 @@ let router = createRouter({
             path: '/search',
             name: 'Search',
             component: Search
+        },
+        {
+            path: '/quiz',
+            name: 'Quiz',
+            component: Quiz
         },
         {
             path: "/:catchAll(.*)",
