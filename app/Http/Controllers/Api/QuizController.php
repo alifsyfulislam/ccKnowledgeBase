@@ -20,7 +20,7 @@ class QuizController extends Controller
      */
     public function __construct(QuizService $quizService)
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->quizService = $quizService;
 
     }
@@ -42,6 +42,12 @@ class QuizController extends Controller
         }
 
     }
+
+    public function getQuizList()
+    {
+        return $this->quizService->getAll();
+    }
+
 
     /**
      *

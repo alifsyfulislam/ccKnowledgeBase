@@ -17,8 +17,8 @@ class QuizRepository
     public function all()
     {
 
-        return Quiz::with('QuizForm', 'article')
-            ->orderBy('id', 'DESC')
+        return Quiz::with('QuizForm')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
     }
