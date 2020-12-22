@@ -27,6 +27,8 @@ Route::post('delete-file', 'Api\ArticleController@deleteFiles');
 
 Route::get('quiz-list','Api\QuizController@getQuizList');
 
+Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizFieldListFromQuizForm');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
