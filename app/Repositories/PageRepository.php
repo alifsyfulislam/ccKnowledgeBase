@@ -41,11 +41,11 @@ class PageRepository
         $dataObj =  new Page;
 
         $dataObj->id  = $data['id'];
-        $dataObj->logo = $data['logo_url'];
-        $dataObj->position = $data['position'];
+        $dataObj->logo = $data['logo_url'] ?? null;
+        $dataObj->position = $data['position'] ?? 'left';
         $dataObj->title = $data['title'];
-        $dataObj->banner = $data['banner_url'];
-        $dataObj->description = $data['description'];
+        $dataObj->banner = $data['banner_url'] ?? null;
+        $dataObj->description = $data['description'] ?? null;
 
         return $dataObj->save();
     }

@@ -84,11 +84,11 @@ class PageService
         $input['id'] = time().rand(1000,9000);
 
         if($request->hasFile('logo')) {
-            $request['logo_url']  = Helper::base64ImageUpload("page/images", $request->logo);
+            $input['logo_url']  = Helper::base64ImageUpload("page/images", $request->logo);
         }
 
         if($request->hasFile('banner')) {
-            $request['banner_url'] = Helper::base64ImageUpload("page/images", $request->banner);
+            $input['banner_url'] = Helper::base64ImageUpload("page/images", $request->banner);
         }
 
         $this->pageRepository->create($input);
