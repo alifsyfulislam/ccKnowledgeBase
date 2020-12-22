@@ -4,6 +4,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class UserTableSeeder extends Seeder
@@ -16,32 +17,41 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        User::truncate();
+       // User::truncate();
         $userPermission = Permission::all();
         $userRole = Role::where('slug', 'super-admin')->first();
 
+        DB::table('roles_permissions')->truncate();
+        DB::table('users_permissions')->truncate();
+
         $userRole->permissions()->attach($userPermission);
 
-        $userId = time().rand(1000,9000);
+        $user = User::where('email', 'admin@gmail.com')->first();
 
-        User::create([
-            'id' => $userId,
-            'username' => 'admin',
-            'first_name' => 'Md Ziaur',
-            'last_name' => 'Rahman',
-            'slug' => 'zia-rahman',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('123456'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10)
-        ]);
+        if(!$user){
 
-        $user = User::where('id', $userId)->first();
-        $user->roles()->attach($userRole);
+            $userId = time().rand(1000,9000);
+
+            User::create([
+                'id' => $userId,
+                'username' => 'admin',
+                'first_name' => 'Md Ziaur',
+                'last_name' => 'Rahman',
+                'slug' => 'zia-rahman',
+                'email' => 'admin@gmail.com',
+                'password' => bcrypt('123456'),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10)
+            ]);
+
+            $user->roles()->attach($userRole);
+            $user->media()->create([
+                'url' => url('/').'/media/avatar/placeholder.png'
+            ]);
+        }
+
+
         $user->permissions()->attach($userPermission);
-        $user->media()->create([
-            'url' => url('/').'/media/avatar/placeholder.png'
-        ]);
 
         Schema::enableForeignKeyConstraints();
 

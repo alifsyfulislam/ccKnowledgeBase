@@ -69,6 +69,7 @@ class PermissionTableSeeder extends Seeder
             'Page List',
             'Page Create',
             'Page Edit',
+            'Page Delete',
 
         ];
 
