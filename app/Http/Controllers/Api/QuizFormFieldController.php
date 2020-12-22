@@ -25,7 +25,7 @@ class QuizFormFieldController extends Controller
      */
     public function __construct(QuizFormFieldService $quizFormFieldService)
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
         $this->quizFormFieldService = $quizFormFieldService;
 
     }
@@ -143,5 +143,12 @@ class QuizFormFieldController extends Controller
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
         }
+    }
+
+    public function getQuizFieldListFromQuizForm($id)
+    {
+
+        return $this->quizFormFieldService->getFieldUsingForm($id);
+
     }
 }
