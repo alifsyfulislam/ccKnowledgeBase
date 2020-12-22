@@ -6,7 +6,7 @@ import CategoryList from '../views/CategoryList'
 import Contact from '../views/Contact'
 import Faq from '../views/Faq.vue'
 import Search from '../views/Search'
-// import NotFound from '../views/NotFound'
+import NotFound from '../views/NotFound'
 
 
 let router = createRouter({
@@ -45,11 +45,11 @@ let router = createRouter({
             name: 'Search',
             component: Search
         },
-        // {
-        //     path: "/:catchAll(.*)",
-        //     name: 'NotFound',
-        //     component: NotFound
-        // },
+        {
+            path: "/:catchAll(.*)",
+            name: 'NotFound',
+            component: NotFound
+        },
     ],
     mode: 'history',
     base:'kbs'

@@ -15,20 +15,30 @@
 
             <div class="collapse navbar-collapse" id="mainNavigation">
               <ul class="navbar-nav ml-auto align-items-center">
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">Quiz</a>
+                      <div class="dropdown-menu slideDownIn">
+                          <a class="dropdown-item" href="#">EN - English</a>
+                      </div>
+                  </li>
+
+
                   <li class="nav-item">
                       <router-link class="nav-link" :to="{ name: 'Faq'}">
                           <span>FAQ</span>
                       </router-link>
                   </li>
+
+
                 <li class="nav-item"><a class="nav-link nav-button bordered" href="#">LOGIN</a></li>
                 <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbardroplanguage" data-toggle="dropdown" aria-expanded="false">EN</a>
-                  <div class="dropdown-menu slideDownIn">
-                    <a class="dropdown-item" href="#">EN - English</a>
-                    <a class="dropdown-item" href="#">AR - Arabic</a>
-                  </div>
-                </li>
+<!--                <li class="nav-item dropdown">-->
+<!--                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">EN</a>-->
+<!--                  <div class="dropdown-menu slideDownIn">-->
+<!--                    <a class="dropdown-item" href="#">EN - English</a>-->
+<!--                    <a class="dropdown-item" href="#">AR - Arabic</a>-->
+<!--                  </div>-->
+<!--                </li>-->
               </ul>
             </div>
           </div>
@@ -38,8 +48,33 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
-        name: "Menu"
+        name: "Menu",
+
+        data(){
+            return{
+                allQuizzes : ''
+            }
+        },
+
+        methods:{
+            getQuizList()
+            {
+                let _that =this;
+                axios.get('quiz-list', { cache: false })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            _that.allQuizzes = response.data;
+                            console.log(_that.allQuizzes);
+                        }
+                    })
+            },
+        },
+
+        created(){
+            this.getQuizList();
+        }
     }
 </script>
 
