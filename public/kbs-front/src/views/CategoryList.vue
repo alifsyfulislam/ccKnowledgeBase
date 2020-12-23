@@ -199,6 +199,7 @@
             this.categoryID = this.$route.params.categoryID;
             this.getCategoryArticleList();
             this.categorySearch(this.categoryID);
+            localStorage.clear();
         }
     }
 </script>

@@ -47,7 +47,13 @@
         methods:{
             searchData(){
                 let _that = this;
-                _that.$router.push({ name: 'Search', params: { query_string: _that.fromData.search } });
+                if (localStorage.query_string){
+                    localStorage.setItem('query_string','');
+                    localStorage.setItem('query_string',_that.fromData.search);
+                }else{
+                    localStorage.setItem('query_string',_that.fromData.search);
+                }
+                _that.$router.push({ name: 'Search'});
             },
         }
     }

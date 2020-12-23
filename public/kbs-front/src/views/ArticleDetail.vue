@@ -158,6 +158,7 @@
             this.articleSearch(this.articleID);
             this.getCategoryArticleList();
             this.getRecentArticleList();
+            localStorage.clear();
         }
     }
 </script>
