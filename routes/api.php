@@ -41,7 +41,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
     Route::post('article/update-data', 'Api\ArticleController@update');
 
-    Route::apiResource('pages','Api\PageController');
+    Route::apiResource('pages','Api\PageController', ['except' => ['update']]);
+
+    Route::post('pages/update-data', 'Api\PageController@update');
 
     Route::apiResource('faqs','Api\FaqController');
     Route::apiResource('quiz-forms','Api\QuizFormController');

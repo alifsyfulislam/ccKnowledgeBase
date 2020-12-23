@@ -27,6 +27,7 @@ import quizAdd from '@/components/quiz/quizAdd.vue'
 import quizEdit from '@/components/quiz/quizEdit.vue'
 
 import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.vue'
+import pageConfiguration from '@/components/settings/pageConfiguration.vue'
 
 
 let router = createRouter({
@@ -35,6 +36,15 @@ let router = createRouter({
   },
   history: createWebHistory(process.env.BASE_URL),
   routes: [
+
+      {
+          path: '/admin/page-configuration',
+          name: 'pageConfiguration',
+          component: pageConfiguration,
+          meta: {
+              requiresAuth: true
+          }
+      },
 
     {
       path: '/admin/quiz-add',

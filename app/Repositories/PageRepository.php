@@ -16,7 +16,7 @@ class PageRepository
     public function all()
     {
 
-        return Page::all();
+        return Page::Query()->first();
 
     }
 
