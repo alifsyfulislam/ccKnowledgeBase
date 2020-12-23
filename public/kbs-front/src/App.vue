@@ -1,22 +1,22 @@
 <template>
-  <div id="app">
-    <Menu></Menu>
-    <router-view/>
-    <Footer></Footer>
-  </div>
+    <div id="app">
+        <Menu></Menu>
+        <router-view/>
+        <Footer></Footer>
+    </div>
 </template>
 
 <script>
-  import Menu from '@/components/Menu.vue'
-  import Footer from '@/components/Footer.vue'
+import Menu from '@/components/Menu.vue'
+import Footer from '@/components/Footer.vue'
 
-  export default {
+export default {
     name: 'App',
     components: {
-      Menu,
-      Footer
+        Menu,
+        Footer
     }
-  }
+}
 </script>
 
 <style>
