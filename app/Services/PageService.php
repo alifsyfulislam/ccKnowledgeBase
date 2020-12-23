@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Helpers\Helper;
+use App\Models\Page;
 use App\Repositories\PageRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -38,9 +39,9 @@ class PageService
     public function getAll()
     {
         return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'quiz_form_list'=>$this->pageRepository->all()
+            'status_code'      => 200,
+            'messages'         => config('status.status_code.200'),
+            'page_config_info' => $this->pageRepository->all()
         ]);
     }
 
@@ -125,12 +126,18 @@ class PageService
 
             $input = $request->all();
 
+            $config_data =  Page::find($request->id);
+
             if($request->hasFile('logo')) {
                 $input['logo']  = Helper::base64ImageUpload("page/images", $request->logo);
+            } else{
+                $input['logo']  = $config_data->logo;
             }
 
             if($request->hasFile('banner')) {
-                $input['banner'] = Helper::base64ImageUpload("page/images", $request->banner);
+                $input['banner']  = Helper::base64ImageUpload("page/images", $request->banner);
+            }else{
+                $input['banner']  = $config_data->banner;
             }
 
            // $this->pageRepository->create($input);
