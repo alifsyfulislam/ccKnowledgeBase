@@ -33,14 +33,10 @@
                                 <img class="img-fluid" src="@/assets/image.png" style="height: 50px; width: 50px" alt="avatar">
                             </div>
                             <div class="tc-wrapper">
-                                <h5 v-cloak class="my-0 pb-1">{{faqDetails.user.first_name}} {{faqDetails.user.last_name}}</h5>
+                                <h5 v-cloak class="my-0 pb-1" v-if="faqDetails.user">{{faqDetails.user.first_name}} {{faqDetails.user.last_name}}</h5>
                                 <p class="mb-0">Post on: {{faqDetails.created_at}}</p>
                             </div>
                         </div>
-
-                        <!--              <div class="ta-content-wrapper">
-                                        <h3 class="">{{aArticle.en_title}}</h3>
-                                      </div>-->
 
                         <div class="ta-content-wrapper">
                             <p class="text-justify" v-html="faqDetails.en_body"></p>
