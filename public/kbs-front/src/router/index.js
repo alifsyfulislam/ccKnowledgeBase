@@ -8,6 +8,7 @@ import Faq from '../views/Faq.vue'
 import Search from '../views/Search'
 import NotFound from '../views/NotFound'
 import Quiz from '../views/Quiz'
+import StartExam from '../views/StartExam'
 
 
 let router = createRouter({
@@ -50,6 +51,11 @@ let router = createRouter({
             path: '/quiz',
             name: 'Quiz',
             component: Quiz
+        },
+        {
+            path: '/start-exam',
+            name: 'StartExam',
+            component: StartExam,
         },
         {
             path: "/:catchAll(.*)",

@@ -120,6 +120,7 @@
             searchData(pageUrl){
                 let _that = this;
                 let query_string = _that.query_string;
+                localStorage.setItem("query_string",_that.query_string);
                 pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
                 axios.get(pageUrl).then((response)=>{
                     _that.allArticles = response.data.article_list.data;
@@ -130,7 +131,7 @@
         },
         created()
         {
-            this.query_string = this.$route.params.query_string;
+            this.query_string = localStorage.getItem("query_string")
             this.searchData();
         },
     }
