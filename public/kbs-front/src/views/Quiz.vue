@@ -63,14 +63,14 @@
             },
 
             quizStart(quizInfo){
-                if (localStorage.quiz_info){
-                    console.log(localStorage.quiz_info);
-                    localStorage.setItem('quiz_info','');
-                    localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                }else{
-                    localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                }
-                this.$router.push({name: 'StartExam'});
+                // if (localStorage.quiz_info){
+                //     console.log(localStorage.quiz_info);
+                //     localStorage.setItem('quiz_info','');
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }else{
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }
+                this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
             }
         },
         created(){
