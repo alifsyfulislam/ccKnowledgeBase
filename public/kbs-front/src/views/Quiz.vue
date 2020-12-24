@@ -55,7 +55,6 @@
                 let _that =this;
                 axios.get('quiz-list', { cache: false })
                     .then(function (response) {
-                        console.log(response.data.quiz_form_list);
                         if(response.data.status_code === 200){
                             _that.allQuizzes = response.data.quiz_form_list;
                         }

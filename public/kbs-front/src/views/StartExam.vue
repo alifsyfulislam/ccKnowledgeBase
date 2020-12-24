@@ -5,7 +5,8 @@
             <div v-if="isFinish">
                 Your Score {{ showResult }}
             </div>
-
+<!--            Math.min(dictionary.length, 20)-->
+<!--            quizFormFieldInfo-->
 <!--            quiz progress-->
             <div v-else>
                 <div v-if="quizInfo">
@@ -37,6 +38,21 @@
 
                         <div v-if="a_form_field.f_type === 'Number'">
                             <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                        </div>
+
+                        <div v-if="a_form_field.f_type === 'Textarea'">
+                            <textarea rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
+                        </div>
+
+                        <div v-if="a_form_field.f_type === 'Password'">
+                            <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                        </div>
+
+                        <div v-if="a_form_field.f_type === 'Checkbox'">
+                            <div v-for="a_val in selectBoxOption" :key="a_val">
+                                <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                <label :for="a_form_field.f_id">{{ a_val }}</label><br>
+                            </div>
                         </div>
 
                         <div>
@@ -128,6 +144,8 @@ export default {
             _that.isFinish = true;
             clearInterval(_that.clearCounter);
             if (_that.isRepeat==false){
+                console.log(_that.resultArray);
+                console.log(_that.allFromData);
                 let n = 0;
                 let score=0;
                 for (n; n<_that.resultArray.length; n++) {
