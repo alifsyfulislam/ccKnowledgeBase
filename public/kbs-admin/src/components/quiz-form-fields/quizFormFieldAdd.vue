@@ -92,7 +92,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="quizFormFieldOptionDefaultValue">Field Option Default Value</label>
+                                <label for="quizFormFieldOptionDefaultValue">Question Answer</label>
                                 <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldData.quizfieldDefaultValue"  class="form-control" placeholder="Enter Field Option Default Value">
                             </div>
                         </div>

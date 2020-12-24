@@ -90,4 +90,20 @@ class Helper
 
         return url('/').'/'.$dir.$fileName;
     }
+
+    public static function base64PageLogoUpload($url, $image)
+    {
+        $file = $image;
+        $fileName = uniqid().'.'.$image->getClientOriginalExtension();
+        $dir = "media/".$url."/";
+
+        if (!file_exists(public_path ($dir))) {
+
+            mkdir(public_path ($dir), 0755, true);
+        }
+
+        $file->move(public_path($dir), $fileName );
+
+        return url('/').'/'.$dir.$fileName;
+    }
 }
