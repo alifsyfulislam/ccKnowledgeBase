@@ -85,11 +85,11 @@ class PageService
         $input['id'] = time().rand(1000,9000);
 
         if($request->hasFile('logo')) {
-            $input['logo_url']  = Helper::base64ImageUpload("page/images", $request->logo);
+            $input['logo_url']  = Helper::base64PageLogoUpload("page/images", $request->logo);
         }
 
         if($request->hasFile('banner')) {
-            $input['banner_url'] = Helper::base64ImageUpload("page/images", $request->banner);
+            $input['banner_url'] = Helper::base64PageLogoUpload("page/images", $request->banner);
         }
 
         $this->pageRepository->create($input);
@@ -129,13 +129,13 @@ class PageService
             $config_data =  Page::find($request->id);
 
             if($request->hasFile('logo')) {
-                $input['logo']  = Helper::base64ImageUpload("page/images", $request->logo);
+                $input['logo']  = Helper::base64PageLogoUpload("page/images", $request->logo);
             } else{
                 $input['logo']  = $config_data->logo;
             }
 
             if($request->hasFile('banner')) {
-                $input['banner']  = Helper::base64ImageUpload("page/images", $request->banner);
+                $input['banner']  = Helper::base64PageLogoUpload("page/images", $request->banner);
             }else{
                 $input['banner']  = $config_data->banner;
             }
