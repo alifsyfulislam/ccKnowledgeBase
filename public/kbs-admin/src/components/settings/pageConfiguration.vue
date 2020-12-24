@@ -68,8 +68,14 @@
                                         <div class="col-md-10">
                                             <div class="form-group">
                                                 <label for="name">Logo</label>
-                                                <input type="file" class="form-control"  id="files"  ref="files"  @change="onLogoFileChange" >
+                                                <input type="file" class="form-control"  id="files"  ref="files" @change="onLogoFileChange" >
 <!--                                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-10" v-if="logo_url">
+                                            <div class="form-group" >
+                                                <img class="preview" style="height:250px; width: auto" :src="logo_url"/>
                                             </div>
                                         </div>
 
@@ -88,7 +94,13 @@
                                         <div class="col-md-10">
                                             <div class="form-group">
                                                 <label for="name">Banner</label>
-                                                <input type="file" class="form-control"  id="banner_files"  ref="banner_files" @change="onBannerFileChange"  >
+                                                <input type="file" class="form-control"  id="banner_files"  ref="banner_files"  @change="onBannerFileChange"  >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-10" v-if="banner_url">
+                                            <div class="form-group" >
+                                                <img class="preview" style="height:250px; width: auto" :src="banner_url"/>
                                             </div>
                                         </div>
 
@@ -154,6 +166,9 @@ export default {
             logo_file      : '',
             banner_file    : '',
 
+            logo_url      : '',
+            banner_url    : '',
+
             configure_data : {
                 id          : '',
                 title       : '',
@@ -168,16 +183,12 @@ export default {
 
         onLogoFileChange(e) {
             this.logo_file = e.target.files[0];
-            this.url = URL.createObjectURL(this.logo_file);
-           // this.images.push(URL.createObjectURL(selectedFiles)) ;
-            //this.files.push(e.target.files[0])
+            this.logo_url = URL.createObjectURL(this.logo_file);
         },
 
         onBannerFileChange(e) {
             this.banner_file = e.target.files[0];
-            this.url = URL.createObjectURL(this.banner_file);
-            // this.images.push(URL.createObjectURL(selectedFiles)) ;
-            //this.files.push(e.target.files[0])
+            this.banner_url = URL.createObjectURL(this.banner_file);
         },
 
         getPageConfiguration(pageUrl) {
@@ -211,6 +222,8 @@ export default {
                             _that.isEdit =  true;
                             _that.isAdd  =  false;
                             _that.pageConfigInfo = response.data.page_config_info;
+                            _that.logo_url                   =  _that.pageConfigInfo.logo;
+                            _that.banner_url                 =  _that.pageConfigInfo.banner;
                             _that.configure_data.id          =  _that.pageConfigInfo.id;
                             _that.configure_data.title       =  _that.pageConfigInfo.title;
                             _that.configure_data.position    =  _that.pageConfigInfo.position;
@@ -286,7 +299,10 @@ export default {
                     console.log(response)
                     if (response.data.status_code === 200) {
 
+                        _that.getPageConfiguration();
+
                         _that.error_message    = '';
+                        _that.logoFiles        = '';
                         _that.success_message  = "Page Configuration Updated Successfully";
                         _that.setTimeoutElements();
 
