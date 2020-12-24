@@ -27,7 +27,7 @@ import quizAdd from '@/components/quiz/quizAdd.vue'
 import quizEdit from '@/components/quiz/quizEdit.vue'
 
 import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.vue'
-import pageConfiguration from '@/components/settings/pageConfiguration.vue'
+import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
 
 
 let router = createRouter({

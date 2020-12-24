@@ -360,6 +360,7 @@
                 this.getUsersList();
                 //this.inboundData.formData = newData
             },
+
             getCustomerDataFromEdit (newEditData) {
                 console.log(newEditData)
                 this.isEditCheck = false;

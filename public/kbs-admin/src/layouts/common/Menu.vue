@@ -173,9 +173,13 @@
               <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
 
                   <li>
-                      <router-link :to="{ name: 'pageConfiguration'}">
+                      <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-common-form">
                           <span class="menu-sub-title">Page Configuration</span>
-                      </router-link>
+                      </a>
+                      <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck= "isConfigurationCheck" @config-data="getPageConfigData"></pageConfiguration>
+<!--                      <router-link :to="{ name: 'pageConfiguration'}">
+                          <span class="menu-sub-title">Page Configuration</span>
+                      </router-link>-->
                   </li>
 
               </ul>
@@ -188,8 +192,30 @@
 </template>
 
 <script>
+import pageConfiguration from "@/components/settings/pageConfigurationNew";
 export default {
-name: "Menu.vue"
+    name: "Menu.vue",
+
+    components: {
+        pageConfiguration
+    },
+
+    data() {
+        return {
+            isConfigurationCheck : false,
+            token: '',
+            user_info : ''
+        }
+    },
+    methods :{
+        getPageConfigData(newData) {
+            console.log(newData)
+            this.isConfigurationCheck = false;
+        },
+    },
+    created() {
+        //this.user_info = JSON.parse(localStorage.getItem("userInformation"));
+    }
 }
 </script>
 

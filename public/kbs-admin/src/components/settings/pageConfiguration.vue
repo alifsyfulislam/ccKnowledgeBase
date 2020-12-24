@@ -322,43 +322,6 @@ export default {
 
         },
 
-        /*
-
-        categoryUpdate(categoryId) {
-
-            let _that = this;
-
-            axios.put('admin/pages/update', {
-                    id        : categoryId,
-                    name      : this.category_name,
-                    parent_id : this.category_parent_id,
-                },
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    }
-                }).then(function (response) {
-                console.log(response)
-                if (response.data.status_code == 200) {
-
-                    _that.getCategoryList();
-                    _that.selectedCategory = '';
-                    _that.error_message    = '';
-                    _that.success_message  = response.data.messages;
-
-                } else {
-
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
-
-                }
-
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        },*/
-
         setTimeoutElements() {
 
             setTimeout(() => this.success_message = "", 3000);
