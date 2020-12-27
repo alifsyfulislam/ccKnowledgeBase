@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-height-wrapper">
         <section class="inner-search-area py-20">
             <div class="container">
                 <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
@@ -7,35 +7,65 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 p-3 m-3">
-                    <h2 class="text-center font-weight-bold p-3">Quiz List</h2>
-                    <div class="table-responsive d-flex justify-content-center">
-                        <table class="table table-bordered table-striped">
-                            <tr class="bg-info text-light">
-                                <!--                            <th class="p-3">Quiz ID</th>-->
-                                <th>Quiz Name</th>
-                                <th>Duration</th>
-                                <th>Number of Questions</th>
-                                <th>Total Marks</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr v-for="a_quiz in allQuizzes" :key="a_quiz.id">
-                                <!--                            <td>{{ a_quiz.id }}</td>-->
-                                <td>{{ a_quiz.name }}</td>
-                                <td>{{ a_quiz.duration }}</td>
-                                <td>{{ a_quiz.number_of_questions }}</td>
-                                <td>{{ a_quiz.total_marks }}</td>
-                                <td>
-                                    <button class="btn btn-success" @click="quizStart(a_quiz)">Start</button>
-                                </td>
-                            </tr>
-                        </table>
+        <section class="py-50 py-md-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 p-3 m-3">
+                        <h2 class="text-center font-weight-bold pb-20 pb-md-40">Quiz List</h2>
+
+                        <div class="quiz-item mb-20" v-for="a_quiz in allQuizzes" :key="a_quiz.id">
+                            <div class="q-featured-caption">
+                                <div class="q-icon">
+                                    <i class="fa fa-desktop" aria-hidden="true"></i>
+                                </div>
+                                <div class="q-feature">
+                                    <h4 class="my-0 pb-1 q-title">
+                                        Quiz Name
+                                    </h4>
+                                    <p class="mb-0">{{ a_quiz.name }}</p>
+                                </div>
+                            </div>
+                            <div class="q-featured-caption">
+                                <div class="q-icon">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                                <div class="q-feature">
+                                    <h4 class="my-0 pb-1 q-title">
+                                        Duration
+                                    </h4>
+                                    <p class="mb-0">{{a_quiz.duration}}</p>
+                                </div>
+                            </div>
+                            <div class="q-featured-caption">
+                                <div class="q-icon">
+                                    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                                </div>
+                                <div class="q-feature">
+                                    <h4 class="my-0 pb-1 q-title">
+                                        Number of Questions
+                                    </h4>
+                                    <p class="mb-0">{{ a_quiz.number_of_questions }}</p>
+                                </div>
+                            </div>
+                            <div class="q-featured-caption">
+                                <div class="q-icon">
+                                    <i class="fa fa-bolt" aria-hidden="true"></i>
+                                </div>
+                                <div class="q-feature">
+                                    <h4 class="my-0 pb-1 q-title">
+                                        Total Marks
+                                    </h4>
+                                    <p class="mb-0">{{ a_quiz.total_marks }}</p>
+                                </div>
+                            </div>
+                            <div class="q-featured-caption">
+                                <button class="btn btn-common btn-primary px-25 text-white font-16" @click="quizStart(a_quiz)"><span>Start</span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </template>
 
@@ -55,7 +85,6 @@
                 let _that =this;
                 axios.get('quiz-list', { cache: false })
                     .then(function (response) {
-                        console.log(response.data.quiz_form_list);
                         if(response.data.status_code === 200){
                             _that.allQuizzes = response.data.quiz_form_list;
                         }
@@ -63,14 +92,14 @@
             },
 
             quizStart(quizInfo){
-                if (localStorage.quiz_info){
-                    console.log(localStorage.quiz_info);
-                    localStorage.setItem('quiz_info','');
-                    localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                }else{
-                    localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                }
-                this.$router.push({name: 'StartExam'});
+                // if (localStorage.quiz_info){
+                //     console.log(localStorage.quiz_info);
+                //     localStorage.setItem('quiz_info','');
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }else{
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }
+                this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
             }
         },
         created(){
