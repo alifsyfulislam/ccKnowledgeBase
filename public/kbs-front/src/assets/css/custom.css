@@ -184,6 +184,10 @@
     font-size: 18px;
 }
 
+.btn-outline-primary:hover {
+    color: #FFFFFF;
+}
+
 
 @media (max-width: 1650px) {
     .min-height-wrapper {
