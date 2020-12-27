@@ -2,7 +2,7 @@
     <div v-if="isLoading">
         <Loading></Loading>
     </div>
-    <div v-else>
+    <div v-else v-cloak class="min-height-wrapper">
         <main>
             <section class="inner-search-area py-20">
                 <div class="container">

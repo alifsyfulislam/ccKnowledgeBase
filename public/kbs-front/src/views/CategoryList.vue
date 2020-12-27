@@ -2,7 +2,7 @@
     <div v-if="isLoading">
         <Loading></Loading>
     </div>
-    <div v-else v-cloak>
+    <div v-else v-cloak class="min-height-wrapper">
       <main>
         <section class="inner-search-area py-20">
           <div class="container">
@@ -119,7 +119,6 @@
                 selectedCategory:'',
                 selectedCategoryArr : [],
                 query_string:'',
-                backCounter : 0,
                 pagination:{
                     from: '',
                     to: '',
@@ -161,8 +160,6 @@
                 _that.categoryID = v;
                 let pageUrl;
                 pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-
-                _that.backCounter++;
                 _that.selectedCategoryArr.push(_that.categoryID);
 
                 axios.get(pageUrl)

@@ -2,7 +2,7 @@
     <div v-if="isLoading">
         <Loading></Loading>
     </div>
-    <div v-else v-cloak>
+    <div v-else v-cloak class="min-height-wrapper">
       <section class="inner-search-area py-20">
         <div class="container">
           <div class="search-input-wrapper d-block d-sm-flex justify-content-between">

@@ -2,7 +2,7 @@
     <div v-if="isLoading">
         <Loading></Loading>
     </div>
-    <div v-else class="display" v-cloak>
+    <div v-else class="display min-height-wrapper" v-cloak>
         <main>
             <section class="banner-area py-50 py-md-140" :style="{ backgroundImage: 'url(' + require('../assets/img/banner.jpg') + ')' }">
                 <div class="container">
