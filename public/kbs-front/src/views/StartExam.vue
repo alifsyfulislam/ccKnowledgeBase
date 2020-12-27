@@ -2,7 +2,7 @@
     <div class="py-30 py-md-60 min-height-wrapper">
         <div class="container">
             <div v-if="isFinish">
-                <h3 class="text-center font-weight-bold">Your Score: {{ showResult }}</h3>
+                <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
             </div>
             <div v-else>
                 <div v-if="quizInfo">
@@ -11,7 +11,7 @@
                             <div class="col-md-4 order-md-2">
                                 <div class="mt-wrapper p-15 h-100">
                                     <div class="time-left pt-0 pt-md-2"><strong>Time Left: </strong>{{timeCounter}}</div>
-                                    <div class="answer-mark"><strong>Marks: </strong>{{markCounter}}</div>
+                                    <div class="answer-mark"><strong>Marks: </strong>{{ markCounter.toFixed(2) }}</div>
                                 </div>
                             </div>
                             <div class="col-md-8 order-md-1 mb-15">
@@ -33,9 +33,9 @@
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Radio'">
-                                        <div v-for="a_val in selectBoxOption" :key="a_val">
-                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
-                                            <label class="ml-2" :for="a_form_field.f_id">{{ a_val }}</label><br>
+                                        <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
+                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                            <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
                                         </div>
                                     </div>
 
@@ -52,9 +52,9 @@
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Checkbox'">
-                                        <div v-for="a_val in selectBoxOption" :key="a_val">
-                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
-                                            <label class="ml-2" :for="a_form_field.f_id">{{ a_val }}</label><br>
+                                        <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
+                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                            <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
                                         </div>
                                     </div>
                                     <div>
