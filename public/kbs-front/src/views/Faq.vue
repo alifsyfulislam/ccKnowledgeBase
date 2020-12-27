@@ -1,5 +1,5 @@
 <template>
-  <div v-cloak>
+  <div v-cloak class="min-height-wrapper">
     <main>
       <section class="inner-search-area py-20">
         <div class="container">

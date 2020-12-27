@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-height-wrapper">
         <section class="inner-search-area py-20">
             <div class="container">
                 <div class="search-input-wrapper d-block d-sm-flex justify-content-between">

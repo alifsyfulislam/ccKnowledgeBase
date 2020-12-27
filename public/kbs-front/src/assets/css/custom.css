@@ -155,6 +155,10 @@
     font-size: 16px;
 }
 
+.min-height-wrapper {
+    min-height: calc(100vh - 130px);
+}
+
 .exam-wrapper {
     background: #fff;
     box-shadow: 0px 1px 30px 0px rgba(0, 0, 0, 0.1);
@@ -169,34 +173,6 @@
     font-size: 18px;
 }
 
-.qa-wrapper input[type="text"],
-.qa-wrapper input[type="password"],
-.qa-wrapper textarea {
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-.qa-wrapper input[type="text"]:focus,
-.qa-wrapper input[type="password"]:focus,
-.qa-wrapper textarea:focus {
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
-}
-
 .question-title {
     font-size: 20px;
     font-weight: 600;
@@ -208,6 +184,12 @@
     font-size: 18px;
 }
 
+
+@media (max-width: 1650px) {
+    .min-height-wrapper {
+        min-height: calc(100vh - 100px);
+    }
+}
 
 @media (max-width: 991px) {
     .quiz-item .q-featured-caption {
@@ -222,5 +204,11 @@
         flex: 0 0 100%;
         max-width: 100%;
         margin-bottom: 20px;
+    }
+
+    
+
+    .min-height-wrapper {
+        min-height: calc(100vh - 80px);
     }
 }

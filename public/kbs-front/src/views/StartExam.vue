@@ -1,13 +1,13 @@
 <template>
-    <div class="py-30 py-md-60">
+    <div class="py-30 py-md-60 min-height-wrapper">
         <div class="container">
-<!--            result-->
+            <!--            result-->
             <div v-if="isFinish">
                 <h2 class="section-title text-center">Your Score: {{ showResult }}</h2>
             </div>
-<!--            Math.min(dictionary.length, 20)-->
-<!--            quizFormFieldInfo-->
-<!--            quiz progress-->
+            <!--            Math.min(dictionary.length, 20)-->
+            <!--            quizFormFieldInfo-->
+            <!--            quiz progress-->
             <div v-else>
                 <div v-if="quizInfo">
                     <div class="exam-wrapper border rounded-lg mb-30">
@@ -22,15 +22,15 @@
                                 <div class="qa-wrapper p-15" v-for="a_form_field in quizFormFieldInfo" :key="a_form_field.id">
                                     <h3 class="my-0 pb-10 question-title">{{a_form_field.f_label}}</h3>
                                     <div v-if="a_form_field.f_type === 'Text'">
-                                        <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Email'">
-                                        <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Select/Dropdown'">
-                                        <select :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)">
+                                        <select class="form-control" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)">
                                             <option value="" disabled>Select one</option>
                                             <option v-for="(a_val) in selectBoxOption" :key="a_val" :value="a_val">{{a_val}}</option>
                                         </select>
@@ -39,20 +39,20 @@
                                     <div v-if="a_form_field.f_type === 'Radio'">
                                         <div v-for="a_val in selectBoxOption" :key="a_val">
                                             <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
-                                            <label :for="a_form_field.f_id">{{ a_val }}</label><br>
+                                            <label class="ml-2" :for="a_form_field.f_id">{{ a_val }}</label><br>
                                         </div>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Number'">
-                                        <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Textarea'">
-                                        <textarea rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
+                                        <textarea class="form-control" rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Password'">
-                                        <input :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Checkbox'">
@@ -114,6 +114,7 @@ export default {
             pagination:{
                 from: '',
                 to: '',
+                current_page: 1,
                 first_page_url: '',
                 last_page: '',
                 last_page_url: '',
@@ -135,8 +136,8 @@ export default {
         },
         checkNextData(){
             let _that = this;
-            _that.allFromData.push(_that.fromData)
-            if (_that.isRepeat ==false ){
+            _that.allFromData.push(_that.fromData);
+            if (_that.isRepeat == false ){
                 _that.finalizeData();
             }
             else{
@@ -153,7 +154,7 @@ export default {
                 let n = 0;
                 let score=0;
                 for (n; n<_that.resultArray.length; n++) {
-                    if (_that.resultArray[n].toLowerCase() == _that.allFromData[n].toLocaleLowerCase()) {
+                    if (_that.resultArray[n].toLowerCase() == _that.allFromData[n].toLowerCase()) {
                         score+=_that.markCounter;
                     }
                 }
@@ -168,50 +169,59 @@ export default {
         // },
         getQuizFormField(pageUrl) {
             let _that = this;
-            if (pageUrl == _that.pagination.last_page_url){
-                pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                        _that.pagination  = response.data.quiz_form_field_list;
-                        _that.quizFormFieldInfo.forEach(val =>{
-                            _that.resultArray.push(val.f_default_value);
-                            if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                let str = val.f_option_value;
-                                str = str.split(",");
-                                _that.selectBoxOption = Object.assign({}, str);
-                            }
-                            if (pageUrl==_that.pagination.last_page_url){
-                                _that.itemA = 1;
-                                //
-                            }else {
-                                _that.itemA = 0;
-                            }
-                        })
-                    })
-                _that.isRepeat = false; //loop off
-            }else{
-                pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                        _that.pagination  = response.data.quiz_form_field_list;
-                        _that.quizFormFieldInfo.forEach(val =>{
-                            _that.resultArray.push(val.f_default_value);
-                            if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                let str = val.f_option_value;
-                                str = str.split(",");
-                                _that.selectBoxOption = Object.assign({}, str);
-                            }
-                            if (pageUrl==_that.pagination.last_page_url){
-                                _that.itemA = 1;
-                                //
-                            }else {
-                                _that.itemA = 0;
-                            }
-                        })
-                    })
+            if (_that.pagination.current_page == _that.quizInfo.number_of_questions){
+                _that.isFinish = true;
+                _that.isRepeat = false;
+                _that.checkNextData();
+                // _that.finalizeData();
             }
+            else{
+                if (pageUrl == _that.pagination.last_page_url){
+                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                            _that.pagination  = response.data.quiz_form_field_list;
+                            _that.quizFormFieldInfo.forEach(val =>{
+                                _that.resultArray.push(val.f_default_value);
+                                if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                    let str = val.f_option_value;
+                                    str = str.split(",");
+                                    _that.selectBoxOption = Object.assign({}, str);
+                                }
+                                // if (pageUrl==_that.pagination.last_page_url){
+                                //     _that.itemA = 1;
+                                //     //
+                                // }else {
+                                //     _that.itemA = 0;
+                                // }
+                            })
+                        })
+                    _that.isRepeat = false; //loop off
+                }else{
+                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                            _that.pagination  = response.data.quiz_form_field_list;
+                            _that.quizFormFieldInfo.forEach(val =>{
+                                _that.resultArray.push(val.f_default_value);
+                                if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                    let str = val.f_option_value;
+                                    str = str.split(",");
+                                    _that.selectBoxOption = Object.assign({}, str);
+                                }
+                                if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
+                                    _that.itemA = 1;
+                                    _that.isRepeat = false;
+                                }else {
+                                    _that.itemA = 0
+                                }
+                            })
+                        })
+                }
+            }
+
         },
         getEachQuizMark(v1,v2){
             this.markCounter = v1/v2;
@@ -237,7 +247,7 @@ export default {
             let y = mm < 10? "0"+mm : mm;
             let z = ss < 10? "0"+ss : ss;
             this.timeCounter = x+":"+y+":"+z;
-       },
+        },
     },
 
     created() {
