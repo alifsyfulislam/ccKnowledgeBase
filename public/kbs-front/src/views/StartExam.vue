@@ -3,7 +3,7 @@
         <div class="container">
             <!--            result-->
             <div v-if="isFinish">
-                Your Score {{ showResult }}
+                Your Score {{ showResult.toFixed(2) }}
             </div>
             <!--            Math.min(dictionary.length, 20)-->
             <!--            quizFormFieldInfo-->
@@ -30,8 +30,8 @@
                         </div>
 
                         <div v-if="a_form_field.f_type === 'Radio'">
-                            <div v-for="a_val in selectBoxOption" :key="a_val">
-                                <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                            <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
+                                <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
                                 <label :for="a_form_field.f_id">{{ a_val }}</label><br>
                             </div>
                         </div>
@@ -172,50 +172,26 @@ export default {
                 // _that.finalizeData();
             }
             else{
-                if (pageUrl == _that.pagination.last_page_url){
-                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                    axios.get(pageUrl)
-                        .then(function (response) {
-                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                            _that.pagination  = response.data.quiz_form_field_list;
-                            _that.quizFormFieldInfo.forEach(val =>{
-                                _that.resultArray.push(val.f_default_value);
-                                if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                    let str = val.f_option_value;
-                                    str = str.split(",");
-                                    _that.selectBoxOption = Object.assign({}, str);
-                                }
-                                // if (pageUrl==_that.pagination.last_page_url){
-                                //     _that.itemA = 1;
-                                //     //
-                                // }else {
-                                //     _that.itemA = 0;
-                                // }
-                            })
+                pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                axios.get(pageUrl)
+                    .then(function (response) {
+                        _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                        _that.pagination  = response.data.quiz_form_field_list;
+                        _that.quizFormFieldInfo.forEach(val =>{
+                            _that.resultArray.push(val.f_default_value);
+                            if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                let str = val.f_option_value;
+                                str = str.split(",");
+                                _that.selectBoxOption = Object.assign({}, str);
+                            }
+                            if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
+                                _that.itemA = 1;
+                                _that.isRepeat = false;
+                            }else {
+                                _that.itemA = 0
+                            }
                         })
-                    _that.isRepeat = false; //loop off
-                }else{
-                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                    axios.get(pageUrl)
-                        .then(function (response) {
-                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                            _that.pagination  = response.data.quiz_form_field_list;
-                            _that.quizFormFieldInfo.forEach(val =>{
-                                _that.resultArray.push(val.f_default_value);
-                                if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                    let str = val.f_option_value;
-                                    str = str.split(",");
-                                    _that.selectBoxOption = Object.assign({}, str);
-                                }
-                                if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
-                                    _that.itemA = 1;
-                                    _that.isRepeat = false;
-                                }else {
-                                    _that.itemA = 0
-                                }
-                            })
-                        })
-                }
+                    })
             }
 
         },
