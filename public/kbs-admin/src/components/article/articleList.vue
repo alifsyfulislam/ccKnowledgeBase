@@ -400,7 +400,6 @@ export default {
                         _that.articleList = response.data.article_list.data;
                         _that.pagination  = response.data.article_list;
                         _that.isLoading   = false;
-                       // _that.setTimeoutElements();
 
                     }
                     else{
@@ -412,7 +411,7 @@ export default {
 
         setTimeoutElements() {
 
-            setTimeout(() => this.isLoading = false, 5000);
+            //setTimeout(() => this.isLoading = false, 3000);
             setTimeout(() => this.success_message = "", 3000);
             setTimeout(() => this.error_message = "", 3000);
 

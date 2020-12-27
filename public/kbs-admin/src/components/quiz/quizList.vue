@@ -1,5 +1,7 @@
 <template>
 
+    <Loading v-if="isLoading===true"></Loading>
+
     <div class="main-wrapper d-flex">
         <!-- sidebar -->
         <Menu></Menu>
@@ -165,199 +167,202 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import QuizzAdd from "@/components/quiz/quizAdd";
 import QuizzEdit from "@/components/quiz/quizEdit";
+import Loading from "@/components/loader/loading";
 import axios from "axios";
 
 export default {
-name: "quizList",
-  components: {
-    Header,
-    Menu,
-    QuizzAdd,
-    QuizzEdit
-  },
+    name: "quizList",
+    components: {
+        Header,
+        Menu,
+        QuizzAdd,
+        QuizzEdit,
+        Loading
+    },
 
-  data() {
-    return {
+    data() {
+        return {
+            isLoading       : false,
+            isEditCheck     : false,
+            isAddCheck      : false,
+            isDelete        : false,
+            isSearch        : false,
 
-        isEditCheck     : false,
-        isAddCheck      : false,
-        isDelete        : false,
-        isSearch        : false,
+            success_message : '',
+            error_message   : '',
+            token           : '',
 
-        success_message : '',
-        error_message   : '',
-        token           : '',
+            quiz_id         : '',
 
-        quiz_id         : '',
+            articleList     : '',
+            quizList        : '',
+            userInfo        : '',
 
-        articleList     : '',
-        quizList        : '',
-        userInfo        : '',
+            filter : {
+                isAdmin      : 1,
+                // article_id  : '',
+                status    : '',
+                name      : '',
+            },
 
-        filter : {
-            isAdmin      : 1,
-           // article_id  : '',
-            status    : '',
-            name      : '',
+            pagination:{
+                from : '',
+                to   : '',
+                first_page_url : '',
+                last_page      : '',
+                last_page_url  : '',
+                next_page_url  :'',
+                prev_page_url  : '',
+                path     : '',
+                per_page : 10,
+                total    : ''
+            },
+        }
+    },
+    methods: {
+        removingRightSideWrapper(){
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+            document.body.classList.remove('open-side-slider');
         },
 
-        pagination:{
-            from : '',
-            to   : '',
-            first_page_url : '',
-            last_page      : '',
-            last_page_url  : '',
-            next_page_url  :'',
-            prev_page_url  : '',
-            path     : '',
-            per_page : 10,
-            total    : ''
+        clearAllChecker() {
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
         },
+
+        getQuizDataFromAdd (newData) {
+            console.log(newData)
+            this.isAddCheck = false;
+            this.getQuizList();
+
+        },
+
+        getQuizDataFromEdit (newEditData) {
+
+            console.log(newEditData)
+            this.isEditCheck = false;
+            this.getQuizList();
+
+        },
+
+        clearFilter()
+        {
+            //this.filter.article_id = "";
+            this.filter.status   = "";
+            this.filter.name     = "";
+            this.success_message = "";
+            this.error_message   = "";
+            this.getQuizList();
+        },
+
+     /*   getArticleList()
+        {
+            let _that =this;
+
+            axios.get('admin/articles',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params :
+                        {
+                            isAdmin : 1
+                        },
+
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        console.log(response.data);
+                        _that.articleList = response.data.article_list.data;
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },*/
+
+        getQuizList(pageUrl){
+
+            let _that =this;
+
+            pageUrl = pageUrl == undefined ? 'admin/quizzes' : pageUrl;
+
+            axios.get(pageUrl,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params :
+                        {
+                            isAdmin : 1,
+                            status     : this.filter.status,
+                            name       : this.filter.name
+                        },
+
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        console.log(response.data);
+                        _that.quizList   = response.data.quiz_list.data;
+                        _that.pagination = response.data.quiz_list;
+                        _that.isLoading  = false;
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+
+        deleteQuiz() {
+            let _that = this;
+
+            axios.delete('admin/quizzes/delete',
+                {
+                    data:
+                        {
+                            id      : this.quiz_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200) {
+                    _that.getQuizList();
+                    _that.error_message   = '';
+                    _that.success_message = "Successfully deleted the Quiz";
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+        setTimeoutElements() {
+            //setTimeout(() => this.isLoading = false, 3000);
+            setTimeout(() => this.success_message = "", 3000);
+            setTimeout(() => this.error_message = "", 3000);
+        },
+
+    },
+    created() {
+        this.isLoading = true;
+        this.getQuizList();
+       // this.getArticleList();
     }
-  },
-  methods: {
-      removingRightSideWrapper(){
-          this.isAddCheck = false;
-          this.isDelete   = false;
-          this.isSearch   = false;
-          document.body.classList.remove('open-side-slider');
-      },
-
-      clearAllChecker() {
-          this.isAddCheck = false;
-          this.isDelete   = false;
-          this.isSearch   = false;
-      },
-
-      getQuizDataFromAdd (newData) {
-          console.log(newData)
-          this.isAddCheck = false;
-          this.getQuizList();
-
-      },
-
-      getQuizDataFromEdit (newEditData) {
-
-          console.log(newEditData)
-          this.isEditCheck = false;
-          this.getQuizList();
-
-      },
-
-      clearFilter()
-      {
-          //this.filter.article_id = "";
-          this.filter.status   = "";
-          this.filter.name     = "";
-          this.success_message = "";
-          this.error_message   = "";
-          this.getQuizList();
-      },
-
-      getArticleList()
-      {
-          let _that =this;
-
-          axios.get('admin/articles',
-              {
-                  headers: {
-                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                  },
-                  params :
-                      {
-                          isAdmin : 1
-                      },
-
-              })
-              .then(function (response) {
-                  if(response.data.status_code === 200){
-                      console.log(response.data);
-                      _that.articleList = response.data.article_list.data;
-                  }
-                  else{
-                      _that.success_message = "";
-                      _that.error_message   = response.data.error;
-                  }
-              })
-      },
-
-      getQuizList(pageUrl){
-
-          let _that =this;
-
-          pageUrl = pageUrl == undefined ? 'admin/quizzes' : pageUrl;
-
-          axios.get(pageUrl,
-              {
-                  headers: {
-                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                  },
-                  params :
-                      {
-                          isAdmin : 1,
-                        //  article_id : this.filter.article_id,
-                          status     : this.filter.status,
-                          name       : this.filter.name
-                      },
-
-              })
-              .then(function (response) {
-                  if(response.data.status_code === 200){
-                      console.log(response.data);
-                      _that.quizList = response.data.quiz_list.data;
-                      _that.pagination   = response.data.quiz_list;
-                  }
-                  else{
-                      _that.success_message = "";
-                      _that.error_message   = response.data.error;
-                  }
-              })
-      },
-
-      deleteQuiz() {
-          let _that = this;
-
-          axios.delete('admin/quizzes/delete',
-              {
-                  data:
-                      {
-                          id      : this.quiz_id
-                      },
-                  headers: {
-                      'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                  },
-              }).then(function (response) {
-
-              if (response.data.status_code == 200) {
-                  _that.getQuizList();
-                  _that.error_message   = '';
-                  _that.success_message = "Successfully deleted the Quiz";
-                  _that.removingRightSideWrapper();
-                  _that.setTimeoutElements();
-              }
-              else
-              {
-                  _that.success_message = "";
-                  _that.error_message   = response.data.error;
-              }
-
-          }).catch(function (error) {
-              console.log(error);
-          });
-
-      },
-
-      setTimeoutElements() {
-
-          setTimeout(() => this.success_message = "", 3000);
-          setTimeout(() => this.error_message = "", 3000);
-      },
-
-  },
-  created() {
-    this.getQuizList();
-    this.getArticleList();
-  }
 }
 </script>
 

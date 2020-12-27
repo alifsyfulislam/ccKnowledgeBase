@@ -15,7 +15,7 @@ import '@/assets/css/custom.css'
 import '@/assets/fonts/nunito/Nunito-Regular.ttf'
 
 
-axios.defaults.baseURL = 'http://localhost/ccKnowledgeBase/public/api';
-// axios.defaults.baseURL = 'http://192.168.10.64/kbs/kbs-base/public/api/'
+//axios.defaults.baseURL = 'http://localhost/ccKnowledgeBase/public/api';
+axios.defaults.baseURL = 'http://192.168.10.64/kbs/kbs-base/public/api/'
 
 createApp(App).use(router, VueAxios, axios, $).mount('#app')

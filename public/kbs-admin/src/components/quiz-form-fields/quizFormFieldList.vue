@@ -1,4 +1,5 @@
 <template>
+    <Loading v-if="isLoading===true"></Loading>
     <div class="main-wrapper d-flex">
         <Menu></Menu>
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
@@ -130,6 +131,7 @@
 <script>
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
+    import Loading from "@/components/loader/loading";
     import QuizFromFieldEdit from "../quiz-form-fields/quizFormFieldEdit";
 
 
@@ -141,12 +143,14 @@
             Header,
             Menu,
             // QuizFromFieldAdd,
-            QuizFromFieldEdit
+            QuizFromFieldEdit,
+            Loading
         },
 
         data() {
             return {
-                isAddFieldCheck      : false,
+                isLoading       : false,
+                isAddFieldCheck : false,
 
                 isAddCheck      : false,
                 isEditCheck     : false,
@@ -169,21 +173,49 @@
                     role        : ''
                 },
                 pagination:{
-                    from: '',
-                    to: '',
-                    first_page_url: '',
-                    last_page: '',
-                    last_page_url: '',
-                    next_page_url:'',
-                    prev_page_url: '',
-                    path: '',
-                    per_page: 10,
-                    total: ''
+                    from : '',
+                    to   : '',
+                    first_page_url : '',
+                    last_page      : '',
+                    last_page_url  : '',
+                    next_page_url  :'',
+                    prev_page_url  : '',
+                    path     : '',
+                    per_page : 10,
+                    total    : ''
                 },
             }
         },
 
         methods: {
+
+            removingRightSideWrapper() {
+
+                this.isAddCheck = false;
+                this.isDelete   = false;
+                this.isEditCheck     = false,
+                    document.body.classList.remove('open-side-slider');
+
+            },
+
+            clearAllChecker() {
+                this.isAddCheck = false;
+                this.isEditCheck     = false,
+                    this.isDelete   = false;
+            },
+
+            getQuizFormFieldDataFromAdd (newData) {
+                console.log(newData)
+                this.isAddFieldCheck = false;
+                this.getQuizFormFieldList();
+            },
+
+            getQuizFormFieldDataFromEdit (newEditData) {
+                console.log(newEditData)
+                this.isEditCheck = false;
+                this.getQuizFormFieldList();
+            },
+
             deleteQuizFormField() {
                 let _that = this;
 
@@ -209,9 +241,7 @@
                         _that.success_message = "Successfully deleted the Quiz Form";
                         _that.setTimeoutElements();
 
-                    }
-                    else
-                    {
+                    } else{
                         _that.success_message = "";
                         _that.error_message   = response.data.error;
                     }
@@ -220,39 +250,6 @@
                     console.log(error);
                 });
 
-            },
-
-            setTimeoutElements()
-            {
-                setTimeout(() => this.success_message = "", 3000);
-                setTimeout(() => this.error_message = "", 3000);
-            },
-
-            removingRightSideWrapper() {
-
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isEditCheck     = false,
-                document.body.classList.remove('open-side-slider');
-
-            },
-
-            clearAllChecker() {
-                this.isAddCheck = false;
-                this.isEditCheck     = false,
-                this.isDelete   = false;
-            },
-
-            getQuizFormFieldDataFromAdd (newData) {
-                console.log(newData)
-                this.isAddFieldCheck = false;
-                this.getQuizFormFieldList();
-            },
-
-            getQuizFormFieldDataFromEdit (newEditData) {
-                console.log(newEditData)
-                this.isEditCheck = false;
-                this.getQuizFormFieldList();
             },
 
             getQuizFormFieldList(pageUrl)
@@ -267,10 +264,11 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                           // console.log(response.data.quiz_form_field_list.data);
+                           // console.log(response.data);
                             _that.pagination  = response.data.quiz_form_field_list;
                             _that.allFields   = response.data.quiz_form_field_list.data;
-                            // _that.success_message = "";
+                            _that.isLoading   = false;
+                            //_that.setTimeoutElements();
                         }
                         else{
                             _that.success_message = "";
@@ -278,8 +276,16 @@
                         }
                     })
             },
+
+            setTimeoutElements() {
+               // setTimeout(() => this.isLoading = false, 3000);
+                setTimeout(() => this.success_message = "", 3000);
+                setTimeout(() => this.error_message = "", 3000);
+            },
+
         },
         created() {
+            this.isLoading  = true;
             this.getQuizFormFieldList();
         }
     }

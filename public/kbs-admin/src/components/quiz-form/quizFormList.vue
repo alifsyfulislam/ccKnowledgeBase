@@ -1,4 +1,7 @@
 <template>
+
+    <Loading v-if="isLoading===true"></Loading>
+
     <div class="main-wrapper d-flex">
         <Menu></Menu>
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
@@ -131,168 +134,175 @@
     </div>
 </template>
 <script>
-    import Header from "@/layouts/common/Header";
-    import Menu from "@/layouts/common/Menu";
-    import QuizFromAdd from "@/components/quiz-form/quizFormAdd";
-    import QuizFromEdit from "@/components/quiz-form/quizFormEdit";
+import Header from "@/layouts/common/Header";
+import Menu from "@/layouts/common/Menu";
+import QuizFromAdd from "@/components/quiz-form/quizFormAdd";
+import QuizFromEdit from "@/components/quiz-form/quizFormEdit";
+import Loading from "@/components/loader/loading";
 
-    import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
+import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
 
 
-    import axios from "axios";
+import axios from "axios";
 
-    export default {
-        name: "quizFormList.vue",
-        components: {
-            Header,
-            Menu,
-            QuizFromAdd,
-            QuizFromEdit,
-            QuizFromFieldAdd
+export default {
+    name: "quizFormList.vue",
+    components: {
+        Header,
+        Menu,
+        QuizFromAdd,
+        QuizFromEdit,
+        QuizFromFieldAdd,
+        Loading
+    },
+
+    data() {
+        return {
+            isLoading       : false,
+            isAddFieldCheck : false,
+
+            isAddCheck      : false,
+            isEditCheck     : false,
+            isDelete        : false,
+
+            success_message : '',
+            error_message   : '',
+            token           : '',
+            allQuizField    : '',
+
+            allQuizFieldFrom : '',
+
+            filter : {
+                isAdmin     : 1,
+                username    : '',
+                email       : '',
+                role        : ''
+            },
+            pagination:{
+                from: '',
+                to: '',
+                first_page_url: '',
+                last_page: '',
+                last_page_url: '',
+                next_page_url:'',
+                prev_page_url: '',
+                path: '',
+                per_page: 10,
+                total: ''
+            },
+        }
+    },
+    methods: {
+
+        removingRightSideWrapper() {
+
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            document.body.classList.remove('open-side-slider');
+
         },
 
-        data() {
-            return {
-                isAddFieldCheck : false,
+        clearAllChecker() {
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isEditCheck     = false;
+            this.isAddFieldCheck      = false;
+        },
 
-                isAddCheck      : false,
-                isEditCheck     : false,
-                isDelete        : false,
+        getQuizFormDataFromAdd (newData) {
+            console.log(newData)
+            this.isAddCheck = false;
+            this.getQuizFormList();
+        },
 
-                success_message : '',
-                error_message   : '',
-                token           : '',
-                allQuizField    : '',
 
-                allQuizFieldFrom : '',
+        getQuizFormFieldDataFromAdd (newData) {
 
-                filter : {
-                    isAdmin     : 1,
-                    username    : '',
-                    email       : '',
-                    role        : ''
-                },
-                pagination:{
-                    from: '',
-                    to: '',
-                    first_page_url: '',
-                    last_page: '',
-                    last_page_url: '',
-                    next_page_url:'',
-                    prev_page_url: '',
-                    path: '',
-                    per_page: 10,
-                    total: ''
-                },
+            console.log(newData);
+            this.isAddFieldCheck = false;
+            if(newData === true){
+                this.$router.push('/admin/quiz-form-field-list');
             }
         },
-        methods: {
-            setTimeoutElements()
-            {
-                setTimeout(() => this.success_message = "", 3000);
-                setTimeout(() => this.error_message = "", 3000);
-            },
 
-            deleteQuizForm() {
-                let _that = this;
+        getQuizFormDataFromEdit (newEditData) {
+            console.log(newEditData)
+            this.isEditCheck = false;
+            this.getQuizFormList();
+        },
 
-                axios.delete('admin/quiz-forms/delete',
-                    {
-                        data:
-                            {
-                                id      : _that.quiz_form_id
-                            },
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
+        getQuizFormList(pageUrl) {
 
-                    if (response.data.status_code == 200)
-                    {
-                        _that.getQuizFormList();
-                        _that.error_message   = '';
-                        _that.clearAllChecker();
-                        document.body.classList.remove('open-side-slider');
-                        _that.success_message = "Successfully deleted the Quiz Form";
-                        _that.setTimeoutElements();
-
+            let _that =this;
+            pageUrl = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
+            axios.get(pageUrl,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        //console.log(response.data);
+                        _that.pagination   = response.data.quiz_form_list;
+                        _that.allQuizField = response.data.quiz_form_list.data;
+                        _that.isLoading    = false;
+                        //_that.setTimeoutElements();
                     }
-                    else
-                    {
+                    else{
                         _that.success_message = "";
                         _that.error_message   = response.data.error;
                     }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
-            },
-
-            removingRightSideWrapper() {
-
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                document.body.classList.remove('open-side-slider');
-
-            },
-
-            clearAllChecker() {
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isEditCheck     = false;
-                this.isAddFieldCheck      = false;
-            },
-
-            getQuizFormDataFromAdd (newData) {
-                console.log(newData)
-                this.isAddCheck = false;
-                this.getQuizFormList();
-            },
-// work
-            getQuizFormFieldDataFromAdd (newData) {
-
-                console.log("from quiz form field add");
-                console.log(newData);
-                this.isAddFieldCheck = false;
-                if(newData === true){
-                    this.$router.push('/admin/quiz-form-field-list');
-                }
-            },
-            getQuizFormDataFromEdit (newEditData) {
-                console.log(newEditData)
-                this.isEditCheck = false;
-                this.getQuizFormList();
-            },
-
-            getQuizFormList(pageUrl)
-            {
-                let _that =this;
-                pageUrl = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
-                axios.get(pageUrl,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            console.log(response.data);
-                            _that.pagination  = response.data.quiz_form_list;
-                            _that.allQuizField   = response.data.quiz_form_list.data;
-                            // _that.success_message = "";
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
+                })
         },
-        created() {
-            this.getQuizFormList();
-        }
+
+        deleteQuizForm() {
+            let _that = this;
+
+            axios.delete('admin/quiz-forms/delete',
+                {
+                    data:
+                        {
+                            id      : _that.quiz_form_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200)
+                {
+                    _that.getQuizFormList();
+                    _that.error_message   = '';
+                    _that.clearAllChecker();
+                    document.body.classList.remove('open-side-slider');
+                    _that.success_message = "Successfully deleted the Quiz Form";
+                    _that.setTimeoutElements();
+
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+        setTimeoutElements() {
+            //setTimeout(() => this.isLoading = false, 1e3);
+            setTimeout(() => this.success_message = "", 3000);
+            setTimeout(() => this.error_message = "", 3000);
+        },
+    },
+    created() {
+        this.isLoading  = true;
+        this.getQuizFormList();
     }
+}
 </script>
 <style scoped>
 </style>
