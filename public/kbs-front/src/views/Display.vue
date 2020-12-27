@@ -1,5 +1,8 @@
 <template>
-    <div class="display" v-cloak>
+    <div v-if="isLoading">
+        <Loading></Loading>
+    </div>
+    <div v-else class="display" v-cloak>
         <main>
             <section class="banner-area py-50 py-md-140" :style="{ backgroundImage: 'url(' + require('../assets/img/banner.jpg') + ')' }">
                 <div class="container">
@@ -56,15 +59,18 @@
 </template>
 
 <script>
-    import searchform from "@/components/Search.vue";
+    import searchform from "@/components/Search";
+    import Loading from "@/components/Loading";
     import axios from 'axios'
     export default {
         name: "Display",
         components:{
-            searchform
+            searchform,
+            Loading
         },
         data() {
             return{
+                isLoading : true,
                 allCategoryArticle:'',
                 categoryHasArticle:[],
             }
@@ -76,6 +82,7 @@
                 axios.get('category-article-list', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
+                            _that.isLoading = false;
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
                                 if (val.article.length!=0){

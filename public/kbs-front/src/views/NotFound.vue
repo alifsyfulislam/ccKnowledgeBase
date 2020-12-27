@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div v-if="isLoading">
+        <Loading></Loading>
+    </div>
+    <div v-else v-cloak>
       <section class="inner-search-area py-20">
         <div class="container">
           <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
@@ -18,8 +21,28 @@
 </template>
 
 <script>
+    import Loading from "@/components/Loading";
+
     export default {
-        name: "NotFound"
+        name: "NotFound",
+        components:{
+            Loading,
+        },
+        data(){
+            return{
+                isLoading: true,
+            }
+        },
+        methods:{
+            loadingRemove(){
+                setTimeout(()=>{
+                    this.isLoading = false;
+                },250);
+            }
+        },
+        created() {
+            this.loadingRemove();
+        }
     }
 </script>
 
