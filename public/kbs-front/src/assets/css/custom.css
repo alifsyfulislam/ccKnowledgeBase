@@ -184,6 +184,10 @@
     font-size: 18px;
 }
 
+.btn-outline-primary:hover {
+    color: #FFFFFF;
+}
+
 
 @media (max-width: 1650px) {
     .min-height-wrapper {
@@ -206,7 +210,7 @@
         margin-bottom: 20px;
     }
 
-    
+
 
     .min-height-wrapper {
         min-height: calc(100vh - 80px);

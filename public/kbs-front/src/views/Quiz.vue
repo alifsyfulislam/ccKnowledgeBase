@@ -1,5 +1,8 @@
 <template>
-    <div class="min-height-wrapper">
+    <div v-if="isLoading">
+        <Loading></Loading>
+    </div>
+    <div v-else v-cloak class="min-height-wrapper">
         <section class="inner-search-area py-20">
             <div class="container">
                 <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
@@ -33,7 +36,7 @@
                                     <h4 class="my-0 pb-1 q-title">
                                         Duration
                                     </h4>
-                                    <p class="mb-0">{{a_quiz.duration}}</p>
+                                    <p class="mb-0">{{a_quiz.duration*60}} min</p>
                                 </div>
                             </div>
                             <div class="q-featured-caption">
@@ -70,42 +73,48 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    export default {
-        name: "Quiz",
-        data(){
-            return{
-                itemA: '0' ,
-                allQuizzes : ''
-            }
-        },
-        methods:{
-            getQuizList()
-            {
-                let _that =this;
-                axios.get('quiz-list', { cache: false })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.allQuizzes = response.data.quiz_form_list;
-                        }
-                    })
-            },
-
-            quizStart(quizInfo){
-                // if (localStorage.quiz_info){
-                //     console.log(localStorage.quiz_info);
-                //     localStorage.setItem('quiz_info','');
-                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                // }else{
-                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-                // }
-                this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
-            }
-        },
-        created(){
-           this.getQuizList();
+import axios from 'axios'
+import Loading from "@/components/Loading"
+export default {
+    name: "Quiz",
+    data(){
+        return{
+            isLoading: true,
+            itemA: '0' ,
+            allQuizzes : ''
         }
+    },
+    components:{
+        Loading,
+    },
+    methods:{
+        getQuizList()
+        {
+            let _that =this;
+            axios.get('quiz-list', { cache: false })
+                .then(function (response) {
+                    _that.isLoading= false;
+                    if(response.data.status_code === 200){
+                        _that.allQuizzes = response.data.quiz_form_list;
+                    }
+                })
+        },
+
+        quizStart(quizInfo){
+            // if (localStorage.quiz_info){
+            //     console.log(localStorage.quiz_info);
+            //     localStorage.setItem('quiz_info','');
+            //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+            // }else{
+            //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+            // }
+            this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
+        }
+    },
+    created(){
+        this.getQuizList();
     }
+}
 </script>
 
 <style scoped>

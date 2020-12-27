@@ -1,5 +1,8 @@
 <template>
-    <div v-cloak>
+    <div v-if="isLoading">
+        <Loading></Loading>
+    </div>
+    <div v-else v-cloak class="min-height-wrapper">
       <main>
         <section class="inner-search-area py-20">
           <div class="container">
@@ -83,11 +86,16 @@
 </template>
 
 <script>
+    import Loading from "@/components/Loading";
     import axios from 'axios'
     export default {
         name: "ArticleDetail",
+        components:{
+           Loading,
+        },
         data(){
             return{
+                isLoading : true,
                 articleID:'',
                 aArticle:'',
                 articleIDArr:[],
@@ -127,6 +135,7 @@
                 axios.get('category-article-list', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
+                            _that.isLoading = false;
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
                                 if (val.article.length!=0){
@@ -138,7 +147,6 @@
             },
             dynamicBackFunc() {
                 let _that =this;
-
                 _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
                 _that.articleID = _that.articleIDArr[_that.articleIDArr.length-1];
                 if (_that.articleID){

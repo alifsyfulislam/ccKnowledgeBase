@@ -1,5 +1,8 @@
 <template>
-    <div class="py-30 py-md-60 min-height-wrapper">
+    <div v-if="isLoading">
+        <Loading></Loading>
+    </div>
+    <div v-else v-cloak class="py-30 py-md-60 min-height-wrapper">
         <div class="container">
             <div v-if="isFinish">
                 <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
@@ -88,11 +91,17 @@
 
 <script>
 import axios from 'axios'
+import Loading from "@/components/Loading"
 export default {
     name: "StartExam",
 
+    components:{
+        Loading,
+    },
+
     data(){
         return{
+            isLoading: true,
             isFinish: false,
             isRepeat: true,
             quizInfo: '',
@@ -175,6 +184,7 @@ export default {
                 pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
                 axios.get(pageUrl)
                     .then(function (response) {
+                        _that.isLoading= false;
                         _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
                         _that.pagination  = response.data.quiz_form_field_list;
                         _that.quizFormFieldInfo.forEach(val =>{
