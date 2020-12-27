@@ -1,13 +1,13 @@
 <template>
     <div class="py-30 py-md-60">
         <div class="container">
-<!--            result-->
+            <!--            result-->
             <div v-if="isFinish">
                 Your Score {{ showResult }}
             </div>
-<!--            Math.min(dictionary.length, 20)-->
-<!--            quizFormFieldInfo-->
-<!--            quiz progress-->
+            <!--            Math.min(dictionary.length, 20)-->
+            <!--            quizFormFieldInfo-->
+            <!--            quiz progress-->
             <div v-else>
                 <div v-if="quizInfo">
                     <div>Time left: {{timeCounter}}</div>
@@ -56,7 +56,7 @@
                         </div>
 
                         <div>
-                            <button class="btn" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(), finalizeData()">Finish Exam</button>
+                            <button class="btn" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData()">Finish Exam</button>
                         </div>
                     </div>
 
@@ -110,6 +110,7 @@ export default {
             pagination:{
                 from: '',
                 to: '',
+                current_page: 1,
                 first_page_url: '',
                 last_page: '',
                 last_page_url: '',
@@ -131,8 +132,8 @@ export default {
         },
         checkNextData(){
             let _that = this;
-            _that.allFromData.push(_that.fromData)
-            if (_that.isRepeat ==false ){
+            _that.allFromData.push(_that.fromData);
+            if (_that.isRepeat == false ){
                 _that.finalizeData();
             }
             else{
@@ -149,7 +150,7 @@ export default {
                 let n = 0;
                 let score=0;
                 for (n; n<_that.resultArray.length; n++) {
-                    if (_that.resultArray[n].toLowerCase() == _that.allFromData[n].toLocaleLowerCase()) {
+                    if (_that.resultArray[n].toLowerCase() == _that.allFromData[n].toLowerCase()) {
                         score+=_that.markCounter;
                     }
                 }
@@ -164,50 +165,59 @@ export default {
         // },
         getQuizFormField(pageUrl) {
             let _that = this;
-            if (pageUrl == _that.pagination.last_page_url){
-                pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                        _that.pagination  = response.data.quiz_form_field_list;
-                        _that.quizFormFieldInfo.forEach(val =>{
-                            _that.resultArray.push(val.f_default_value);
-                            if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                let str = val.f_option_value;
-                                str = str.split(",");
-                                _that.selectBoxOption = Object.assign({}, str);
-                            }
-                            if (pageUrl==_that.pagination.last_page_url){
-                                _that.itemA = 1;
-                                //
-                            }else {
-                                _that.itemA = 0;
-                            }
-                        })
-                    })
-                _that.isRepeat = false; //loop off
-            }else{
-                pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                        _that.pagination  = response.data.quiz_form_field_list;
-                        _that.quizFormFieldInfo.forEach(val =>{
-                            _that.resultArray.push(val.f_default_value);
-                            if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                let str = val.f_option_value;
-                                str = str.split(",");
-                                _that.selectBoxOption = Object.assign({}, str);
-                            }
-                            if (pageUrl==_that.pagination.last_page_url){
-                                _that.itemA = 1;
-                                //
-                            }else {
-                                _that.itemA = 0;
-                            }
-                        })
-                    })
+            if (_that.pagination.current_page == _that.quizInfo.number_of_questions){
+                _that.isFinish = true;
+                _that.isRepeat = false;
+                _that.checkNextData();
+                // _that.finalizeData();
             }
+            else{
+                if (pageUrl == _that.pagination.last_page_url){
+                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                            _that.pagination  = response.data.quiz_form_field_list;
+                            _that.quizFormFieldInfo.forEach(val =>{
+                                _that.resultArray.push(val.f_default_value);
+                                if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                    let str = val.f_option_value;
+                                    str = str.split(",");
+                                    _that.selectBoxOption = Object.assign({}, str);
+                                }
+                                // if (pageUrl==_that.pagination.last_page_url){
+                                //     _that.itemA = 1;
+                                //     //
+                                // }else {
+                                //     _that.itemA = 0;
+                                // }
+                            })
+                        })
+                    _that.isRepeat = false; //loop off
+                }else{
+                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                            _that.pagination  = response.data.quiz_form_field_list;
+                            _that.quizFormFieldInfo.forEach(val =>{
+                                _that.resultArray.push(val.f_default_value);
+                                if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                    let str = val.f_option_value;
+                                    str = str.split(",");
+                                    _that.selectBoxOption = Object.assign({}, str);
+                                }
+                                if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
+                                    _that.itemA = 1;
+                                    _that.isRepeat = false;
+                                }else {
+                                    _that.itemA = 0
+                                }
+                            })
+                        })
+                }
+            }
+
         },
         getEachQuizMark(v1,v2){
             this.markCounter = v1/v2;
@@ -233,7 +243,7 @@ export default {
             let y = mm < 10? "0"+mm : mm;
             let z = ss < 10? "0"+ss : ss;
             this.timeCounter = x+":"+y+":"+z;
-       },
+        },
     },
 
     created() {
