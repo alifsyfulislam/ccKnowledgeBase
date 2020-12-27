@@ -1,5 +1,7 @@
 <template>
-  <div class="main-wrapper d-flex">
+    <Loading v-if="isLoading===true"></Loading>
+  <div class="main-wrapper d-flex" v-if="isLoading===false">
+
     <!-- sidebar -->
     <Menu></Menu>
     <!-- sidebar end -->
@@ -199,6 +201,7 @@
 
     <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-data="getArticleDataFromAdd"></ArticleAdd>
 
+
     <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-data="getArticleDataFromEdit"></ArticleEdit>
 
     <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
@@ -244,213 +247,220 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import ArticleAdd from "@/components/article/articleAdd";
 import ArticleEdit from "@/components/article/articleEdit";
+import Loading from "@/components/loader/loading";
 import axios from "axios";
 
 export default {
-name: "articleList.vue",
+    name: "articleList.vue",
 
-  components: {
-    Header,
-    Menu,
-    ArticleEdit,
-    ArticleAdd
-  },
+    components: {
+        Header,
+        Menu,
+        ArticleEdit,
+        ArticleAdd,
+        Loading
+    },
 
-  data() {
-    return {
-      isEditCheck     : false,
-      isAddCheck      : false,
-      isDelete        : false,
-      isSearch        : false,
+    data() {
+        return {
+            isLoading       : false,
+            isEditCheck     : false,
+            isAddCheck      : false,
+            isDelete        : false,
+            isSearch        : false,
 
-      category_parent_id : '',
-      category_name   : '',
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      categoryList    : '',
-      articleList     : '',
+            category_parent_id : '',
+            category_name   : '',
+            success_message : '',
+            error_message   : '',
+            token           : '',
+            categoryList    : '',
+            articleList     : '',
 
-      article_id :'',
+            article_id :'',
 
-      filter : {
-        isAdmin : 1,
-        category_id : '',
-        status : '',
-        en_title : '',
-        tag : '',
-      },
+            filter : {
+                isAdmin : 1,
+                category_id : '',
+                status : '',
+                en_title : '',
+                tag : '',
+            },
 
-      pagination:{
-        from: '',
-        to: '',
-        first_page_url: '',
-        last_page: '',
-        last_page_url: '',
-        next_page_url:'',
-        prev_page_url: '',
-        path: '',
-        per_page: 10,
-        total: ''
-      },
+            pagination:{
+                from: '',
+                to: '',
+                first_page_url: '',
+                last_page: '',
+                last_page_url: '',
+                next_page_url:'',
+                prev_page_url: '',
+                path: '',
+                per_page: 10,
+                total: ''
+            },
 
+        }
+    },
+    methods: {
+
+        removingRightSideWrapper() {
+
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+            document.body.classList.remove('open-side-slider');
+
+        },
+
+        clearAllChecker() {
+
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+
+        },
+
+        getArticleDataFromAdd (newData) {
+            console.log(newData)
+            //this.articleList.push(newData);
+            this.isAddCheck = false;
+            this.getArticleList();
+        },
+
+        getArticleDataFromEdit (newEditData) {
+            console.log(newEditData)
+            this.isEditCheck = false;
+            this.getArticleList();
+        },
+
+        clearFilter() {
+
+            this.filter.category_id = "";
+            this.filter.status   = "";
+            this.filter.en_title = "";
+            this.filter.tag      = "";
+            this.success_message = "";
+            this.error_message   = "";
+            this.getArticleList();
+
+        },
+
+        getCategoryList() {
+
+            let _that =this;
+
+            axios.get('admin/categories',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params :
+                        {
+                            isAdmin     : 1,
+                            without_pagination : 1
+                        },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        //console.log(response.data);
+                        _that.categoryList = response.data.category_list;
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+
+        getArticleList(pageUrl) {
+            let _that =this;
+
+            pageUrl = pageUrl == undefined ? 'admin/articles' : pageUrl;
+
+            axios.get(pageUrl,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params :
+                        {
+                            isAdmin : 1,
+                            category_id : this.filter.category_id,
+                            status : this.filter.status,
+                            en_title : this.filter.en_title,
+                            tag : this.filter.tag,
+                        },
+
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+
+                        console.log(response.data);
+                        _that.articleList = response.data.article_list.data;
+                        _that.pagination  = response.data.article_list;
+                        _that.isLoading   = false;
+                       // _that.setTimeoutElements();
+
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+
+        setTimeoutElements() {
+
+            setTimeout(() => this.isLoading = false, 5000);
+            setTimeout(() => this.success_message = "", 3000);
+            setTimeout(() => this.error_message = "", 3000);
+
+        },
+
+        deleteArticle() {
+
+            let _that = this;
+
+            axios.delete('admin/articles/delete',
+                {
+                    data:
+                        {
+                            id      : _that.article_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200)
+                {
+                    _that.getArticleList();
+                    _that.error_message   = '';
+                    _that.clearAllChecker();
+                    document.body.classList.remove('open-side-slider');
+                    _that.success_message = "Successfully deleted the Article";
+                    _that.setTimeoutElements();
+
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+    },
+    created() {
+        this.isLoading = true;
+        this.getArticleList();
+        this.getCategoryList();
     }
-  },
-  methods: {
-
-    removingRightSideWrapper() {
-
-    this.isAddCheck = false;
-    this.isDelete   = false;
-    this.isSearch   = false;
-    document.body.classList.remove('open-side-slider');
-
-    },
-
-    clearAllChecker() {
-
-      this.isAddCheck = false;
-      this.isDelete   = false;
-      this.isSearch   = false;
-
-    },
-
-    getArticleDataFromAdd (newData) {
-      console.log(newData)
-      //this.articleList.push(newData);
-      this.isAddCheck = false;
-      this.getArticleList();
-    },
-
-    getArticleDataFromEdit (newEditData) {
-      console.log(newEditData)
-      this.isEditCheck = false;
-      this.getArticleList();
-    },
-
-    clearFilter() {
-
-      this.filter.category_id = "";
-      this.filter.status   = "";
-      this.filter.en_title = "";
-      this.filter.tag      = "";
-      this.success_message = "";
-      this.error_message   = "";
-      this.getArticleList();
-
-    },
-
-    getCategoryList() {
-
-      let _that =this;
-
-      axios.get('admin/categories',
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-            params :
-                {
-                  isAdmin     : 1,
-                  without_pagination : 1
-                },
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-              //console.log(response.data);
-              _that.categoryList = response.data.category_list;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
-
-    getArticleList(pageUrl) {
-      let _that =this;
-
-      pageUrl = pageUrl == undefined ? 'admin/articles' : pageUrl;
-
-      axios.get(pageUrl,
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
-            params :
-                {
-                  isAdmin : 1,
-                  category_id : this.filter.category_id,
-                  status : this.filter.status,
-                  en_title : this.filter.en_title,
-                  tag : this.filter.tag,
-                },
-
-          })
-          .then(function (response) {
-            if(response.data.status_code === 200){
-
-              console.log(response.data);
-              _that.articleList = response.data.article_list.data;
-              _that.pagination  = response.data.article_list;
-
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
-    },
-
-    setTimeoutElements() {
-
-      setTimeout(() => this.success_message = "", 3000);
-      setTimeout(() => this.error_message = "", 3000);
-
-    },
-
-    deleteArticle() {
-
-      let _that = this;
-
-      axios.delete('admin/articles/delete',
-          {
-            data:
-                {
-                  id      : _that.article_id
-                },
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-            },
-          }).then(function (response) {
-
-        if (response.data.status_code == 200)
-        {
-          _that.getArticleList();
-          _that.error_message   = '';
-          _that.clearAllChecker();
-          document.body.classList.remove('open-side-slider');
-          _that.success_message = "Successfully deleted the Article";
-          _that.setTimeoutElements();
-
-        }
-        else
-        {
-          _that.success_message = "";
-          _that.error_message   = response.data.error;
-        }
-
-      }).catch(function (error) {
-        console.log(error);
-      });
-
-    },
-
-  },
-  created() {
-    this.getArticleList();
-    this.getCategoryList();
-  }
 }
 </script>
 

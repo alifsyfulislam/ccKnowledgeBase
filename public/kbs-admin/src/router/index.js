@@ -184,7 +184,7 @@ let router = createRouter({
       component: About
 
     }, {
-      path: '/admin/',
+      path: '/',
       name: 'login',
       component: login
     },
