@@ -154,12 +154,18 @@ class UserService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => 400, 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
+
         }
 
-
         $input = $request->all();
-        $input['slug'] = Helper::slugify($request->first_name.$request->last_name) ;
+
+        $input['slug']   = Helper::slugify($request->first_name.$request->last_name) ;
+        $input['status'] = $request->status ?? 1;
 
         if(!empty($input['password'])) {
 

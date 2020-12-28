@@ -56,6 +56,7 @@ class UserRepository implements RepositoryInterface
         $dataObj->slug = Helper::slugify($data['first_name'].$data['last_name']) ;
         $dataObj->email = $data['email'];
         $dataObj->password = $data['password'];
+        $dataObj->status = $data['status'] ?? 1;
 
         return $dataObj->save();
     }
