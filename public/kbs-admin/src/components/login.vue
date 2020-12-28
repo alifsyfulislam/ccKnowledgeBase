@@ -99,8 +99,8 @@ export default {
       error_message   : '',
       token           : '',
       formData        : {
-        username : '',
-        password : '',
+        username : 'admin',
+        password : '123456',
 
       },
       userInfo        : '',

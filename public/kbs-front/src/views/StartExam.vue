@@ -47,7 +47,7 @@
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Textarea'">
-                                        <textarea class="form-control" rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
+                                        <textarea class="form-control" rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkTextAreaData(),checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
                                     </div>
 
                                     <div v-if="a_form_field.f_type === 'Password'">
@@ -133,11 +133,13 @@ export default {
     },
 
     methods:{
+        checkTextAreaData(){
+            this.fromData = this.fromData.replace("\n", "");
+
+        },
         onChange(val) {
             let _that = this;
             _that.fromData = val;
-            // _that.allFromData.push(_that.fromData);
-            // _that.fromData = '';
         },
         checkNextData(){
             let _that = this;
