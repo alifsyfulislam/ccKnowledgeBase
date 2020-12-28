@@ -63,6 +63,17 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="roles">Status<span class="required">*</span></label>
+                                <select class="form-control" v-model="userDetails.status">
+                                    <option value="" disabled>Select A Status</option>
+                                    <option value="0">Inactive</option>
+                                    <option value="1">Active</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-8">
                             <div class="form-group text-left">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="userUpdate()">Update</button>
@@ -116,6 +127,7 @@
                         first_name: _that.userDetails.first_name,
                         last_name : _that.userDetails.last_name,
                         email     : _that.userDetails.email,
+                        status    : _that.userDetails.status,
                         roles     : _that.roles,
                     },
                     {
