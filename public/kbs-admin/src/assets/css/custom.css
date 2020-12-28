@@ -82,12 +82,27 @@
 .sidebar-menu-wrapper .dropdown-toggle::after {
     position: absolute;
     right: 5px;
-    top: 10px;
+    top: 5px;
 }
 
-.sidebar-menu-wrapper .sub-items .router-link-active {
+.sidebar-menu-wrapper.left-sidebar-hide .sub-items .router-link-active,
+.sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul li a.router-link-active,
+.sidebar-menu-wrapper.left-sidebar-hide .router-link-active {
     background: #2E9EDF;
     color: #fff;
+}
+
+.sidebar-menu-wrapper.left-sidebar-hide .sidebar-menu-wrapper a .menu-title,
+.sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a .menu-title{
+    line-height: 1.25;
+}
+
+.sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul, 
+.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+.sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li a:hover ~ ul,
+.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+.sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul {
+    top: 33px;
 }
 
 .sidebar-menu-wrapper .sub-items .router-link-active .menu-sub-title {
@@ -186,6 +201,35 @@
     font-size: 20px;
 }
 
+.sidebar-menu-wrapper a,
+.sidebar-menu-wrapper li .sub-items a .menu-sub-title {
+    font-size: 12px;
+}
+
+.anim {
+    width: 16px;
+}
+
+.sidebar-menu-wrapper .dropdown-toggle::after {
+    border: 0;
+    content: '—';
+    font-size: 20px;
+    margin-left: 0;
+    margin-top: 0 !important;
+    text-align: center;
+    line-height: 1;
+    min-width: 20px;
+    font-weight: 300;
+}
+
+input[type="file"]:focus {
+    outline: none;
+}
+
+.sidebar-menu-wrapper a.dropdown-toggle.collapsed:after {    
+    content: '+';
+}
+
 @media (max-width: 1600px) {
     .close-bar .right-side-close-btn {
         margin-right: 0;
@@ -199,7 +243,7 @@
 
     .sidebar-menu-wrapper li a:hover .menu-title,
     .sidebar-menu-wrapper li a .menu-title {
-        padding: 11px 7px !important;
+        padding: 9.5px 7px !important;
     }
 
     .sidebar-menu-wrapper .sub-items a:hover .menu-sub-title {
@@ -213,6 +257,32 @@
 
     .right-sidebar-wrapper.right-sidebar-small-wrapper .close-bar {
         width: 260px;
+    }
+
+    .sidebar-menu-wrapper a,
+    .sidebar-menu-wrapper li .sub-items a .menu-sub-title,
+    .sidebar-wrapper .tree-nav li:hover a .menu-title, 
+    .sidebar-wrapper .sidebar-menu-wrapper li:hover a .menu-title {
+        font-size: 12px;
+    }
+
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul, 
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+    .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li a:hover ~ ul,
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+    .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul,
+    .sidebar-wrapper .sidebar-menu-wrapper li:hover a ~ ul {
+        top: 33px;
+    }
+
+    .sidebar-menu-wrapper.left-sidebar-hide .sub-items .router-link-active,
+    .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul li a.router-link-active,
+    .sidebar-menu-wrapper.left-sidebar-hide .router-link-active,
+    .sidebar-menu-wrapper .sub-items .router-link-active,
+    .sidebar-wrapper .sidebar-menu-wrapper li:hover a ~ ul li a.router-link-active,
+    .sidebar-menu-wrapper .router-link-active {
+        background: #2E9EDF;
+        color: #fff;
     }
 }
 

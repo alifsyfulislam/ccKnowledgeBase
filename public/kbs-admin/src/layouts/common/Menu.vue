@@ -6,7 +6,7 @@
     </div>
 
     <nav class="sidebar-menu-wrapper text-left" >
-      <ul class="main-items mb-0 pl-10 py-30 color-variation-menu-items list-unstyled">
+      <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
         <li>
           <router-link :to="{ name: 'dashboard'}">
             <span class="anim">
@@ -175,8 +175,7 @@
                   <li>
                       <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-common-form">
                           <span class="menu-sub-title">Page Configuration</span>
-                      </a>
-                      <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck= "isConfigurationCheck" @config-data="getPageConfigData"></pageConfiguration>
+                      </a>                      
 <!--                      <router-link :to="{ name: 'pageConfiguration'}">
                           <span class="menu-sub-title">Page Configuration</span>
                       </router-link>-->
@@ -189,6 +188,7 @@
       </ul>
     </nav>
   </div>
+    <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck= "isConfigurationCheck" @config-data="getPageConfigData"></pageConfiguration>
 </template>
 
 <script>

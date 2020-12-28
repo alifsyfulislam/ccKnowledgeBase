@@ -46,7 +46,7 @@
                                     <h2 class="section-title text-uppercase mb-20">Config Front Page</h2>
 
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div v-if="success_message" class="alert alert-success" role="alert">
                                                 {{ success_message }}
                                             </div>
@@ -58,28 +58,28 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="name">Title <span class="required">*</span></label>
                                                 <input class="form-control" type="text" v-model="configure_data.title" id="name" placeholder="Enter Title" required>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="name">Logo</label>
-                                                <input type="file" class="form-control"  id="files"  ref="files" @change="onLogoFileChange" >
+                                                <label for="name" class="d-block">Logo</label>
+                                                <input type="file" id="files"  ref="files" @change="onLogoFileChange" >
 <!--                                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>-->
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10" v-if="logo_url">
+                                        <div class="col-md-12" v-if="logo_url">
                                             <div class="form-group" >
                                                 <img class="preview" style="height:250px; width: auto" :src="logo_url"/>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Select A Position</label>
 
@@ -91,20 +91,20 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="name">Banner</label>
-                                                <input type="file" class="form-control"  id="banner_files"  ref="banner_files"  @change="onBannerFileChange"  >
+                                                <label for="name" class="d-block">Banner</label>
+                                                <input type="file" id="banner_files"  ref="banner_files"  @change="onBannerFileChange"  >
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10" v-if="banner_url">
+                                        <div class="col-md-12" v-if="banner_url">
                                             <div class="form-group" >
                                                 <img class="preview" style="height:250px; width: auto" :src="banner_url"/>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="name">Description</label>
                                                 <textarea cols="20" rows="4" class="form-control form-control-lg" v-model="configure_data.description"></textarea>
