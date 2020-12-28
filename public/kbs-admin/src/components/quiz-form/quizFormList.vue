@@ -1,7 +1,5 @@
 <template>
 
-    <Loading v-if="isLoading===true"></Loading>
-
     <div class="main-wrapper d-flex">
         <Menu></Menu>
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
@@ -28,8 +26,9 @@
                     <!-- list top area end -->
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
+                        <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="isLoading===false">
                             <table class="table table-bordered gsl-table" v-if="allQuizField">
                                 <thead>
                                 <tr>
@@ -305,4 +304,7 @@ export default {
 }
 </script>
 <style scoped>
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>

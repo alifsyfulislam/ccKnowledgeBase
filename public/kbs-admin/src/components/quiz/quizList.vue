@@ -1,7 +1,5 @@
 <template>
 
-    <Loading v-if="isLoading===true"></Loading>
-
     <div class="main-wrapper d-flex">
         <!-- sidebar -->
         <Menu></Menu>
@@ -39,26 +37,27 @@
 
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
+                        <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="isLoading===false">
                             <table class="table table-bordered gsl-table">
                                 <thead>
-                                    <tr>
-                                        <th class="text-center">Name</th>
-<!--                                        <th class="text-center">Article</th>-->
-                                        <th class="text-center">Duration</th>
-                                        <th class="text-center">Total Marks</th>
-                                        <th class="text-center">Number of Questions</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
+                                <tr>
+                                    <th class="text-center">Name</th>
+                                    <!--                                        <th class="text-center">Article</th>-->
+                                    <th class="text-center">Duration</th>
+                                    <th class="text-center">Total Marks</th>
+                                    <th class="text-center">Number of Questions</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
                                 </thead>
                                 <tbody>
 
                                 <tr v-for="a_quiz in quizList" :key="a_quiz">
 
                                     <td class="text-center"> {{ a_quiz.name  }} </td>
-<!--                                    <td class="text-center"> {{ a_quiz.article ? a_quiz.article.en_title : '' }} </td>-->
+                                    <!--                                    <td class="text-center"> {{ a_quiz.article ? a_quiz.article.en_title : '' }} </td>-->
                                     <td class="text-center"> {{ a_quiz.duration }} </td>
                                     <td class="text-center"> {{ a_quiz.total_marks  }} </td>
                                     <td class="text-center"> {{ a_quiz.number_of_questions  }} </td>
@@ -127,7 +126,7 @@
         <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                  <img src="../../assets/img/cancel.svg" alt="cancel">
+                    <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
 
@@ -258,33 +257,6 @@ export default {
             this.getQuizList();
         },
 
-     /*   getArticleList()
-        {
-            let _that =this;
-
-            axios.get('admin/articles',
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
-                            isAdmin : 1
-                        },
-
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.articleList = response.data.article_list.data;
-                    }
-                    else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-                })
-        },*/
-
         getQuizList(pageUrl){
 
             let _that =this;
@@ -310,6 +282,7 @@ export default {
                         _that.quizList   = response.data.quiz_list.data;
                         _that.pagination = response.data.quiz_list;
                         _that.isLoading  = false;
+
                     }
                     else{
                         _that.success_message = "";
@@ -358,14 +331,18 @@ export default {
         },
 
     },
+
     created() {
+
         this.isLoading = true;
         this.getQuizList();
-       // this.getArticleList();
+
     }
 }
 </script>
 
 <style scoped>
-
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>

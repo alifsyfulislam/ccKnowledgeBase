@@ -10,7 +10,7 @@
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
-                    <h2 class="content-title text-uppercase m-0">Customer List</h2>
+                    <h2 class="content-title text-uppercase m-0">User List</h2>
                 </div>
 
                 <div class="content-wrapper bg-white">
@@ -58,8 +58,9 @@
 
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
+                        <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="isLoading===false">
                             <table class="table table-bordered gsl-table" v-if="userList">
                                 <thead>
                                 <tr>
@@ -232,6 +233,7 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import CustomerAdd from "@/components/customer/customerAdd";
 import CustomerEdit from "@/components/customer/customerEdit";
+import Loading from "@/components/loader/loading";
 import axios from "axios";
 
 export default {
@@ -240,12 +242,13 @@ export default {
         Header,
         Menu,
         CustomerAdd,
-        CustomerEdit
+        CustomerEdit,
+        Loading
     },
 
     data() {
         return {
-
+            isLoading       : false,
             isAddCheck      : false,
             isEditCheck     : false,
             isDelete        : false,
@@ -299,7 +302,7 @@ export default {
             //this.articleList.push(newData);
             this.isAddCheck = false;
             this.getUsersList();
-            //this.inboundData.formData = newData
+
         },
 
         getCustomerDataFromEdit (newEditData) {
@@ -333,20 +336,16 @@ export default {
                         console.log(response.data.user_list.data);
                         _that.pagination  = response.data.user_list;
                         _that.userList   = response.data.user_list.data;
-
                         _that.success_message = "";
+                        _that.isLoading       = false;
+                        _that.setTimeoutElements();
+
                     }
                     else{
                         _that.success_message = "";
                         _that.error_message   = response.data.error;
                     }
                 })
-        },
-
-        setTimeoutElements()
-        {
-            setTimeout(() => this.success_message = "", 4e3);
-            setTimeout(() => this.error_message = "", 4e3);
         },
 
         deleteCustomer() {
@@ -370,11 +369,11 @@ export default {
                     _that.error_message   = '';
                     document.body.classList.remove('open-side-slider');
                     _that.success_message = "Successfully deleted the User";
-                    _that.setTimeoutElements();
+                    _that.isLoading       = false;
+                   // _that.setTimeoutElements();
 
-                }
-                else
-                {
+                }else{
+
                     _that.success_message = "";
                     _that.error_message   = response.data.error;
                 }
@@ -427,6 +426,7 @@ export default {
                     }
                 })
         },
+
         deleteUser(userId) {
             let _that = this;
 
@@ -460,8 +460,16 @@ export default {
 
         },
 
+        setTimeoutElements() {
+            //setTimeout(() => this.isLoading = false, 3000);
+            setTimeout(() => this.success_message = "", 3000);
+            setTimeout(() => this.error_message = "", 3000);
+        },
+
     },
+
     created() {
+        this.isLoading  = true;
         this.getUsersList();
         this.getUserRoles();
     }
@@ -469,5 +477,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>

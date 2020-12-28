@@ -24,7 +24,7 @@ export default {
 <style scoped>
 .mhv-100 {
     min-height: 100vh;
-    background-color: #2980b9;
+    background-color: transparent;
 }
 .sk-cube-grid {
     width: 40px;
@@ -34,7 +34,7 @@ export default {
 .sk-cube-grid .sk-cube {
     width: 33%;
     height: 33%;
-    background-color: #fff;
+    background-color: #2980b9;
     float: left;
     -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
     animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
