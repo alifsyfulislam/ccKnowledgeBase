@@ -43,8 +43,8 @@
                                 <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
-                                </div>
-                                <div>
+                            </div>
+                            <div>
                                 <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
                                     <i class="fa fa-refresh"></i>
                                     Refresh
@@ -154,20 +154,20 @@
 
                             </div>
 
-<!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="role">Select A Roles</label>-->
+                            <!--                            <div class="row">-->
+                            <!--                                <div class="col-md-12">-->
+                            <!--                                    <div class="form-group">-->
+                            <!--                                        <label for="role">Select A Roles</label>-->
 
-<!--                                        <select class="form-control" v-model="filter.role" id="role">-->
-<!--                                            <option value="">Select A Roles</option>-->
-<!--                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">-->
-<!--                                                {{a_role.name}}-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                                        <select class="form-control" v-model="filter.role" id="role">-->
+                            <!--                                            <option value="">Select A Roles</option>-->
+                            <!--                                            <option v-for="a_role in userAllRoles" :value="a_role.id" :key="a_role">-->
+                            <!--                                                {{a_role.name}}-->
+                            <!--                                            </option>-->
+                            <!--                                        </select>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
 
                             <div class="form-group text-right">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="getUsersList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
@@ -228,243 +228,244 @@
 </template>
 
 <script>
-    import Header from "@/layouts/common/Header";
-    import Menu from "@/layouts/common/Menu";
-    import CustomerAdd from "@/components/customer/customerAdd";
-    import CustomerEdit from "@/components/customer/customerEdit";
-    import axios from "axios";
+import Header from "@/layouts/common/Header";
+import Menu from "@/layouts/common/Menu";
+import CustomerAdd from "@/components/customer/customerAdd";
+import CustomerEdit from "@/components/customer/customerEdit";
+import axios from "axios";
 
-    export default {
-        name: "customerList.vue",
-        components: {
-            Header,
-            Menu,
-            CustomerAdd,
-            CustomerEdit
-        },
+export default {
+    name: "customerList.vue",
+    components: {
+        Header,
+        Menu,
+        CustomerAdd,
+        CustomerEdit
+    },
 
-        data() {
-            return {
+    data() {
+        return {
 
-                isAddCheck      : false,
-                isEditCheck     : false,
-                isDelete        : false,
-                isSearch        : false,
+            isAddCheck      : false,
+            isEditCheck     : false,
+            isDelete        : false,
+            isSearch        : false,
 
-                success_message : '',
-                error_message   : '',
-                token           : '',
-                categoryList    : '',
-                articleList     : '',
-                userList        : '',
-                userRole        : '',
-                customer_id     : '',
-                userAllRoles    : '',
+            success_message : '',
+            error_message   : '',
+            token           : '',
+            categoryList    : '',
+            articleList     : '',
+            userList        : '',
+            userRole        : '',
+            customer_id     : '',
+            userAllRoles    : '',
 
 
-                filter : {
-                    isAdmin     : 1,
-                    username    : '',
-                    email       : '',
-                    role        : ''
-                },
-                pagination:{
-                    from: '',
-                    to: '',
-                    first_page_url: '',
-                    last_page: '',
-                    last_page_url: '',
-                    next_page_url:'',
-                    prev_page_url: '',
-                    path: '',
-                    per_page: 10,
-                    total: ''
-                },
-            }
-        },
-        methods: {
-            setTimeoutElements()
-            {
-                setTimeout(() => this.success_message = "", 4e3);
-                setTimeout(() => this.error_message = "", 4e3);
+            filter : {
+                isAdmin     : 1,
+                username    : '',
+                email       : '',
+                role        : ''
             },
-
-            deleteCustomer() {
-                let _that = this;
-
-                axios.delete('admin/users/delete',
-                    {
-                        data:
-                            {
-                                id      : _that.customer_id
-                            },
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-
-                    if (response.data.status_code == 200)
-                    {
-                        _that.getUsersList();
-                        _that.clearAllChecker();
-                        _that.error_message   = '';
-                        document.body.classList.remove('open-side-slider');
-                        _that.success_message = "Successfully deleted the User";
-                        _that.setTimeoutElements();
-
-                    }
-                    else
-                    {
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
+            pagination:{
+                from: '',
+                to: '',
+                first_page_url: '',
+                last_page: '',
+                last_page_url: '',
+                next_page_url:'',
+                prev_page_url: '',
+                path: '',
+                per_page: 10,
+                total: ''
             },
-
-            removingRightSideWrapper() {
-
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isSearch   = false;
-                document.body.classList.remove('open-side-slider');
-
-            },
-
-
-            clearAllChecker() {
-
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isSearch   = false;
-
-            },
-
-            clearFilter()
-            {
-                this.filter.username = "";
-                this.filter.email   = "";
-                this.filter.role = "";
-                this.success_message = "";
-                this.error_message   = "";
-                this.getUsersList();
-            },
-
-            getUserDataFromAdd (newData) {
-                console.log(newData)
-                //this.articleList.push(newData);
-                this.isAddCheck = false;
-                this.getUsersList();
-                //this.inboundData.formData = newData
-            },
-
-            getCustomerDataFromEdit (newEditData) {
-                console.log(newEditData)
-                this.isEditCheck = false;
-                this.getUsersList();
-                //this.inboundData.formData = newData
-            },
-
-            getUsersList(pageUrl)
-            {
-                let _that =this;
-
-                pageUrl = pageUrl == undefined ? 'admin/users' : pageUrl;
-
-                axios.get(pageUrl,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params :
-                            {
-                                isAdmin : 1,
-                                username : this.filter.username,
-                                email : this.filter.email,
-                                // role : this.filter.role
-                            },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            console.log(response.data.user_list.data);
-                            _that.pagination  = response.data.user_list;
-                            _that.userList   = response.data.user_list.data;
-
-                            _that.success_message = "";
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
-
-            getUserRoles(){
-                let _that =this;
-
-                axios.get('admin/roles',
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params : {
-                            isAdmin : 1,
-                            without_pagination : 1
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.userAllRoles = response.data.role_list;
-                            // console.log(_that.userRoles);
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
-            deleteUser(userId) {
-                let _that = this;
-
-                axios.delete('admin/users/delete',
-                    {
-                        data:
-                            {
-                                id  : userId
-                            },
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-
-                    if (response.data.status_code == 200) {
-                        _that.getUsersList();
-                        _that.error_message   = '';
-                        _that.success_message = "User Deleted Successfully";
-                        _that.removingRightSideWrapper();
-                        _that.setTimeoutElements();
-                    }
-                    else
-                    {
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
-            },
-
-        },
-        created() {
-            this.getUsersList();
-            this.getUserRoles();
         }
+    },
+    methods: {
+
+        clearFilter()
+        {
+            this.filter.username = "";
+            this.filter.email   = "";
+            this.filter.role = "";
+            this.success_message = "";
+            this.error_message   = "";
+            this.getUsersList();
+        },
+
+        getUserDataFromAdd (newData) {
+            console.log(newData)
+            //this.articleList.push(newData);
+            this.isAddCheck = false;
+            this.getUsersList();
+            //this.inboundData.formData = newData
+        },
+
+        getCustomerDataFromEdit (newEditData) {
+            console.log(newEditData)
+            this.isEditCheck = false;
+            this.getUsersList();
+            //this.inboundData.formData = newData
+        },
+
+        getUsersList(pageUrl)
+        {
+            let _that =this;
+
+            pageUrl = pageUrl == undefined ? 'admin/users' : pageUrl;
+
+            axios.get(pageUrl,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params :
+                        {
+                            isAdmin : 1,
+                            username : this.filter.username,
+                            email : this.filter.email,
+                            // role : this.filter.role
+                        },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        console.log(response.data.user_list.data);
+                        _that.pagination  = response.data.user_list;
+                        _that.userList   = response.data.user_list.data;
+
+                        _that.success_message = "";
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+
+        setTimeoutElements()
+        {
+            setTimeout(() => this.success_message = "", 4e3);
+            setTimeout(() => this.error_message = "", 4e3);
+        },
+
+        deleteCustomer() {
+            let _that = this;
+
+            axios.delete('admin/users/delete',
+                {
+                    data:
+                        {
+                            id      : _that.customer_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200)
+                {
+                    _that.getUsersList();
+                    _that.clearAllChecker();
+                    _that.error_message   = '';
+                    document.body.classList.remove('open-side-slider');
+                    _that.success_message = "Successfully deleted the User";
+                    _that.setTimeoutElements();
+
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+        removingRightSideWrapper() {
+
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+            document.body.classList.remove('open-side-slider');
+
+        },
+
+
+        clearAllChecker() {
+
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+
+        },
+
+        getUserRoles(){
+            let _that =this;
+
+            axios.get('admin/roles',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                        isAdmin : 1,
+                        without_pagination : 1
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.userAllRoles = response.data.role_list;
+                        // console.log(_that.userRoles);
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+        deleteUser(userId) {
+            let _that = this;
+
+            axios.delete('admin/users/delete',
+                {
+                    data:
+                        {
+                            id  : userId
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200) {
+                    _that.getUsersList();
+                    _that.error_message   = '';
+                    _that.success_message = "User Deleted Successfully";
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+    },
+    created() {
+        this.getUsersList();
+        this.getUserRoles();
     }
+}
 </script>
 
 <style scoped>
