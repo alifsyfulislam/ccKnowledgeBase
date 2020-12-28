@@ -182,6 +182,10 @@
     page-break-inside: avoid;
 }
 
+.account-type-status {
+    font-size: 20px;
+}
+
 @media (max-width: 1600px) {
     .close-bar .right-side-close-btn {
         margin-right: 0;
