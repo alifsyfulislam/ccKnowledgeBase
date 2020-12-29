@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Permissions\HasPermissionsTrait;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,5 +51,15 @@ class User extends Authenticatable
 
         return $this->hasMany(Article::class);
 
+    }
+
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("F j, Y, g:i a");
+    }
+
+    public function getUpdatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("F j, Y, g:i a");
     }
 }
