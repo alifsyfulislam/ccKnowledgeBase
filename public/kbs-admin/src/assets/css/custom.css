@@ -120,9 +120,9 @@
     box-shadow: none !important;
 }
 
-.right-sidebar-wrapper .form-control:required {
+/* .right-sidebar-wrapper .form-control:required {
     border-color: #FF7B88;
-}
+} */
 
 .right-sidebar-wrapper.right-sidebar-small-wrapper.right-side-common-form-show {
     right: 0;
