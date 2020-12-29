@@ -31,19 +31,6 @@
                             </div>
                         </div>
 
-<!--                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select An Article</label>
-
-                                <select class="form-control" v-model="quizData.article_id">
-                                    <option value="">Select One</option>
-                                    <option v-for="a_article in articleList" :value="a_article.id" :key="a_article">
-                                        {{a_article.en_title}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>-->
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Select Quiz Form</label>
@@ -60,22 +47,22 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="name">Duration</label>
-                                <input type="text" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex. 2 hours, 5 hours">
+                                <label for="name">Duration (Minutes)</label>
+                                <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30">
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="total_marks">Total Marks<span class="required">*</span></label>
-                                <input type="number" class="form-control " v-model="quizData.total_marks" id="total_marks">
+                                <input type="number" class="form-control " v-model="quizData.total_marks" id="total_marks" placeholder="Ex : 100">
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="number_of_questions">Number Of Questions<span class="required">*</span></label>
-                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="number_of_questions">
+                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="number_of_questions" placeholder="Ex : 10">
                             </div>
                         </div>
 

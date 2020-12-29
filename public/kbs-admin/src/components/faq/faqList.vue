@@ -1,5 +1,5 @@
 <template>
-    <Loading v-if="isLoading===true"></Loading>
+
     <div class="main-wrapper d-flex">
         <!-- sidebar -->
         <Menu></Menu>
@@ -46,8 +46,9 @@
 
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
+                        <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="isLoading===false">
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
@@ -455,5 +456,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>

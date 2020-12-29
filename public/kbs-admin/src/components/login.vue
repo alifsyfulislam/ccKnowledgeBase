@@ -42,10 +42,10 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 centered-login-bg d-none d-sm-block" style="background-image: url(../assets/img/call-center.png);">
+          <div class="col-sm-6 centered-login-bg d-none d-sm-block" :style="{ backgroundImage: 'url(' + require('../assets/img/call-center.png') + ')' }">
             <div class="information-wrapper d-flex align-items-end flex-column h-100 p-40">
               <div class="client-logo">
-<!--                <img class="img-fluid" src="../assets/img/airtel-logo.png" alt="airtel">-->
+                  <img class="img-fluid " src="../assets/img/logo-demo1.png" alt="demo">
               </div>
               <div class="client-info mt-auto"><a href="https://www.genuitysystems.com/">Genuity System Ltd.</a></div>
             </div>

@@ -38,8 +38,9 @@
 
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
+                        <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="isLoading===false">
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
@@ -152,150 +153,157 @@
 </template>
 
 <script>
-    import Header from "@/layouts/common/Header";
-    import Menu from "@/layouts/common/Menu";
-    import RoelAdd from "@/components/roles/roleAdd";
-    import RoleEdit from "@/components/roles/roleEdit";
-    import axios from "axios";
+import Header from "@/layouts/common/Header";
+import Menu from "@/layouts/common/Menu";
+import RoelAdd from "@/components/roles/roleAdd";
+import RoleEdit from "@/components/roles/roleEdit";
+import Loading from "@/components/loader/loading";
+import axios from "axios";
 
-    export default {
-        name: "rolesList",
-        components: {
-            Header,
-            Menu,
-            RoelAdd,
-            RoleEdit
+export default {
+    name: "rolesList",
+    components: {
+        Header,
+        Menu,
+        RoelAdd,
+        RoleEdit,
+        Loading
+    },
+    data (){
+        return {
+            isLoading       : false,
+            isEditCheck     : false,
+            isAddCheck      : false,
+            isDelete        : false,
+            isSearch        : false,
+
+            success_message : '',
+            error_message   : '',
+
+            role_id   : '',
+            userRoles : '',
+
+            pagination :{
+                from           : '',
+                to             : '',
+                first_page_url : '',
+                last_page      : '',
+                last_page_url  : '',
+                next_page_url  :'',
+                prev_page_url  : '',
+                path           : '',
+                per_page       : 10,
+                total          : ''
+            },
+        }
+    },
+    methods: {
+
+        removingRightSideWrapper()
+        {
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
+            document.body.classList.remove('open-side-slider');
         },
-        data (){
-            return {
-                isEditCheck     : false,
-                isAddCheck      : false,
-                isDelete        : false,
-                isSearch        : false,
 
-                success_message : '',
-                error_message   : '',
-
-                role_id   : '',
-                userRoles : '',
-
-                pagination :{
-                    from           : '',
-                    to             : '',
-                    first_page_url : '',
-                    last_page      : '',
-                    last_page_url  : '',
-                    next_page_url  :'',
-                    prev_page_url  : '',
-                    path           : '',
-                    per_page       : 10,
-                    total          : ''
-                },
-            }
+        clearAllChecker()
+        {
+            this.isAddCheck = false;
+            this.isDelete   = false;
+            this.isSearch   = false;
         },
-        methods: {
 
-            removingRightSideWrapper()
-            {
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isSearch   = false;
-                document.body.classList.remove('open-side-slider');
-            },
+        getRoleDataFromAdd (newData) {
+            console.log(newData)
+            this.isAddCheck = false;
+            this.getRolesList();
 
-            clearAllChecker()
-            {
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isSearch   = false;
-            },
+        },
 
-            getRoleDataFromAdd (newData) {
-                console.log(newData)
-                this.isAddCheck = false;
-                this.getRolesList();
+        getRoleDataFromEdit (newEditData) {
 
-            },
+            console.log(newEditData)
+            this.isEditCheck = false;
+            this.getRolesList();
 
-            getRoleDataFromEdit (newEditData) {
+        },
 
-                console.log(newEditData)
-                this.isEditCheck = false;
-                this.getRolesList();
+        getRolesList(pageUrl){
 
-            },
+            let _that =this;
+            pageUrl = pageUrl == undefined ? 'admin/roles' : pageUrl;
 
-            getRolesList(pageUrl){
+            axios.get(pageUrl,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        console.log(response.data);
+                        _that.success_message = "";
+                        _that.userRoles       = response.data.role_list.data;
+                        _that.pagination      = response.data.role_list;
+                        _that.isLoading       = false;
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
 
-                let _that =this;
-                pageUrl = pageUrl == undefined ? 'admin/roles' : pageUrl;
-
-                axios.get(pageUrl,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            console.log(response.data);
-                            _that.success_message = "";
-                            _that.userRoles       = response.data.role_list.data;
-                            _that.pagination      = response.data.role_list;
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
-
-          deleteRole() {
+        deleteRole() {
             let _that = this;
 
             axios.delete('admin/roles/delete',
                 {
-                  data:
-                      {
-                        id      : this.role_id
-                      },
-                  headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                  },
+                    data:
+                        {
+                            id      : this.role_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
                 }).then(function (response) {
 
-              if (response.data.status_code == 200){
+                if (response.data.status_code == 200){
 
-                  _that.getRolesList();
-                  _that.error_message   = '';
-                  _that.success_message = "Successfully deleted the Role";
-                  _that.removingRightSideWrapper();
-                  _that.setTimeoutElements();
-              }
-              else
-              {
-                _that.success_message = "";
-                _that.error_message   = response.data.error;
-              }
+                    _that.getRolesList();
+                    _that.error_message   = '';
+                    _that.success_message = "Successfully deleted the Role";
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
+                }
+                else
+                {
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
 
             }).catch(function (error) {
-              console.log(error);
+                console.log(error);
             });
 
-          },
+        },
 
         setTimeoutElements() {
+            //setTimeout(() => this.isLoading = false, 3000);
             setTimeout(() => this.success_message = "", 3000);
             setTimeout(() => this.error_message = "", 3000);
         },
-
-        },
-        created() {
-            this.getRolesList();
-        }
+    },
+    created() {
+        this.isLoading  = true;
+        this.getRolesList();
     }
+}
 </script>
 
 <style scoped>
-
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>

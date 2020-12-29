@@ -73,12 +73,12 @@ class UserService
 
         $validator = Validator::make($request->all(),[
 
-            'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:users',
-            'email' => 'required|string|email|max:60|unique:users',
-            'password' => 'required|same:confirm_password',
-            'roles' => 'required'
+            'first_name' => 'required|string|min:3|max:100',
+            'last_name'  => 'required|string|min:3|max:100',
+            'username'   => 'required|string|max:50|min:4|unique:users',
+            'email'      => 'required|email|max:60|unique:users',
+            'password'   => 'required|same:confirm_password',
+            'roles'      => 'required'
 
         ]);
 
@@ -87,7 +87,7 @@ class UserService
            return response()->json([
                'status_code' => '400',
                'messages'=>config('status.status_code.400'),
-               'error' =>  $validator->errors()->first()
+               'error' =>  $validator->errors()->all()
            ]);
 
         }
@@ -154,12 +154,18 @@ class UserService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => 400, 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'=>config('status.status_code.400'),
+                'error' =>  $validator->errors()->first()
+            ]);
+
         }
 
-
         $input = $request->all();
-        $input['slug'] = Helper::slugify($request->first_name.$request->last_name) ;
+
+        $input['slug']   = Helper::slugify($request->first_name.$request->last_name) ;
+        $input['status'] = $request->status ?? 1;
 
         if(!empty($input['password'])) {
 

@@ -21,6 +21,9 @@
                                 {{ error_message }}
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -72,11 +75,19 @@
                                     <option value="" disabled>Select A Role</option>
                                     <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
                                 </select>
-<!--                                <input class="form-control" type="password" v-on:keyup="checkPass()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>-->
                             </div>
                         </div>
 
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="roles">Status<span class="required">*</span></label>
+                                <select class="form-control" v-model="userData.status">
+                                    <option value="" disabled>Select A Status</option>
+                                    <option value="0">Inactive</option>
+                                    <option value="1">Active</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="col-md-8">
                             <div class="form-group text-left">
@@ -96,8 +107,6 @@
 
 <script>
     import axios from 'axios'
-    // import $ from 'jquery'
-
 
     export default {
         name: "customerAdd.vue",
@@ -124,7 +133,10 @@
                     password  : '',
                     confirm_password  : '',
                     roles : '',
+                    status : '',
                 },
+
+                validation_errors : [],
 
             }
         },
@@ -132,12 +144,13 @@
 
         methods: {
 
-            clearAllChecker()
-            {
+            clearAllChecker() {
+
                 this.isAdd = false;
                 this.$emit('customer-data', this.isAdd);
 
             },
+
             checkPass(){
                 let _that = this;
                 if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
@@ -163,6 +176,7 @@
                         password: this.userData.password,
                         confirm_password: this.userData.confirm_password,
                         roles: this.userData.roles,
+                        status: this.userData.status,
                     },
                     {
                         headers: {
