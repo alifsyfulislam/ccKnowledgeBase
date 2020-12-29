@@ -70,7 +70,7 @@
                                     <td class="text-center">{{ an_faq.category ? an_faq.category.name : ''  }}</td>
                                     <td class="text-center">{{ an_faq.status  }}</td>
                                     <td class="text-center">{{ an_faq.tag  }}</td>
-                                    <td class="text-center">{{ an_faq.publish_date  }}</td>
+                                    <td class="text-center">{{ an_faq.created_at  }}</td>
 
                                     <td class="text-center" style="width:120px">
                                         <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-primary btn-xs m-1">

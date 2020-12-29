@@ -71,7 +71,7 @@
                                     <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                                     <td class="text-center">{{ an_article.status  }}</td>
                                     <td class="text-center">{{ an_article.tag  }}</td>
-                                    <td class="text-center">{{ an_article.publish_date  }}</td>
+                                    <td class="text-center">{{ an_article.created_at  }}</td>
 
                                     <td class="text-center" style="width:120px">
                                         <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
