@@ -53,9 +53,7 @@
                                 {{has_article.en_title}}
                               </router-link>
                               <div v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
-                                <small v-if="a_cat_art.id == has_article.category_id">Category: {{a_cat_art.name}}</small>
-                              </div>
-                              <div>
+<!--                                <small v-if="a_cat_art.id == has_article.category_id">Category: {{a_cat_art.name}}</small>-->
                                 <small>Post on: {{has_article.created_at}}</small>
                               </div>
                             </li>
