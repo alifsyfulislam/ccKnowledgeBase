@@ -85,7 +85,7 @@ class UserService
         if($validator->fails()) {
 
            return response()->json([
-               'status_code' => '400',
+               'status_code' => 400,
                'messages'=>config('status.status_code.400'),
                'error' =>  $validator->errors()->all()
            ]);
@@ -126,12 +126,19 @@ class UserService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => 424, 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json([
+            'status_code' => 201,
+            'messages'=>config('status.status_code.201')
+        ]);
 
 
     }
@@ -156,7 +163,7 @@ class UserService
 
             return response()->json([
                 'status_code' => 400,
-                'messages'=>config('status.status_code.400'),
+                'messages' => config('status.status_code.400'),
                 'error' =>  $validator->errors()->first()
             ]);
 
