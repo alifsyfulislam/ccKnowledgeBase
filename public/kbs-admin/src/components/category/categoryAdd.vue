@@ -17,9 +17,9 @@
                         <div v-if="success_message" class="alert alert-success" role="alert">
                             {{ success_message }}
                         </div>
-                        <div v-if="error_message" class="alert alert-danger" role="alert">
-                            {{ error_message }}
-                        </div>
+<!--                        <div v-if="error_messages" class="alert alert-danger" role="alert">-->
+<!--                            {{ error_messages }}-->
+<!--                        </div>-->
                     </div>
 
                     <div class="row">
@@ -28,6 +28,9 @@
                             <div class="form-group">
                                 <label for="name">Name <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>
+                                <small v-if="error_messages.length>0" class="small text-danger category_name" role="alert">
+                                    {{ error_messages[0] }}
+                                </small>
                             </div>
                         </div>
 
@@ -47,7 +50,7 @@
                     </div>
 
                     <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="categoryAdd()">Add</button>
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
                     </div>
                 </div>
 
@@ -67,7 +70,7 @@ export default {
         return {
             isAdd : false,
             success_message : '',
-            error_message   : '',
+            error_messages   : [],
             token           : '',
             categoryList    : '',
             selectedCategory  : '',
@@ -80,15 +83,27 @@ export default {
     methods: {
 
         clearAllChecker() {
-
             this.isAdd = false;
             this.$emit('category-data', this.isAdd);
 
         },
 
+        dataValidate(){
+            let _that = this;
+            // _that.categoryAdd();
+            if (!_that.categoryData.name){
+                _that.error_messages[0] = "*The category name is required";
+            }
+            else if (_that.categoryData.name && (_that.categoryData.name).length >2 && (_that.categoryData.name).length <100){
+                _that.categoryAdd();
+            }
+            else{
+                _that.error_messages[0] = "*The name must be between 3 to 100 charecter";
+            }
+        },
+
         categoryAdd() {
             let _that = this;
-
             axios.post('admin/categories', {
 
                     name      : this.categoryData.name,
@@ -104,8 +119,7 @@ export default {
                 {
                     _that.categoryData     = '';
                     _that.selectedCategory = '';
-                    _that.error_message    = '';
-
+                    _that.error_messages    = '';
                     _that.isAdd = false;
                     _that.success_message  = "New Category Added Successfully";
                     _that.$emit('category-data', _that.categoryData);
@@ -114,12 +128,10 @@ export default {
                 else
                 {
                     _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.error_messages   = response.data.errors;
                 }
 
-            }).catch(function (error) {
-                console.log(error);
-            });
+            }).catch(errors => console.log(errors));
 
         },
 
@@ -146,7 +158,7 @@ export default {
                     }
                     else{
                         _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.error_messages   = response.data.error;
                     }
                 })
         },
@@ -154,7 +166,6 @@ export default {
     },
     created() {
         this.isAdd = this.isAddCheck;
-        console.log(this.isAddCheck)
         this.getCategoryList();
     }
 }
