@@ -18,15 +18,13 @@
                             <div v-if="success_message" class="alert alert-success" role="alert">
                                 {{ success_message }}
                             </div>
-                            <div v-if="error_message" class="alert alert-danger" role="alert">
-                                {{ error_message }}
-                            </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstName">First Name <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="userDetails.first_name" id="firstName" placeholder="Enter first name here!!" required>
+                                <span id="firstNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -34,6 +32,7 @@
                             <div class="form-group">
                                 <label for="lastName">Last Name <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="userDetails.last_name" id="lastName" placeholder="Enter last name here!!" required>
+                                <span id="lastNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -41,6 +40,7 @@
                             <div class="form-group">
                                 <label for="userName">Username <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="userDetails.username" id="userName" placeholder="Enter username here!!" required>
+                                <span id="userNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -48,6 +48,7 @@
                             <div class="form-group">
                                 <label for="email">Email <span class="required">*</span></label>
                                 <input class="form-control" type="email" v-model="userDetails.email" id="email" placeholder="Enter last name here!!" required>
+                                <span id="emailError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -60,6 +61,7 @@
                                     <option value="" disabled>Select A Role</option>
                                     <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
                                 </select>
+                                <span id="rolesError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -89,6 +91,7 @@
 </template>
 
 <script>
+    import $ from 'jquery'
     import axios from "axios";
 
     export default {
@@ -103,7 +106,7 @@
                 isMounted : false,
                 isEdit : false,
                 success_message : '',
-                error_message   : '',
+                error_messages   : [],
                 token           : '',
                 selectedId:'',
                 userDetails:'',
@@ -116,6 +119,30 @@
         },
 
         methods: {
+            showServerError(errors){
+                $('#lastNameError').html("");
+                $('#firstNameError').html("")
+                $('#userNameError').html("")
+                $('#emailError').html("")
+                $('#rolesError').html("")
+                errors.forEach(val=>{
+                    if (val.includes("first")==true){
+                        $('#firstNameError').html(val)
+                    }
+                    else if (val.includes("last")==true){
+                        $('#lastNameError').html(val)
+                    }
+                    else if (val.includes("username")==true){
+                        $('#userNameError').html(val)
+                    }
+                    else if (val.includes("email")==true){
+                        $('#emailError').html(val)
+                    }
+                    else if (val.includes("email")==true){
+                        $('#rolesError').html(val)
+                    }
+                })
+            },
             userUpdate() {
                 let _that = this;
                 let userID = _that.selectedId;
@@ -137,7 +164,7 @@
                     }).then(function (response) {
                     if (response.data.status_code == 200)
                     {
-                        _that.error_message    = '';
+                        _that.error_messages    = '';
                         _that.success_message  = " Updated Successfully";
                         _that.$emit('customer-edit-data', _that.userDetails);
                         document.body.classList.remove('open-side-slider');
@@ -145,7 +172,8 @@
                     else
                     {
                         _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.error_messages   = response.data.errors;
+                        _that.showServerError(response.data.errors);
                     }
 
                 }).catch(function (error) {
@@ -171,7 +199,7 @@
                                 _that.roles = response.data.user_info.roles[0].id;
                         } else {
                             _that.success_message = "";
-                            _that.error_message = response.data.error;
+                            _that.error_messages = response.data.error;
                         }
                     })
             },
@@ -196,7 +224,7 @@
                         }
                         else{
                             _that.success_message = "";
-                            _that.error_message   = response.data.error;
+                            _that.error_messages   = response.data.error;
                         }
                     })
             },
