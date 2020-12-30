@@ -34,16 +34,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstName">First Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.first_name" id="firstName" placeholder="Enter first name here!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*first Name field is required</span>
+                                <input class="form-control" type="text" v-model="userData.first_name" id="firstName" @keyup="checkAndChangeValidation(userData.first_name, '#firstName', '#firstNameError', '*first name')" placeholder="Enter first name here!!" required >
+                                <span id="firstNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastName">Last Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.last_name" id="lastName" placeholder="Enter last name here!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*last Name field is required</span>
+                                <input class="form-control" type="text" v-model="userData.last_name" id="lastName" @change="checkAndChangeValidation()" placeholder="Enter last name here!!" required>
+                                <span id="lastNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -51,15 +51,15 @@
                             <div class="form-group">
                                 <label for="userName">Username <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="userData.username" id="userName" placeholder="Enter username here!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*username field is required</span>
+                                <span id="userNameError" class="text-danger small"> </span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="email">Email <span class="required">*</span></label>
-                                <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter last name here!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*email field is required</span>
+                                <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter valid email here!!" required>
+                                <span id="emailError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -68,17 +68,18 @@
                             <div class="form-group">
                                 <label for="password">Password <span class="required">*</span></label>
                                 <input class="form-control" type="password" v-model="userData.password" id="password" placeholder="Enter password here!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*password field is required</span>
+                                <span id="passwordError" class="text-danger small"> </span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                                <input class="form-control" type="password" v-on:keyup="checkPass()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*password and confirm password must match</span>
+                                <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
+                                <span id="confirmPasswordError" class="text-danger small"> </span>
                             </div>
                         </div>
+
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -87,7 +88,7 @@
                                     <option value="" disabled>Select A Role</option>
                                     <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
                                 </select>
-                                <span v-if="isFrontValidation===true" class="text-danger small">*roles field is required</span>
+                                <span id="rolesError" class="text-danger small"> </span>
                             </div>
                         </div>
 
@@ -104,7 +105,7 @@
 
                         <div class="col-md-12">
                             <div class="form-group text-right">
-                                <button class="btn common-gradient-btn ripple-btn px-50" @click="checkValidatioin()">Add</button>
+                                <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                             </div>
                         </div>
 
@@ -119,198 +120,291 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import $ from 'jquery'
+import axios from 'axios'
+import $ from 'jquery'
 
-    export default {
-        name: "customerAdd.vue",
-        props: ['isAddCheck'],
-        components: {
+export default {
+    name: "customerAdd.vue",
+    props: ['isAddCheck'],
+    components: {
 
-        },
+    },
 
-        data() {
-            return {
-                isAdd : false,
-                isSearch        : false,
+    data() {
+        return {
+            isAdd : false,
+            isSearch        : false,
 
-                success_message : '',
-                error_message   : '',
-                token           : '',
-                userRoles       :'',
+            success_message : '',
+            error_message   : '',
+            token           : '',
+            userRoles       :'',
 
-                userData        : {
+            userData        : {
 
-                    username   : '',
-                    first_name : '',
-                    last_name  : '',
-                    email      : '',
-                    password   : '',
-                    confirm_password : '',
-                    roles   : '',
-                    status  : '',
-                },
-
-                isFrontValidation : false,
-                validation_errors : []
-
-            }
-        },
-
-
-        methods: {
-
-            clearAllChecker() {
-
-                this.isAdd = false;
-                this.$emit('customer-data', this.isAdd);
-
+                username   : '',
+                first_name : '',
+                last_name  : '',
+                email      : '',
+                password   : '',
+                confirm_password : '',
+                roles   : '',
+                status  : '',
             },
 
-            checkPass(){
-                let _that = this;
-                if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
-                    _that.success_message  = "password matched!!";
-                    _that.error_message   = "";
-                    console.log(_that.userData);
-                }else{
-                    _that.error_message   = "password not matched";
-                    _that.success_message  = "";
-                }
-            },
+            isFrontValidation : false,
 
-            validEmail (email) {
-                var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            },
+        }
+    },
 
-            checkValidatioin() {
 
-                if (!this.userData || !this.userData.username || !this.userData.first_name || !this.userData.last_name || !this.userData.password || !this.userData.confirm_password){
+    methods: {
 
-                    $('.form-control:required').css({
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
+
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
+                    $(selected_id).css({
                         'border-color': '#FF7B88',
                     });
-                    this.isFrontValidation = true;
-
-                }else if ((this.userData.first_name).length <3) {
-
-                    this.isFrontValidation = false;
-                    this.success_message   = "";
-                    this.error_message     = "First Name should contain minimum 3 character";
-
-                    //this.errors.push('Valid email required.');
-                }else if ((this.userData.last_name).length <3) {
-
-                    this.isFrontValidation = false;
-                    this.success_message   = "";
-                    this.error_message     = "Last Name should contain minimum 3 character";
-                    //this.errors.push('Valid email required.');
-
-                }else if ((this.userData.username).length <4) {
-
-                    this.isFrontValidation = false;
-                    this.success_message   = "";
-                    this.error_message     = "UserName should contain minimum 4 character";
-                    //this.errors.push('Valid email required.');
-
-                } else if (!this.validEmail(this.userData.email)) {
-
-                    this.isFrontValidation = false;
-                    this.success_message   = "";
-                    this.error_message     = "Valid email required";
-                    //this.errors.push('Valid email required.');
-
-                }
-                else {
-
-                    this.isFrontValidation = false;
-                    this.success_message   = "";
-                    this.error_message     = "";
-                    this.userAdd();
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
                 }
 
-               // $("#firstName").css({ color: "#FF7B88"});
-
-            },
-
-            userAdd() {
-                let _that = this;
-                //console.log(_that.userData.roles);
-
-                axios.post('admin/users',
-                    {
-                        username: this.userData.username,
-                        first_name: this.userData.first_name,
-                        last_name: this.userData.last_name,
-                        email: this.userData.email,
-                        password: this.userData.password,
-                        confirm_password: this.userData.confirm_password,
-                        roles: this.userData.roles,
-                        status: this.userData.status,
-                    },
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
-                        //console.log(response.data)
-
-                    if (response.data.status_code === 201){
-                        _that.userData          = '';
-                        _that.error_message    = '';
-                        _that.success_message  = "New Customer Added Successfully";
-                        _that.$emit('customer-data', _that.userData);
-                        document.body.classList.remove('open-side-slider')
-                    }
-                    else if(response.data.status_code === 400){
-                        _that.success_message   = "";
-                        _that.error_message     = "";
-                        _that.validation_errors = response.data.error;
-                      //  console.log(response.data);
-                    }
-                    else{
-                        _that.success_message   = "";
-                        _that.validation_errors = "";
-                        _that.error_message     = response.data.message;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
                 });
-
-            },
-
-            getUserRoles(){
-                let _that =this;
-
-                axios.get('admin/roles',
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params : {
-                            isAdmin : 1,
-                            without_pagination : 1
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.userRoles = response.data.role_list;
-                            // console.log(_that.userRoles);
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
+                $(selected_error_id).html(selected_name+" field is required")
             }
         },
-        created() {
-            this.isAdd = this.isAddCheck;
-            this.getUserRoles();
+
+        clearAllChecker() {
+
+            this.isAdd = false;
+            this.$emit('customer-data', this.isAdd);
+
+        },
+
+        checkPasswordMatch(){
+
+            let _that = this;
+            if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
+                _that.success_message  = "password matched!!";
+                _that.error_message   = "";
+                console.log(_that.userData);
+            }else{
+                _that.error_message   = "password not matched";
+                _that.success_message  = "";
+            }
+        },
+
+        validEmail (email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+
+        validateAndSubmit() {
+
+            if (!this.userData.first_name){
+                $('#firstName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#firstNameError').html("*first name field is required");
+            }
+
+            if (!this.userData.last_name){
+
+                $('#lastName').css({
+                    'border-color': '#FF7B88',
+                });
+
+               /* this.validation.isLastNameCheck = true;
+                this.validation_message.last_name_error_message = "*last name field is required";*/
+            }
+
+
+            if (!this.userData.username){
+
+                $('#userName').css({
+                    'border-color': '#FF7B88',
+                });
+
+             /*   this.validation.isUserNameCheck = true;
+                this.validation_message.user_name_error_message = "*user name field is required";*/
+            }
+
+
+            if (!this.userData.email){
+
+                $('#email').css({
+                    'border-color': '#FF7B88',
+                });
+
+               /* this.validation.isEmailCheck = true;
+                this.validation_message.email_error_message = "*email field is required";*/
+            }
+
+
+            if (!this.userData.password){
+
+                $('#password').css({
+                    'border-color': '#FF7B88',
+                });
+
+               /* this.validation.isPasswordCheck = true;
+                this.validation_message.password_error_message = "*password field is required";*/
+            }
+
+            if (!this.userData.confirm_password){
+
+                $('#confirmPassword').css({
+                    'border-color': '#FF7B88',
+                });
+
+                /*this.validation.isConfirmPasswordCheck = true;
+                this.validation_message.confirm_password_error_message = "*confirm password field is required";*/
+            }
+            if (!this.userData.roles){
+
+                $('#roles').css({
+                    'border-color': '#FF7B88',
+                });
+
+               /* this.validation.isRoleCheck = true;
+                this.validation_message.role_error_message = "*roles field is required";*/
+            }
+
+
+            /*if (!this.userData.username || !this.userData.first_name || !this.userData.last_name || !this.userData.password || !this.userData.confirm_password){
+
+                $('.form-control:required').css({
+                    'border-color': '#FF7B88',
+                });
+                this.isFrontValidation = true;
+
+            }else if ((this.userData.first_name).length <3) {
+
+                this.isFrontValidation = false;
+                this.success_message   = "";
+                this.error_message     = "First Name should contain minimum 3 character";
+
+                //this.errors.push('Valid email required.');
+            }else if ((this.userData.last_name).length <3) {
+
+                this.isFrontValidation = false;
+                this.success_message   = "";
+                this.error_message     = "Last Name should contain minimum 3 character";
+                //this.errors.push('Valid email required.');
+
+            }else if ((this.userData.username).length <4) {
+
+                this.isFrontValidation = false;
+                this.success_message   = "";
+                this.error_message     = "UserName should contain minimum 4 character";
+                //this.errors.push('Valid email required.');
+
+            } else if (!this.validEmail(this.userData.email)) {
+
+                this.isFrontValidation = false;
+                this.success_message   = "";
+                this.error_message     = "Valid email required";
+                //this.errors.push('Valid email required.');
+
+            }
+            else {
+
+                this.isFrontValidation = false;
+                this.success_message   = "";
+                this.error_message     = "";
+                this.userAdd();
+            }*/
+
+            // $("#firstName").css({ color: "#FF7B88"});
+
+        },
+
+        userAdd() {
+            let _that = this;
+            //console.log(_that.userData.roles);
+
+            axios.post('admin/users',
+                {
+                    username: this.userData.username,
+                    first_name: this.userData.first_name,
+                    last_name: this.userData.last_name,
+                    email: this.userData.email,
+                    password: this.userData.password,
+                    confirm_password: this.userData.confirm_password,
+                    roles: this.userData.roles,
+                    status: this.userData.status,
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                }).then(function (response) {
+                //console.log(response.data)
+
+                if (response.data.status_code === 201){
+                    _that.userData          = '';
+                    _that.error_message    = '';
+                    _that.success_message  = "New Customer Added Successfully";
+                    _that.$emit('customer-data', _that.userData);
+                    document.body.classList.remove('open-side-slider')
+                }
+                else if(response.data.status_code === 400){
+                    _that.success_message   = "";
+                    _that.error_message     = "";
+                    _that.validation_errors = response.data.error;
+                    //  console.log(response.data);
+                }
+                else{
+                    _that.success_message   = "";
+                    _that.validation_errors = "";
+                    _that.error_message     = response.data.message;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+        getUserRoles(){
+            let _that =this;
+
+            axios.get('admin/roles',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                        isAdmin : 1,
+                        without_pagination : 1
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.userRoles = response.data.role_list;
+                        // console.log(_that.userRoles);
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
         }
+    },
+    created() {
+        this.isAdd = this.isAddCheck;
+        this.getUserRoles();
     }
+}
 </script>
 
 <style scoped>
