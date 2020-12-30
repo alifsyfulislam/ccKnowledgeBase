@@ -68,7 +68,7 @@ class CategoryService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required',
+            'name' => 'required|min:3|max:100',
 
         ]);
 
@@ -76,7 +76,7 @@ class CategoryService
             return response()->json([
                 'status_code' => '400',
                 'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'errors' =>  $validator->errors()->all()
             ]);
 
         }
@@ -114,7 +114,7 @@ class CategoryService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required',
+            'name' => 'required|min:3|max:100',
            // 'parent_id' => 'required',
 
         ]);
@@ -124,7 +124,7 @@ class CategoryService
             return response()->json([
                 'status_code' => '400',
                 'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'errors' =>  $validator->errors()->all()
             ]);
 
         }
