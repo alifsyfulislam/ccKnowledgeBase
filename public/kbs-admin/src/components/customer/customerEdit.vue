@@ -121,25 +121,36 @@
         methods: {
             showServerError(errors){
                 $('#lastNameError').html("");
-                $('#firstNameError').html("")
-                $('#userNameError').html("")
-                $('#emailError').html("")
-                $('#rolesError').html("")
+                $('#firstNameError').html("");
+                $('#userNameError').html("");
+                $('#emailError').html("");
+                $('#rolesError').html("");
+
+                $('#firstName').css({'border-color': '#ced4da'});
+                $('#lastName').css({'border-color': '#ced4da'});
+                $('#userName').css({'border-color': '#ced4da'});
+                $('#email').css({'border-color': '#ced4da'});
+                $('#roles').css({'border-color': '#ced4da'});
                 errors.forEach(val=>{
                     if (val.includes("first")==true){
                         $('#firstNameError').html(val)
+                        $('#firstName').css({'border-color': '#FF7B88'});
                     }
                     else if (val.includes("last")==true){
                         $('#lastNameError').html(val)
+                        $('#lastName').css({'border-color': '#FF7B88'});
                     }
                     else if (val.includes("username")==true){
                         $('#userNameError').html(val)
+                        $('#userName').css({'border-color': '#FF7B88'});
                     }
                     else if (val.includes("email")==true){
                         $('#emailError').html(val)
+                        $('#email').css({'border-color': '#FF7B88'});
                     }
                     else if (val.includes("email")==true){
                         $('#rolesError').html(val)
+                        $('#roles').css({'border-color': '#FF7B88'});
                     }
                 })
             },
