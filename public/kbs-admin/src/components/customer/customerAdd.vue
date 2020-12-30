@@ -67,7 +67,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password">Password <span class="required">*</span></label>
-                                <input class="form-control" type="password" v-model="userData.password" id="password" placeholder="Enter password here!!" required>
+                                <input class="form-control" type="password" v-model="userData.password" id="password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
                                 <span id="passwordError" class="text-danger small"> </span>
                             </div>
                         </div>
@@ -160,6 +160,39 @@ export default {
 
     methods: {
 
+        checkAndValidatePassword() {
+
+            if ((this.userData.password).length >0) {
+                if (!this.validPassword(this.userData.password)) {
+                    $('#password').css({
+                        'border-color': '#FF7B88',
+                    });
+
+                    $('#passwordError').html("*password should contain at least a Uppercase, lowecase, numeric and special character");
+
+                } else if((this.userData.password).length <8) {
+                    $('#password').css({
+                        'border-color': '#FF7B88',
+                    });
+
+                    $('#passwordError').html("*password must be 8 characters or longer");
+                }
+                    else {
+                    $('#password').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#passwordError').html("");
+                }
+
+            } else{
+                $('#password').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#passwordError').html("password field is required");
+            }
+
+        },
+
         checkAndValidateEmail()
         {
             if ((this.userData.email).length >0) {
@@ -227,6 +260,12 @@ export default {
                 _that.error_message   = "password not matched";
                 _that.success_message  = "";
             }
+        },
+
+        validPassword(password) {
+
+            var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})");
+            return strongRegex.test(password);
         },
 
         validEmail (email) {
