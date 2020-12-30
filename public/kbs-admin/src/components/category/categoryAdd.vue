@@ -26,9 +26,9 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="name">Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>
-                                <small v-if="error_messages.length>0" class="small text-danger category_name" role="alert">
+                                <label for="categoryName">Name <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" placeholder="Enter Category Name" required>
+                                <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
                                     {{ error_messages[0] }}
                                 </small>
                             </div>
@@ -62,6 +62,7 @@
 
 <script>
 import axios from 'axios'
+import $ from "jquery";
 
 export default {
     name: "categoryAdd.vue",
@@ -86,6 +87,16 @@ export default {
             this.isAdd = false;
             this.$emit('category-data', this.isAdd);
 
+        },
+        showServerError(errors){
+            $('#categoryNameError').html("");
+            $('#categoryName').css({'border-color': '#ced4da'});
+            errors.forEach(val=>{
+                if (val.includes("name")==true){
+                    $('#categoryNameError').html(val)
+                    $('#categoryName').css({'border-color': '#FF7B88'});
+                }
+            })
         },
 
         dataValidate(){
@@ -129,6 +140,7 @@ export default {
                 {
                     _that.success_message = "";
                     _that.error_messages   = response.data.errors;
+                    _that.showServerError(response.data.errors);
                 }
 
             }).catch(errors => console.log(errors));

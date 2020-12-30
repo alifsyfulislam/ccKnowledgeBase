@@ -23,9 +23,9 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="articleID">Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="category_name" id="articleID" required>
-                                <small v-if="error_messages.length>0" class="small text-danger category_name" role="alert">
+                                <label for="categoryName">Name <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="category_name" id="categoryName" required>
+                                <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
                                     {{ error_messages[0] }}
                                 </small>
                             </div>
@@ -47,6 +47,7 @@
 <script>
 
 import axios from "axios";
+import $ from "jquery";
 
 export default {
 
@@ -76,10 +77,20 @@ export default {
             this.isEdit = false;
             this.$emit('category-edit-data', this.isEdit);
         },
+        showServerError(errors){
+            $('#categoryNameError').html("");
+            $('#categoryName').css({'border-color': '#ced4da'});
+            errors.forEach(val=>{
+                if (val.includes("name")==true){
+                    $('#categoryNameError').html(val)
+                    $('#categoryName').css({'border-color': '#FF7B88'});
+                }
+            })
+        },
 
         dataValidate(){
             let _that = this;
-            // _that.categoryAdd();
+            // _that.categoryUpdate();
             if (!_that.category_name){
                 _that.error_messages[0] = "*The category name is required";
             }
@@ -118,6 +129,7 @@ export default {
 
                     _that.success_message = "";
                     _that.error_messages   = response.data.errors;
+                    _that.showServerError(response.data.errors);
 
                 }
 
