@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastName">Last Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.last_name" id="lastName" @change="checkAndChangeValidation()" placeholder="Enter last name here!!" required>
+                                <input class="form-control" type="text" v-model="userData.last_name" id="lastName"  placeholder="Enter last name here!!" @keyup="checkAndChangeValidation(userData.last_name, '#lastName', '#lastNameError', '*last name')" required>
                                 <span id="lastNameError" class="text-danger small"> </span>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="userName">Username <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.username" id="userName" placeholder="Enter username here!!" required>
+                                <input class="form-control" type="text" v-model="userData.username" id="userName" placeholder="Enter username here!!" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" required>
                                 <span id="userNameError" class="text-danger small"> </span>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="email">Email <span class="required">*</span></label>
-                                <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter valid email here!!" required>
+                                <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter valid email here!!" @keyup="checkAndValidateEmail()" required>
                                 <span id="emailError" class="text-danger small"> </span>
                             </div>
                         </div>
@@ -160,6 +160,32 @@ export default {
 
     methods: {
 
+        checkAndValidateEmail()
+        {
+            if ((this.userData.email).length >0) {
+                if (!this.validEmail(this.userData.email)) {
+                    $('#email').css({
+                        'border-color': '#FF7B88',
+                    });
+
+                    $('#emailError').html("*Valid email required");
+
+                } else {
+                    $('#email').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#emailError').html("");
+                }
+
+            } else{
+                $('#email').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#emailError').html("*email field is required");
+            }
+
+        },
+
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
 
             if (selected_data.length >0) {
@@ -222,9 +248,7 @@ export default {
                 $('#lastName').css({
                     'border-color': '#FF7B88',
                 });
-
-               /* this.validation.isLastNameCheck = true;
-                this.validation_message.last_name_error_message = "*last name field is required";*/
+                $('#lastNameError').html("*last name field is required");
             }
 
 
@@ -233,9 +257,7 @@ export default {
                 $('#userName').css({
                     'border-color': '#FF7B88',
                 });
-
-             /*   this.validation.isUserNameCheck = true;
-                this.validation_message.user_name_error_message = "*user name field is required";*/
+                $('#userNameError').html("*user name field is required");
             }
 
 
@@ -244,9 +266,7 @@ export default {
                 $('#email').css({
                     'border-color': '#FF7B88',
                 });
-
-               /* this.validation.isEmailCheck = true;
-                this.validation_message.email_error_message = "*email field is required";*/
+                $('#emailError').html("*email field is required");
             }
 
 
@@ -255,9 +275,7 @@ export default {
                 $('#password').css({
                     'border-color': '#FF7B88',
                 });
-
-               /* this.validation.isPasswordCheck = true;
-                this.validation_message.password_error_message = "*password field is required";*/
+                $('#passwordError').html("*password field is required");
             }
 
             if (!this.userData.confirm_password){
@@ -265,20 +283,16 @@ export default {
                 $('#confirmPassword').css({
                     'border-color': '#FF7B88',
                 });
-
-                /*this.validation.isConfirmPasswordCheck = true;
-                this.validation_message.confirm_password_error_message = "*confirm password field is required";*/
+                $('#confirmPasswordError').html("*confirm password field is required");
             }
+
             if (!this.userData.roles){
 
                 $('#roles').css({
                     'border-color': '#FF7B88',
                 });
-
-               /* this.validation.isRoleCheck = true;
-                this.validation_message.role_error_message = "*roles field is required";*/
+                $('#rolesError').html("*roles field is required");
             }
-
 
             /*if (!this.userData.username || !this.userData.first_name || !this.userData.last_name || !this.userData.password || !this.userData.confirm_password){
 
