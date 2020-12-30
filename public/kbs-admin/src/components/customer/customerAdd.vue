@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
                                 <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
-                                <span id="confirmPasswordError" class="text-danger small"> </span>
+                                <span id="confirmPasswordError" class="small"> </span>
                             </div>
                         </div>
 
@@ -250,15 +250,13 @@ export default {
         },
 
         checkPasswordMatch(){
-
             let _that = this;
             if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
-                _that.success_message  = "password matched!!";
-                _that.error_message   = "";
-                console.log(_that.userData);
+                $('#confirmPasswordError').css({'color': '#D4EDDA'});
+                $('#confirmPasswordError').html("password matched!!")
             }else{
-                _that.error_message   = "password not matched";
-                _that.success_message  = "";
+                $('#confirmPasswordError').html("password not matched")
+                $('#confirmPasswordError').css({'color': '#FF7B88'});
             }
         },
 
