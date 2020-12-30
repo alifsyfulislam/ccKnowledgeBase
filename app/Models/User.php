@@ -60,6 +60,6 @@ class User extends Authenticatable
 
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("F j, Y, g:i a");
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
     }
 }
