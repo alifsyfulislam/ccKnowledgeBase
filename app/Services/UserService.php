@@ -150,13 +150,11 @@ class UserService
     public function updateItem($request)
     {
         $validator = Validator::make($request->all(),[
-
-            'first_name' => 'required|string|max:60',
-            'last_name' => 'required|string|max:60',
-            'username' => 'required|string|max:50',
-            'email' => 'required|string|email|max:60',
-            'roles' => 'required'
-
+            'first_name' => 'required|string|min:3|max:100',
+            'last_name'  => 'required|string|min:3|max:100',
+            'username'   => "required|string|max:50|min:4|unique:users,username,$request->id,id",
+            'email'      => "required|unique:users,email,$request->id,id",
+            'roles'      => 'required'
         ]);
 
         if($validator->fails()) {
@@ -164,7 +162,7 @@ class UserService
             return response()->json([
                 'status_code' => 400,
                 'messages' => config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'errors' =>  $validator->errors()->all()
             ]);
 
         }
