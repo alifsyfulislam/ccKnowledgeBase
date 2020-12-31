@@ -183,7 +183,7 @@ export default {
         clearAllChecker()
         {
             this.isEdit = false;
-            this.$emit('article-edit-data', this.isEdit);
+            this.$emit('faq-edit-data', this.isEdit);
         },
 
         faqUpdate() {
@@ -216,10 +216,10 @@ export default {
                     _that.faqData          = '';
                     _that.selectedCategory = '';
                     _that.error_message    = '';
-                    _that.success_message  = " Faq Updated Successfully";
+                    _that.success_message  = "Faq Updated Successfully";
 
                     _that.isEdit = false;
-                    _that.$emit('faq-edit-data', _that.faqData);
+                    _that.$emit('faq-edit-data', "Faq Updated Successfully");
                     document.body.classList.remove('open-side-slider')
                 }
                 else

@@ -213,9 +213,9 @@ export default {
                     _that.error_messages    = '';
                     _that.success_message  = "New Faq Added Successfully";
                     _that.isAdd = false;
-                    _that.$emit('faq-data', _that.faqData);
+                    _that.$emit('faq-data', 'New Faq Added Successfully');
 
-                    document.body.classList.remove('open-side-slider')
+                    document.body.classList.remove('open-side-slider');
                 } else {
                     _that.success_message = "";
                     _that.error_messages   = response.data.errors;
