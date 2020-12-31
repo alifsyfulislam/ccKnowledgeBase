@@ -44,7 +44,9 @@ class FaqService
     {
         $validator = Validator::make($request->all(),[
 
-            'en_title' => 'required|string',
+            'en_title'      => 'required|string|min:3|max:100',
+            'category_id'   => 'required',
+            'en_body'       => 'required'
 
        ]);
 
@@ -53,7 +55,7 @@ class FaqService
             return response()->json([
                 'status_code' => '400',
                 'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'errors' =>  $validator->errors()->all()
             ]);
 
         }
@@ -111,13 +113,17 @@ class FaqService
     {
 
         $validator = Validator::make($request->all(),[
-            'en_title' => 'required|string',
+            'en_title'      => 'required|string|min:3|max:100',
+            'category_id'   => 'required',
+            'en_body'       => 'required'
         ]);
 
         if($validator->fails()) {
-
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
-
+            return response()->json([
+                'status_code' => '400',
+                'messages'=>config('status.status_code.400'),
+                'errors' =>  $validator->errors()->all()
+            ]);
         }
         $input = $request->all();
         $input['slug'] = Helper::slugify($input['en_title']);

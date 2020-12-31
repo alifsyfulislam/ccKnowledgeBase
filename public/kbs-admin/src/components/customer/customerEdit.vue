@@ -148,7 +148,7 @@
                         $('#emailError').html(val)
                         $('#email').css({'border-color': '#FF7B88'});
                     }
-                    else if (val.includes("email")==true){
+                    else if (val.includes("roles")==true){
                         $('#rolesError').html(val)
                         $('#roles').css({'border-color': '#FF7B88'});
                     }
