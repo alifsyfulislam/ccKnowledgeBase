@@ -254,8 +254,12 @@ export default {
             if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
                 $('#confirmPasswordError').css({'color': '#D4EDDA'});
                 $('#confirmPasswordError').html("password matched!!")
-            }else{
-                $('#confirmPasswordError').html("password not matched")
+            }else if(!_that.userData.confirm_password){
+                $('#confirmPasswordError').html("*confirm password field is required")
+                $('#confirmPasswordError').css({'color': '#FF7B88'});
+            }
+            else{
+                $('#confirmPasswordError').html("*password not matched")
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
             }
         },
@@ -320,6 +324,8 @@ export default {
                 $('#confirmPassword').css({
                     'border-color': '#FF7B88',
                 });
+                $('#confirmPasswordError').css({'color': '#FF7B88'});
+
                 $('#confirmPasswordError').html("*confirm password field is required");
             }
 
