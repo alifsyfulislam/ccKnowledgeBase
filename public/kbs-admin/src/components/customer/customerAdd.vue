@@ -17,9 +17,6 @@
                             <div v-if="success_message" class="alert alert-success" role="alert">
                                 {{ success_message }}
                             </div>
-                            <div v-if="error_message" class="alert alert-danger" role="alert">
-                                {{ error_message }}
-                            </div>
                         </div>
                     </div>
 
@@ -128,12 +125,10 @@ export default {
         return {
             isAdd : false,
             isSearch        : false,
-
             success_message : '',
             error_message   : '',
             token           : '',
             userRoles       :'',
-
             userData        : {
 
                 username   : '',
@@ -145,9 +140,7 @@ export default {
                 roles   : '',
                 status  : 1,
             },
-
             validation_error :{
-
                 isFirstNameStatus : false,
                 isLastNameStatus  : false,
                 isUserNameStatus  : false,
@@ -156,13 +149,11 @@ export default {
                 isPasswordStatus  : false,
                 isConfirmationStatus : false,
             } ,
-
         }
     },
-
-
     methods: {
-        checkAndValidateRoles() {
+        checkAndValidateRoles()
+        {
             if (!this.userData.roles) {
                 $('#roles').css({
                     'border-color': '#FF7B88',
@@ -179,8 +170,8 @@ export default {
             }
         },
 
-        checkAndValidatePassword() {
-
+        checkAndValidatePassword()
+        {
             if ((this.userData.password).length >0) {
                 if (!this.validPassword(this.userData.password)) {
                     $('#password').css({
@@ -245,8 +236,8 @@ export default {
 
         },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
-
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
             if (selected_data.length >0) {
                 if (selected_data.length <3){
                     $(selected_id).css({
@@ -291,25 +282,21 @@ export default {
                 }
             }
         },
-
-        clearAllChecker() {
-
+        clearAllChecker()
+        {
             this.isAdd = false;
             this.$emit('customer-data', this.isAdd);
-
         },
-
-        checkPasswordMatch(){
+        checkPasswordMatch()
+        {
             let _that = this;
             if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
-
                 $('#confirmPassword').css({
                     'border-color': '#ced4da',
                 });
                 $('#confirmPasswordError').css({'color': 'green'});
                 $('#confirmPasswordError').html("password matched!!");
                 _that.validation_error.isConfirmationStatus = true;
-
             }else if(!_that.userData.confirm_password){
                 $('#confirmPassword').css({
                     'border-color': '#FF7B88',
@@ -326,31 +313,26 @@ export default {
                 $('#confirmPasswordError').html("*password not matched")
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
                 _that.validation_error.isConfirmationStatus = false;
-
             }
         },
-
-        validPassword(password) {
-
+        validPassword(password)
+        {
             var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})");
             return strongRegex.test(password);
         },
-
-        validEmail (email) {
+        validEmail (email)
+        {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
-
-        validateAndSubmit() {
-
-
+        validateAndSubmit()
+        {
             if (!this.userData.first_name){
                 $('#firstName').css({
                     'border-color': '#FF7B88',
                 });
                 $('#firstNameError').html("*first name field is required");
             }
-
             if (!this.userData.last_name){
 
                 $('#lastName').css({
@@ -358,8 +340,6 @@ export default {
                 });
                 $('#lastNameError').html("*last name field is required");
             }
-
-
             if (!this.userData.username){
 
                 $('#userName').css({
@@ -367,7 +347,6 @@ export default {
                 });
                 $('#userNameError').html("*user name field is required");
             }
-
             if (!this.userData.email){
 
                 $('#email').css({
@@ -375,7 +354,6 @@ export default {
                 });
                 $('#emailError').html("*email field is required");
             }
-
             if (!this.userData.password){
 
                 $('#password').css({
@@ -383,17 +361,14 @@ export default {
                 });
                 $('#passwordError').html("*password field is required");
             }
-
             if (!this.userData.confirm_password){
 
                 $('#confirmPassword').css({
                     'border-color': '#FF7B88',
                 });
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
-
                 $('#confirmPasswordError').html("*confirm password field is required");
             }
-
             if (!this.userData.roles){
 
                 $('#roles').css({
@@ -401,7 +376,6 @@ export default {
                 });
                 $('#rolesError').html("*roles field is required");
             }
-            console.log(this.validation_error);
             if (this.validation_error.isFirstNameStatus === true &&
                 this.validation_error.isLastNameStatus === true &&
                 this.validation_error.isUserNameStatus === true &&
@@ -412,10 +386,9 @@ export default {
                 console.log(this.validation_error)
                  this.userAdd();
             }
-
         },
-
-        showServerError(errors){
+        showServerError(errors)
+        {
             $('#lastNameError').html("");
             $('#firstNameError').html("");
             $('#userNameError').html("");
@@ -450,21 +423,19 @@ export default {
                 }
             })
         },
-
-        userAdd() {
+        userAdd()
+        {
             let _that = this;
-            //console.log(_that.userData.roles);
-
             axios.post('admin/users',
                 {
-                    username: this.userData.username,
-                    first_name: this.userData.first_name,
-                    last_name: this.userData.last_name,
-                    email: this.userData.email,
-                    password: this.userData.password,
-                    confirm_password: this.userData.confirm_password,
-                    roles: this.userData.roles,
-                    status: this.userData.status,
+                    username            : this.userData.username,
+                    first_name          : this.userData.first_name,
+                    last_name           : this.userData.last_name,
+                    email               : this.userData.email,
+                    password            : this.userData.password,
+                    confirm_password    : this.userData.confirm_password,
+                    roles               : this.userData.roles,
+                    status              : this.userData.status,
                 },
                 {
                     headers: {
@@ -474,33 +445,31 @@ export default {
                 //console.log(response.data)
 
                 if (response.data.status_code === 201){
-                    _that.userData          = '';
-                    _that.error_message    = '';
-                    _that.success_message  = "New Customer Added Successfully";
+                    _that.userData              = '';
+                    _that.error_message         = '';
+                    _that.success_message       = "New Customer Added Successfully";
                     _that.$emit('customer-data', _that.userData);
                     document.body.classList.remove('open-side-slider')
                 }
                 else if(response.data.status_code === 400){
-                    _that.success_message   = "";
-                    _that.error_message     = "";
+                    _that.success_message       = "";
+                    _that.error_message         = "";
                     _that.showServerError(response.data.errors);
 
                 }
                 else{
-                    _that.success_message   = "";
-                    _that.validation_errors = "";
-                    _that.error_message     = response.data.message;
+                    _that.success_message       = "";
+                    _that.validation_errors     = "";
+                    _that.error_message         = response.data.message;
                 }
-
             }).catch(function (error) {
                 console.log(error);
             });
 
         },
-
-        getUserRoles(){
+        getUserRoles()
+        {
             let _that =this;
-
             axios.get('admin/roles',
                 {
                     headers: {
@@ -523,7 +492,8 @@ export default {
                 })
         }
     },
-    created() {
+    created()
+    {
         this.isAdd = this.isAddCheck;
         this.getUserRoles();
     }

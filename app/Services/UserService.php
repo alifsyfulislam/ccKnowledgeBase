@@ -59,8 +59,11 @@ class UserService
                 'user_info'=>$this->userRepository->get($id)
             ]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'user_info'=>"Data not found"]);
-
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'user_info'=>"Data not found"
+        ]);
     }
 
 
