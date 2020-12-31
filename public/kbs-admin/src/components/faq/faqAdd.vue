@@ -67,7 +67,9 @@
                         <div class="col-md-12">
                             <div class="form-group mb-15">
                                 <label >English Body</label>
-                                <Summernote  v-model="faqData.en_body" :idFromParent="enBody"></Summernote>
+                                <div id="enBodyArea" class="border" v-bind:class="{ 'rounded border-danger': isSummerNoteError }">
+                                    <Summernote  v-model="faqData.en_body" :idFromParent="enBody"></Summernote>
+                                </div>
                                 <span id="enBodyError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -131,6 +133,7 @@ export default {
             categoryList    : '',
             selectedCategory: '',
             userInfo        : '',
+            isSummerNoteError: false,
 
             faqData        : {
                 en_title  : '',
@@ -153,7 +156,8 @@ export default {
             //
             $('#enTitle').css({'border-color': '#ced4da'});
             $('#categoryID').css({'border-color': '#ced4da'});
-            $('#enBody').css({'border-color': '#ced4da'});
+            // $('#enBodyArea').css({'border-color': '#ced4da'});
+            this.isSummerNoteError = false;
 
             errors.forEach(val=>{
                 console.log(val);
@@ -166,8 +170,9 @@ export default {
                     $('#categoryID').css({'border-color': '#FF7B88'});
                 }
                 else if (val.includes("en body")==true){
-                    $('#enBodyError').html(val)
-                    $('#enBody').css({'border-color': '#FF7B88'});
+                    $('#enBodyError').html(val);
+                    this.isSummerNoteError = true;
+                    // $('#enBodyArea').css({'border': '10px #FF7B88 !important'});
                 }
             })
         },
