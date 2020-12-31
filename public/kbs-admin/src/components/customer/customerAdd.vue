@@ -23,11 +23,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group alert alert-danger" v-if="validation_errors!='' && validation_errors!=undefined">
-                        <ul>
-                            <li v-for="error in validation_errors" :key="error">{{ error }}</li>
-                        </ul>
-                    </div>
 
                     <div class="row">
 
@@ -84,7 +79,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="roles">Roles <span class="required">*</span></label>
-                                <select class="form-control" v-model="userData.roles" id="roles" required>
+                                <select class="form-control" v-model="userData.roles" id="roles" @change="checkAndValidateRoles()" required>
                                     <option value="" disabled>Select A Role</option>
                                     <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
                                 </select>
@@ -96,7 +91,6 @@
                             <div class="form-group">
                                 <label for="roles">Status<span class="required">*</span></label>
                                 <select class="form-control" v-model="userData.status">
-                                    <option value="" disabled>Select A Status</option>
                                     <option value="0">Inactive</option>
                                     <option value="1">Active</option>
                                 </select>
@@ -149,16 +143,41 @@ export default {
                 password   : '',
                 confirm_password : '',
                 roles   : '',
-                status  : '',
+                status  : 1,
             },
 
-            isFrontValidation : false,
+            validation_error :{
+
+                isFirstNameStatus : false,
+                isLastNameStatus  : false,
+                isUserNameStatus  : false,
+                isEmailStatus     : false,
+                isRoleStatus      : false,
+                isPasswordStatus  : false,
+                isConfirmationStatus : false,
+            } ,
 
         }
     },
 
 
     methods: {
+        checkAndValidateRoles() {
+            if (!this.userData.roles) {
+                $('#roles').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#rolesError').html("*role field is required");
+                this.validation_error.isRoleStatus = false;
+
+            } else{
+                $('#roles').css({
+                    'border-color': '#ced4da',
+                });
+                $('#rolesError').html("");
+                this.validation_error.isRoleStatus = true;
+            }
+        },
 
         checkAndValidatePassword() {
 
@@ -169,6 +188,7 @@ export default {
                     });
 
                     $('#passwordError').html("*password should contain at least a Uppercase, lowecase, numeric and special character");
+                    this.validation_error.isPasswordStatus = false;
 
                 } else if((this.userData.password).length <8) {
                     $('#password').css({
@@ -176,12 +196,14 @@ export default {
                     });
 
                     $('#passwordError').html("*password must be 8 characters or longer");
+                    this.validation_error.isPasswordStatus = false;
                 }
                     else {
                     $('#password').css({
                         'border-color': '#ced4da',
                     });
                     $('#passwordError').html("");
+                    this.validation_error.isPasswordStatus = true;
                 }
 
             } else{
@@ -189,6 +211,7 @@ export default {
                     'border-color': '#FF7B88',
                 });
                 $('#passwordError').html("password field is required");
+                this.validation_error.isPasswordStatus = false;
             }
 
         },
@@ -202,12 +225,14 @@ export default {
                     });
 
                     $('#emailError').html("*Valid email required");
+                    this.validation_error.isEmailStatus = false;
 
                 } else {
                     $('#email').css({
                         'border-color': '#ced4da',
                     });
                     $('#emailError').html("");
+                    this.validation_error.isEmailStatus = true;
                 }
 
             } else{
@@ -215,6 +240,7 @@ export default {
                     'border-color': '#FF7B88',
                 });
                 $('#emailError').html("*email field is required");
+                this.validation_error.isEmailStatus = false;
             }
 
         },
@@ -227,11 +253,28 @@ export default {
                         'border-color': '#FF7B88',
                     });
                     $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                    if (selected_name === "*first name" ){
+                        this.validation_error.isFirstNameStatus = false;
+                    }else if (selected_name === "*last name"){
+                        this.validation_error.isLastNameStatus = false
+                    }else if(selected_name === "*user name"){
+                        this.validation_error.isUserNameStatus = false;
+                    }
+
                 }else {
                     $(selected_id).css({
                         'border-color': '#ced4da',
                     });
                     $(selected_error_id).html("");
+
+                    if (selected_name === "*first name" ){
+                        this.validation_error.isFirstNameStatus = true;
+                    }else if (selected_name === "*last name"){
+                        this.validation_error.isLastNameStatus = true
+                    }else if(selected_name === "*user name"){
+                        this.validation_error.isUserNameStatus = true;
+                    }
                 }
 
             } else{
@@ -239,6 +282,13 @@ export default {
                     'border-color': '#FF7B88',
                 });
                 $(selected_error_id).html(selected_name+" field is required")
+                if (selected_name === "*first name" ){
+                    this.validation_error.isFirstNameStatus = false;
+                }else if (selected_name === "*last name"){
+                    this.validation_error.isLastNameStatus = false
+                }else if(selected_name === "*user name"){
+                    this.validation_error.isUserNameStatus = false;
+                }
             }
         },
 
@@ -252,15 +302,31 @@ export default {
         checkPasswordMatch(){
             let _that = this;
             if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
-                $('#confirmPasswordError').css({'color': '#D4EDDA'});
-                $('#confirmPasswordError').html("password matched!!")
+
+                $('#confirmPassword').css({
+                    'border-color': '#ced4da',
+                });
+                $('#confirmPasswordError').css({'color': 'green'});
+                $('#confirmPasswordError').html("password matched!!");
+                _that.validation_error.isConfirmationStatus = true;
+
             }else if(!_that.userData.confirm_password){
+                $('#confirmPassword').css({
+                    'border-color': '#FF7B88',
+                });
                 $('#confirmPasswordError').html("*confirm password field is required")
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
+                _that.validation_error.isConfirmationStatus = false;
+
             }
             else{
+                $('#confirmPassword').css({
+                    'border-color': '#FF7B88',
+                });
                 $('#confirmPasswordError').html("*password not matched")
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
+                _that.validation_error.isConfirmationStatus = false;
+
             }
         },
 
@@ -276,6 +342,7 @@ export default {
         },
 
         validateAndSubmit() {
+
 
             if (!this.userData.first_name){
                 $('#firstName').css({
@@ -301,7 +368,6 @@ export default {
                 $('#userNameError').html("*user name field is required");
             }
 
-
             if (!this.userData.email){
 
                 $('#email').css({
@@ -309,7 +375,6 @@ export default {
                 });
                 $('#emailError').html("*email field is required");
             }
-
 
             if (!this.userData.password){
 
@@ -336,53 +401,54 @@ export default {
                 });
                 $('#rolesError').html("*roles field is required");
             }
-
-            /*if (!this.userData.username || !this.userData.first_name || !this.userData.last_name || !this.userData.password || !this.userData.confirm_password){
-
-                $('.form-control:required').css({
-                    'border-color': '#FF7B88',
-                });
-                this.isFrontValidation = true;
-
-            }else if ((this.userData.first_name).length <3) {
-
-                this.isFrontValidation = false;
-                this.success_message   = "";
-                this.error_message     = "First Name should contain minimum 3 character";
-
-                //this.errors.push('Valid email required.');
-            }else if ((this.userData.last_name).length <3) {
-
-                this.isFrontValidation = false;
-                this.success_message   = "";
-                this.error_message     = "Last Name should contain minimum 3 character";
-                //this.errors.push('Valid email required.');
-
-            }else if ((this.userData.username).length <4) {
-
-                this.isFrontValidation = false;
-                this.success_message   = "";
-                this.error_message     = "UserName should contain minimum 4 character";
-                //this.errors.push('Valid email required.');
-
-            } else if (!this.validEmail(this.userData.email)) {
-
-                this.isFrontValidation = false;
-                this.success_message   = "";
-                this.error_message     = "Valid email required";
-                //this.errors.push('Valid email required.');
-
+            console.log(this.validation_error);
+            if (this.validation_error.isFirstNameStatus === true &&
+                this.validation_error.isLastNameStatus === true &&
+                this.validation_error.isUserNameStatus === true &&
+                this.validation_error.isEmailStatus === true &&
+                this.validation_error.isRoleStatus === true &&
+                this.validation_error.isPasswordStatus === true &&
+                this.validation_error.isConfirmationStatus === true){
+                console.log(this.validation_error)
+                 this.userAdd();
             }
-            else {
 
-                this.isFrontValidation = false;
-                this.success_message   = "";
-                this.error_message     = "";
-                this.userAdd();
-            }*/
+        },
 
-            // $("#firstName").css({ color: "#FF7B88"});
+        showServerError(errors){
+            $('#lastNameError').html("");
+            $('#firstNameError').html("");
+            $('#userNameError').html("");
+            $('#emailError').html("");
+            $('#rolesError').html("");
 
+            $('#firstName').css({'border-color': '#ced4da'});
+            $('#lastName').css({'border-color': '#ced4da'});
+            $('#userName').css({'border-color': '#ced4da'});
+            $('#email').css({'border-color': '#ced4da'});
+            $('#roles').css({'border-color': '#ced4da'});
+            errors.forEach(val=>{
+                if (val.includes("first")==true){
+                    $('#firstNameError').html(val)
+                    $('#firstName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("last")==true){
+                    $('#lastNameError').html(val)
+                    $('#lastName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("username")==true){
+                    $('#userNameError').html(val)
+                    $('#userName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("email")==true){
+                    $('#emailError').html(val)
+                    $('#email').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("email")==true){
+                    $('#rolesError').html(val)
+                    $('#roles').css({'border-color': '#FF7B88'});
+                }
+            })
         },
 
         userAdd() {
@@ -417,8 +483,8 @@ export default {
                 else if(response.data.status_code === 400){
                     _that.success_message   = "";
                     _that.error_message     = "";
-                    _that.validation_errors = response.data.error;
-                    //  console.log(response.data);
+                    _that.showServerError(response.data.errors);
+
                 }
                 else{
                     _that.success_message   = "";

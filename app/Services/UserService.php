@@ -75,7 +75,7 @@ class UserService
 
             'first_name' => 'required|string|min:3|max:100',
             'last_name'  => 'required|string|min:3|max:100',
-            'username'   => 'required|string|max:50|min:4|unique:users',
+            'username'   => 'required|string|max:50|min:3|unique:users',
             'email'      => 'required|email|max:60|unique:users',
             'password'   => 'required|same:confirm_password',
             'roles'      => 'required'
@@ -86,8 +86,8 @@ class UserService
 
            return response()->json([
                'status_code' => 400,
-               'messages'=>config('status.status_code.400'),
-               'error' =>  $validator->errors()->all()
+               'messages'    => config('status.status_code.400'),
+               'errors'      => $validator->errors()->all()
            ]);
 
         }
@@ -152,7 +152,7 @@ class UserService
         $validator = Validator::make($request->all(),[
             'first_name' => 'required|string|min:3|max:100',
             'last_name'  => 'required|string|min:3|max:100',
-            'username'   => "required|string|max:50|min:4|unique:users,username,$request->id,id",
+            'username'   => "required|string|max:50|min:3|unique:users,username,$request->id,id",
             'email'      => "required|unique:users,email,$request->id,id",
             'roles'      => 'required'
         ]);
