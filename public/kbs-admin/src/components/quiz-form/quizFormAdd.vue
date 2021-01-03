@@ -41,6 +41,7 @@
 
 <script>
     import axios from 'axios'
+    import $ from "jquery";
 
     export default {
         name: "quizFormAdd.vue",
@@ -66,13 +67,37 @@
 
 
         methods: {
-            clearAllChecker()
-            {
+
+            clearAllChecker() {
                 this.isAdd = false;
                 this.$emit('quiz-form-data', this.isAdd);
 
             },
+
+            showServerError(errors){
+
+                $('#enTitleError').html("");
+                $('#categoryIDError').html("");
+
+                $('#enTitle').css({'border-color': '#ced4da'});
+                $('#categoryID').css({'border-color': '#ced4da'});
+
+                errors.forEach(val=>{
+                    console.log(val);
+                    if (val.includes("en title")==true){
+                        $('#enTitleError').html(val)
+                        $('#enTitle').css({'border-color': '#FF7B88'});
+                    }
+                    else if (val.includes("category")==true){
+                        $('#categoryIDError').html(val)
+                        $('#categoryID').css({'border-color': '#FF7B88'});
+                    }
+
+                })
+            },
+
             quizFormAdd() {
+
                 let _that = this;
                 axios.post('admin/quiz-forms',
                     {
@@ -83,17 +108,23 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    if (response.data.status_code == 201)
-                    {
+
+                    if (response.data.status_code === 201){
+
                         _that.error_message    = '';
                         _that.success_message  = "New Customer Added Successfully";
                         _that.$emit('quiz-form-data', _that.quizFormData);
                         document.body.classList.remove('open-side-slider')
-                    }
-                    else
-                    {
+
+                    }else if(response.data.status_code === 400){
+
                         _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.error_message   = "";
+                        _that.showServerError(response.data.errors);
+
+                    }else{
+                        _that.success_message  = "";
+                        _that.error_message    = response.data.message;
                     }
 
                 }).catch(function (error) {
