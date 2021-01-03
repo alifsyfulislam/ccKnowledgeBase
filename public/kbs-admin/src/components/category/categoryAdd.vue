@@ -1,6 +1,5 @@
 <template>
-
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
+    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" :class="(isDestroy == false) ? isSlideClass : ''">
         <div class="close-bar d-flex align-items-center justify-content-end">
             <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                 <img src="../../assets/img/cancel.svg" alt="cancel">
@@ -66,10 +65,12 @@ import $ from "jquery";
 
 export default {
     name: "categoryAdd.vue",
-    props: ['isAddCheck'],
+    props: ['isDestroyFrom','isSlideClass'],
     data() {
         return {
             isAdd : false,
+            isDestroy : false,
+
             success_message : '',
             error_messages   : [],
             token           : '',
@@ -85,7 +86,9 @@ export default {
 
         clearAllChecker() {
             this.isAdd = false;
-            this.$emit('category-data', this.isAdd);
+            this.isDestroy = true;
+            this.$emit('category-hide-data', this.isDestroy);
+            this.$router.push({ name: 'categoryList' });
 
         },
         showServerError(errors){
@@ -179,7 +182,7 @@ export default {
 
     },
     created() {
-        this.isAdd = this.isAddCheck;
+        // this.isAdd = this.isAddCheck;
         this.getCategoryList();
     }
 }

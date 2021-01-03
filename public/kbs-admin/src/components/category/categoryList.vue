@@ -4,7 +4,6 @@
         <!-- sidebar -->
         <Menu></Menu>
         <!-- sidebar end -->
-
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
             <!-- Topbar -->
             <Header></Header>
@@ -23,7 +22,8 @@
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
 
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                                        @click="isDestroyFrom = false, isSlideClass = 'right-side-common-form-show'">
                                     <i class="fas fa-plus"></i>
                                     Add Category
                                 </button>
@@ -116,7 +116,11 @@
             <span>{{ error_message }}</span>
         </div>
 
-        <CategoryAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @category-data="getCategoryDataFromAdd"></CategoryAdd>
+
+
+
+
+        <CategoryAdd :isDestroyFrom="isDestroyFrom" :isSlideClass="isSlideClass" @category-hide-data="getCategoryDataFromAdd"></CategoryAdd>
 
         <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-edit-data="getCategoryDataFromEdit"></CategoryEdit>
 
@@ -160,8 +164,8 @@
 
 <script>
 import axios from 'axios'
-import Menu from '../../layouts/common/Menu.vue'
-import Header from '../../layouts/common/Header.vue'
+import Menu from '@/layouts/common/Menu.vue'
+import Header from '@/layouts/common/Header.vue'
 import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
@@ -178,6 +182,9 @@ export default {
 
     data() {
         return {
+
+            isSlideClass    : '',
+            isDestroyFrom   : false,
 
             isLoading       : false,
             isEditCheck     : false,
@@ -231,8 +238,10 @@ export default {
         },
 
         getCategoryDataFromAdd (newData) {
+            console.log("am here getCategoryDataFromAdd");
             console.log(newData)
-            this.isAddCheck = false;
+            this.isDestroyFrom = newData;
+            // this.isDestroy = false;
             this.getCategoryList();
 
         },

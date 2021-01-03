@@ -48,7 +48,7 @@ $(document).on('click', '.user-profile-navbar > i', function () {
 
 // Right Side Common Forms
 $(document).on('click', '.right-side-common-form, .right-side-close-btn', function () {
-    $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+    // $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
     $('body').toggleClass('open-side-slider');
 });
 
