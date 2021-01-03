@@ -27,6 +27,7 @@
                             <div class="form-group">
                                 <label for="quizFormName">Quiz Form Name<span class="required">*</span></label>
                                 <input class="form-control" v-on:keyup.enter="quizFormUpdate()" type="text" v-model="quizFormDetails.name"  id="quizFormName" placeholder="Enter first name here!!" required>
+                                <span id="formNameError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -47,6 +48,7 @@
 
 <script>
     import axios from "axios";
+    import $ from "jquery";
 
     export default {
 
@@ -73,6 +75,22 @@
         },
 
         methods: {
+            showServerError(errors){
+
+                $('#formNameError').html("");
+
+                $('#quizFormName').css({'border-color': '#ced4da'});
+
+                errors.forEach(val=>{
+
+                    if (val.includes("name") === true){
+                        $('#formNameError').html(val)
+                        $('#quizFormName').css({'border-color': '#FF7B88'});
+                    }
+
+                })
+            },
+
             quizFormUpdate() {
                 let _that = this;
                 let quizFormID = _that.selectedId;
@@ -87,17 +105,23 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    if (response.data.status_code == 200)
-                    {
+
+                    if (response.data.status_code === 200){
+
                         _that.error_message    = '';
                         _that.success_message  = " Updated Successfully";
                         _that.$emit('quiz-form-edit-data', _that.quizFormDetails);
                         document.body.classList.remove('open-side-slider');
-                    }
-                    else
-                    {
+
+                    }else if(response.data.status_code === 400){
+
                         _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.error_message   = "";
+                        _that.showServerError(response.data.errors);
+
+                    }else{
+                        _that.success_message  = "";
+                        _that.error_message    = response.data.message;
                     }
 
                 }).catch(function (error) {

@@ -39,7 +39,7 @@ class QuizService
     {
         return response()->json([
             'status_code' => 200,
-            'messages' => config('status.status_code.200'),
+            'messages'    => config('status.status_code.200'),
             'quiz_form_list' => $this->quizRepository->all()
         ]);
     }
@@ -55,14 +55,14 @@ class QuizService
         if($this->quizRepository->get($id))
             return response()->json([
                 'status_code' => 200,
-                'messages' => config('status.status_code.200'),
-                'quiz_info' => $this->quizRepository->get($id)
+                'messages'    => config('status.status_code.200'),
+                'quiz_info'   => $this->quizRepository->get($id)
             ]);
 
         return response()->json([
             'status_code' => 302,
-            'messages'=> config('status.status_code.302'),
-            'quiz_info'=> "Data not found"
+            'messages'  => config('status.status_code.302'),
+            'quiz_info' => "Data not found"
         ]);
 
     }
@@ -100,7 +100,7 @@ class QuizService
 
         return response()->json([
             'status_code' => 201,
-            'messages'=>config('status.status_code.201')
+            'messages' => config('status.status_code.201')
         ]);
     }
 
