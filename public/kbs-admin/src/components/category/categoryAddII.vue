@@ -55,9 +55,6 @@ export default {
     props: ['isAddCheck'],
     data() {
         return {
-            isAdd : false,
-            isDestroy : false,
-
             success_message : '',
             error_messages   : [],
             token           : '',
@@ -70,17 +67,6 @@ export default {
         }
     },
     methods: {
-        removingRightSideWrapper(){
-            // let _that = this;
-            // this.isAddCheck = false;
-        },
-
-        clearAllChecker() {
-            this.isAdd = false;
-            this.isDestroy = true;
-            // this.$router.push({ name: 'categoryList' });
-
-        },
         showServerError(errors){
             $('#categoryNameError').html("");
             $('#categoryName').css({'border-color': '#ced4da'});
@@ -99,9 +85,6 @@ export default {
             }
             else if (_that.categoryData.name && (_that.categoryData.name).length >2 && (_that.categoryData.name).length <100){
                 _that.categoryAdd();
-                document.body.classList.remove('open-side-slider');
-                _that.$emit('category-slide-close', this.isAddCheck);
-
             }
             else{
                 _that.error_messages[0] = "*The name must be between 3 to 100 charecter";
@@ -126,11 +109,9 @@ export default {
                     _that.categoryData     = '';
                     _that.selectedCategory = '';
                     _that.error_messages    = '';
-                    _that.isAdd = false;
-                    // _that.success_message  = "New Category Added Successfully";
-                    // _that.$emit('category-data', _that.categoryData);
-                    document.body.classList.remove('open-side-slider')
-                    // document.querySelectorAll('.right-side-common-form, .right-side-close-btn').body.classList.remove('right-side-common-form-show')
+                    _that.$emit('category-slide-close', _that.isAddCheck, _that.categoryData);
+                    document.body.classList.remove('open-side-slider');
+
                 }else if(response.data.status_code === 400){
                     _that.success_message       = "";
                     _that.error_message         = "";
@@ -175,7 +156,6 @@ export default {
 
     },
     created() {
-        // this.isAdd = this.isAddCheck;
         this.getCategoryList();
     }
 }

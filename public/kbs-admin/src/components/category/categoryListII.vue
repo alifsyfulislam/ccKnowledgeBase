@@ -132,13 +132,6 @@
 
         </div>
 
-
-
-
-
-
-
-
     </div>
 
 </template>
@@ -216,16 +209,12 @@ export default {
         },
 
         getCategoryDataFromAdd (newData) {
-            let _that = this;
             console.log("am here getCategoryDataFromAdd");
-            console.log(newData)
-            this.isAddCheck = false;
-
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-            $('body').toggleClass('open-side-slider');
-            _that.removingRightSideWrapper();
-
+            console.log(newData);
+            this.removingRightSideWrapper();
             this.getCategoryList();
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+
 
         },
 
