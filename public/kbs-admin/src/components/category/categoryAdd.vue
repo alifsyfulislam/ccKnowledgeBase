@@ -125,7 +125,6 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                console.log(response)
                 if (response.data.status_code == 200)
                 {
                     _that.categoryData     = '';

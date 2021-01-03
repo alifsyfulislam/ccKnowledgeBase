@@ -11,7 +11,6 @@
                 </div>
 
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
@@ -25,7 +24,6 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Parent</label>
-
                             <select class="form-control" v-model="selectedCategory">
                                 <option value="">Select A Category</option>
                                 <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
@@ -67,7 +65,9 @@ export default {
         }
     },
     methods: {
-        showServerError(errors){
+        //server validation
+        showServerError(errors)
+        {
             $('#categoryNameError').html("");
             $('#categoryName').css({'border-color': '#ced4da'});
             errors.forEach(val=>{
@@ -77,8 +77,9 @@ export default {
                 }
             })
         },
-
-        dataValidate(){
+        //client side validation
+        dataValidate()
+        {
             let _that = this;
             if (!_that.categoryData.name){
                 _that.error_messages[0] = "*The category name is required";
@@ -90,8 +91,9 @@ export default {
                 _that.error_messages[0] = "*The name must be between 3 to 100 charecter";
             }
         },
-
-        categoryAdd() {
+        //category add
+        categoryAdd()
+        {
             let _that = this;
             axios.post('admin/categories', {
 
@@ -109,7 +111,8 @@ export default {
                     _that.categoryData     = '';
                     _that.selectedCategory = '';
                     _that.error_messages    = '';
-                    _that.$emit('category-slide-close', _that.isAddCheck, _that.categoryData);
+                    _that.success_message  = "";
+                    _that.$emit('category-slide-close', _that.categoryData);
                     document.body.classList.remove('open-side-slider');
 
                 }else if(response.data.status_code === 400){
@@ -125,7 +128,7 @@ export default {
             }).catch(errors => console.log(errors));
 
         },
-
+        //category list
         getCategoryList()
         {
             let _that =this;
@@ -153,7 +156,6 @@ export default {
                     }
                 })
         },
-
     },
     created() {
         this.getCategoryList();

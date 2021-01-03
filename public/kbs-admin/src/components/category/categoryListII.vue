@@ -33,8 +33,6 @@
 
                     </div>
                     <!-- list top area end -->
-
-
                     <!-- Content Area -->
 
                     <div class="data-content-area px-15 py-10">
@@ -60,13 +58,16 @@
                                     <td class="text-center">{{ a_category.created_at }}</td>
 
                                     <td class="text-center">
-                                        <!--                    <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1"><i class="fas fa-eye"></i></button>-->
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="category_id=a_category.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="category_id=a_category.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
+                                                @click="category_id=a_category.id, isEditCheck=true">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
+                                                 @click="category_id=a_category.id, isDeleteCheck=true">
+                                            <i class="fas fa-trash-restore-alt"></i>
+                                        </button>
                                     </td>
-
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -95,7 +96,6 @@
                                 </ul>
                             </nav>
                         </div>
-
                         <!-- Pagination End -->
                     </div>
                     <!-- Content Area End -->
@@ -114,20 +114,42 @@
         <div class="action-modal-wraper-error" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
-
 <!--        work-->
-
-
-
         <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
-
-
+<!--            add data-->
             <CategoryAdd :isAddCheck="isAddCheck" @category-slide-close="getCategoryDataFromAdd"></CategoryAdd>
+<!--            edit data-->
+            <CategoryEdit :isEditCheck="isEditCheck" :categoryId="category_id"></CategoryEdit>
+<!--            delete data -->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
+                <div class="right-sidebar-content-area px-2">
+
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
+
+                        <div class="row mt-50 mt-md-80">
+                            <div class="col-md-12">
+                                <figure class="mx-auto text-center">
+                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                </figure>
+                                <p class="text-center"> Confirmation for Deleting Category</p>
+
+                                <div class="form-group d-flex justify-content-center align-items-center">
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
 
 
         </div>
@@ -141,9 +163,10 @@ import axios from 'axios'
 import Menu from '@/layouts/common/Menu.vue'
 import Header from '@/layouts/common/Header.vue'
 import CategoryAdd from "../../components/category/categoryAddII";
-// import CategoryEdit from "@/components/category/categoryEdit";
+import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
 import $ from "jquery";
+
 
 export default {
     name: "categoryListII.vue",
@@ -151,24 +174,22 @@ export default {
         Header,
         Menu,
         CategoryAdd,
-        // CategoryEdit,
+        CategoryEdit,
         Loading
     },
 
     data() {
         return {
-
-            isSlideClass    : '',
-            isDestroyFrom   : false,
-
             isLoading       : false,
+
             isEditCheck     : false,
             isAddCheck      : false,
-            isDelete        : false,
+
+            isDeleteCheck        : false,
+
             isSearch        : false,
 
             category_id     : '',
-
             category_parent_id : '',
             category_name   : '',
             success_message : '',
@@ -198,29 +219,37 @@ export default {
         }
     },
     methods: {
-
         removingRightSideWrapper(){
             this.isAddCheck = false;
+            this.isEditCheck = false;
+            this.isDeleteCheck = false;
             document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
         clearAllChecker() {
             this.isAddCheck = false;
+            this.isEditCheck = false;
+            this.isDeleteCheck = false;
         },
 
-        getCategoryDataFromAdd (newData) {
-            console.log("am here getCategoryDataFromAdd");
-            console.log(newData);
-            this.removingRightSideWrapper();
+        getCategoryDataFromAdd (status) {
+            console.log(status)
+            this.success_message = "Category Added Successfully";
             this.getCategoryList();
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-
-
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
+        getCategoryDataFromEdit (status) {
+            this.success_message = status;
+            this.getCategoryList();
+            this.removingRightSideWrapper();
+            // $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            this.setTimeoutElements();
+        },
 
         getCategoryList(pageUrl) {
-
             let _that =this;
 
             pageUrl = pageUrl == undefined ? 'admin/categories' : pageUrl;
@@ -235,26 +264,25 @@ export default {
                             isAdmin : 1
                         },
                 })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-
-                        console.log(response.data);
+                .then(function (response)
+                {
+                    if(response.data.status_code === 200)
+                    {
                         _that.categoryList = response.data.category_list.data;
                         _that.pagination   = response.data.category_list;
                         _that.isLoading    = false;
-                        //_that.setTimeoutElements();
-
-                    } else{
-
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-
                     }
+                    else
+                        {
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
                 });
 
         },
 
-        categoryUpdate(categoryId) {
+        categoryUpdate(categoryId)
+        {
 
             let _that = this;
 
@@ -289,8 +317,8 @@ export default {
 
         },
 
-
-        deleteCategory() {
+        deleteCategory()
+        {
             let _that = this;
 
             axios.delete('admin/categories/delete',
@@ -307,13 +335,12 @@ export default {
                 if (response.data.status_code == 200) {
 
                     _that.getCategoryList();
-                    _that.error_message   = '';
-                    _that.success_message = "Successfully deleted the Category";
                     _that.removingRightSideWrapper();
+                    _that.error_message   = '';
+                    _that.success_message  = "Category Deleted Successfully";
                     _that.setTimeoutElements();
 
                 } else {
-
                     _that.success_message = "";
                     _that.error_message   = response.data.error;
 
@@ -322,25 +349,22 @@ export default {
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
-
-        setTimeoutElements() {
+        //alert message remove
+        setTimeoutElements()
+        {
             // setTimeout(() => this.isLoading = false, 3e3);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
 
     },
 
     created() {
-
         this.isLoading = true;
         this.getCategoryList();
 
     }
-
-
 }
 </script>
 
