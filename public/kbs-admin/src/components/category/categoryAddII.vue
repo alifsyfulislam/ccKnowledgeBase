@@ -1,63 +1,49 @@
 <template>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isAddCheck">
+        <div class="right-sidebar-content-area px-2">
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Add New Category</h2>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
-
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
-
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Add New Category</h2>
-
-                    <div class="col-md-12">
-                        <div v-if="success_message" class="alert alert-success" role="alert">
-                            {{ success_message }}
-                        </div>
-                        <!--                        <div v-if="error_messages" class="alert alert-danger" role="alert">-->
-                        <!--                            {{ error_messages }}-->
-                        <!--                        </div>-->
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="categoryName">Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" placeholder="Enter Category Name" required>
-                                <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
-                                    {{ error_messages[0] }}
-                                </small>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select A Parent</label>
-
-                                <select class="form-control" v-model="selectedCategory">
-                                    <option value="">Select A Category</option>
-                                    <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
-                                        {{a_category.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
+                <div class="col-md-12">
+                    <div v-if="success_message" class="alert alert-success" role="alert">
+                        {{ success_message }}
                     </div>
                 </div>
 
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="categoryName">Name <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" placeholder="Enter Category Name" required>
+                            <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
+                                {{ error_messages[0] }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select A Parent</label>
+
+                            <select class="form-control" v-model="selectedCategory">
+                                <option value="">Select A Category</option>
+                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
+                                    {{a_category.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group text-right">
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
+                </div>
             </div>
+
         </div>
     </div>
-
 </template>
 
 <script>
@@ -65,11 +51,13 @@ import axios from 'axios'
 import $ from "jquery";
 
 export default {
-    name: "categoryAdd.vue",
+    name: "categoryAddII.vue",
     props: ['isAddCheck'],
     data() {
         return {
             isAdd : false,
+            isDestroy : false,
+
             success_message : '',
             error_messages   : [],
             token           : '',
@@ -82,10 +70,15 @@ export default {
         }
     },
     methods: {
+        removingRightSideWrapper(){
+            // let _that = this;
+            // this.isAddCheck = false;
+        },
 
         clearAllChecker() {
             this.isAdd = false;
-            this.$emit('category-data', this.isAdd);
+            this.isDestroy = true;
+            // this.$router.push({ name: 'categoryList' });
 
         },
         showServerError(errors){
@@ -101,12 +94,14 @@ export default {
 
         dataValidate(){
             let _that = this;
-            // _that.categoryAdd();
             if (!_that.categoryData.name){
                 _that.error_messages[0] = "*The category name is required";
             }
             else if (_that.categoryData.name && (_that.categoryData.name).length >2 && (_that.categoryData.name).length <100){
                 _that.categoryAdd();
+                document.body.classList.remove('open-side-slider');
+                _that.$emit('category-slide-close', this.isAddCheck);
+
             }
             else{
                 _that.error_messages[0] = "*The name must be between 3 to 100 charecter";
@@ -132,9 +127,10 @@ export default {
                     _that.selectedCategory = '';
                     _that.error_messages    = '';
                     _that.isAdd = false;
-                    _that.success_message  = "New Category Added Successfully";
-                    _that.$emit('category-data', _that.categoryData);
+                    // _that.success_message  = "New Category Added Successfully";
+                    // _that.$emit('category-data', _that.categoryData);
                     document.body.classList.remove('open-side-slider')
+                    // document.querySelectorAll('.right-side-common-form, .right-side-close-btn').body.classList.remove('right-side-common-form-show')
                 }else if(response.data.status_code === 400){
                     _that.success_message       = "";
                     _that.error_message         = "";
@@ -179,7 +175,7 @@ export default {
 
     },
     created() {
-        this.isAdd = this.isAddCheck;
+        // this.isAdd = this.isAddCheck;
         this.getCategoryList();
     }
 }

@@ -4,11 +4,9 @@
         <!-- sidebar -->
         <Menu></Menu>
         <!-- sidebar end -->
-
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
             <!-- Topbar -->
             <Header></Header>
-
             <!-- Topbar End -->
 
             <!-- Content Area -->
@@ -23,7 +21,8 @@
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
 
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                                        @click="isAddCheck=true" @category-form-close="getCategoryDataFromAdd">
                                     <i class="fas fa-plus"></i>
                                     Add Category
                                 </button>
@@ -116,68 +115,58 @@
             <span>{{ error_message }}</span>
         </div>
 
-        <CategoryAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @category-data="getCategoryDataFromAdd"></CategoryAdd>
+<!--        work-->
 
-        <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-edit-data="getCategoryDataFromEdit"></CategoryEdit>
 
-        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
 
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
-                <div class="right-sidebar-content-area px-2">
 
-                    <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
+            <CategoryAdd :isAddCheck="isAddCheck" @category-slide-close="getCategoryDataFromAdd"></CategoryAdd>
 
-                        <div class="row mt-50 mt-md-80">
-                            <div class="col-md-12">
-                                <figure class="mx-auto text-center">
-                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                </figure>
-                                <p class="text-center"> Confirmation for Deleting Category</p>
 
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory"><i class="fas fa-trash"></i> Confirm</button>
-                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
         </div>
 
-        <!-- Common Right SideBar End -->
+
+
+
+
+
+
+
     </div>
 
 </template>
 
 <script>
 import axios from 'axios'
-import Menu from '../../layouts/common/Menu.vue'
-import Header from '../../layouts/common/Header.vue'
-import CategoryAdd from "@/components/category/categoryAdd";
-import CategoryEdit from "@/components/category/categoryEdit";
+import Menu from '@/layouts/common/Menu.vue'
+import Header from '@/layouts/common/Header.vue'
+import CategoryAdd from "../../components/category/categoryAddII";
+// import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
+import $ from "jquery";
 
 export default {
-    name: "categoryList.vue",
+    name: "categoryListII.vue",
     components: {
         Header,
         Menu,
         CategoryAdd,
-        CategoryEdit,
+        // CategoryEdit,
         Loading
     },
 
     data() {
         return {
+
+            isSlideClass    : '',
+            isDestroyFrom   : false,
 
             isLoading       : false,
             isEditCheck     : false,
@@ -219,31 +208,27 @@ export default {
 
         removingRightSideWrapper(){
             this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
             document.body.classList.remove('open-side-slider');
         },
 
         clearAllChecker() {
             this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
         },
 
         getCategoryDataFromAdd (newData) {
+            let _that = this;
+            console.log("am here getCategoryDataFromAdd");
             console.log(newData)
             this.isAddCheck = false;
+
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            $('body').toggleClass('open-side-slider');
+            _that.removingRightSideWrapper();
+
             this.getCategoryList();
 
         },
 
-        getCategoryDataFromEdit (newEditData) {
-
-            console.log(newEditData)
-            this.isEditCheck = false;
-            this.getCategoryList();
-
-        },
 
         getCategoryList(pageUrl) {
 

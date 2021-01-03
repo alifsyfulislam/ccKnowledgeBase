@@ -6,6 +6,7 @@ import dashboard from '../components/dashboard/dashboard.vue'
 import login from '../components/login.vue'
 
 import categoryList from '../components/category/categoryList.vue'
+import categoryListII from '../components/category/categoryListII.vue'
 
 import articleList from '../components/article/articleList.vue'
 
@@ -31,182 +32,190 @@ import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
 
 
 let router = createRouter({
-  scrollBehavior() {
-    return {x: 0, y: 0};
-  },
-  history: createWebHistory(process.env.BASE_URL),
-  routes: [
-
-      {
-          path: '/admin/page-configuration',
-          name: 'pageConfiguration',
-          component: pageConfiguration,
-          meta: {
-              requiresAuth: true
-          }
-      },
-
-    {
-      path: '/admin/quiz-add',
-      name: 'quizAdd',
-      component: quizAdd,
-      meta: {
-        requiresAuth: true
-      }
+    scrollBehavior() {
+        return {x: 0, y: 0};
     },
+    history: createWebHistory(process.env.BASE_URL),
+    routes: [
 
-    {
-      path: '/admin/quiz-list',
-      name: 'quizList',
-      component: quizList,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/page-configuration',
+            name: 'pageConfiguration',
+            component: pageConfiguration,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/quiz-edit/:id',
-      name: 'quizEdit',
-      component: quizEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/quiz-add',
+            name: 'quizAdd',
+            component: quizAdd,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/quiz-form-field-list/',
-      name: 'quizFormFieldList',
-      component: quizFormFieldList,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/quiz-list',
+            name: 'quizList',
+            component: quizList,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/quiz-form-list',
-      name: 'quizFormList',
-      component: quizFormList,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/quiz-edit/:id',
+            name: 'quizEdit',
+            component: quizEdit,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/role-add',
-      name: 'roleAdd',
-      component: roleAdd,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/role-list',
-      name: 'roleList',
-      component: roleList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/role-edit/:id',
-      name: 'roleEdit',
-      component: roleEdit,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/quiz-form-field-list/',
+            name: 'quizFormFieldList',
+            component: quizFormFieldList,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/customer-list',
-      name: 'customerList',
-      component: customerList,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/quiz-form-list',
+            name: 'quizFormList',
+            component: quizFormList,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
+        {
+            path: '/admin/role-add',
+            name: 'roleAdd',
+            component: roleAdd,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/role-list',
+            name: 'roleList',
+            component: roleList,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/role-edit/:id',
+            name: 'roleEdit',
+            component: roleEdit,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/admin/faq-list',
-      name: 'faqList',
-      component: faqList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    {
-      path: '/admin/faq-details/:id',
-      name: 'faqDetails',
-      component: faqDetails,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/customer-list',
+            name: 'customerList',
+            component: customerList,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
 
-    {
-      path: '/admin/article-list',
-      name: 'articleList',
-      component: articleList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/article-details/:id',
-      name: 'articleDetails',
-      component: articleDetails,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/category-list',
-      name: 'categoryList',
-      component: categoryList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/admin/dashboard',
-      name: 'dashboard',
-      component: dashboard,
-      meta: {
-        requiresAuth: true
-      }
-    },
+        {
+            path: '/admin/faq-list',
+            name: 'faqList',
+            component: faqList,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    {
-      path: '/about',
-      name: 'About',
-      component: About
+        {
+            path: '/admin/faq-details/:id',
+            name: 'faqDetails',
+            component: faqDetails,
+            meta: {
+                requiresAuth: true
+            }
+        },
 
-    }, {
-      path: '/',
-      name: 'login',
-      component: login
-    },
 
-  ],
-  mode: `history`,
-  base: "kbs",
+        {
+            path: '/admin/article-list',
+            name: 'articleList',
+            component: articleList,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/article-details/:id',
+            name: 'articleDetails',
+            component: articleDetails,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/category-list',
+            name: 'categoryList',
+            component: categoryList,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/category-list-2',
+            name: 'categoryListII',
+            component: categoryListII,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/admin/dashboard',
+            name: 'dashboard',
+            component: dashboard,
+            meta: {
+                requiresAuth: true
+            }
+        },
+
+        {
+            path: '/about',
+            name: 'About',
+            component: About
+
+        }, {
+            path: '/',
+            name: 'login',
+            component: login
+        },
+
+    ],
+    mode: `history`,
+    base: "kbs",
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!localStorage.getItem('authToken')) {
-      next({
-        path: '/admin',
-        params: {nextUrl: to.fullPath}
-      })
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!localStorage.getItem('authToken')) {
+            next({
+                path: '/admin',
+                params: {nextUrl: to.fullPath}
+            })
+        } else {
+            next()
+        }
     } else {
-      next()
+        next()
     }
-  } else {
-    next()
-  }
 })
 
 /*router.beforeEach((to, from, next) => {
