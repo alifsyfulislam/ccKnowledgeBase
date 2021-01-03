@@ -20,8 +20,9 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="quizFormID">Quiz Form ID <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormID" placeholder="Enter quiz form name here!!" required>
+                                <label for="quizFormName">Quiz Form Title <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormName" placeholder="Enter quiz form title here!!" required>
+                                <span id="formNameError" class="text-danger small"></span>
                             </div>
                         </div>
                     </div>
@@ -76,21 +77,15 @@
 
             showServerError(errors){
 
-                $('#enTitleError').html("");
-                $('#categoryIDError').html("");
+                $('#formNameError').html("");
 
-                $('#enTitle').css({'border-color': '#ced4da'});
-                $('#categoryID').css({'border-color': '#ced4da'});
+                $('#quizFormName').css({'border-color': '#ced4da'});
 
                 errors.forEach(val=>{
-                    console.log(val);
-                    if (val.includes("en title")==true){
-                        $('#enTitleError').html(val)
-                        $('#enTitle').css({'border-color': '#FF7B88'});
-                    }
-                    else if (val.includes("category")==true){
-                        $('#categoryIDError').html(val)
-                        $('#categoryID').css({'border-color': '#FF7B88'});
+
+                    if (val.includes("name") === true){
+                        $('#formNameError').html(val)
+                        $('#quizFormName').css({'border-color': '#FF7B88'});
                     }
 
                 })

@@ -26,8 +26,9 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="name">Title <span class="required">*</span></label>
-                                <input type="text" class="form-control" v-model="quizData.name" id="name" placeholder="Enter Quiz Title" required>
+                                <label for="title">Title <span class="required">*</span></label>
+                                <input type="text" class="form-control" v-model="quizData.name" id="title" placeholder="Enter Quiz Title" required>
+                                <span id="titleError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -35,34 +36,38 @@
                             <div class="form-group">
                                 <label>Select Quiz Form</label>
 
-                                <select class="form-control" v-model="quizData.quiz_form_id">
+                                <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id">
                                     <option value="" disabled>Select A Quiz Form</option>
                                     <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
                                         {{a_quiz_form.name}}
                                     </option>
                                 </select>
+                                <span id="quizFormError" class="text-danger small"></span>
 
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="name">Duration (Minutes)</label>
+                                <label for="duration">Duration (Minutes)</label>
                                 <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30">
+                                <span id="durationError" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="total_marks">Total Marks<span class="required">*</span></label>
-                                <input type="number" class="form-control " v-model="quizData.total_marks" id="total_marks" placeholder="Ex : 100">
+                                <label for="totalMarks">Total Marks<span class="required">*</span></label>
+                                <input type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100">
+                                <span id="totalMarksError" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="number_of_questions">Number Of Questions<span class="required">*</span></label>
-                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="number_of_questions" placeholder="Ex : 10">
+                                <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
+                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10">
+                                <span id="numberOfQuestionsError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -94,6 +99,7 @@
 <script>
 
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "quizEdit",
@@ -132,6 +138,47 @@ export default {
 
         },
 
+        showServerError(errors){
+
+            $('#titleError').html("");
+            $('#quizFormError').html("");
+            $('#durationError').html("");
+            $('#totalMarksError').html("");
+            $('#numberOfQuestionsError').html("");
+
+            $('#title').css({'border-color': '#ced4da'});
+            $('#quizForm').css({'border-color': '#ced4da'});
+            $('#duration').css({'border-color': '#ced4da'});
+            $('#totalMarks').css({'border-color': '#ced4da'});
+            $('#numberOfQuestions').css({'border-color': '#ced4da'});
+
+            errors.forEach(val=>{
+
+                if (val.includes("name") === true){
+
+                    $('#titleError').html(val)
+                    $('#title').css({'border-color': '#FF7B88'});
+                }else if(val.includes("quiz form") === true){
+                    $('#quizFormError').html(val)
+                    $('#quizForm').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("duration") === true){
+                    $('#durationError').html(val)
+                    $('#duration').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("total marks") === true){
+                    $('#totalMarksError').html(val)
+                    $('#totalMarks').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("number of questions") === true){
+                    $('#numberOfQuestionsError').html(val)
+                    $('#numberOfQuestions').css({'border-color': '#FF7B88'});
+                }
+
+
+            })
+        },
+
         quizUpdate() {
 
             let _that = this;
@@ -150,21 +197,28 @@ export default {
                 },
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization': 'Bearer '+ localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
+
                 if (response.data.status_code === 200) {
 
                     _that.quizData         = '';
                     _that.error_message    = '';
                     _that.success_message  = " quiz Updated Successfully";
                     _that.isEdit = false;
-                    _that.$emit('quiz-edit-data',"quiz updated successfully");
+                    _that.$emit('quiz-edit-data', "quiz updated successfully");
                     document.body.classList.remove('open-side-slider')
 
-                } else {
+                } else if(response.data.status_code === 400){
+
                     _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.error_message   = "";
+                    _that.showServerError(response.data.errors);
+
+                }else{
+                    _that.success_message  = "";
+                    _that.error_message    = response.data.message;
                 }
 
             }).catch(function (error) {

@@ -49,10 +49,19 @@ class QuizFormService
     public function getById($id)
     {
 
-        if($this->quizFormRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_info'=>$this->quizFormRepository->get($id)]);
+        if($this->quizFormRepository->get($id)){
+            return response()->json([
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'quiz_form_info'=>$this->quizFormRepository->get($id)
+            ]);
+        }
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_info'=>"Data not found"]);
+        return response()->json([
+            'status_code' => 302,
+            'messages' => config('status.status_code.302'),
+            'quiz_form_info' => "Data not found"
+        ]);
 
     }
 
@@ -71,16 +80,22 @@ class QuizFormService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()]);
         }
 
         $input = $request->all();
         $input['slug'] = Helper::slugify($input['name']);
-        $input['id'] = time().rand(1000,9000);
+        $input['id']   = time().rand(1000,9000);
 
         $this->quizFormRepository->create($input);
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json([
+            'status_code' => 201,
+            'messages'=>config('status.status_code.201')
+        ]);
     }
 
 
@@ -100,7 +115,11 @@ class QuizFormService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'       => $validator->errors()->all()
+            ]);
         }
 
         DB::beginTransaction();
@@ -117,12 +136,19 @@ class QuizFormService
             DB::rollBack();
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
 
     }
 
@@ -147,15 +173,18 @@ class QuizFormService
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json([
-                'status_code' => '424',
-                'messages'=>config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
             ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
 
     }
 
@@ -169,7 +198,8 @@ class QuizFormService
         return response()->json([
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
-            'quiz_form_list'=>$this->quizFormRepository->getWithPagination()]);
+            'quiz_form_list'=>$this->quizFormRepository->getWithPagination()
+        ]);
 
     }
 }
