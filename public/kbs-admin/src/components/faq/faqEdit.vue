@@ -212,6 +212,7 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
+
                 if (response.data.status_code == 200) {
                     _that.faqData          = '';
                     _that.selectedCategory = '';
@@ -221,12 +222,14 @@ export default {
                     _that.isEdit = false;
                     _that.$emit('faq-edit-data', "Faq Updated Successfully");
                     document.body.classList.remove('open-side-slider')
-                }
-                else
-                {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.errors;
+                }else if(response.data.status_code === 400){
+                    _that.success_message       = "";
+                    _that.error_message         = "";
                     _that.showServerError(response.data.errors);
+
+                }else{
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.message;
                 }
 
             }).catch(function (error) {

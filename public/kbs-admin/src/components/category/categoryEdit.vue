@@ -125,12 +125,14 @@ export default {
                     _that.$emit('category-edit-data',"category updated successfully");
                     document.body.classList.remove('open-side-slider')
 
-                } else {
-
-                    _that.success_message = "";
-                    _that.error_messages   = response.data.errors;
+                }else if(response.data.status_code === 400){
+                    _that.success_message       = "";
+                    _that.error_message         = "";
                     _that.showServerError(response.data.errors);
 
+                }else{
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.message;
                 }
 
             }).catch(function (error) {
