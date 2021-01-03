@@ -37,7 +37,11 @@ class QuizFormFieldService
      */
     public function getAll()
     {
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_field_list'=>$this->quizFormFieldRepository->all()]);
+        return response()->json([
+            'status_code' => 302,
+            'messages'    => config('status.status_code.302'),
+            'quiz_form_field_list' => $this->quizFormFieldRepository->all()
+        ]);
     }
 
 
@@ -49,9 +53,17 @@ class QuizFormFieldService
     {
 
         if($this->quizFormFieldRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'quiz_form_field_info'=>$this->quizFormFieldRepository->get($id)]);
+            return response()->json([
+                'status_code' => 200,
+                'messages'    => config('status.status_code.200'),
+                'quiz_form_field_info' => $this->quizFormFieldRepository->get($id)
+            ]);
 
-        return response()->json(['status_code' => 302, 'messages'=>config('status.status_code.302'), 'quiz_form_field_info'=>"Data not found"]);
+        return response()->json([
+            'status_code' => 302,
+            'messages'    => config('status.status_code.302'),
+            'quiz_form_field_info' => "Data not found"
+        ]);
 
     }
 
@@ -60,8 +72,8 @@ class QuizFormFieldService
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'quiz_form_field_list'=>$this->quizFormFieldRepository->getFormListUsingForm($id)
+            'messages' => config('status.status_code.200'),
+            'quiz_form_field_list' => $this->quizFormFieldRepository->getFormListUsingForm($id)
         ]);
 
     }
@@ -76,17 +88,20 @@ class QuizFormFieldService
         $validator = Validator::make($request->all(),[
 
             'quiz_form_id' => 'required',
-            'f_label' => 'required',
-            'f_name' => 'required',
-            'f_id' => 'required',
-            'f_class' => 'required',
-            'f_type' => 'required',
+            'f_label'      => 'required',
+            'f_name'       => 'required',
+            'f_id'         => 'required',
+            'f_class'      => 'required',
+            'f_type'       => 'required',
 
         ]);
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors' =>  $validator->errors()->all()]);
         }
 
         $input = $request->all();
@@ -95,7 +110,10 @@ class QuizFormFieldService
 
         $this->quizFormFieldRepository->create($input);
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json([
+            'status_code' => 201,
+            'messages'    => config('status.status_code.201')
+        ]);
     }
 
 
@@ -110,17 +128,21 @@ class QuizFormFieldService
         $validator = Validator::make($request->all(),[
 
             'quiz_form_id' => 'required',
-            'f_label' => 'required',
-            'f_name' => 'required',
-            'f_id' => 'required',
-            'f_class' => 'required',
-            'f_type' => 'required',
+            'f_label'      => 'required',
+            'f_name'       => 'required',
+            'f_id'         => 'required',
+            'f_class'      => 'required',
+            'f_type'       => 'required',
 
         ]);
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors' => $validator->errors()->all()
+            ]);
         }
 
         DB::beginTransaction();
@@ -136,12 +158,19 @@ class QuizFormFieldService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200')
+        ]);
 
     }
 
@@ -165,12 +194,19 @@ class QuizFormFieldService
 
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200')
+        ]);
 
     }
 
@@ -180,10 +216,10 @@ class QuizFormFieldService
      */
     public function paginateData($request)
     {
-
-        return response()->json(['status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'quiz_form_field_list'=>$this->quizFormFieldRepository->getWithPagination($request)
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'quiz_form_field_list' => $this->quizFormFieldRepository->getWithPagination($request)
         ]);
 
     }
