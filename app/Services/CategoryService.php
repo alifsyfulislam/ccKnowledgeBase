@@ -39,7 +39,7 @@ class CategoryService
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
+            'messages'    => config('status.status_code.200'),
             'category_list' => $this->categoryRepository->all()]);
     }
 
@@ -52,9 +52,17 @@ class CategoryService
     {
 
         if($this->categoryRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'category_info'=>$this->categoryRepository->get($id)]);
+            return response()->json([
+                'status_code' => 200,
+                'messages'    => config('status.status_code.200'),
+                'category_info' => $this->categoryRepository->get($id)
+            ]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'category_info'=>"Data not found"]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'category_info' => "Data not found"
+        ]);
 
     }
 
@@ -95,7 +103,11 @@ class CategoryService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -175,14 +187,18 @@ class CategoryService
 
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>"Category Deleted Successfully"
+            'messages'    => "Category Deleted Successfully"
         ]);
 
     }

@@ -71,9 +71,9 @@ class ArticleService
         if($validator->fails()) {
 
             return response()->json([
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'status_code' => 400,
+                'messages' => config('status.status_code.400'),
+                'errors' =>  $validator->errors()->all()
             ]);
 
         }
@@ -152,9 +152,9 @@ class ArticleService
 
             return response()->json([
 
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'error' =>  $validator->errors()->first()
+                'status_code' => 400,
+                'messages'=> config('status.status_code.400'),
+                'errors' =>  $validator->errors()->all()
 
             ]);
 

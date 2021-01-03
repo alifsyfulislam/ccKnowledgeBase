@@ -189,7 +189,7 @@ export default {
                     $('#passwordError').html("*password must be 8 characters or longer");
                     this.validation_error.isPasswordStatus = false;
                 }
-                    else {
+                else {
                     $('#password').css({
                         'border-color': '#ced4da',
                     });
@@ -315,18 +315,19 @@ export default {
                 _that.validation_error.isConfirmationStatus = false;
             }
         },
-        validPassword(password)
-        {
+
+        validPassword(password){
             var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})");
             return strongRegex.test(password);
         },
-        validEmail (email)
-        {
+
+        validEmail (email){
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
-        validateAndSubmit()
-        {
+
+        validateAndSubmit(){
+
             if (!this.userData.first_name){
                 $('#firstName').css({
                     'border-color': '#FF7B88',
@@ -384,11 +385,12 @@ export default {
                 this.validation_error.isPasswordStatus === true &&
                 this.validation_error.isConfirmationStatus === true){
                 console.log(this.validation_error)
-                 this.userAdd();
+                this.userAdd();
             }
         },
-        showServerError(errors)
-        {
+
+        showServerError(errors) {
+
             $('#lastNameError').html("");
             $('#firstNameError').html("");
             $('#userNameError').html("");
@@ -423,8 +425,9 @@ export default {
                 }
             })
         },
-        userAdd()
-        {
+
+        userAdd(){
+
             let _that = this;
             axios.post('admin/users',
                 {
@@ -450,16 +453,13 @@ export default {
                     _that.success_message       = "New Customer Added Successfully";
                     _that.$emit('customer-data', _that.userData);
                     document.body.classList.remove('open-side-slider')
-                }
-                else if(response.data.status_code === 400){
+                }else if(response.data.status_code === 400){
                     _that.success_message       = "";
                     _that.error_message         = "";
                     _that.showServerError(response.data.errors);
 
-                }
-                else{
+                }else{
                     _that.success_message       = "";
-                    _that.validation_errors     = "";
                     _that.error_message         = response.data.message;
                 }
             }).catch(function (error) {
@@ -467,6 +467,7 @@ export default {
             });
 
         },
+
         getUserRoles()
         {
             let _that =this;

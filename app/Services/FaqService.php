@@ -32,7 +32,11 @@ class FaqService
     public function getAll()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_list'=>$this->faqRepository->all()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'faq_list'    => $this->faqRepository->all()
+        ]);
 
     }
 
@@ -53,9 +57,9 @@ class FaqService
         if($validator->fails()) {
 
             return response()->json([
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
             ]);
 
         }
@@ -74,9 +78,14 @@ class FaqService
         } catch (Exception $e) {
 
             DB::rollBack();
+
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -88,7 +97,6 @@ class FaqService
 
     public function getItemById($id)
     {
-
         return $this->faqRepository->get($id);
     }
 
@@ -120,11 +128,12 @@ class FaqService
 
         if($validator->fails()) {
             return response()->json([
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
             ]);
         }
+
         $input = $request->all();
         $input['slug'] = Helper::slugify($input['en_title']);
 
@@ -139,12 +148,19 @@ class FaqService
             DB::rollBack();
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=> config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
     }
 
 
@@ -166,7 +182,11 @@ class FaqService
 
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();

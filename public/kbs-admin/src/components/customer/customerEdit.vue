@@ -69,7 +69,6 @@
                             <div class="form-group">
                                 <label for="roles">Status<span class="required">*</span></label>
                                 <select class="form-control" v-model="userData.status">
-                                    <option value="" disabled>Select A Status</option>
                                     <option value="0">Inactive</option>
                                     <option value="1">Active</option>
                                 </select>
@@ -91,152 +90,125 @@
 </template>
 
 <script>
-    import $ from 'jquery'
-    import axios from "axios";
+import $ from 'jquery'
+import axios from "axios";
 
-    export default {
+export default {
 
-        name: "customerEdit.vue",
-        components: {
-        },
-        props: ['isEditCheck', 'customerId'],
+    name: "customerEdit.vue",
+    components: {
+    },
+    props: ['isEditCheck', 'customerId'],
 
-        data() {
-            return {
-                isMounted : false,
-                isEdit : false,
-                success_message : '',
-                error_messages   : [],
-                token           : '',
-                selectedId:'',
-                userData:'',
-                roles:'',
-                userRoles:'',
-                filter : {
-                    isAdmin : 1
-                },
-                validation_error :{
-
-                    isFirstNameStatus : true,
-                    isLastNameStatus  : true,
-                    isUserNameStatus  : true,
-                    isEmailStatus     : true,
-                    isRoleStatus      : true,
-                    isPasswordStatus  : true,
-                    isConfirmationStatus : true,
-                } ,
-            }
-        },
-
-        methods: {
-            //update button pressed
-            validateAndSubmit()
-            {
-                if (!this.userData.first_name){
-                    $('#firstName').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#firstNameError').html("*first name field is required");
-                }
-
-                if (!this.userData.last_name){
-
-                    $('#lastName').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#lastNameError').html("*last name field is required");
-                }
-
-
-                if (!this.userData.username){
-
-                    $('#userName').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#userNameError').html("*user name field is required");
-                }
-
-                if (!this.userData.email){
-
-                    $('#email').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#emailError').html("*email field is required");
-                }
-
-                if (!this.userData.password){
-
-                    $('#password').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#passwordError').html("*password field is required");
-                }
-
-                if (!this.userData.confirm_password){
-
-                    $('#confirmPassword').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#confirmPasswordError').css({'color': '#FF7B88'});
-
-                    $('#confirmPasswordError').html("*confirm password field is required");
-                }
-
-                if (!this.userData.roles){
-
-                    $('#roles').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#rolesError').html("*roles field is required");
-                }
-                if (this.validation_error.isFirstNameStatus === true &&
-                    this.validation_error.isLastNameStatus === true &&
-                    this.validation_error.isUserNameStatus === true &&
-                    this.validation_error.isEmailStatus === true &&
-                    this.validation_error.isRoleStatus === true){
-                    console.log(this.validation_error)
-                    this.userUpdate();
-                }
-
+    data() {
+        return {
+            isMounted : false,
+            isEdit : false,
+            success_message : '',
+            error_messages   : [],
+            token           : '',
+            selectedId:'',
+            userData:'',
+            roles:'',
+            userRoles:'',
+            filter : {
+                isAdmin : 1
             },
-            //check validation on key up
-            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
-            {
-                if (selected_data.length >0) {
-                    if (selected_data.length <3){
-                        $(selected_id).css({
-                            'border-color': '#FF7B88',
-                        });
-                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+            validation_error :{
 
-                        if (selected_name === "*first name" ){
-                            this.validation_error.isFirstNameStatus = false;
-                        }else if (selected_name === "*last name"){
-                            this.validation_error.isLastNameStatus = false
-                        }else if(selected_name === "*user name"){
-                            this.validation_error.isUserNameStatus = false;
-                        }
+                isFirstNameStatus : true,
+                isLastNameStatus  : true,
+                isUserNameStatus  : true,
+                isEmailStatus     : true,
+                isRoleStatus      : true,
+                isPasswordStatus  : true,
+                isConfirmationStatus : true,
+            } ,
+        }
+    },
 
-                    }else {
-                        $(selected_id).css({
-                            'border-color': '#ced4da',
-                        });
-                        $(selected_error_id).html("");
+    methods: {
+        //update button pressed
+        validateAndSubmit()
+        {
+            if (!this.userData.first_name){
+                $('#firstName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#firstNameError').html("*first name field is required");
+            }
 
-                        if (selected_name === "*first name" ){
-                            this.validation_error.isFirstNameStatus = true;
-                        }else if (selected_name === "*last name"){
-                            this.validation_error.isLastNameStatus = true
-                        }else if(selected_name === "*user name"){
-                            this.validation_error.isUserNameStatus = true;
-                        }
-                    }
+            if (!this.userData.last_name){
 
-                } else{
+                $('#lastName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#lastNameError').html("*last name field is required");
+            }
+
+
+            if (!this.userData.username){
+
+                $('#userName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#userNameError').html("*user name field is required");
+            }
+
+            if (!this.userData.email){
+
+                $('#email').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#emailError').html("*email field is required");
+            }
+
+            if (!this.userData.password){
+
+                $('#password').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#passwordError').html("*password field is required");
+            }
+
+            if (!this.userData.confirm_password){
+
+                $('#confirmPassword').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#confirmPasswordError').css({'color': '#FF7B88'});
+
+                $('#confirmPasswordError').html("*confirm password field is required");
+            }
+
+            if (!this.userData.roles){
+
+                $('#roles').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#rolesError').html("*roles field is required");
+            }
+            if (this.validation_error.isFirstNameStatus === true &&
+                this.validation_error.isLastNameStatus === true &&
+                this.validation_error.isUserNameStatus === true &&
+                this.validation_error.isEmailStatus === true &&
+                this.validation_error.isRoleStatus === true){
+                console.log(this.validation_error)
+                this.userUpdate();
+            }
+
+        },
+
+        //check validation on key up
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
                     $(selected_id).css({
                         'border-color': '#FF7B88',
                     });
-                    $(selected_error_id).html(selected_name+" field is required")
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
                     if (selected_name === "*first name" ){
                         this.validation_error.isFirstNameStatus = false;
                     }else if (selected_name === "*last name"){
@@ -244,178 +216,209 @@
                     }else if(selected_name === "*user name"){
                         this.validation_error.isUserNameStatus = false;
                     }
-                }
-            },
-            checkAndValidateEmail()
-            {
-                if ((this.userData.email).length >0) {
-                    if (!this.validEmail(this.userData.email)) {
-                        $('#email').css({
-                            'border-color': '#FF7B88',
-                        });
 
-                        $('#emailError').html("*Valid email required");
-                        this.validation_error.isEmailStatus = false;
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
 
-                    } else {
-                        $('#email').css({
-                            'border-color': '#ced4da',
-                        });
-                        $('#emailError').html("");
-                        this.validation_error.isEmailStatus = true;
+                    if (selected_name === "*first name" ){
+                        this.validation_error.isFirstNameStatus = true;
+                    }else if (selected_name === "*last name"){
+                        this.validation_error.isLastNameStatus = true
+                    }else if(selected_name === "*user name"){
+                        this.validation_error.isUserNameStatus = true;
                     }
+                }
 
-                } else{
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+                if (selected_name === "*first name" ){
+                    this.validation_error.isFirstNameStatus = false;
+                }else if (selected_name === "*last name"){
+                    this.validation_error.isLastNameStatus = false
+                }else if(selected_name === "*user name"){
+                    this.validation_error.isUserNameStatus = false;
+                }
+            }
+        },
+
+        checkAndValidateEmail()
+        {
+            if ((this.userData.email).length >0) {
+                if (!this.validEmail(this.userData.email)) {
                     $('#email').css({
                         'border-color': '#FF7B88',
                     });
-                    $('#emailError').html("*email field is required");
+
+                    $('#emailError').html("*Valid email required");
                     this.validation_error.isEmailStatus = false;
+
+                } else {
+                    $('#email').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#emailError').html("");
+                    this.validation_error.isEmailStatus = true;
                 }
 
-            },
-            validEmail (email) {
-                var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            },
-            //server check user data
-            showServerError(errors)
-            {
-                // span color css
-                $('#lastNameError').html("");
-                $('#firstNameError').html("");
-                $('#userNameError').html("");
-                $('#emailError').html("");
-                $('#rolesError').html("");
-                // border color css
-                $('#firstName').css({'border-color': '#ced4da'});
-                $('#lastName').css({'border-color': '#ced4da'});
-                $('#userName').css({'border-color': '#ced4da'});
-                $('#email').css({'border-color': '#ced4da'});
-                $('#roles').css({'border-color': '#ced4da'});
-                //error array check
-                errors.forEach(val=>{
-                    if (val.includes("first")==true){
-                        $('#firstNameError').html(val)
-                        $('#firstName').css({'border-color': '#FF7B88'});
+            } else{
+                $('#email').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#emailError').html("*email field is required");
+                this.validation_error.isEmailStatus = false;
+            }
+
+        },
+
+        validEmail (email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+
+        //server check user data
+        showServerError(errors)
+        {
+            // span color css
+            $('#lastNameError').html("");
+            $('#firstNameError').html("");
+            $('#userNameError').html("");
+            $('#emailError').html("");
+            $('#rolesError').html("");
+            // border color css
+            $('#firstName').css({'border-color': '#ced4da'});
+            $('#lastName').css({'border-color': '#ced4da'});
+            $('#userName').css({'border-color': '#ced4da'});
+            $('#email').css({'border-color': '#ced4da'});
+            $('#roles').css({'border-color': '#ced4da'});
+            //error array check
+            errors.forEach(val=>{
+                if (val.includes("first")==true){
+                    $('#firstNameError').html(val)
+                    $('#firstName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("last")==true){
+                    $('#lastNameError').html(val)
+                    $('#lastName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("username")==true){
+                    $('#userNameError').html(val)
+                    $('#userName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("email")==true){
+                    $('#emailError').html(val)
+                    $('#email').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("roles")==true){
+                    $('#rolesError').html(val)
+                    $('#roles').css({'border-color': '#FF7B88'});
+                }
+            })
+        },
+        //user data upload to server after validation
+        userUpdate() {
+            let _that = this;
+            let userID = _that.selectedId;
+            axios.put('admin/users/update',
+                {
+                    id                      : userID,
+                    username                : _that.userData.username,
+                    first_name              : _that.userData.first_name,
+                    last_name               : _that.userData.last_name,
+                    email                   : _that.userData.email,
+                    status                  : _that.userData.status,
+                    roles                   : _that.roles,
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
-                    else if (val.includes("last")==true){
-                        $('#lastNameError').html(val)
-                        $('#lastName').css({'border-color': '#FF7B88'});
-                    }
-                    else if (val.includes("username")==true){
-                        $('#userNameError').html(val)
-                        $('#userName').css({'border-color': '#FF7B88'});
-                    }
-                    else if (val.includes("email")==true){
-                        $('#emailError').html(val)
-                        $('#email').css({'border-color': '#FF7B88'});
-                    }
-                    else if (val.includes("roles")==true){
-                        $('#rolesError').html(val)
-                        $('#roles').css({'border-color': '#FF7B88'});
+                }).then(function (response) {
+                if (response.data.status_code == 200)
+                {
+                    _that.error_messages        = '';
+                    _that.success_message       = " Updated Successfully";
+                    _that.$emit('customer-edit-data', _that.userData);
+                    document.body.classList.remove('open-side-slider');
+                }
+                else
+                {
+                    _that.success_message       = "";
+                    _that.showServerError(response.data.errors);
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+        //find user data
+        getuserData()
+        {
+            let _that = this;
+            let userID = this.selectedId;
+            axios.get("admin/users/"+userID,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                })
+                .then(function (response) {
+                    if (response.data.status_code === 200) {
+                        _that.userData          = response.data.user_info;
+                        if ((response.data.user_info.roles).length > 0)
+                            _that.roles         = response.data.user_info.roles[0].id;
+                    } else {
+                        _that.success_message   = "";
+                        _that.error_messages    = response.data.error;
                     }
                 })
-            },
-            //user data upload to server after validation
-            userUpdate() {
-                let _that = this;
-                let userID = _that.selectedId;
-                axios.put('admin/users/update',
-                    {
-                        id                      : userID,
-                        username                : _that.userData.username,
-                        first_name              : _that.userData.first_name,
-                        last_name               : _that.userData.last_name,
-                        email                   : _that.userData.email,
-                        status                  : _that.userData.status,
-                        roles                   : _that.roles,
-                    },
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
-                    if (response.data.status_code == 200)
-                    {
-                        _that.error_messages        = '';
-                        _that.success_message       = " Updated Successfully";
-                        _that.$emit('customer-edit-data', _that.userData);
-                        document.body.classList.remove('open-side-slider');
-                    }
-                    else
-                    {
-                        _that.success_message       = "";
-                        _that.showServerError(response.data.errors);
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
-            },
-            //find user data
-            getuserData()
-            {
-                let _that = this;
-                let userID = this.selectedId;
-                axios.get("admin/users/"+userID,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    })
-                    .then(function (response) {
-                        if (response.data.status_code === 200) {
-                            _that.userData          = response.data.user_info;
-                            if ((response.data.user_info.roles).length > 0)
-                                _that.roles         = response.data.user_info.roles[0].id;
-                        } else {
-                            _that.success_message   = "";
-                            _that.error_messages    = response.data.error;
-                        }
-                    })
-            },
-
-            getUserRoles()
-            {
-                let _that =this;
-                axios.get('admin/roles',
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params : {
-                            isAdmin : 1,
-                            without_pagination : 1
-                        },
-
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.userRoles         = response.data.role_list;
-                        }
-                        else{
-                            _that.success_message   = "";
-                            _that.error_messages    = response.data.error;
-                        }
-                    })
-            },
-            //clear all data
-            clearAllChecker()
-            {
-                this.isEdit = false;
-                this.$emit('customer-edit-data', this.isEdit);
-            },
         },
-        created()
+
+        getUserRoles()
         {
-            this.selectedId = this.customerId;
-            this.isEdit = this.isEditCheck;
-            this.getuserData(this.selectedId);
-            this.getUserRoles();
-        }
+            let _that =this;
+            axios.get('admin/roles',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                        isAdmin : 1,
+                        without_pagination : 1
+                    },
+
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.userRoles         = response.data.role_list;
+                    }
+                    else{
+                        _that.success_message   = "";
+                        _that.error_messages    = response.data.error;
+                    }
+                })
+        },
+        //clear all data
+        clearAllChecker()
+        {
+            this.isEdit = false;
+            this.$emit('customer-edit-data', this.isEdit);
+        },
+    },
+    created()
+    {
+        this.selectedId = this.customerId;
+        this.isEdit = this.isEditCheck;
+        this.getuserData(this.selectedId);
+        this.getUserRoles();
     }
+}
 </script>
 
 <style scoped>
