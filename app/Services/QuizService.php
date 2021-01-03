@@ -88,7 +88,7 @@ class QuizService
             return response()->json([
                 'status_code' => 400,
                 'messages'    => config('status.status_code.400'),
-                'error'       => $validator->errors()->first()
+                'errors'       => $validator->errors()->all()
             ]);
         }
 
@@ -114,8 +114,6 @@ class QuizService
     {
 
         $validator = Validator::make($request->all(),[
-
-            // 'article_id' => 'required',
             'quiz_form_id' => 'required',
             'name' => 'required',
             'duration' => 'required',
