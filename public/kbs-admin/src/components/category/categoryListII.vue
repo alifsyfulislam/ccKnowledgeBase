@@ -122,9 +122,9 @@
                 </button>
             </div>
 <!--            add data-->
-            <CategoryAdd :isAddCheck="isAddCheck" @category-slide-close="getCategoryDataFromAdd"></CategoryAdd>
+            <CategoryAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @category-slide-close="getCategoryDataFromAdd"></CategoryAdd>
 <!--            edit data-->
-            <CategoryEdit :isEditCheck="isEditCheck" :categoryId="category_id"></CategoryEdit>
+            <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id"></CategoryEdit>
 <!--            delete data -->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                 <div class="right-sidebar-content-area px-2">

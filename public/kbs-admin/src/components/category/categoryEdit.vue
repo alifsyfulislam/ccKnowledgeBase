@@ -182,7 +182,10 @@ export default {
 
     },
     created() {
-
+        this.category_id = this.categoryId
+        console.log(this.isEditCheck)
+        console.log(this.category_id)
+        this.getCategoryDetails(this.category_id);
     }
 }
 </script>
