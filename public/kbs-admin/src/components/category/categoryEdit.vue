@@ -4,13 +4,6 @@
 
             <div class="form-wrapper">
                 <h2 class="section-title text-uppercase mb-20">Edit Category</h2>
-
-                <div class="col-md-12">
-                    <div v-if="success_message" class="alert alert-success" role="alert">
-                        {{ success_message }}
-                    </div>
-                </div>
-
                 <div class="row">
 
                     <div class="col-md-12" v-if="categoryId ? category_id=categoryId : ''">
@@ -103,14 +96,9 @@ export default {
 
                     _that.category_name = '',
                     _that.category_parent_id = '',
-
-
                     _that.error_messages    = '';
-
-                    _that.success_message  = "Category Added Successfully";
-                    _that.isEdit = false;
-                    _that.$emit('category-edit-data',"category updated successfully");
-                    document.body.classList.remove('open-side-slider')
+                    _that.success_message  = "Category Updated Successfully";
+                    _that.$emit('category-slide-close',_that.success_message);
 
                 }else if(response.data.status_code === 400){
                     _that.success_message       = "";
@@ -131,7 +119,6 @@ export default {
         getCategoryList()
         {
             let _that =this;
-
             axios.get('admin/categories',
                 {
                     headers: {
@@ -142,7 +129,6 @@ export default {
                             isAdmin : 1,
                             without_pagination : 1
                         },
-
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
@@ -159,7 +145,6 @@ export default {
         {
             let _that = this;
             let apiUrl = "admin/categories/";
-
             axios.get(apiUrl+_that.category_id,
                 {
                     headers: {
@@ -170,7 +155,6 @@ export default {
                     if (response.data.status_code === 200) {
                         console.log(response.data);
                         _that.categoryDetails       = response.data.category_info;
-                        //
                         _that.category_name =  _that.categoryDetails.name;
 
                     } else {
@@ -183,8 +167,6 @@ export default {
     },
     created() {
         this.category_id = this.categoryId
-        console.log(this.isEditCheck)
-        console.log(this.category_id)
         this.getCategoryDetails(this.category_id);
     }
 }
