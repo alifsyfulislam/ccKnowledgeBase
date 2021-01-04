@@ -47,14 +47,15 @@ export default {
     props: ['isAddCheck'],
     data() {
         return {
-            success_message : '',
-            error_messages   : [],
-            token           : '',
-            categoryList    : '',
-            selectedCategory  : '',
-            userInfo        : '',
-            categoryData        : {
-                name  : '',
+            success_message         : '',
+            error_messages          : [],
+            token                   : '',
+            categoryList            : '',
+            selectedCategory        : '',
+            userInfo                : '',
+
+            categoryData      : {
+                name                : '',
             },
         }
     },
@@ -76,13 +77,13 @@ export default {
         {
             let _that = this;
             if (!_that.categoryData.name){
-                _that.error_messages[0] = "*The category name is required";
+                _that.error_messages[0]     = "*The category name is required";
             }
             else if (_that.categoryData.name && (_that.categoryData.name).length >2 && (_that.categoryData.name).length <100){
                 _that.categoryAdd();
             }
             else{
-                _that.error_messages[0] = "*The name must be between 3 to 100 charecter";
+                _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
             }
         },
         //category add
@@ -91,8 +92,8 @@ export default {
             let _that = this;
             axios.post('admin/categories', {
 
-                    name      : this.categoryData.name,
-                    parent_id : this.selectedCategory,
+                    name        : this.categoryData.name,
+                    parent_id   : this.selectedCategory,
                 },
                 {
                     headers: {
@@ -102,23 +103,25 @@ export default {
                 console.log(response)
                 if (response.data.status_code == 200)
                 {
-                    _that.categoryData     = '';
-                    _that.selectedCategory = '';
-                    _that.error_messages    = '';
-                    _that.success_message  = "Category Added Successfully";
+                    _that.categoryData          = '';
+                    _that.selectedCategory      = '';
+                    _that.error_messages        = '';
+                    _that.success_message       = "Category Added Successfully";
+
                     _that.$emit('category-slide-close', _that.success_message);
                     document.body.classList.remove('open-side-slider');
-
-                }else if(response.data.status_code === 400){
+                }
+                else if(response.data.status_code === 400)
+                {
                     _that.success_message       = "";
                     _that.error_message         = "";
                     _that.showServerError(response.data.errors);
 
-                }else{
+                }
+                else{
                     _that.success_message       = "";
                     _that.error_message         = response.data.message;
                 }
-
             }).catch(errors => console.log(errors));
 
         },
@@ -151,7 +154,8 @@ export default {
                 })
         },
     },
-    created() {
+    created()
+    {
         this.getCategoryList();
     }
 }

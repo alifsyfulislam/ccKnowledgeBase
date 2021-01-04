@@ -286,21 +286,17 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                console.log(response)
                 if (response.data.status_code == 200) {
-
                     _that.getCategoryList();
                     _that.selectedCategory = '';
                     _that.error_message    = '';
                     _that.success_message  = response.data.messages;
 
-                } else {
-
+                }
+                else {
                     _that.success_message = "";
                     _that.error_message   = response.data.error;
-
                 }
-
             }).catch(function (error) {
                 console.log(error);
             });
