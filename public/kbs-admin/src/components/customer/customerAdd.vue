@@ -416,7 +416,7 @@ export default {
                 {
                     _that.userData                  = '';
                     _that.error_message             = '';
-                    _that.success_message           = "Customer Added Successfully";
+                    _that.success_message           = "User Added Successfully";
 
                     _that.$emit('user-slide-close', _that.success_message);
                 }
@@ -462,7 +462,6 @@ export default {
     },
     created()
     {
-        // this.isAdd = this.isAddCheck;
         this.getUserRoles();
     }
 }

@@ -64,7 +64,7 @@
                             <table class="table table-bordered gsl-table" v-if="userList">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">SL</th>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">Username</th>
                                     <th class="text-center">Roles</th>
                                     <th class="text-center">First Name</th>
@@ -76,8 +76,8 @@
                                 </thead>
                                 <tbody>
 
-                                <tr v-for="(a_user,index) in userList" :key="a_user.id">
-                                    <td class="text-center">{{ ++index }}</td>
+                                <tr v-for="(a_user) in userList" :key="a_user.id">
+                                    <td class="text-center">{{ a_user.id }}</td>
                                     <td class="text-center">{{ a_user.username }}</td>
                                     <td class="text-center">{{ ((a_user.roles).length > 0) ? a_user.roles[0].name : '' }}</td>
                                     <td class="text-center">{{ a_user.first_name }}</td>
@@ -340,22 +340,22 @@ export default {
                     },
                     params :
                         {
-                            isAdmin : 1,
-                            username : this.filter.username,
-                            email : this.filter.email,
+                            isAdmin         : 1,
+                            username        : this.filter.username,
+                            email           : this.filter.email,
                             // role : this.filter.role
                         },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
                         console.log(response.data.user_list.data);
-                        _that.pagination  = response.data.user_list;
-                        _that.userList   = response.data.user_list.data;
-                        _that.isLoading       = false;
+                        _that.pagination        = response.data.user_list;
+                        _that.userList          = response.data.user_list.data;
+                        _that.isLoading         = false;
                         _that.setTimeoutElements();
                     }
                     else{
-                        _that.error_message   = response.data.error;
+                        _that.error_message     = response.data.error;
                     }
                 })
         },
@@ -379,7 +379,7 @@ export default {
                     _that.getUsersList();
                     _that.removingRightSideWrapper();
                     _that.error_message         = '';
-                    _that.success_message       = "Customer Deleted Successfully";
+                    _that.success_message       = "User Deleted Successfully";
                     _that.setTimeoutElements();
                 }else{
                     _that.success_message = "";
@@ -398,20 +398,20 @@ export default {
             axios.get('admin/roles',
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
                     params : {
-                        isAdmin : 1,
-                        without_pagination : 1
+                        isAdmin             : 1,
+                        without_pagination  : 1
                     },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        _that.userAllRoles = response.data.role_list;
+                        _that.userAllRoles          = response.data.role_list;
                         // console.log(_that.userRoles);
                     }
                     else{
-                        _that.error_message   = response.data.error;
+                        _that.error_message         = response.data.error;
                     }
                 })
         },
@@ -423,24 +423,24 @@ export default {
                 {
                     data:
                         {
-                            id  : userId
+                            id          : userId
                         },
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
 
                 if (response.data.status_code == 200) {
                     _that.getUsersList();
-                    _that.error_message   = '';
-                    _that.success_message = "User Deleted Successfully";
+                    _that.error_message         = '';
+                    _that.success_message       = "User Deleted Successfully";
                     _that.removingRightSideWrapper();
                     _that.setTimeoutElements();
                 }
                 else
                 {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
                 }
 
             }).catch(function (error) {

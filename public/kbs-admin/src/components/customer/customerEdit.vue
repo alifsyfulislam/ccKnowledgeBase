@@ -322,7 +322,7 @@ export default {
                 {
                     _that.userData                  = '';
                     _that.error_message             = '';
-                    _that.success_message           = "Customer Updated Successfully";
+                    _that.success_message           = "User Updated Successfully";
 
                     _that.$emit('user-slide-close', _that.success_message);
                 }
@@ -365,11 +365,11 @@ export default {
             axios.get('admin/roles',
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
                     params : {
-                        isAdmin : 1,
-                        without_pagination : 1
+                        isAdmin             : 1,
+                        without_pagination  : 1
                     },
 
                 })

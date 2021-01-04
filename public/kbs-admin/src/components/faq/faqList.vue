@@ -22,12 +22,14 @@
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
                             <div>
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                                        @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add FAQ
                                 </button>
 
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isSearch=true">
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                                        @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
@@ -76,9 +78,11 @@
                                         <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="faq_id=an_faq.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
+                                                @click="faq_id=an_faq.id, isEditCheck = true"><i class="fas fa-pen"></i></button>
 
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="faq_id=an_faq.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
+                                                 @click="faq_id=an_faq.id, isDeleteCheck = true"><i class="fas fa-trash-restore-alt"></i></button>
 
                                     </td>
 
@@ -90,7 +94,6 @@
                         <!-- Table Data End -->
 
                         <!-- Pagination -->
-
                         <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination mb-0">
@@ -113,7 +116,6 @@
                                 </ul>
                             </nav>
                         </div>
-
                         <!-- Pagination End -->
                     </div>
                     <!-- Content Area End -->
@@ -124,14 +126,52 @@
 
         <!-- Common Right SideBar -->
 
-        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isSearch===true">
+        <div class="action-modal-wraper" v-if="success_message">
+            <span>{{ success_message }}</span>
+        </div>
+
+        <div class="action-modal-wraper-error" v-if="error_message">
+            <span>{{ error_message }}</span>
+        </div>
+<!--        slide form-->
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
 
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+<!--            add-->
+            <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
+<!--            edit-->
+            <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
+            <!--delete-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
+                <div class="right-sidebar-content-area px-2">
+
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">Delete FAQ</h2>
+
+                        <div class="row mt-50 mt-md-80">
+                            <div class="col-md-12">
+                                <figure class="mx-auto text-center">
+                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                </figure>
+                                <p class="text-center"> Confirmation for Deleting FAQ</p>
+
+                                <div class="form-group d-flex justify-content-center align-items-center">
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteFaq()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+<!--            search-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isSearchCheck">
                 <div class="right-sidebar-content-area px-2">
 
                     <div class="form-wrapper" >
@@ -190,51 +230,7 @@
 
                 </div>
             </div>
-        </div>
 
-        <div class="action-modal-wraper" v-if="success_message">
-            <span>{{ success_message }}</span>
-        </div>
-
-        <div class="action-modal-wraper-error" v-if="error_message">
-            <span>{{ error_message }}</span>
-        </div>
-
-        <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @faq-data="getFaqDataFromAdd()"></FaqAdd>
-
-        <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-edit-data="getFaqDataFromEdit()"></FaqEdit>
-
-        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
-            <div class="close-bar d-flex align-items-center justify-content-end">
-                <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                    <img src="../../assets/img/cancel.svg" alt="cancel">
-                </button>
-            </div>
-
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
-                <div class="right-sidebar-content-area px-2">
-
-                    <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
-
-                        <div class="row mt-50 mt-md-80">
-                            <div class="col-md-12">
-                                <figure class="mx-auto text-center">
-                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                </figure>
-                                <p class="text-center"> Confirmation for Deleting FAQ</p>
-
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteFaq()"><i class="fas fa-trash"></i> Confirm</button>
-                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
         </div>
 
         <!-- Common Right SideBar End -->
@@ -248,6 +244,7 @@ import FaqAdd from "@/components/faq/faqAdd";
 import FaqEdit from "@/components/faq/faqEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "faqList.vue",
@@ -261,26 +258,26 @@ export default {
 
     data() {
         return {
-            isLoading       : false,
-            isEditCheck     : false,
-            isAddCheck      : false,
-            isDelete        : false,
-            isSearch        : false,
+            isLoading           : false,
+            isEditCheck         : false,
+            isAddCheck          : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
 
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            categoryList    : '',
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            categoryList        : '',
 
-            faqList         : '',
-            faq_id : '',
+            faqList             : '',
+            faq_id              : '',
 
-            filter : {
-                isAdmin     : 1,
-                category_id : '',
-                status      : '',
-                en_title    : '',
-                tag         : '',
+            filter      : {
+                isAdmin         : 1,
+                category_id     : '',
+                status          : '',
+                en_title        : '',
+                tag             : '',
             },
 
             pagination:{
@@ -298,135 +295,135 @@ export default {
         }
     },
     methods: {
-
-        clearFilter() {
-
-            this.filter.category_id = "";
-            this.filter.status   = "";
-            this.filter.en_title = "";
-            this.filter.tag      = "";
-            this.success_message = "";
-            this.error_message   = "";
+        clearFilter()
+        {
+            this.filter.category_id     = "";
+            this.filter.status          = "";
+            this.filter.en_title        = "";
+            this.filter.tag             = "";
+            this.success_message        = "";
+            this.error_message          = "";
             this.getFaqList();
-
+        },
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
 
-        removingRightSideWrapper() {
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
 
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
             document.body.classList.remove('open-side-slider');
-
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
-        clearAllChecker() {
-
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
-
+        clearAllChecker()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
         },
 
-        getFaqDataFromAdd (newData) {
-            console.log(newData)
-            this.isAddCheck = false;
+        getAddDataFromChild (status)
+        {
+            console.log(status);
+            this.success_message = "FAQ added successfully!";
             this.getFaqList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
-        getFaqDataFromEdit (newEditData) {
-            console.log(newEditData)
-            this.isEditCheck = false;
+        getEditDataFromChild (status) {
+            console.log(status);
+            this.success_message = "FAQ updated successfully!";
             this.getFaqList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
-
-        getCategoryList() {
-
-            let _that =this;
-
+        getCategoryList()
+        {
+            let _that   = this;
             axios.get('admin/categories',
                 {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    headers : {
+                        'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     },
-                    params :
+                    params  :
                         {
-                            isAdmin : 1,
-                            without_pagination : 1
+                            isAdmin             : 1,
+                            without_pagination  : 1
                         },
 
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.categoryList = response.data.category_list;
+                        _that.categoryList          = response.data.category_list;
                     }
                     else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
                     }
                 })
         },
 
         getFaqList(pageUrl) {
-
             let _that =this;
             pageUrl = pageUrl == undefined ? 'admin/faqs' : pageUrl;
 
             axios.get(pageUrl,
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
                     params :
                         {
-                            isAdmin     : 1,
-                            category_id : this.filter.category_id,
-                            status      : this.filter.status,
-                            en_title    : this.filter.en_title,
-                            tag         : this.filter.tag,
+                            isAdmin         : 1,
+                            category_id     : this.filter.category_id,
+                            status          : this.filter.status,
+                            en_title        : this.filter.en_title,
+                            tag             : this.filter.tag,
                         },
 
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        _that.faqList    = response.data.faq_list.data;
-                        _that.pagination = response.data.faq_list;
-                        _that.isLoading  = false;
+                        _that.faqList           = response.data.faq_list.data;
+                        _that.pagination        = response.data.faq_list;
+                        _that.isLoading         = false;
                     }
                     else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message   = "";
+                        _that.error_message     = response.data.error;
                     }
                 })
         },
 
-        deleteFaq() {
-
+        deleteFaq()
+        {
             let _that = this;
-
             axios.delete('admin/faqs/delete',
                 {
-                    data:
-                        {
-                            id   : this.faq_id
-                        },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    data        : {
+                        id      : this.faq_id
+                    },
+                    headers     : {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-
                 if (response.data.status_code === 200) {
-
                     _that.getFaqList();
+                    _that.removingRightSideWrapper();
+                    _that.success_message = "FAQ deleted successfully!";
                     _that.error_message   = '';
-                    _that.clearAllChecker();
-
-                    document.body.classList.remove('open-side-slider');
-                    _that.success_message = "Successfully deleted the FAQ";
                     _that.setTimeoutElements();
-
                 }
                 else
                 {
@@ -437,15 +434,7 @@ export default {
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
-
-        setTimeoutElements() {
-            //setTimeout(() => this.isLoading = false, 3000);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
-        },
-
     },
     created() {
         this.isLoading = true;
