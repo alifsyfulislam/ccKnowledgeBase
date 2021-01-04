@@ -126,7 +126,6 @@
                                     <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                 </figure>
                                 <p class="text-center"> Confirmation for Deleting Category</p>
-
                                 <div class="form-group d-flex justify-content-center align-items-center">
                                     <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
@@ -138,19 +137,15 @@
 
                 </div>
             </div>
-
-
         </div>
-
     </div>
-
 </template>
 
 <script>
 import axios from 'axios'
-import Menu from '@/layouts/common/Menu.vue'
-import Header from '@/layouts/common/Header.vue'
-import CategoryAdd from "../../components/category/categoryAdd";
+import Menu from '@/layouts/common/Menu'
+import Header from '@/layouts/common/Header'
+import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
 import $ from "jquery";
@@ -218,9 +213,9 @@ export default {
 
         clearAllChecker()
         {
-            this.isAddCheck = false;
-            this.isEditCheck = false;
-            this.isDeleteCheck = false;
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
         },
 
         getAddDataFromChild (status)
@@ -241,7 +236,7 @@ export default {
 
         getCategoryList(pageUrl)
         {
-            let _that =this;
+            let _that = this;
 
             pageUrl = pageUrl == undefined ? 'admin/categories' : pageUrl;
 
@@ -259,14 +254,14 @@ export default {
                 {
                     if(response.data.status_code === 200)
                     {
-                        _that.categoryList = response.data.category_list.data;
-                        _that.pagination   = response.data.category_list;
-                        _that.isLoading    = false;
+                        _that.categoryList      = response.data.category_list.data;
+                        _that.pagination        = response.data.category_list;
+                        _that.isLoading         = false;
                     }
                     else
                     {
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message   = "";
+                        _that.error_message     = response.data.error;
                     }
                 });
 
@@ -277,9 +272,9 @@ export default {
             let _that = this;
 
             axios.put('admin/categories/update', {
-                    id        : categoryId,
-                    name      : this.category_name,
-                    parent_id : this.category_parent_id,
+                    id              : categoryId,
+                    name            : this.category_name,
+                    parent_id       : this.category_parent_id,
                 },
                 {
                     headers: {
@@ -288,14 +283,14 @@ export default {
                 }).then(function (response) {
                 if (response.data.status_code == 200) {
                     _that.getCategoryList();
-                    _that.selectedCategory = '';
-                    _that.error_message    = '';
-                    _that.success_message  = response.data.messages;
+                    _that.selectedCategory      = '';
+                    _that.error_message         = '';
+                    _that.success_message       = response.data.messages;
 
                 }
                 else {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -322,13 +317,13 @@ export default {
 
                     _that.getCategoryList();
                     _that.removingRightSideWrapper();
-                    _that.error_message   = '';
-                    _that.success_message  = "Category Deleted Successfully";
+                    _that.error_message         = '';
+                    _that.success_message       = "Category Deleted Successfully";
                     _that.setTimeoutElements();
 
                 } else {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
 
                 }
 
