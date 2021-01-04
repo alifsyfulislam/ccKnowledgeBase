@@ -50,8 +50,6 @@ class FaqService
 
             'en_title'      => 'required|string|min:3|max:100',
             'category_id'   => 'required',
-            'en_body'       => 'required'
-
        ]);
 
         if($validator->fails()) {
@@ -123,7 +121,6 @@ class FaqService
         $validator = Validator::make($request->all(),[
             'en_title'      => 'required|string|min:3|max:100',
             'category_id'   => 'required',
-            'en_body'       => 'required'
         ]);
 
         if($validator->fails()) {
