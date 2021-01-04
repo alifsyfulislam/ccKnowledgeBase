@@ -40,6 +40,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldLabel">Field Label <span class="required">*</span></label>
                                 <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldData.quizlabelName" class="form-control" placeholder="Enter Label Name">
+                                <span id="fieldLabelError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -47,6 +48,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldName">Field Name <span class="required">*</span></label>
                                 <input id="quizFormFieldName" type="text" v-model="quizFormFieldData.quizfieldName" class="form-control" placeholder="Enter Field Name">
+                                <span id="fieldNameError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -54,7 +56,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldID">Field ID <span class="required">*</span></label>
                                 <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID">
-<!--                                <input id="quizFormFieldName" type="text" v-model="quizform_details.quizfieldName" class="form-control form-control-lg" placeholder="Enter Field Name">-->
+                                <span id="fieldIDError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -62,7 +64,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldClass">Field Class <span class="required">*</span></label>
                                 <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class">
-<!--                                <input id="quizFormFieldName" type="text" v-model="quizform_details.quizfieldName" class="form-control form-control-lg" placeholder="Enter Field Name">-->
+                                <span id="fieldClassError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -70,7 +72,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldType">Field Type <span class="required">*</span></label>
                                 <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldData.quizfieldType">
-                                    <option disabled>--Select A Type--</option>
+                                    <option value="" disabled>--Select A Type--</option>
                                     <option value="Text">Text</option>
                                     <option value="Email">Email</option>
                                     <option value="Password">Password</option>
@@ -80,6 +82,7 @@
                                     <option value="Checkbox">Checkbox</option>
                                     <option value="Select/Dropdown">Select/Dropdown</option>
                                 </select>
+                                <span id="fieldTypeError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -145,6 +148,7 @@
 
 <script>
 import axios from 'axios'
+import $ from "jquery";
 // import $ from 'jquery'
 
 
@@ -169,23 +173,65 @@ export default {
 
 
             quizFormFieldData       : {
-                quizformfieldID     : '',
-                quizlabelName       :'',
-                quizfieldName       :'',
-                quizfieldID         :'',
-                quizfieldClass      :'',
-                quizfieldType       :'--Select A Type--',
-                quizfieldOptionValue:'',
-                quizfieldDefaultValue:'',
-                quizfieldMaxValue   :'',
-                quizfieldSortValue  :'',
-                quizfieldRequired   :'--Select Status--',
+
+                quizformfieldID     :  '',
+                quizlabelName       :  '',
+                quizfieldName       :  '',
+                quizfieldID         :  '',
+                quizfieldClass      :  '',
+                quizfieldType       :  '',
+                quizfieldOptionValue:  '',
+                quizfieldDefaultValue: '',
+                quizfieldMaxValue   :  '',
+                quizfieldSortValue  :  '',
+                quizfieldRequired   :  0,
             },
 
         }
     },
 
     methods: {
+
+        showServerError(errors){
+
+            $('#fieldLabelError').html("");
+            $('#fieldNameError').html("");
+            $('#fieldIDError').html("");
+            $('#fieldClassError').html("");
+            $('#fieldTypeError').html("");
+
+            $('#quizFormFieldLabel').css({'border-color': '#ced4da'});
+            $('#quizFormFieldName').css({'border-color': '#ced4da'});
+            $('#quizFormFieldID').css({'border-color': '#ced4da'});
+            $('#quizFormFieldClass').css({'border-color': '#ced4da'});
+            $('#quizFormFieldType').css({'border-color': '#ced4da'});
+
+            errors.forEach(val=>{
+
+                if (val.includes("f label") === true){
+
+                    $('#fieldLabelError').html(val)
+                    $('#quizFormFieldLabel').css({'border-color': '#FF7B88'});
+                }else if(val.includes("f name") === true){
+                    $('#fieldNameError').html(val)
+                    $('#quizFormFieldName').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("f id") === true){
+                    $('#fieldIDError').html(val)
+                    $('#quizFormFieldID').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("f class") === true){
+                    $('#fieldClassError').html(val)
+                    $('#quizFormFieldClass').css({'border-color': '#FF7B88'});
+
+                }else if(val.includes("f type") === true){
+                    $('#fieldTypeError').html(val)
+                    $('#quizFormFieldType').css({'border-color': '#FF7B88'});
+                }
+
+            })
+        },
+
         clearAllChecker() {
 
             this.isAdd = false;
@@ -194,6 +240,7 @@ export default {
             this.$emit('quiz-form-field-data', this.isFormFieldList);
 
         },
+
         quizformfieldStore() {
             let _that = this;
             axios.post('admin/quiz-form-fields',
@@ -215,7 +262,8 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                if (response.data.status_code == 201) {
+
+                if (response.data.status_code === 201) {
 
                     _that.error_message    = '';
                     _that.success_message  = "Field Added Successfully";
@@ -224,12 +272,15 @@ export default {
                     _that.$emit('quiz-form-field-data', _that.isFormFieldList);
                     document.body.classList.remove('open-side-slider')
 
+                }else if(response.data.status_code === 400){
 
-                }
-                else
-                {
                     _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.error_message   = "";
+                    _that.showServerError(response.data.errors);
+
+                }else{
+                    _that.success_message  = "";
+                    _that.error_message    = response.data.message;
                 }
 
             }).catch(function (error) {

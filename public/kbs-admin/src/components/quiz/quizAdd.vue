@@ -175,8 +175,6 @@ export default {
                     $('#numberOfQuestionsError').html(val)
                     $('#numberOfQuestions').css({'border-color': '#FF7B88'});
                 }
-
-
             })
         },
 
