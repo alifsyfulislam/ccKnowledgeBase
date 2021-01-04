@@ -30,8 +30,8 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="articleID">Title <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="articleData.en_title" id="articleID" required>
+                                <label for="enTitle">Title <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
                                 <span id="enTitleError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -45,9 +45,9 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Category <span class="required">*</span></label>
+                                <label for="categoryID">Category <span class="required">*</span></label>
 
-                                <select class="form-control" v-model="articleData.category_id">
+                                <select class="form-control" v-model="articleData.category_id" id="categoryID" @change="checkAndValidateSelectType()">
                                     <option value="" disabled>Select A Category</option>
                                     <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                                         {{a_category.name}}
@@ -165,6 +165,11 @@ export default {
 
             },
 
+            validation_error :{
+                isTitleStatus    : false,
+                isCategoryStatus : false,
+            } ,
+
             images: [],
             files: [],
             url : '',
@@ -180,6 +185,83 @@ export default {
         clearAllChecker() {
             this.isEdit = false;
             this.$emit('article-edit-data', this.isEdit);
+        },
+
+        checkAndValidateSelectType(){
+
+            if (!this.articleData.category_id) {
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+                this.validation_error.isCategoryStatus = false;
+
+            } else{
+                $('#categoryID').css({
+                    'border-color': '#ced4da',
+                });
+                $('#categoryIDError').html("");
+                this.validation_error.isCategoryStatus = true;
+            }
+        },
+
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
+
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                    if (selected_name === "*title"){
+                        this.validation_error.isTitleStatus = false;
+                    }
+
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
+
+                    if (selected_name === "*title" ){
+                        this.validation_error.isTitleStatus = true;
+                    }
+                }
+
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+
+                if (selected_name === "title" ){
+                    this.validation_error.isTitleStatus = false;
+                }
+            }
+        },
+
+        validateAndSubmit(){
+
+            if (!this.articleData.en_title){
+                $('#enTitle').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#enTitleError').html("title field is required");
+            }
+
+            if (!this.articleData.category_id){
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+            }
+
+            if (this.validation_error.isTitleStatus    === true &&
+                this.validation_error.isCategoryStatus === true ){
+                //console.log(this.validation_error)
+                this.articleUpdate();
+            }
         },
 
         showServerError(errors){
@@ -239,13 +321,11 @@ export default {
 
                 if (response.data.status_code == 200){
                     _that.articleData      = '';
-                    // _that.selectedCategory = '';
                     _that.error_message    = '';
                     _that.success_message  = "Article Updated Successfully";
                     _that.isEdit = false;
                     _that.$emit('article-edit-data', _that.articleData);
                     document.body.classList.remove('open-side-slider')
-                    _that.$router.push('/admin/articleList');
 
                 }else if(response.data.status_code === 400){
                     _that.success_message       = "";

@@ -7,6 +7,7 @@ use App\Http\Traits\QueryTrait;
 use App\Models\Article;
 use App\Models\Media;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class ArticleRepository implements RepositoryInterface
 {
@@ -43,6 +44,7 @@ class ArticleRepository implements RepositoryInterface
      */
     public function create(array $data)
     {
+        $randomString = Str::random();
 
         $dataObj =  new Article;
         $dataObj->id = $data['id'];
@@ -51,7 +53,7 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->en_title = $data['en_title'];
         $dataObj->bn_title = $data['bn_title'];
         $dataObj->tag = $data['tag'];
-        $dataObj->slug = Helper::slugify($data['en_title']);
+        $dataObj->slug = Helper::slugify($data['en_title']).$randomString;
         $dataObj->en_short_summary = $data['en_short_summary'];
         $dataObj->bn_short_summary = $data['bn_short_summary'];
         $dataObj->en_body = $data['en_body'];

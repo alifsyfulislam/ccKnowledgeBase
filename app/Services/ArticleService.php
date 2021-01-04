@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ArticleService
 {
@@ -62,11 +63,9 @@ class ArticleService
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
-
             'en_title' => 'required|string',
             'category_id' => 'required',
-
-       ]);
+        ]);
 
         if($validator->fails()) {
 
@@ -161,7 +160,8 @@ class ArticleService
         }
 
         $input = $request->all();
-        $input['slug'] = Helper::slugify($input['en_title']);
+        $randomString = Str::random();
+        $input['slug'] = Helper::slugify($input['en_title']).$randomString;
 
         DB::beginTransaction();
 
