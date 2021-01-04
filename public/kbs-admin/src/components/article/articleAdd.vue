@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <label for="categoryID">Category <span class="required">*</span></label>
 
-                                <select class="form-control" v-model="selectedCategory" id="categoryID" @change='checkAndValidateSelectType()'>
+                                <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">
                                     <option value="" disabled>Select A Category</option>
                                     <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                                         {{a_category.name}}
@@ -152,11 +152,10 @@ export default {
                 status   : 'draft',
             },
 
-
             validation_error :{
                 isTitleStatus    : false,
                 isCategoryStatus : false,
-            } ,
+            },
 
             images: [],
             files: [],
