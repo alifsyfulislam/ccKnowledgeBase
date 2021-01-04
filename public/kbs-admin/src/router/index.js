@@ -117,7 +117,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/customer-list',
+            path: '/admin/user-list',
             name: 'customerList',
             component: customerList,
             meta: {

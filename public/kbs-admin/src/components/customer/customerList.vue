@@ -28,19 +28,20 @@
                                 </button>
                             </div>
                             <div class="search-box-wrapper d-flex align-items-center mb-10 mb-md-0">
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearch=true">
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
                         </div> -->
                         <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
                             <div>
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                                        @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add User
                                 </button>
 
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
@@ -89,7 +90,7 @@
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
 
 
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
 
@@ -124,15 +125,44 @@
                     <!-- Content Area End -->
                 </div>
             </div>
-
-            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isSearch===true">
+<!--            message alert as per action-->
+            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                         <img src="../../assets/img/cancel.svg" alt="cancel">
                     </button>
                 </div>
+                <!-- add-->
+                <CustomerAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @user-slide-close="getAddDataFromChild"></CustomerAdd>
+<!--                edit-->
+                <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @user-slide-close="getEditDataFromChild"></CustomerEdit>
+<!--                delete-->
+                <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
+                    <div class="right-sidebar-content-area px-2">
 
-                <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+                        <div class="form-wrapper">
+                            <h2 class="section-title text-uppercase mb-20">Customer Delete</h2>
+
+                            <div class="row mt-50 mt-md-80">
+                                <div class="col-md-12">
+                                    <figure class="mx-auto text-center">
+                                        <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                    </figure>
+                                    <p class="text-center"> Confirmation for Deleting Customer</p>
+
+                                    <div class="form-group d-flex justify-content-center align-items-center">
+                                        <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCustomer()"><i class="fas fa-trash"></i> Confirm</button>
+                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+<!--                search-->
+                <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isSearchCheck">
                     <div class="right-sidebar-content-area px-2">
 
                         <div class="form-wrapper" >
@@ -177,52 +207,14 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="action-modal-wraper" v-if="success_message">
-                <span>{{ success_message }}</span>
-            </div>
+        <div class="action-modal-wraper" v-if="success_message">
+            <span>{{ success_message }}</span>
+        </div>
 
-            <div class="action-modal-wraper-error" v-if="error_message">
-                <span>{{ error_message }}</span>
-            </div>
-            <!--            add-->
-            <CustomerAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @customer-data="getUserDataFromAdd"></CustomerAdd>
-            <!--            edit-->
-            <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @customer-edit-data="getCustomerDataFromEdit"></CustomerEdit>
-            <!--            delete-->
-            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
-                <div class="close-bar d-flex align-items-center justify-content-end">
-                    <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                        <img src="../../assets/img/cancel.svg" alt="cancel">
-                    </button>
-                </div>
-
-                <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
-                    <div class="right-sidebar-content-area px-2">
-
-                        <div class="form-wrapper">
-                            <h2 class="section-title text-uppercase mb-20">Customer Delete</h2>
-
-                            <div class="row mt-50 mt-md-80">
-                                <div class="col-md-12">
-                                    <figure class="mx-auto text-center">
-                                        <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                    </figure>
-                                    <p class="text-center"> Confirmation for Deleting Customer</p>
-
-                                    <div class="form-group d-flex justify-content-center align-items-center">
-                                        <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCustomer()"><i class="fas fa-trash"></i> Confirm</button>
-                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- Content Area End -->
+        <div class="action-modal-wraper-error" v-if="error_message">
+            <span>{{ error_message }}</span>
         </div>
     </div>
 </template>
@@ -234,6 +226,7 @@ import CustomerAdd from "@/components/customer/customerAdd";
 import CustomerEdit from "@/components/customer/customerEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "customerList.vue",
@@ -250,8 +243,8 @@ export default {
             isLoading       : false,
             isAddCheck      : false,
             isEditCheck     : false,
-            isDelete        : false,
-            isSearch        : false,
+            isDeleteCheck   : false,
+            isSearchCheck   : false,
 
             success_message : '',
             error_message   : '',
@@ -262,7 +255,6 @@ export default {
             userRole        : '',
             customer_id     : '',
             userAllRoles    : '',
-
 
             filter : {
                 isAdmin     : 1,
@@ -285,6 +277,43 @@ export default {
         }
     },
     methods: {
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
+        },
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+
+            document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+        },
+
+        clearAllChecker()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+        },
+
+        getAddDataFromChild (status)
+        {
+            this.success_message = status;
+            this.getUsersList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
+
+        getEditDataFromChild (status) {
+            this.success_message = status;
+            this.getUsersList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
 
         clearFilter()
         {
@@ -294,21 +323,6 @@ export default {
             this.success_message = "";
             this.error_message   = "";
             this.getUsersList();
-        },
-
-        getUserDataFromAdd (newData) {
-            console.log(newData)
-            //this.articleList.push(newData);
-            this.isAddCheck = false;
-            this.getUsersList();
-
-        },
-
-        getCustomerDataFromEdit (newEditData) {
-            console.log(newEditData)
-            this.isEditCheck = false;
-            this.getUsersList();
-            //this.inboundData.formData = newData
         },
 
         getUsersList(pageUrl)
@@ -335,13 +349,10 @@ export default {
                         console.log(response.data.user_list.data);
                         _that.pagination  = response.data.user_list;
                         _that.userList   = response.data.user_list.data;
-                        _that.success_message = "";
                         _that.isLoading       = false;
                         _that.setTimeoutElements();
-
                     }
                     else{
-                        _that.success_message = "";
                         _that.error_message   = response.data.error;
                     }
                 })
@@ -364,15 +375,11 @@ export default {
                 if (response.data.status_code == 200)
                 {
                     _that.getUsersList();
-                    _that.clearAllChecker();
-                    _that.error_message   = '';
-                    document.body.classList.remove('open-side-slider');
-                    _that.success_message = "Successfully deleted the User";
-                    _that.isLoading       = false;
-                    // _that.setTimeoutElements();
-
+                    _that.removingRightSideWrapper();
+                    _that.error_message         = '';
+                    _that.success_message       = "Customer Deleted Successfully";
+                    _that.setTimeoutElements();
                 }else{
-
                     _that.success_message = "";
                     _that.error_message   = response.data.error;
                 }
@@ -380,24 +387,6 @@ export default {
             }).catch(function (error) {
                 console.log(error);
             });
-
-        },
-
-        removingRightSideWrapper() {
-
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
-            document.body.classList.remove('open-side-slider');
-
-        },
-
-
-        clearAllChecker() {
-
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
 
         },
 
@@ -420,7 +409,6 @@ export default {
                         // console.log(_that.userRoles);
                     }
                     else{
-                        _that.success_message = "";
                         _that.error_message   = response.data.error;
                     }
                 })
@@ -458,13 +446,6 @@ export default {
             });
 
         },
-
-        setTimeoutElements() {
-            //setTimeout(() => this.isLoading = false, 3000);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
-        },
-
     },
 
     created() {

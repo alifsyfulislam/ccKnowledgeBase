@@ -109,7 +109,7 @@ export default {
                     _that.success_message       = "Category Added Successfully";
 
                     _that.$emit('category-slide-close', _that.success_message);
-                    document.body.classList.remove('open-side-slider');
+                    // document.body.classList.remove('open-side-slider');
                 }
                 else if(response.data.status_code === 400)
                 {

@@ -1,92 +1,80 @@
 <template>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+        <div class="right-sidebar-content-area px-2">
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Customer Edit</h2>
 
-    <div v-cloak class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
-
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
-
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Customer Edit</h2>
-
-                    <div class="row" v-if="userData">
-                        <div class="col-md-12">
-                            <div v-if="success_message" class="alert alert-success" role="alert">
-                                {{ success_message }}
-                            </div>
+                <div class="row" v-if="userData">
+                    <div class="col-md-12">
+                        <div v-if="success_message" class="alert alert-success" role="alert">
+                            {{ success_message }}
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">First Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.first_name" id="firstName" @keyup="checkAndChangeValidation(userData.first_name, '#firstName', '#firstNameError', '*first name')" placeholder="Enter first name here!!" required>
-                                <span id="firstNameError" class="text-danger small"> </span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="userData.first_name" id="firstName" @keyup="checkAndChangeValidation(userData.first_name, '#firstName', '#firstNameError', '*first name')" placeholder="Enter first name here!!" required>
+                            <span id="firstNameError" class="text-danger small"> </span>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="lastName">Last Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.last_name" id="lastName" @keyup="checkAndChangeValidation(userData.last_name, '#lastName', '#lastNameError', '*last name')" placeholder="Enter last name here!!" required>
-                                <span id="lastNameError" class="text-danger small"> </span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="userData.last_name" id="lastName" @keyup="checkAndChangeValidation(userData.last_name, '#lastName', '#lastNameError', '*last name')" placeholder="Enter last name here!!" required>
+                            <span id="lastNameError" class="text-danger small"> </span>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="userName">Username <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="userData.username" id="userName" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" placeholder="Enter username here!!" required>
-                                <span id="userNameError" class="text-danger small"> </span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="userName">Username <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="userData.username" id="userName" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" placeholder="Enter username here!!" required>
+                            <span id="userNameError" class="text-danger small"> </span>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="email">Email <span class="required">*</span></label>
-                                <input class="form-control" type="email" v-model="userData.email" id="email" @keyup="checkAndValidateEmail()" placeholder="Enter last name here!!" required>
-                                <span id="emailError" class="text-danger small"> </span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input class="form-control" type="email" v-model="userData.email" id="email" @keyup="checkAndValidateEmail()" placeholder="Enter last name here!!" required>
+                            <span id="emailError" class="text-danger small"> </span>
                         </div>
+                    </div>
 
 
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="roles">Roles <span class="required">*</span></label>
-                                <select class="form-control" v-model="roles" id="roles">
-                                    <option value="" disabled>Select A Role</option>
-                                    <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
-                                </select>
-                                <span id="rolesError" class="text-danger small"> </span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="roles">Roles <span class="required">*</span></label>
+                            <select class="form-control" v-model="roles" id="roles">
+                                <option value="" disabled>Select A Role</option>
+                                <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
+                            </select>
+                            <span id="rolesError" class="text-danger small"> </span>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="roles">Status<span class="required">*</span></label>
-                                <select class="form-control" v-model="userData.status">
-                                    <option value="0">Inactive</option>
-                                    <option value="1">Active</option>
-                                </select>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="roles">Status<span class="required">*</span></label>
+                            <select class="form-control" v-model="userData.status">
+                                <option value="0">Inactive</option>
+                                <option value="1">Active</option>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="col-md-8">
-                            <div class="form-group text-left">
-                                <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
-                            </div>
+                    <div class="col-md-8">
+                        <div class="form-group text-left">
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -102,27 +90,27 @@ export default {
 
     data() {
         return {
-            isMounted : false,
-            isEdit : false,
-            success_message : '',
-            error_messages   : [],
-            token           : '',
-            selectedId:'',
-            userData:'',
-            roles:'',
-            userRoles:'',
-            filter : {
-                isAdmin : 1
-            },
-            validation_error :{
+            isMounted           : false,
+            success_message     : '',
+            error_messages      : [],
+            token               : '',
+            selectedId          : '',
+            userData            : '',
+            roles               :'',
+            userRoles           :'',
 
-                isFirstNameStatus : true,
-                isLastNameStatus  : true,
-                isUserNameStatus  : true,
-                isEmailStatus     : true,
-                isRoleStatus      : true,
-                isPasswordStatus  : true,
-                isConfirmationStatus : true,
+            filter      : {
+                isAdmin         : 1
+            },
+
+            validation_error :      {
+                isFirstNameStatus           : true,
+                isLastNameStatus            : true,
+                isUserNameStatus            : true,
+                isEmailStatus               : true,
+                isRoleStatus                : true,
+                isPasswordStatus            : true,
+                isConfirmationStatus        : true,
             } ,
         }
     },
@@ -137,7 +125,6 @@ export default {
                 });
                 $('#firstNameError').html("*first name field is required");
             }
-
             if (!this.userData.last_name){
 
                 $('#lastName').css({
@@ -145,8 +132,6 @@ export default {
                 });
                 $('#lastNameError').html("*last name field is required");
             }
-
-
             if (!this.userData.username){
 
                 $('#userName').css({
@@ -154,7 +139,6 @@ export default {
                 });
                 $('#userNameError').html("*user name field is required");
             }
-
             if (!this.userData.email){
 
                 $('#email').css({
@@ -162,7 +146,6 @@ export default {
                 });
                 $('#emailError').html("*email field is required");
             }
-
             if (!this.userData.password){
 
                 $('#password').css({
@@ -170,7 +153,6 @@ export default {
                 });
                 $('#passwordError').html("*password field is required");
             }
-
             if (!this.userData.confirm_password){
 
                 $('#confirmPassword').css({
@@ -180,7 +162,6 @@ export default {
 
                 $('#confirmPasswordError').html("*confirm password field is required");
             }
-
             if (!this.userData.roles){
 
                 $('#roles').css({
@@ -196,9 +177,7 @@ export default {
                 console.log(this.validation_error)
                 this.userUpdate();
             }
-
         },
-
         //check validation on key up
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
         {
@@ -273,10 +252,10 @@ export default {
                 $('#emailError').html("*email field is required");
                 this.validation_error.isEmailStatus = false;
             }
-
         },
 
-        validEmail (email) {
+        validEmail (email)
+        {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
@@ -322,8 +301,8 @@ export default {
         },
         //user data upload to server after validation
         userUpdate() {
-            let _that = this;
-            let userID = _that.selectedId;
+            let _that       = this;
+            let userID      = _that.selectedId;
             axios.put('admin/users/update',
                 {
                     id                      : userID,
@@ -341,14 +320,15 @@ export default {
                 }).then(function (response) {
                 if (response.data.status_code == 200)
                 {
-                    _that.error_messages        = '';
-                    _that.success_message       = " Updated Successfully";
-                    _that.$emit('customer-edit-data', _that.userData);
-                    document.body.classList.remove('open-side-slider');
+                    _that.userData                  = '';
+                    _that.error_message             = '';
+                    _that.success_message           = "Customer Updated Successfully";
+
+                    _that.$emit('user-slide-close', _that.success_message);
                 }
                 else
                 {
-                    _that.success_message       = "";
+                    _that.success_message           = "";
                     _that.showServerError(response.data.errors);
                 }
 
@@ -360,8 +340,8 @@ export default {
         //find user data
         getuserData()
         {
-            let _that = this;
-            let userID = this.selectedId;
+            let _that       = this;
+            let userID      = this.selectedId;
             axios.get("admin/users/"+userID,
                 {
                     headers: {
@@ -379,10 +359,9 @@ export default {
                     }
                 })
         },
-
         getUserRoles()
         {
-            let _that =this;
+            let _that   = this;
             axios.get('admin/roles',
                 {
                     headers: {
@@ -404,17 +383,10 @@ export default {
                     }
                 })
         },
-        //clear all data
-        clearAllChecker()
-        {
-            this.isEdit = false;
-            this.$emit('customer-edit-data', this.isEdit);
-        },
     },
     created()
     {
         this.selectedId = this.customerId;
-        this.isEdit = this.isEditCheck;
         this.getuserData(this.selectedId);
         this.getUserRoles();
     }
