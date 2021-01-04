@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" placeholder="Enter Category Name" required>
+                            <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" @keyup="checkAndChangeValidation()" placeholder="Enter Category Name" required>
                             <span id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
                             </span>
@@ -26,9 +26,7 @@
                             </select>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="form-group text-right">
                     <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
                 </div>
@@ -60,6 +58,20 @@ export default {
         }
     },
     methods: {
+        //keyup validation
+        checkAndChangeValidation()
+        {
+            let _that = this;
+            if (!_that.categoryData.name){
+                _that.error_messages[0]     = "*The category name is required";
+            }
+            else if (_that.categoryData.name && (_that.categoryData.name).length >2 && (_that.categoryData.name).length <100){
+                _that.error_messages[0]     = "";
+            }
+            else{
+                _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
+            }
+        },
         //server validation
         showServerError(errors)
         {

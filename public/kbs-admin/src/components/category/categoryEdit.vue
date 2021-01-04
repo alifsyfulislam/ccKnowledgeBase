@@ -10,7 +10,7 @@
 
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="category_name" id="categoryName" required>
+                            <input class="form-control" type="text" v-model="category_name" id="categoryName" @keyup="checkAndChangeValidation()" required>
                             <span  id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
                             </span>
@@ -51,7 +51,20 @@ export default {
     },
 
     methods: {
-
+        //keyup validation
+        checkAndChangeValidation()
+        {
+            let _that = this;
+            if (!_that.category_name){
+                _that.error_messages[0]     = "*The category name is required";
+            }
+            else if (_that.category_name && (_that.category_name).length >2 && (_that.category_name).length <100){
+                _that.error_messages[0]     = "";
+            }
+            else{
+                _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
+            }
+        },
         showServerError(errors)
         {
             $('#categoryNameError').html("");
@@ -100,7 +113,9 @@ export default {
                     _that.error_messages            = '';
                     _that.success_message           = "Category Updated Successfully";
                     _that.$emit('category-slide-close',_that.success_message);
-                } else if(response.data.status_code === 400){
+                }
+                else if(response.data.status_code === 400)
+                {
                     _that.success_message           = "";
                     _that.error_message             = "";
                     _that.showServerError(response.data.errors);
