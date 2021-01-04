@@ -55,7 +55,6 @@
 
                     <!-- list top area end -->
 
-
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
                         <Loading v-if="isLoading===true"></Loading>
@@ -87,7 +86,7 @@
 
                                     <td class="text-center" style="min-width: 120px">
 
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
 
 
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDelete=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
@@ -98,7 +97,7 @@
                             </table>
                         </div>
                         <!-- Table Data End -->
-                        <!--                        pagination-->
+                        <!-- pagination-->
                         <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination mb-0">
@@ -370,7 +369,7 @@ export default {
                     document.body.classList.remove('open-side-slider');
                     _that.success_message = "Successfully deleted the User";
                     _that.isLoading       = false;
-                   // _that.setTimeoutElements();
+                    // _that.setTimeoutElements();
 
                 }else{
 

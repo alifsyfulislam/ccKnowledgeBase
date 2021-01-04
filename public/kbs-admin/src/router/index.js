@@ -6,7 +6,6 @@ import dashboard from '../components/dashboard/dashboard.vue'
 import login from '../components/login.vue'
 
 import categoryList from '../components/category/categoryList.vue'
-import categoryListII from '../components/category/categoryListII.vue'
 
 import articleList from '../components/article/articleList.vue'
 
@@ -166,14 +165,6 @@ let router = createRouter({
             path: '/admin/category-list',
             name: 'categoryList',
             component: categoryList,
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: '/admin/category-list-2',
-            name: 'categoryListII',
-            component: categoryListII,
             meta: {
                 requiresAuth: true
             }
