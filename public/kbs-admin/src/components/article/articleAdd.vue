@@ -29,8 +29,8 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="articleID">Title <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="articleData.en_title" id="articleID" required>
+                                <label for="enTitle">Title <span class="required">*</span></label>
+                                <input class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
                                 <span id="enTitleError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -38,15 +38,15 @@
                         <div class="col-md-6" v-if="selected_language=='bangla'">
                             <div class="form-group">
                                 <label>Bangla Title </label>
-                                <input class="form-control" type="text" v-model="articleData.bn_title" >
+                                <input class="form-control" type="text" v-model="articleData.bn_title">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Category <span class="required">*</span></label>
+                                <label for="categoryID">Category <span class="required">*</span></label>
 
-                                <select class="form-control" v-model="selectedCategory">
+                                <select class="form-control" v-model="selectedCategory" id="categoryID" @change='checkAndValidateSelectType()'>
                                     <option value="" disabled>Select A Category</option>
                                     <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                                         {{a_category.name}}
@@ -104,9 +104,8 @@
 
                     </div>
 
-
                     <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="articleAdd()">Add</button>
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                     </div>
                 </div>
 
@@ -153,6 +152,12 @@ export default {
                 status   : 'draft',
             },
 
+
+            validation_error :{
+                isTitleStatus    : false,
+                isCategoryStatus : false,
+            } ,
+
             images: [],
             files: [],
             url : '',
@@ -163,12 +168,89 @@ export default {
     methods: {
 
         clearAllChecker(){
-
             this.isAdd = false;
             this.$emit('article-data', this.isAdd);
         },
 
+        checkAndValidateSelectType(){
+
+            if (!this.selectedCategory) {
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+                this.validation_error.isCategoryStatus = false;
+
+            } else{
+                $('#categoryID').css({
+                    'border-color': '#ced4da',
+                });
+                $('#categoryIDError').html("");
+                this.validation_error.isCategoryStatus = true;
+            }
+        },
+
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
+
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                    if (selected_name === "*title"){
+                        this.validation_error.isTitleStatus = false;
+                    }
+
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
+
+                    if (selected_name === "*title" ){
+                        this.validation_error.isTitleStatus = true;
+                    }
+                }
+
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+
+                if (selected_name === "title" ){
+                    this.validation_error.isTitleStatus = false;
+                }
+            }
+        },
+
+        validateAndSubmit(){
+
+            if (!this.articleData.en_title){
+                $('#enTitle').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#enTitleError').html("title field is required");
+            }
+
+            if (!this.selectedCategory){
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+            }
+
+            if (this.validation_error.isTitleStatus    === true &&
+                this.validation_error.isCategoryStatus === true ){
+                //console.log(this.validation_error)
+                this.articleAdd();
+            }
+        },
+
         showServerError(errors){
+
             $('#enTitleError').html("");
             $('#categoryIDError').html("");
 
@@ -219,7 +301,7 @@ export default {
                     }
                 }).then(function (response) {
 
-                if (response.data.status_code == 201) {
+                if (response.data.status_code === 201) {
                     _that.articleData      = '';
                     _that.selectedCategory = '';
                     _that.error_message    = '';

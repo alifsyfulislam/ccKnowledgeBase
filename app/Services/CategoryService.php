@@ -125,11 +125,7 @@ class CategoryService
     {
 
         $validator = Validator::make($request->all(),[
-
             'name' => 'required|min:3|max:100|unique:categories,name,$request->id,id',
-//            email'      => "required|unique:users,email,$request->id,id",
-           // 'parent_id' => 'required',
-
         ]);
 
         if($validator->fails()) {

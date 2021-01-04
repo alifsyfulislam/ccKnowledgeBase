@@ -152,8 +152,8 @@ export default {
         }
     },
     methods: {
-        checkAndValidateRoles()
-        {
+
+        checkAndValidateRoles(){
             if (!this.userData.roles) {
                 $('#roles').css({
                     'border-color': '#FF7B88',
@@ -170,8 +170,7 @@ export default {
             }
         },
 
-        checkAndValidatePassword()
-        {
+        checkAndValidatePassword(){
             if ((this.userData.password).length >0) {
                 if (!this.validPassword(this.userData.password)) {
                     $('#password').css({
@@ -207,8 +206,7 @@ export default {
 
         },
 
-        checkAndValidateEmail()
-        {
+        checkAndValidateEmail(){
             if ((this.userData.email).length >0) {
                 if (!this.validEmail(this.userData.email)) {
                     $('#email').css({
@@ -282,11 +280,12 @@ export default {
                 }
             }
         },
-        clearAllChecker()
-        {
+
+        clearAllChecker() {
             this.isAdd = false;
             this.$emit('customer-data', this.isAdd);
         },
+
         checkPasswordMatch()
         {
             let _that = this;
@@ -367,6 +366,7 @@ export default {
                 $('#confirmPassword').css({
                     'border-color': '#FF7B88',
                 });
+
                 $('#confirmPasswordError').css({'color': '#FF7B88'});
                 $('#confirmPasswordError').html("*confirm password field is required");
             }
@@ -384,7 +384,7 @@ export default {
                 this.validation_error.isRoleStatus === true &&
                 this.validation_error.isPasswordStatus === true &&
                 this.validation_error.isConfirmationStatus === true){
-                console.log(this.validation_error)
+
                 this.userAdd();
             }
         },
