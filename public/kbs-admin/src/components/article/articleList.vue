@@ -66,7 +66,10 @@
                                 <tr v-for="an_article in articleList" :key="an_article.id">
 
                                     <td class="text-center">{{ an_article.id }}</td>
-                                    <td class="text-center">{{ an_article.en_title  }}</td>
+                                    <td class="text-center">
+                                        <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
+                                        <span v-else> {{ (an_article.en_title).substring(0,30)+"....." }}</span>
+                                    </td>
                                     <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                                     <td class="text-center">{{ an_article.status  }}</td>
