@@ -37,7 +37,11 @@ class RoleService
      */
     public function getAll()
     {
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'role_list'=>$this->roleRepository->all()]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'role_list'   => $this->roleRepository->all()
+        ]);
     }
 
 
@@ -51,14 +55,14 @@ class RoleService
         if($this->roleRepository->get($id))
             return response()->json([
                 'status_code' => 200,
-                'messages'=>config('status.status_code.200'),
-                'role_info'=>$this->roleRepository->get($id)
+                'messages'    => config('status.status_code.200'),
+                'role_info'   => $this->roleRepository->get($id)
             ]);
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'role_info'=>"Data not found"
+            'messages'    => config('status.status_code.200'),
+            'role_info'   => "Data not found"
         ]);
 
     }
@@ -80,7 +84,11 @@ class RoleService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
 
         }
 
@@ -97,7 +105,11 @@ class RoleService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -123,7 +135,11 @@ class RoleService
 
         if($validator->fails()) {
 
-            return response()->json(['status_code' => '400', 'messages'=>config('status.status_code.400'), 'error' =>  $validator->errors()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
 
         }
 
@@ -133,6 +149,7 @@ class RoleService
 
             $this->roleRepository->update(['name' => $request->input('name'), 'slug' => Helper::slugify($request->input('name'))], $request->id);
             $role = $this->roleRepository->get($request->id);
+
             DB::table('roles_permissions')->where('role_id', $request->id)->delete();
             $role->permissions()->attach($request->input('permission'));
 
@@ -141,7 +158,11 @@ class RoleService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -169,7 +190,11 @@ class RoleService
 
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -187,8 +212,8 @@ class RoleService
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'role_list' => $this->roleRepository->getWithPagination($request)
+            'messages'    => config('status.status_code.200'),
+            'role_list'   => $this->roleRepository->getWithPagination($request)
         ]);
 
     }

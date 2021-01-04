@@ -27,6 +27,7 @@
                             <div class="form-group">
                                 <label for="name">Role Name <span class="required">*</span></label>
                                 <input class="form-control" type="text" v-model="roles" id="name" placeholder="Enter Role Name" required>
+                                <span id="nameError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -58,6 +59,7 @@
    /* import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";*/
     import axios from "axios";
+   import $ from "jquery";
 
     export default {
         name: "rolesAdd.vue",
@@ -88,6 +90,7 @@
         },
 
         methods: {
+
             clearAllChecker() {
 
                 this.isAdd = false;
@@ -95,17 +98,24 @@
 
             },
 
-           /* setLoading(isLoading) {
-                if (isLoading) {
-                  this.refCount++;
-                  this.isLoading = true;
-                } else if (this.refCount > 0) {
-                  this.refCount--;
-                  this.isLoading = (this.refCount > 0);
-                }
-            },*/
+            showServerError(errors){
+
+                $('#nameError').html("");
+
+                $('#name').css({'border-color': '#ced4da'});
+
+                errors.forEach(val=>{
+                    console.log(val);
+                    if (val.includes("name")===true){
+                        $('#nameError').html(val)
+                        $('#name').css({'border-color': '#FF7B88'});
+                    }
+
+                })
+            },
 
             addRole(){
+
                 let _that = this;
 
                 axios.post('admin/roles',
@@ -120,13 +130,20 @@
                     }).then(function (response) {
                     console.log(response.data);
                     if (response.data.status_code === 200) {
+
                         _that.success_message = "Add a role with permission!";
                         _that.isAdd = false;
                         _that.$emit('role-data', "Add a role with permission!");
                         document.body.classList.remove('open-side-slider')
-                    } else {
-                        _that.success_message = "";
-                        _that.error_message = response.data.error;
+
+                    }else if(response.data.status_code === 400){
+                        _that.success_message       = "";
+                        _that.error_message         = "";
+                        _that.showServerError(response.data.errors);
+
+                    }else{
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.message;
                     }
 
                 }).catch(function (error) {
