@@ -141,14 +141,14 @@
                     <div class="right-sidebar-content-area px-2">
 
                         <div class="form-wrapper">
-                            <h2 class="section-title text-uppercase mb-20">Customer Delete</h2>
+                            <h2 class="section-title text-uppercase mb-20">User Delete</h2>
 
                             <div class="row mt-50 mt-md-80">
                                 <div class="col-md-12">
                                     <figure class="mx-auto text-center">
                                         <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                     </figure>
-                                    <p class="text-center"> Confirmation for Deleting Customer</p>
+                                    <p class="text-center"> Confirmation for Deleting User</p>
 
                                     <div class="form-group d-flex justify-content-center align-items-center">
                                         <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCustomer()"><i class="fas fa-trash"></i> Confirm</button>
@@ -166,7 +166,7 @@
                     <div class="right-sidebar-content-area px-2">
 
                         <div class="form-wrapper" >
-                            <h2 class="section-title text-uppercase mb-20">Search</h2>
+                            <h2 class="section-title text-uppercase mb-20">Search from User</h2>
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -288,6 +288,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
 
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
@@ -298,6 +299,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
         },
 
         getAddDataFromChild (status)
