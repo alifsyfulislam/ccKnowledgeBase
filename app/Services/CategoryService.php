@@ -76,15 +76,15 @@ class CategoryService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|min:3|max:100',
+            'name' => 'required|min:3|max:100|unique:categories,name,$request->id,id',
 
         ]);
 
         if($validator->fails()) {
             return response()->json([
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
             ]);
 
         }
@@ -105,8 +105,8 @@ class CategoryService
 
             return response()->json([
                 'status_code' => 424,
-                'messages'=>config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
             ]);
         }
 
@@ -126,7 +126,8 @@ class CategoryService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|min:3|max:100',
+            'name' => 'required|min:3|max:100|unique:categories,name,$request->id,id',
+//            email'      => "required|unique:users,email,$request->id,id",
            // 'parent_id' => 'required',
 
         ]);
@@ -134,9 +135,9 @@ class CategoryService
         if($validator->fails()) {
 
             return response()->json([
-                'status_code' => '400',
-                'messages'=>config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
             ]);
 
         }
@@ -160,7 +161,11 @@ class CategoryService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();

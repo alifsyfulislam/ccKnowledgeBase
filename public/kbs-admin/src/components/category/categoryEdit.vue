@@ -11,9 +11,9 @@
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
                             <input class="form-control" type="text" v-model="category_name" id="categoryName" required>
-                            <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
+                            <span  id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
-                            </small>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -51,6 +51,7 @@ export default {
     },
 
     methods: {
+
         showServerError(errors)
         {
             $('#categoryNameError').html("");
@@ -92,16 +93,14 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                if (response.data.status_code == 200)
-                {
+
+                if (response.data.status_code === 200){
                     _that.category_name             = '',
                     _that.category_parent_id        = '',
                     _that.error_messages            = '';
                     _that.success_message           = "Category Updated Successfully";
                     _that.$emit('category-slide-close',_that.success_message);
-                }
-                else if(response.data.status_code === 400)
-                {
+                } else if(response.data.status_code === 400){
                     _that.success_message           = "";
                     _that.error_message             = "";
                     _that.showServerError(response.data.errors);

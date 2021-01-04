@@ -9,9 +9,9 @@
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
                             <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" placeholder="Enter Category Name" required>
-                            <small v-if="error_messages.length>0" id="categoryNameError" class="small text-danger category_name" role="alert">
+                            <span id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
-                            </small>
+                            </span>
                         </div>
                     </div>
 
