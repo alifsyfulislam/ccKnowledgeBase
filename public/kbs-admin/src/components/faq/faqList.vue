@@ -54,6 +54,7 @@
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">Title</th>
                                     <th class="text-center">User</th>
                                     <th class="text-center">Category</th>
@@ -67,6 +68,7 @@
 
                                 <tr v-for="an_faq in faqList" :key="an_faq">
 
+                                    <td class="text-center">{{ an_faq.id  }}</td>
                                     <td>{{ an_faq.en_title  }}</td>
                                     <td class="text-center">{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_faq.category ? an_faq.category.name : ''  }}</td>
