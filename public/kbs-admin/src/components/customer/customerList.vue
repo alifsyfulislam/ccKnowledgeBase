@@ -317,11 +317,11 @@ export default {
 
         clearFilter()
         {
-            this.filter.username = "";
-            this.filter.email   = "";
-            this.filter.role = "";
-            this.success_message = "";
-            this.error_message   = "";
+            this.filter.username    = "";
+            this.filter.email       = "";
+            this.filter.role        = "";
+            this.success_message    = "";
+            this.error_message      = "";
             this.getUsersList();
         },
 

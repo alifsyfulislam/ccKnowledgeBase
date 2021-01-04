@@ -101,12 +101,12 @@ export default {
             userRoles               : '',
 
             userData         : {
-                username            : 'robi151',
-                first_name          : 'Mazma',
-                last_name           : 'Zombi',
-                email               : 'zombi@gen.us',
-                password            : 'Mirpur2021#',
-                confirm_password    : 'Mirpur2021#',
+                username            : '',
+                first_name          : '',
+                last_name           : '',
+                email               : '',
+                password            : '',
+                confirm_password    : '',
                 roles               : '',
                 status              : 1,
             },
@@ -148,7 +148,6 @@ export default {
                     $('#password').css({
                         'border-color': '#FF7B88',
                     });
-
                     $('#passwordError').html("*password should contain at least a Uppercase, lowecase, numeric and special character");
                     this.validation_error.isPasswordStatus = false;
 
@@ -156,7 +155,6 @@ export default {
                     $('#password').css({
                         'border-color': '#FF7B88',
                     });
-
                     $('#passwordError').html("*password must be 8 characters or longer");
                     this.validation_error.isPasswordStatus = false;
                 }
