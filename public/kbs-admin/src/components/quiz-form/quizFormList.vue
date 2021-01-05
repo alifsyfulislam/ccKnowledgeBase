@@ -106,7 +106,7 @@
 <!--                add-->
                 <QuizFromAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @quiz-form-slide-close="getAddDataFromChild"></QuizFromAdd>
 <!--                edit-->
-                <QuizFromEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizFormId="quiz_form_id" @quiz-form-edit-data="getQuizFormDataFromEdit"></QuizFromEdit>
+                <QuizFromEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizFormId="quiz_form_id" @quiz-form-slide-close="getAddFieldDataFromChild"></QuizFromEdit>
 <!--                delete-->
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                     <div class="right-sidebar-content-area px-2">
@@ -127,9 +127,10 @@
                         </div>
                     </div>
                 </div>
+<!--                from field add here-->
+                <QuizFromFieldAdd v-if="isAddFieldCheck" :isAddFieldCheck= "isAddFieldCheck" :quizFormId="quiz_form_id" @quiz-form-field-slide-close="getQuizFormFieldDataFromAdd"></QuizFromFieldAdd>
             </div>
             <!-- Content Area End -->
-            <QuizFromFieldAdd v-if="isAddFieldCheck" :isAddFieldCheck= "isAddFieldCheck" :quizFormId="quiz_form_id" @quiz-form-field-data="getQuizFormFieldDataFromAdd"></QuizFromFieldAdd>
         </div>
     </div>
 </template>
@@ -159,25 +160,25 @@ export default {
 
     data() {
         return {
-            isLoading       : false,
-            isAddFieldCheck : false,
+            isLoading           : false,
+            isAddFieldCheck     : false,
 
-            isAddCheck      : false,
-            isEditCheck     : false,
-            isDeleteCheck        : false,
+            isAddCheck          : false,
+            isEditCheck         : false,
+            isDeleteCheck       : false,
 
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            allQuizField    : '',
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            allQuizField        : '',
 
-            allQuizFieldFrom : '',
+            allQuizFieldFrom    : '',
 
             filter : {
-                isAdmin     : 1,
-                username    : '',
-                email       : '',
-                role        : ''
+                isAdmin         : 1,
+                username        : '',
+                email           : '',
+                role            : ''
             },
             pagination:{
                 from: '',
@@ -212,39 +213,41 @@ export default {
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
-
-
-        getAddDataFromChild (status) {
+        getAddDataFromChild (status)
+        {
             this.getQuizFormList();
             this.success_message = status;
             this.removingRightSideWrapper();
             this.setTimeoutElements();
         },
 
+        getAddFieldDataFromChild (status)
+        {
+            this.getQuizFormList();
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
 
-        getQuizFormFieldDataFromAdd (newData) {
-
-            console.log(newData);
-            this.isAddFieldCheck = false;
-            if(newData === true){
+        getQuizFormFieldDataFromAdd (status)
+        {
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+            if(status){
                 this.$router.push('/admin/quiz-form-field-list');
             }
         },
 
-        getQuizFormDataFromEdit (newEditData) {
-            console.log(newEditData)
-            this.isEditCheck = false;
-            this.getQuizFormList();
-        },
+        getQuizFormList(pageUrl)
+        {
 
-        getQuizFormList(pageUrl) {
-
-            let _that   = this;
-            pageUrl     = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
+            let _that       = this;
+            pageUrl         = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
             axios.get(pageUrl,
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
                 })
                 .then(function (response) {
@@ -295,7 +298,8 @@ export default {
 
         },
 
-        setTimeoutElements() {
+        setTimeoutElements()
+        {
             //setTimeout(() => this.isLoading = false, 1e3);
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);

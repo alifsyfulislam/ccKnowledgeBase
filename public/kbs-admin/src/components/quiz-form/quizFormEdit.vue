@@ -80,16 +80,12 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-
                     if (response.data.status_code === 200){
-
-                        _that.error_message    = '';
-                        _that.success_message  = " Updated Successfully";
-                        _that.$emit('quiz-form-edit-data', _that.quizFormDetails);
-                        document.body.classList.remove('open-side-slider');
-
+                        _that.quizFormDetails   = '';
+                        _that.error_message     = '';
+                        _that.success_message   = "Quiz form updated successfully!";
+                        _that.$emit('quiz-form-slide-close', _that.success_message);
                     }else if(response.data.status_code === 400){
-
                         _that.success_message = "";
                         _that.error_message   = "";
                         _that.showServerError(response.data.errors);
