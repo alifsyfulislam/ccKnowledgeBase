@@ -105,7 +105,7 @@
 
 
                             <select id="quizFormFieldRequired" class="form-control" v-model="quizFormFieldData.quizfieldRequired">
-                                <option disabled>--Select Status--</option>
+                                <option value="" disabled>--Select Status--</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>

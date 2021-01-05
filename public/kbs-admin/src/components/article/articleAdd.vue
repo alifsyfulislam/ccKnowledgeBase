@@ -142,6 +142,7 @@ export default {
         }
     },
     methods: {
+
         checkAndValidateSelectType()
         {
             if (!this.selectedCategory) {
@@ -195,8 +196,7 @@ export default {
             }
         },
 
-        validateAndSubmit()
-        {
+        validateAndSubmit(){
             if (!this.articleData.en_title){
                 $('#enTitle').css({
                     'border-color': '#FF7B88',

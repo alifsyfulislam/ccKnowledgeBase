@@ -122,9 +122,89 @@ export default {
                 bn_body         : '',
                 status          : 'draft',
             },
+
+            validation_error : {
+                isTitleStatus       : false,
+                isCategoryStatus    : false,
+            },
         }
     },
     methods: {
+
+        checkAndValidateSelectType()
+        {
+            if (!this.selectedCategory) {
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+                this.validation_error.isCategoryStatus = false;
+
+            } else{
+                $('#categoryID').css({
+                    'border-color': '#ced4da',
+                });
+                $('#categoryIDError').html("");
+                this.validation_error.isCategoryStatus = true;
+            }
+        },
+
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
+
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+                    if (selected_name === "*title"){
+                        this.validation_error.isTitleStatus = false;
+                    }
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
+
+                    if (selected_name === "*title" ){
+                        this.validation_error.isTitleStatus = true;
+                    }
+                }
+
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+
+                if (selected_name === "title" ){
+                    this.validation_error.isTitleStatus = false;
+                }
+            }
+        },
+
+        validateAndSubmit(){
+            if (!this.articleData.en_title){
+                $('#enTitle').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#enTitleError').html("title field is required");
+            }
+
+            if (!this.selectedCategory){
+                $('#categoryID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#categoryIDError').html("category field is required");
+            }
+
+            if (this.validation_error.isTitleStatus    === true &&
+                this.validation_error.isCategoryStatus === true ){
+                this.faqAdd();
+            }
+        },
+
         showServerError(errors)
         {
             $('#enTitleError').html("");
