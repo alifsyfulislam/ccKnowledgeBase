@@ -1,60 +1,52 @@
 <template>
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isEditCheck">
+        <div class="right-sidebar-content-area px-2">
 
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Role Update</h2>
 
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Role Update</h2>
-
-                    <div v-if="success_message" class="alert alert-success" role="alert">
-                        {{ success_message }}
-                    </div>
-                    <div v-if="error_message" class="alert alert-danger" role="alert">
-                        {{ error_message }}
-                    </div>
-
-
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="role_name">Role Name <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="storeName" id="role_name" placeholder="Enter Role Name" @keyup="checkAndChangeValidation(storeName, '#role_name', '#roleNameError', '*role name')" required>
-                                <span id="roleNameError" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label> Edit Permissions</label>
-                                <ul class="list-unstyled permission-list m-0 p-0">
-                                    <li  class="text-left pb-2" v-for="permission in allPermissions" :key="permission">
-                                        <div v-if="allSelectedPermissionIds.includes(permission.id)" class="d-flex align-items-center">
-                                            <input  checked type="checkbox" :value="permission.id"  v-model="selectedCheckboxes" @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
-                                        </div>
-                                        <div v-else class="d-flex align-items-center">
-                                            <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id"  @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
-                                        </div>
-                                    </li>
-                                </ul>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
-                    </div>
+                <div v-if="success_message" class="alert alert-success" role="alert">
+                    {{ success_message }}
+                </div>
+                <div v-if="error_message" class="alert alert-danger" role="alert">
+                    {{ error_message }}
                 </div>
 
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="role_name">Role Name <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="storeName" id="role_name" placeholder="Enter Role Name" @keyup="checkAndChangeValidation(storeName, '#role_name', '#roleNameError', '*role name')" required>
+                            <span id="roleNameError" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Edit Permissions</label>
+                            <ul class="list-unstyled permission-list m-0 p-0">
+                                <li  class="text-left pb-2" v-for="permission in allPermissions" :key="permission">
+                                    <div v-if="allSelectedPermissionIds.includes(permission.id)" class="d-flex align-items-center">
+                                        <input  checked type="checkbox" :value="permission.id"  v-model="selectedCheckboxes" @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
+                                    </div>
+                                    <div v-else class="d-flex align-items-center">
+                                        <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id"  @change="showSelectedItem()"> <label class="mb-0 ml-2"> {{ permission.name }} </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group text-right">
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
+                </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -69,8 +61,6 @@ export default {
 
     data() {
         return {
-            isEdit : false,
-
             success_message : '',
             error_message   : '',
             token           : '',
@@ -96,18 +86,13 @@ export default {
     },
 
     methods: {
-
-        clearAllChecker() {
-            this.isEdit = false;
-            this.$emit('role-edit-data', this.isEdit);
-        },
-
-        showSelectedItem() {
+        showSelectedItem()
+        {
             console.log(this.selectedCheckboxes);
         },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
-
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
             if (selected_data.length >0) {
                 if (selected_data.length <3){
                     $(selected_id).css({
@@ -141,8 +126,8 @@ export default {
                 }
             }
         },
-
-        validateAndSubmit(){
+        validateAndSubmit()
+        {
 
             if (!this.storeName){
                 $('#role_name').css({
@@ -156,9 +141,8 @@ export default {
                 this.updateRole();
             }
         },
-
-        showServerError(errors){
-
+        showServerError(errors)
+        {
             $('#nameError').html("");
 
             $('#name').css({'border-color': '#ced4da'});
@@ -173,15 +157,16 @@ export default {
             })
         },
 
-        updateRole() {
-            let _that = this;
-            let rolesID = this.role_id;
+        updateRole()
+        {
+            let _that       = this;
+            let rolesID     = this.role_id;
 
             axios.put('admin/roles/update',
                 {
-                    id        : rolesID,
-                    name      : this.storeName,
-                    permission: this.selectedCheckboxes
+                    id          : rolesID,
+                    name        : this.storeName,
+                    permission  : this.selectedCheckboxes
                 },
                 {
                     headers: {
@@ -190,10 +175,12 @@ export default {
                 }).then(function (response) {
                 if (response.data.status_code == 200)
                 {
-                    _that.error_message    = '';
-                    _that.success_message  = "Role Updated Successfully";
-                    _that.$emit('role-edit-data', "Role Updated Successfully");
-                    document.body.classList.remove('open-side-slider')
+                    _that.storeName                     = '';
+                    _that.selectedCheckboxes            = [];
+                    _that.error_message                 = '';
+                    _that.success_message               = "Role updated successfully with permission!";
+
+                    _that.$emit('role-slide-close', _that.success_message);
                 }
                 else
                 {
@@ -207,46 +194,41 @@ export default {
 
         },
 
-        geRolesDetails() {
-            let _that = this;
-            let rolesID = this.role_id;
-
+        geRolesDetails()
+        {
+            let _that       = this;
+            let rolesID     = this.role_id;
             axios.get("admin/roles/"+rolesID,
                 {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 })
                 .then(function (response) {
                     if (response.data.status_code === 200) {
-                        _that.rolesDetails = response.data.role_info;
-                        _that.roles = _that.rolesDetails.id;
-                        _that.storeName = _that.rolesDetails.name;
-                        _that.allAccess = _that.rolesDetails.permissions;
-
-
+                        _that.rolesDetails          = response.data.role_info;
+                        _that.roles                 = _that.rolesDetails.id;
+                        _that.storeName             = _that.rolesDetails.name;
+                        _that.allAccess             = _that.rolesDetails.permissions;
                         _that.allAccess.forEach( anAccessId =>
                         {
                             _that.allSelectedPermissionIds.push(anAccessId.id)
                         });
-                        _that.selectedCheckboxes = _that.allSelectedPermissionIds;
-
-                        console.log(response.data.role_info);
-                        console.log(_that.allSelectedPermissionIds);
-
+                        _that.selectedCheckboxes    = _that.allSelectedPermissionIds;
                     } else {
-                        _that.success_message = "";
-                        _that.error_message = response.data.error;
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
                     }
                 })
         },
 
-        getAllPermission() {
-            let _that = this;
+        getAllPermission()
+        {
+            let _that   = this;
             axios.get('admin/permissions',
                 {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
                     },
 
                 })
@@ -254,7 +236,7 @@ export default {
                     if (response.data.status_code === 200) {
                         //_that.allPermissions = response.data.permission_list;
 
-                        _that.allPermissions = response.data.permission_list;
+                        _that.allPermissions    = response.data.permission_list;
                         /*console.log("before splice");
                         console.log( _that.allPermissions);
 
@@ -280,12 +262,13 @@ export default {
                 })
         },
 
-        getRolesList(){
-            let _that =this;
+        getRolesList()
+        {
+            let _that       = this;
             axios.get('admin/roles',
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     },
 
                 })
@@ -294,21 +277,18 @@ export default {
                         //_that.allRoles = response.data.role_list;
                     }
                     else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message   = "";
+                        _that.error_message     = response.data.error;
                     }
                 })
         }
     },
-
     created() {
         this.category_id = this.categoryId;
         this.role_id = this.roleId;
-        // this.isIndex = this.$route.params.id;
         this.getRolesList();
         this.geRolesDetails();
         this.getAllPermission();
-        this.isEdit  = this.isEditCheck;
     }
 }
 </script>

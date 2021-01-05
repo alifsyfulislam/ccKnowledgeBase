@@ -1,49 +1,28 @@
 <template>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isEditCheck">
+        <div class="right-sidebar-content-area px-2">
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Quiz Form Edit</h2>
 
-    <div v-cloak class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
-
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
-
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Quiz Form Edit</h2>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div v-if="success_message" class="alert alert-success" role="alert">
-                                {{ success_message }}
-                            </div>
-                            <div v-if="error_message" class="alert alert-danger" role="alert">
-                                {{ error_message }}
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="quizFormName">Quiz Form Name<span class="required">*</span></label>
+                            <input class="form-control" v-on:keyup.enter="quizFormUpdate()" type="text" v-model="quizFormDetails.name"  id="quizFormName" placeholder="Enter first name here!!" required>
+                            <span id="formNameError" class="text-danger small"></span>
                         </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="quizFormName">Quiz Form Name<span class="required">*</span></label>
-                                <input class="form-control" v-on:keyup.enter="quizFormUpdate()" type="text" v-model="quizFormDetails.name"  id="quizFormName" placeholder="Enter first name here!!" required>
-                                <span id="formNameError" class="text-danger small"></span>
-                            </div>
-                        </div>
+                    </div>
 
 
-                        <div class="col-md-8">
-                            <div class="form-group text-left">
-                                <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormUpdate()">Update</button>
-                            </div>
+                    <div class="col-md-8">
+                        <div class="form-group text-left">
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormUpdate()">Update</button>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -59,35 +38,31 @@
 
         data() {
             return {
-                isMounted : false,
-                isEdit : false,
-                success_message : '',
-                error_message   : '',
-                token           : '',
-                selectedId:'',
-                quizFormDetails:'',
-                roles:'',
-                userRoles:'',
-                filter : {
-                    isAdmin : 1
+                isMounted               : false,
+                success_message         : '',
+                error_message           : '',
+                token                   : '',
+                selectedId              : '',
+                quizFormDetails         : '',
+                roles                   : '',
+                userRoles               : '',
+
+                filter  : {
+                    isAdmin             : 1
                 }
             }
         },
 
         methods: {
-            showServerError(errors){
-
+            showServerError(errors)
+            {
                 $('#formNameError').html("");
-
                 $('#quizFormName').css({'border-color': '#ced4da'});
-
                 errors.forEach(val=>{
-
                     if (val.includes("name") === true){
                         $('#formNameError').html(val)
                         $('#quizFormName').css({'border-color': '#FF7B88'});
                     }
-
                 })
             },
 
@@ -105,16 +80,12 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-
                     if (response.data.status_code === 200){
-
-                        _that.error_message    = '';
-                        _that.success_message  = " Updated Successfully";
-                        _that.$emit('quiz-form-edit-data', _that.quizFormDetails);
-                        document.body.classList.remove('open-side-slider');
-
+                        _that.quizFormDetails   = '';
+                        _that.error_message     = '';
+                        _that.success_message   = "Quiz form updated successfully!";
+                        _that.$emit('quiz-form-slide-close', _that.success_message);
                     }else if(response.data.status_code === 400){
-
                         _that.success_message = "";
                         _that.error_message   = "";
                         _that.showServerError(response.data.errors);
@@ -149,17 +120,10 @@
                         }
                     })
             },
-
-            clearAllChecker()
-            {
-                this.isEdit = false;
-                this.$emit('quiz-form-edit-data', this.isEdit);
-            },
         },
-
-        created() {
+        created()
+        {
             this.selectedId = this.quizFormId;
-            this.isEdit = this.isEditCheck;
             this.getQuizFormDetails();
         }
     }

@@ -44,6 +44,7 @@
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">Role Type</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center" style="width: 120px">Action</th>
@@ -53,12 +54,13 @@
 
                                 <tr v-for="a_role in userRoles" :key="a_role">
 
+                                    <td class="text-center">{{ a_role.id }}</td>
                                     <td class="text-center">{{ a_role.name }}</td>
                                     <td class="text-center">{{ a_role.created_at }}</td>
 
                                     <td class="text-center">
                                         <button v-if="a_role.name!='Super Admin' " class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="role_id=a_role.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  v-if="a_role.name!='Super Admin' " class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="role_id=a_role.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  v-if="a_role.name!='Super Admin' " class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="role_id=a_role.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -111,22 +113,22 @@
             <span>{{ error_message }}</span>
         </div>
 
-        <RoelAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-data="getRoleDataFromAdd"></RoelAdd>
-
-        <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-edit-data="getRoleDataFromEdit"></RoleEdit>
-
-        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
-
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+<!--            addd-->
+            <RoelAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-slide-close="getAddDataFromChild"></RoelAdd>
+<!--            edit-->
+            <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-slide-close="getEditDataFromChild"></RoleEdit>
+<!--            delete-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                 <div class="right-sidebar-content-area px-2">
 
                     <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
+                        <h2 class="section-title text-uppercase mb-20">Delete Role</h2>
 
                         <div class="row mt-50 mt-md-80">
                             <div class="col-md-12">
@@ -159,6 +161,7 @@ import RoelAdd from "@/components/roles/roleAdd";
 import RoleEdit from "@/components/roles/roleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "rolesList",
@@ -171,19 +174,17 @@ export default {
     },
     data (){
         return {
-            isLoading       : false,
-            isEditCheck     : false,
-            isAddCheck      : false,
-            isDelete        : false,
-            isSearch        : false,
+            isLoading               : false,
+            isEditCheck             : false,
+            isAddCheck              : false,
+            isDeleteCheck           : false,
+            isSearchCheck           : false,
+            success_message         : '',
+            error_message           : '',
+            role_id                 : '',
+            userRoles               : '',
 
-            success_message : '',
-            error_message   : '',
-
-            role_id   : '',
-            userRoles : '',
-
-            pagination :{
+            pagination  : {
                 from           : '',
                 to             : '',
                 first_page_url : '',
@@ -198,52 +199,51 @@ export default {
         }
     },
     methods: {
-
-        removingRightSideWrapper()
-        {
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
-            document.body.classList.remove('open-side-slider');
-        },
-
         clearAllChecker()
         {
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
+            this.isAddCheck         = false;
+            this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
+        },
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+
+            document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
-        getRoleDataFromAdd (newData) {
-            console.log(newData)
-            this.isAddCheck = false;
+        getAddDataFromChild (status)
+        {
             this.getRolesList();
-
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
-        getRoleDataFromEdit (newEditData) {
-
-            console.log(newEditData)
-            this.isEditCheck = false;
+        getEditDataFromChild (status)
+        {
             this.getRolesList();
-
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
-        getRolesList(pageUrl){
-
-            let _that =this;
-            pageUrl = pageUrl == undefined ? 'admin/roles' : pageUrl;
+        getRolesList(pageUrl)
+        {
+            let _that       = this;
+            pageUrl         = pageUrl == undefined ? 'admin/roles' : pageUrl;
 
             axios.get(pageUrl,
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'        : 'Bearer '+localStorage.getItem('authToken')
                     },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.success_message = "";
                         _that.userRoles       = response.data.role_list.data;
                         _that.pagination      = response.data.role_list;
                         _that.isLoading       = false;
@@ -255,47 +255,45 @@ export default {
                 })
         },
 
-        deleteRole() {
+        deleteRole()
+        {
             let _that = this;
 
             axios.delete('admin/roles/delete',
                 {
-                    data:
-                        {
-                            id      : this.role_id
-                        },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    data    : {
+                        id                  : this.role_id
+                    },
+                    headers : {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-
                 if (response.data.status_code == 200){
-
                     _that.getRolesList();
-                    _that.error_message   = '';
-                    _that.success_message = "Successfully deleted the Role";
                     _that.removingRightSideWrapper();
+                    _that.error_message     = '';
+                    _that.success_message   = "Role deleted successfully with permission";
                     _that.setTimeoutElements();
                 }
                 else
                 {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message   = "";
+                    _that.error_message     = response.data.error;
                 }
-
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
 
-        setTimeoutElements() {
-            //setTimeout(() => this.isLoading = false, 3000);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
     },
-    created() {
+    created()
+    {
         this.isLoading  = true;
         this.getRolesList();
     }
