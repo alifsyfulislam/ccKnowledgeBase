@@ -88,8 +88,6 @@
                                     <td class="text-center" style="min-width: 120px">
 
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
-
-
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>

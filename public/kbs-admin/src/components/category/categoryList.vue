@@ -315,7 +315,6 @@ export default {
                 }).then(function (response) {
 
                 if (response.data.status_code == 200) {
-
                     _that.getCategoryList();
                     _that.removingRightSideWrapper();
                     _that.error_message         = '';

@@ -32,7 +32,7 @@
                             <table class="table table-bordered gsl-table" v-if="allQuizField">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">SL</th>
+                                    <th class="text-center">ID</th>
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Publish Date</th>
                                     <th class="text-center">Quiz Form Field</th>
@@ -40,8 +40,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(a_quiz_field,index) in allQuizField" :key="a_quiz_field.id">
-                                    <td class="text-center">{{ ++index }}</td>
+                                <tr v-for="(a_quiz_field) in allQuizField" :key="a_quiz_field.id">
+                                    <td class="text-center">{{ a_quiz_field.id }}</td>
                                     <td class="text-center">{{ a_quiz_field.name }}</td>
                                     <td class="text-center">{{ a_quiz_field.created_at }}</td>
                                     <td class="text-center">
@@ -53,7 +53,7 @@
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_id = a_quiz_field.id, isEditCheck=true">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isDelete=true">
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isDeleteCheck=true">
                                             <i class="fas fa-trash-restore-alt"></i>
                                         </button>
                                     </td>
@@ -96,18 +96,19 @@
             <div class="action-modal-wraper-error" v-if="error_message">
                 <span>{{ error_message }}</span>
             </div>
-            <!--            add-->
-            <QuizFromAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @quiz-form-data="getQuizFormDataFromAdd"></QuizFromAdd>
-            <!--            edit-->
-            <QuizFromEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizFormId="quiz_form_id" @quiz-form-edit-data="getQuizFormDataFromEdit"></QuizFromEdit>
-            <!--            delete-->
-            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+
+            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                         <img src="../../assets/img/cancel.svg" alt="cancel">
                     </button>
                 </div>
-                <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+<!--                add-->
+                <QuizFromAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @quiz-form-slide-close="getAddDataFromChild"></QuizFromAdd>
+<!--                edit-->
+                <QuizFromEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizFormId="quiz_form_id" @quiz-form-edit-data="getQuizFormDataFromEdit"></QuizFromEdit>
+<!--                delete-->
+                <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                     <div class="right-sidebar-content-area px-2">
                         <div class="form-wrapper">
                             <h2 class="section-title text-uppercase mb-20">Quiz Form Delete</h2>
@@ -143,6 +144,7 @@ import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
 
 
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "quizFormList.vue",
@@ -162,7 +164,7 @@ export default {
 
             isAddCheck      : false,
             isEditCheck     : false,
-            isDelete        : false,
+            isDeleteCheck        : false,
 
             success_message : '',
             error_message   : '',
@@ -192,26 +194,31 @@ export default {
         }
     },
     methods: {
+        clearAllChecker()
+        {
+            this.isAddCheck         = false;
+            this.isDeleteCheck      = false;
+            this.isEditCheck        = false;
+            this.isAddFieldCheck    = false;
+        },
 
-        removingRightSideWrapper() {
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
 
-            this.isAddCheck = false;
-            this.isDelete   = false;
             document.body.classList.remove('open-side-slider');
-
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
-        clearAllChecker() {
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isEditCheck     = false;
-            this.isAddFieldCheck      = false;
-        },
 
-        getQuizFormDataFromAdd (newData) {
-            console.log(newData)
-            this.isAddCheck = false;
+
+        getAddDataFromChild (status) {
             this.getQuizFormList();
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
         },
 
 
@@ -232,8 +239,8 @@ export default {
 
         getQuizFormList(pageUrl) {
 
-            let _that =this;
-            pageUrl = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
+            let _that   = this;
+            pageUrl     = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
             axios.get(pageUrl,
                 {
                     headers: {
@@ -243,46 +250,43 @@ export default {
                 .then(function (response) {
                     if(response.data.status_code === 200){
                         //console.log(response.data);
-                        _that.pagination   = response.data.quiz_form_list;
-                        _that.allQuizField = response.data.quiz_form_list.data;
-                        _that.isLoading    = false;
+                        _that.pagination        = response.data.quiz_form_list;
+                        _that.allQuizField      = response.data.quiz_form_list.data;
+                        _that.isLoading         = false;
                         //_that.setTimeoutElements();
                     }
                     else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message   = "";
+                        _that.error_message     = response.data.error;
                     }
                 })
         },
 
-        deleteQuizForm() {
-            let _that = this;
+        deleteQuizForm()
+        {
+            let _that       = this;
 
             axios.delete('admin/quiz-forms/delete',
                 {
-                    data:
-                        {
+                    data : {
                             id      : _that.quiz_form_id
-                        },
+                    },
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-
                 if (response.data.status_code == 200)
                 {
                     _that.getQuizFormList();
-                    _that.error_message   = '';
-                    _that.clearAllChecker();
-                    document.body.classList.remove('open-side-slider');
-                    _that.success_message = "Successfully deleted the Quiz Form";
+                    _that.removingRightSideWrapper();
+                    _that.error_message     = '';
+                    _that.success_message   = "Quiz form deleted successfully!";
                     _that.setTimeoutElements();
-
                 }
                 else
                 {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message   = "";
+                    _that.error_message     = response.data.error;
                 }
 
             }).catch(function (error) {
@@ -293,8 +297,8 @@ export default {
 
         setTimeoutElements() {
             //setTimeout(() => this.isLoading = false, 1e3);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
     },
     created() {
