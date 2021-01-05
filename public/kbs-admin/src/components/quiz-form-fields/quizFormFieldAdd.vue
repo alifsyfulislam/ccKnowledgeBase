@@ -23,7 +23,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldLabel">Field Label <span class="required">*</span></label>
-                            <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldData.quizlabelName" class="form-control" placeholder="Enter Label Name">
+                            <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldData.quizlabelName" class="form-control" placeholder="Enter Label Name" @keyup="checkAndChangeValidation(quizFormFieldData.quizlabelName, '#quizFormFieldLabel', '#fieldLabelError', '*field label')">
                             <span id="fieldLabelError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldName">Field Name <span class="required">*</span></label>
-                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldData.quizfieldName" class="form-control" placeholder="Enter Field Name">
+                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldData.quizfieldName" class="form-control" placeholder="Enter Field Name" @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldName, '#quizFormFieldName', '#fieldNameError', '*field name')">
                             <span id="fieldNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldID">Field ID <span class="required">*</span></label>
-                            <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID">
+                            <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID" @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldID, '#quizFormFieldID', '#fieldIDError', '*field ID')">
                             <span id="fieldIDError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldClass">Field Class <span class="required">*</span></label>
-                            <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class">
+                            <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class" @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldClass, '#quizFormFieldClass', '#fieldClassError', '*field class')">
                             <span id="fieldClassError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldType">Field Type <span class="required">*</span></label>
-                            <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldData.quizfieldType">
+                            <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldData.quizfieldType" @change="checkAndValidateFieldType()">
                                 <option value="" disabled>--Select A Type--</option>
                                 <option value="Text">Text</option>
                                 <option value="Email">Email</option>
@@ -109,6 +109,7 @@
                                 <option value="0">No</option>
                             </select>
 
+
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group text-left">
-                            <button class="btn common-gradient-btn ripple-btn px-50" @click="quizformfieldStore()">Add</button>
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -164,14 +165,156 @@ export default {
                 quizfieldSortValue  :  '',
                 quizfieldRequired   :  1,
             },
+
+            validation_error:{
+                isFieldLabelStatus      : false,
+                isFieldNameStatus       : false,
+                isFieldIDStatus         : false,
+                isFieldClassStatus      : false,
+                isFieldTypeStatus       : false,
+            }
         }
     },
 
     methods: {
+        validateAndSubmit()
+        {
+            if (!this.quizFormFieldData.quizlabelName){
+                $('#quizFormFieldLabel').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldLabelError').html("*field label is required");
+            }
+            if (!this.quizFormFieldData.quizfieldName){
+
+                $('#quizFormFieldName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldNameError').html("*field name is required");
+            }
+
+            if (!this.quizFormFieldData.quizfieldID){
+
+                $('#quizFormFieldID').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldIDError').html("*field ID is required");
+            }
+
+            if (!this.quizFormFieldData.quizfieldClass){
+
+                $('#quizFormFieldClass').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldClassError').html("*field class is required");
+            }
+            if (!this.quizFormFieldData.quizfieldType){
+
+                $('#quizFormFieldType').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldTypeError').html("*field type is required");
+            }
+            if (this.validation_error.isFieldLabelStatus === true &&
+                this.validation_error.isFieldNameStatus === true &&
+                this.validation_error.isFieldIDStatus === true &&
+                this.validation_error.isFieldClassStatus === true &&
+                this.validation_error.isFieldTypeStatus === true){
+                this.quizformfieldStore();
+            }
+        },
+
+
+        checkAndValidateFieldType()
+        {
+            if (!this.quizFormFieldData.quizfieldType) {
+                $('#quizFormFieldType').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#fieldTypeError').html("*field is required");
+                this.validation_error.isFieldTypeStatus = false;
+
+            } else{
+                $('#quizFormFieldType').css({
+                    'border-color': '#ced4da',
+                });
+                $('#fieldTypeError').html("");
+                this.validation_error.isFieldTypeStatus = true;
+            }
+        },
+
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
+            if (selected_data.length >0) {
+                if (selected_data.length <3){
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                    if (selected_name === "*field name"){
+                        this.validation_error.isFieldNameStatus = false;
+                    } else if(selected_name === "*field label"){
+                        this.validation_error.isFieldLabelStatus = false;
+                    }else if(selected_name === "*field ID"){
+                        this.validation_error.isFieldIDStatus = false;
+                    }else if(selected_name === "*field class"){
+                        this.validation_error.isFieldClassStatus = false;
+                    }
+
+                }
+                else if (selected_data.length >100){
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html( selected_name+" should contain maximum 100 character");
+
+                    if (selected_name === "*field name"){
+                        this.validation_error.isFieldNameStatus = false;
+                    }else if(selected_name === "*field label"){
+                        this.validation_error.isFieldLabelStatus = false;
+                    }else if(selected_name === "*field ID"){
+                        this.validation_error.isFieldIDStatus = false;
+                    }else if(selected_name === "*field class"){
+                        this.validation_error.isFieldClassStatus = false;
+                    }
+                }else {
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
+
+                    if (selected_name === "*field name" ){
+                        this.validation_error.isFieldNameStatus = true;
+                    }else if(selected_name === "*field label"){
+                        this.validation_error.isFieldLabelStatus = true;
+                    }else if(selected_name === "*field ID"){
+                        this.validation_error.isFieldIDStatus = true;
+                    }else if(selected_name === "*field class"){
+                        this.validation_error.isFieldClassStatus = true;
+                    }
+                }
+
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+
+                if (selected_name === "*field name" ){
+                    this.validation_error.isFieldNameStatus = false;
+                } else if(selected_name === "*field label"){
+                    this.validation_error.isFieldLabelStatus = false;
+                }else if(selected_name === "*field ID"){
+                    this.validation_error.isFieldIDStatus = false;
+                }else if(selected_name === "*field class"){
+                    this.validation_error.isFieldClassStatus = false;
+                }
+            }
+        },
 
         showServerError(errors)
         {
-
             $('#fieldLabelError').html("");
             $('#fieldNameError').html("");
             $('#fieldIDError').html("");

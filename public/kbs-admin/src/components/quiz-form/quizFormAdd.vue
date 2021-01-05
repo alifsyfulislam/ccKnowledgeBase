@@ -7,7 +7,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="quizFormName">Quiz Form Title <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="quizFormData.name" v-on:keyup.enter="quizFormAdd()"  id="quizFormName" placeholder="Enter quiz form title here!!" required>
+                            <input class="form-control" type="text" v-model="quizFormData.name" @keyup="checkAndChangeValidation(quizFormData.name, '#quizFormName', '#formNameError', '*quiz form name')" @keyup.enter="validateAndSubmit()"  id="quizFormName" placeholder="Enter quiz form title here!!" required>
                             <span id="formNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group text-left">
-                            <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormAdd()">Add</button>
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -48,20 +48,80 @@
                 quizFormData    : {
                     name        : '',
                 },
+
+                validation_error:{
+                    isFormNameStatus: false
+                }
             }
         },
 
 
         methods: {
 
-            clearAllChecker() {
+            validateAndSubmit()
+            {
+                if (!this.quizFormData.name){
+                    $('#quizFormName').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#formNameError').html("*quiz form name field is required");
+                }
 
-                this.isAdd = false;
-                this.$emit('quiz-form-data', this.isAdd);
 
+                if (this.validation_error.isFormNameStatus === true){
+                    //console.log(this.validation_error)
+                    this.quizFormAdd();
+                }
             },
 
-            showServerError(errors){
+            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+            {
+                if (selected_data.length >0) {
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                        if (selected_name === "*quiz form name"){
+                            this.validation_error.isFormNameStatus = false;
+                        }
+
+                    }
+                    else if (selected_data.length >100){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain maximum 100 character");
+
+                        if (selected_name === "*quiz form name"){
+                            this.validation_error.isFormNameStatus = false;
+                        }
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*quiz form name" ){
+                            this.validation_error.isFormNameStatus = true;
+                        }
+                    }
+
+                } else{
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html(selected_name+" field is required")
+
+                    if (selected_name === "*quiz form name" ){
+                        this.validation_error.isFormNameStatus = false;
+                    }
+                }
+            },
+
+            showServerError(errors)
+            {
 
                 $('#formNameError').html("");
 
