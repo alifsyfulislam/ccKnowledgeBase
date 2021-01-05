@@ -41,7 +41,8 @@ import axios from 'axios'
 import $ from "jquery";
 
 export default {
-    name: "categoryAddII.vue",
+
+    name: "categoryAdd.vue",
     props: ['isAddCheck'],
     data() {
         return {
@@ -58,9 +59,10 @@ export default {
         }
     },
     methods: {
+
         //keyup validation
-        checkAndChangeValidation()
-        {
+        checkAndChangeValidation(){
+
             let _that = this;
             if (!_that.categoryData.name){
                 _that.error_messages[0]     = "*The category name is required";
@@ -72,9 +74,10 @@ export default {
                 _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
             }
         },
+
         //server validation
-        showServerError(errors)
-        {
+        showServerError(errors){
+
             $('#categoryNameError').html("");
             $('#categoryName').css({'border-color': '#ced4da'});
             errors.forEach(val=>{
@@ -84,9 +87,10 @@ export default {
                 }
             })
         },
+
         //client side validation
-        dataValidate()
-        {
+        dataValidate(){
+
             let _that = this;
             if (!_that.categoryData.name){
                 _that.error_messages[0]     = "*The category name is required";
@@ -98,12 +102,12 @@ export default {
                 _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
             }
         },
+
         //category add
-        categoryAdd()
-        {
+        categoryAdd(){
+
             let _that = this;
             axios.post('admin/categories', {
-
                     name        : this.categoryData.name,
                     parent_id   : this.selectedCategory,
                 },
@@ -113,8 +117,8 @@ export default {
                     }
                 }).then(function (response) {
                 console.log(response)
-                if (response.data.status_code == 200)
-                {
+                if (response.data.status_code === 200){
+
                     _that.categoryData          = '';
                     _that.selectedCategory      = '';
                     _that.error_messages        = '';
@@ -122,24 +126,23 @@ export default {
 
                     _that.$emit('category-slide-close', _that.success_message);
                     // document.body.classList.remove('open-side-slider');
-                }
-                else if(response.data.status_code === 400)
-                {
+                }else if(response.data.status_code === 400){
+
                     _that.success_message       = "";
                     _that.error_message         = "";
                     _that.showServerError(response.data.errors);
+                }else{
 
-                }
-                else{
                     _that.success_message       = "";
                     _that.error_message         = response.data.message;
                 }
             }).catch(errors => console.log(errors));
 
         },
+
         //category list
-        getCategoryList()
-        {
+        getCategoryList(){
+
             let _that =this;
 
             axios.get('admin/categories',
@@ -166,8 +169,8 @@ export default {
                 })
         },
     },
-    created()
-    {
+
+    created(){
         this.getCategoryList();
     }
 }

@@ -18,7 +18,7 @@
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
-                                        @click="isAddCheck=true" @category-form-close="getAddDataFromChild">
+                                        @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add Category
                                 </button>
@@ -152,7 +152,7 @@ import $ from "jquery";
 
 
 export default {
-    name: "categoryListII.vue",
+    name: "categoryList.vue",
     components: {
         Header,
         Menu,
@@ -201,6 +201,7 @@ export default {
         }
     },
     methods: {
+
         removingRightSideWrapper()
         {
             this.isAddCheck         = false;
@@ -218,8 +219,8 @@ export default {
             this.isDeleteCheck      = false;
         },
 
-        getAddDataFromChild (status)
-        {
+        getAddDataFromChild (status){
+
             this.success_message = status;
             this.getCategoryList();
             this.removingRightSideWrapper();

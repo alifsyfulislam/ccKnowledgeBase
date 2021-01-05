@@ -66,7 +66,7 @@
 
                                     <td class="text-center">
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=a_quiz.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=a_quiz.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=a_quiz.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -119,18 +119,54 @@
             <span>{{ error_message }}</span>
         </div>
 
-        <QuizzAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @quiz-data="getQuizDataFromAdd"></QuizzAdd>
+<!--        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
+            <div class="close-bar d-flex align-items-center justify-content-end">
+                <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                    <img src="../../assets/img/cancel.svg" alt="cancel">
+                </button>
+            </div>
+            &lt;!&ndash;            add data&ndash;&gt;
+            <CategoryAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @category-slide-close="getAddDataFromChild"></CategoryAdd>
+            &lt;!&ndash;            edit data&ndash;&gt;
+            <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-slide-close="getEditDataFromChild"></CategoryEdit>
+            &lt;!&ndash;            delete data &ndash;&gt;
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
+                <div class="right-sidebar-content-area px-2">
 
-        <QuizzEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizId="quiz_id" @quiz-edit-data="getQuizDataFromEdit"></QuizzEdit>
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
 
-        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+                        <div class="row mt-50 mt-md-80">
+                            <div class="col-md-12">
+                                <figure class="mx-auto text-center">
+                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                </figure>
+                                <p class="text-center"> Confirmation for Deleting Category</p>
+                                <div class="form-group d-flex justify-content-center align-items-center">
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>-->
+
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
 
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+            <QuizzAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @quiz-slide-close="getAddDataFromChild"></QuizzAdd>
+
+            <QuizzEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :quizId="quiz_id" @quiz-slide-close="getEditDataFromChild"></QuizzEdit>
+
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                 <div class="right-sidebar-content-area px-2">
 
                     <div class="form-wrapper">
@@ -168,6 +204,7 @@ import QuizzAdd from "@/components/quiz/quizAdd";
 import QuizzEdit from "@/components/quiz/quizEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "quizList",
@@ -181,10 +218,11 @@ export default {
 
     data() {
         return {
+
             isLoading       : false,
             isEditCheck     : false,
             isAddCheck      : false,
-            isDelete        : false,
+            isDeleteCheck   : false,
             isSearch        : false,
 
             success_message : '',
@@ -199,7 +237,6 @@ export default {
 
             filter : {
                 isAdmin      : 1,
-                // article_id  : '',
                 status    : '',
                 name      : '',
             },
@@ -218,21 +255,42 @@ export default {
             },
         }
     },
+
     methods: {
-        removingRightSideWrapper(){
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
+
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+
             document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
 
         clearAllChecker() {
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
+            this.isAddCheck    = false;
+            this.isDeleteCheck = false;
+            this.isSearch      = false;
         },
 
-        getQuizDataFromAdd (newData) {
+        getAddDataFromChild (status){
+
+            this.success_message = status;
+            this.getQuizList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
+
+        getEditDataFromChild (status)
+        {
+            this.success_message = status;
+            this.getQuizList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
+
+        /*getQuizDataFromAdd (newData) {
             console.log(newData)
             this.isAddCheck = false;
             this.getQuizList();
@@ -245,11 +303,10 @@ export default {
             this.isEditCheck = false;
             this.getQuizList();
 
-        },
+        },*/
 
-        clearFilter()
-        {
-            //this.filter.article_id = "";
+        clearFilter(){
+
             this.filter.status   = "";
             this.filter.name     = "";
             this.success_message = "";

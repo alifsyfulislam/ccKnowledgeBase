@@ -1,97 +1,80 @@
 <template>
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isAdd===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isAddCheck===true">
+        <div class="right-sidebar-content-area px-2">
 
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Add New Quiz</h2>
 
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Add New Quiz</h2>
+                <div class="row">
 
                     <div class="col-md-12">
-                        <div v-if="success_message" class="alert alert-success" role="alert">
-                            {{ success_message }}
-                        </div>
-                        <div v-if="error_message" class="alert alert-danger" role="alert">
-                            {{ error_message }}
+                        <div class="form-group">
+                            <label for="title">Title <span class="required">*</span></label>
+                            <input type="text" class="form-control" v-model="quizData.name" id="title" placeholder="Enter Quiz Title" @keyup="checkAndChangeValidation(quizData.name, '#title', '#titleError', '*title')" required>
+                            <span id="titleError" class="text-danger small"></span>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select Quiz Form</label>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="title">Title <span class="required">*</span></label>
-                                <input type="text" class="form-control" v-model="quizData.name" id="title" placeholder="Enter Quiz Title" @keyup="checkAndChangeValidation(quizData.name, '#title', '#titleError', '*title')" required>
-                                <span id="titleError" class="text-danger small"></span>
-                            </div>
+                            <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType()" >
+                                <option value="" disabled>Select A Quiz Form</option>
+                                <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
+                                    {{ a_quiz_form.name }}
+                                </option>
+                            </select>
+                            <span id="quizFormError" class="text-danger small"></span>
+
                         </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select Quiz Form</label>
-
-                                <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType()" >
-                                    <option value="" disabled>Select A Quiz Form</option>
-                                    <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
-                                        {{ a_quiz_form.name }}
-                                    </option>
-                                </select>
-                                <span id="quizFormError" class="text-danger small"></span>
-
-                            </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="duration">Duration (Minutes)</label>
+                            <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30" @keyup="checkAndChangeValidation(quizData.duration, '#duration', '#durationError', '*duration')">
+                            <span id="durationError" class="text-danger small"></span>
                         </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="duration">Duration (Minutes)</label>
-                                <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30" @keyup="checkAndChangeValidation(quizData.duration, '#duration', '#durationError', '*duration')">
-                                <span id="durationError" class="text-danger small"></span>
-                            </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="totalMarks">Total Marks<span class="required">*</span></label>
+                            <input type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100" @keyup="checkAndChangeValidation(quizData.total_marks, '#totalMarks', '#totalMarksError', '*total marks')">
+                            <span id="totalMarksError" class="text-danger small"></span>
                         </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="totalMarks">Total Marks<span class="required">*</span></label>
-                                <input type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100" @keyup="checkAndChangeValidation(quizData.total_marks, '#totalMarks', '#totalMarksError', '*total marks')">
-                                <span id="totalMarksError" class="text-danger small"></span>
-                            </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
+                            <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
+                            <span id="numberOfQuestionsError" class="text-danger small"></span>
                         </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
-                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
-                                <span id="numberOfQuestionsError" class="text-danger small"></span>
-                            </div>
-                        </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select A Status</label>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select A Status</label>
-
-                                <select class="form-control" v-model="quizData.status">
-                                    <option value="" disabled>Select A Status</option>
-                                    <option value="0">Inactive</option>
-                                    <option value="1">Active</option>
-                                </select>
-                            </div>
-
+                            <select class="form-control" v-model="quizData.status">
+                                <option value="" disabled>Select A Status</option>
+                                <option value="0">Inactive</option>
+                                <option value="1">Active</option>
+                            </select>
                         </div>
 
                     </div>
 
-                    <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
-                    </div>
                 </div>
 
+                <div class="form-group text-right">
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -112,7 +95,7 @@ export default {
     data() {
         return {
 
-            isAdd : false,
+           // isAdd : false,
             success_message : '',
             error_message   : '',
             token           : '',
@@ -138,13 +121,6 @@ export default {
         }
     },
     methods: {
-
-        clearAllChecker() {
-
-            this.isAdd = false;
-            this.$emit('quiz-data', this.isAdd);
-
-        },
 
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
 
@@ -327,11 +303,8 @@ export default {
                 if (response.data.status_code === 201){
                     _that.quizData         = '';
                     _that.error_message    = '';
-
-                    _that.isAdd = false;
-                    _that.success_message  = "New Quiz Added Successfully";
-                    _that.$emit('quiz-data', "New Quiz Added Successfully");
-                    document.body.classList.remove('open-side-slider')
+                    _that.success_message  = "Quiz added successfully";
+                    _that.$emit('quiz-slide-close', _that.success_message);
 
                 }else if(response.data.status_code === 400){
 
@@ -399,7 +372,7 @@ export default {
 
     },
     created() {
-        this.isAdd = this.isAddCheck;
+      /*  this.isAdd = this.isAddCheck;*/
         this.getArticleList();
         this.getQuizFormList();
     }
