@@ -20,6 +20,11 @@
 <!--                                    <i class="fas fa-plus"></i>-->
 <!--                                    Add Quiz Form-->
 <!--                                </button>-->
+
+                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
+                                    <i class="fa fa-refresh"></i>
+                                    Refresh
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -53,7 +58,7 @@
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = a_quiz_form_field.id, isEditCheck=true">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = a_quiz_form_field.id, isDelete=true">
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = a_quiz_form_field.id, isDeleteCheck=true">
                                             <i class="fas fa-trash-restore-alt"></i>
                                         </button>
                                     </td>
@@ -97,13 +102,18 @@
                 <span>{{ error_message }}</span>
             </div>
 
-            <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
+            <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                         <img src="../../assets/img/cancel.svg" alt="cancel">
                     </button>
                 </div>
-                <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+<!--                add-->
+<!--                <QuizFromFieldAdd v-if="isAddFieldCheck" :isAddFieldCheck= "isAddFieldCheck" :quizFormFieldId="quiz_form_field_id" @quiz-form-field-data="getAddDataFromChild"></QuizFromFieldAdd>-->
+<!--                edit-->
+                <QuizFromFieldEdit v-if="isEditCheck" :isEditCheck= "isEditCheck" :quizFormFieldId="quiz_form_field_id" @quiz-form-field-slide-close="getEditDataFromChild"></QuizFromFieldEdit>
+<!--                delete-->
+                <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                     <div class="right-sidebar-content-area px-2">
                         <div class="form-wrapper">
                             <h2 class="section-title text-uppercase mb-20">Quiz Form Field Delete</h2>
@@ -124,8 +134,6 @@
                 </div>
             </div>
             <!-- Content Area End -->
-<!--            <QuizFromFieldAdd v-if="isAddFieldCheck" :isAddFieldCheck= "isAddFieldCheck" :quizFormFieldId="quiz_form_field_id" @quiz-form-field-data="getQuizFormFieldDataFromAdd"></QuizFromFieldAdd>-->
-            <QuizFromFieldEdit v-if="isEditCheck" :isEditCheck= "isEditCheck" :quizFormFieldId="quiz_form_field_id" @quiz-form-field-data="getQuizFormFieldDataFromEdit"></QuizFromFieldEdit>
         </div>
     </div>
 </template>
@@ -134,9 +142,11 @@
     import Menu from "@/layouts/common/Menu";
     import Loading from "@/components/loader/loading";
     import QuizFromFieldEdit from "../quiz-form-fields/quizFormFieldEdit";
+    // import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
 
 
     import axios from "axios";
+    import $ from "jquery";
 
     export default {
         name: "quizFormList.vue",
@@ -155,7 +165,7 @@
 
                 isAddCheck      : false,
                 isEditCheck     : false,
-                isDelete        : false,
+                isDeleteCheck   : false,
 
                 success_message : '',
                 error_message   : '',
@@ -190,56 +200,70 @@
 
         methods: {
 
-            removingRightSideWrapper() {
-
-                this.isAddCheck = false;
-                this.isDelete   = false;
-                this.isEditCheck     = false,
-                    document.body.classList.remove('open-side-slider');
-
+            clearFilter()
+            {
+                this.getQuizFormFieldList();
+                this.isAddCheck         = false;
+                this.isDeleteCheck      = false;
+                this.isSearchCheck      = false;
+                // this.filter.username    = "";
+                // this.filter.email       = "";
+                // this.filter.role        = "";
+                // this.success_message    = "";
+                // this.error_message      = "";
+            },
+            clearAllChecker()
+            {
+                this.isAddCheck         = false;
+                this.isDeleteCheck      = false;
+                this.isSearchCheck      = false;
             },
 
-            clearAllChecker() {
-                this.isAddCheck = false;
-                this.isEditCheck     = false,
-                    this.isDelete   = false;
+            removingRightSideWrapper()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+
+                document.body.classList.remove('open-side-slider');
+                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
             },
 
-            getQuizFormFieldDataFromAdd (newData) {
+            getAddDataFromChild (newData)
+            {
                 console.log(newData)
                 this.isAddFieldCheck = false;
                 this.getQuizFormFieldList();
             },
 
-            getQuizFormFieldDataFromEdit (newEditData) {
-                console.log(newEditData)
-                this.isEditCheck = false;
+            getEditDataFromChild (status)
+            {
                 this.getQuizFormFieldList();
+                this.success_message = status;
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
             },
 
-            deleteQuizFormField() {
+            deleteQuizFormField()
+            {
                 let _that = this;
 
                 axios.delete('admin/quiz-form-fields/delete',
                     {
-                        data:
-                            {
+                        data: {
                                 id      : _that.quiz_form_field_id
-                            },
+                         },
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                         },
                     }).then(function (response) {
 
                     if (response.data.status_code == 200)
                     {
                         _that.getQuizFormFieldList();
-                        _that.error_message   = '';
-                        _that.isAddCheck      = false;
-                        _that.isDelete        = false;
-                        _that.isSearch        = false;
-                        document.body.classList.remove('open-side-slider');
-                        _that.success_message = "Successfully deleted the Quiz Form";
+                        _that.removingRightSideWrapper();
+                        _that.error_message     = '';
+                        _that.success_message   = "Quiz form field deleted!";
                         _that.setTimeoutElements();
 
                     } else{
@@ -255,8 +279,8 @@
 
             getQuizFormFieldList(pageUrl)
             {
-                let _that =this;
-                pageUrl = pageUrl == undefined ? 'admin/quiz-form-fields' : pageUrl;
+                let _that   = this;
+                pageUrl     = pageUrl == undefined ? 'admin/quiz-form-fields' : pageUrl;
                 axios.get(pageUrl,
                     {
                         headers: {
@@ -265,27 +289,27 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                           // console.log(response.data);
-                            _that.pagination  = response.data.quiz_form_field_list;
-                            _that.allFields   = response.data.quiz_form_field_list.data;
-                            _that.isLoading   = false;
-                            //_that.setTimeoutElements();
+                            _that.pagination        = response.data.quiz_form_field_list;
+                            _that.allFields         = response.data.quiz_form_field_list.data;
+                            _that.isLoading         = false;
                         }
                         else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
+                            _that.success_message   = "";
+                            _that.error_message     = response.data.error;
                         }
                     })
             },
 
-            setTimeoutElements() {
-               // setTimeout(() => this.isLoading = false, 3000);
-                setTimeout(() => this.success_message = "", 3000);
-                setTimeout(() => this.error_message = "", 3000);
+            setTimeoutElements()
+            {
+                // setTimeout(() => this.isLoading = false, 3e3);
+                setTimeout(() => this.success_message = "", 2e3);
+                setTimeout(() => this.error_message = "", 2e3);
             },
 
         },
-        created() {
+        created()
+        {
             this.isLoading  = true;
             this.getQuizFormFieldList();
         }
