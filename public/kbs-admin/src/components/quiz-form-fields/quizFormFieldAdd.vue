@@ -105,7 +105,7 @@
 
 
                             <select id="quizFormFieldRequired" class="form-control" v-model="quizFormFieldData.quizfieldRequired">
-                                <option disabled>--Select Status--</option>
+<!--                                <option disabled>&#45;&#45;Select Status&#45;&#45;</option>-->
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
@@ -163,7 +163,7 @@ export default {
                 quizfieldDefaultValue: '',
                 quizfieldMaxValue   :  '',
                 quizfieldSortValue  :  '',
-                quizfieldRequired   :  0,
+                quizfieldRequired   :  1,
             },
         }
     },
@@ -237,7 +237,7 @@ export default {
                 if (response.data.status_code === 201) {
 
                     _that.error_message         = '';
-                    _that.success_message       = "Form field added successfully";
+                    _that.success_message       = "Quiz form field added successfully";
                     _that.quizFormFieldData     = ''
 
                     _that.$emit('quiz-form-field-slide-close', _that.success_message);

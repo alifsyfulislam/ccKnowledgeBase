@@ -149,7 +149,7 @@
     import $ from "jquery";
 
     export default {
-        name: "quizFormList.vue",
+        name: "quizFormFieldList.vue",
         components: {
             Header,
             Menu,
@@ -206,6 +206,7 @@
                 this.isAddCheck         = false;
                 this.isDeleteCheck      = false;
                 this.isSearchCheck      = false;
+
                 // this.filter.username    = "";
                 // this.filter.email       = "";
                 // this.filter.role        = "";
@@ -263,7 +264,7 @@
                         _that.getQuizFormFieldList();
                         _that.removingRightSideWrapper();
                         _that.error_message     = '';
-                        _that.success_message   = "Quiz form field deleted!";
+                        _that.success_message   = "Quiz form field deleted successfully!";
                         _that.setTimeoutElements();
 
                     } else{
@@ -310,6 +311,14 @@
         },
         created()
         {
+            console.log('Params: ', this.$route.params);
+            if (this.$route.params){
+                this.success_message = this.$route.params.success_message;
+                this.setTimeoutElements();
+                setTimeout(()=>{
+                    this.$route.params.success_message = [];
+                },2e3);
+            }
             this.isLoading  = true;
             this.getQuizFormFieldList();
         }

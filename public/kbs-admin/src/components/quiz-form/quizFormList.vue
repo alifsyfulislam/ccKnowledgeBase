@@ -235,7 +235,12 @@ export default {
             this.removingRightSideWrapper();
             this.setTimeoutElements();
             if(status){
-                this.$router.push('/admin/quiz-form-field-list');
+                // this.$router.push({path: '/admin/quiz-form-field-list', params:{ message : status}});
+
+                this.$router.push({
+                    name: 'quizFormFieldList',
+                    params: { success_message: status }
+                });
             }
         },
 
