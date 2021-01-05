@@ -51,6 +51,7 @@
                             <textarea  cols="30" rows="4" class="form-control" v-model="articleData.en_short_summary"></textarea>
                         </div>
                     </div>
+
                     <div class="col-md-12" v-if="selected_language=='bangla'">
                         <div class="form-group mb-15">
                             <label for="bn_short_summary">Bangla Short Summary</label>

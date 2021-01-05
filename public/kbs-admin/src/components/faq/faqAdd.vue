@@ -14,7 +14,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="enTitle">Title <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="faqData.en_title" id="enTitle" required>
+                            <input class="form-control" type="text" v-model="faqData.en_title" id="enTitle" @keyup="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')" required>
                             <span id="enTitleError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label>Category <span class="required">*</span></label>
 
-                            <select class="form-control" v-model="selectedCategory" id="categoryID">
+                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">
                                 <option value="" disabled>Select A Category</option>
                                 <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                                     {{a_category.name}}
@@ -114,25 +114,26 @@ export default {
             userInfo            : '',
             isSummerNoteError   : false,
 
-            faqData       : {
+            faqData      : {
+
                 en_title        : '',
                 bn_title        : '',
                 tag             : '',
                 en_body         : '',
                 bn_body         : '',
-                status          : 'draft',
+                status          : 'draft'
             },
 
             validation_error : {
-                isTitleStatus       : false,
-                isCategoryStatus    : false,
+                isTitleStatus    : false,
+                isCategoryStatus : false,
             },
         }
     },
     methods: {
 
-        checkAndValidateSelectType()
-        {
+        checkAndValidateSelectType(){
+
             if (!this.selectedCategory) {
                 $('#categoryID').css({
                     'border-color': '#FF7B88',
@@ -149,10 +150,10 @@ export default {
             }
         },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
-        {
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name){
 
-            if (selected_data.length >0) {
+            if (selected_data.length >0){
+
                 if (selected_data.length <3){
                     $(selected_id).css({
                         'border-color': '#FF7B88',
@@ -185,7 +186,8 @@ export default {
         },
 
         validateAndSubmit(){
-            if (!this.articleData.en_title){
+
+            if (!this.faqData.en_title){
                 $('#enTitle').css({
                     'border-color': '#FF7B88',
                 });
@@ -205,15 +207,15 @@ export default {
             }
         },
 
-        showServerError(errors)
-        {
+        showServerError(errors){
+
             $('#enTitleError').html("");
             $('#categoryIDError').html("");
             $('#enBodyError').html("");
 
             $('#enTitle').css({'border-color': '#ced4da'});
             $('#categoryID').css({'border-color': '#ced4da'});
-            // $('#enBodyArea').css({'border-color': '#ced4da'});
+
             this.isSummerNoteError = false;
             errors.forEach(val => {
                 if (val.includes("en title")==true){

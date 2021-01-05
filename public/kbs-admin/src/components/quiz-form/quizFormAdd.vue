@@ -55,6 +55,7 @@
         methods: {
 
             clearAllChecker() {
+
                 this.isAdd = false;
                 this.$emit('quiz-form-data', this.isAdd);
 
