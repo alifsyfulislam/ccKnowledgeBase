@@ -18,7 +18,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldLabel">Field Label <span class="required">*</span></label>
-                            <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldDetails.f_label" class="form-control" placeholder="Enter Label Name">
+                            <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldDetails.f_label" class="form-control" placeholder="Enter Label Name" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_label, '#quizFormFieldLabel', '#fieldLabelError', '*field label')">
                             <span id="fieldLabelError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldName">Field Name <span class="required">*</span></label>
-                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldDetails.f_name" class="form-control" placeholder="Enter Field Name">
+                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldDetails.f_name" class="form-control" placeholder="Enter Field Name" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_name, '#quizFormFieldName', '#fieldNameError', '*field name')">
                             <span id="fieldNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldID">Field ID <span class="required">*</span></label>
-                            <input id="quizFormFieldID" type="text" v-model="quizFormFieldDetails.f_id"  class="form-control" placeholder="Enter Field ID">
+                            <input id="quizFormFieldID" type="text" v-model="quizFormFieldDetails.f_id"  class="form-control" placeholder="Enter Field ID" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_id, '#quizFormFieldID', '#fieldIDError', '*field ID')">
                             <span id="fieldIDError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="quizFormFieldClass">Field Class <span class="required">*</span></label>
-                            <input id="quizFormFieldClass" type="text" v-model="quizFormFieldDetails.f_class"  class="form-control" placeholder="Enter Field Class">
+                            <input id="quizFormFieldClass" type="text" v-model="quizFormFieldDetails.f_class"  class="form-control" placeholder="Enter Field Class" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_class, '#quizFormFieldClass', '#fieldClassError', '*field class')">
                             <span id="fieldClassError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
 
                     <div class="col-md-8">
                         <div class="form-group text-left">
-                            <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormFieldUpdate">Update</button>
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
                         </div>
                     </div>
                 </div>
@@ -144,11 +144,150 @@
                 userRoles           :'',
                 filter  : {
                     isAdmin         : 1
+                },
+                validation_error:{
+                    isFieldLabelStatus      : true,
+                    isFieldNameStatus       : true,
+                    isFieldIDStatus         : true,
+                    isFieldClassStatus      : true,
+                    isFieldTypeStatus       : true,
                 }
             }
         },
 
         methods: {
+            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+            {
+                if (selected_data.length >0) {
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                        if (selected_name === "*field name"){
+                            this.validation_error.isFieldNameStatus = false;
+                        } else if(selected_name === "*field label"){
+                            this.validation_error.isFieldLabelStatus = false;
+                        }else if(selected_name === "*field ID"){
+                            this.validation_error.isFieldIDStatus = false;
+                        }else if(selected_name === "*field class"){
+                            this.validation_error.isFieldClassStatus = false;
+                        }
+
+                    }
+                    else if (selected_data.length >100){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain maximum 100 character");
+
+                        if (selected_name === "*field name"){
+                            this.validation_error.isFieldNameStatus = false;
+                        }else if(selected_name === "*field label"){
+                            this.validation_error.isFieldLabelStatus = false;
+                        }else if(selected_name === "*field ID"){
+                            this.validation_error.isFieldIDStatus = false;
+                        }else if(selected_name === "*field class"){
+                            this.validation_error.isFieldClassStatus = false;
+                        }
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*field name" ){
+                            this.validation_error.isFieldNameStatus = true;
+                        }else if(selected_name === "*field label"){
+                            this.validation_error.isFieldLabelStatus = true;
+                        }else if(selected_name === "*field ID"){
+                            this.validation_error.isFieldIDStatus = true;
+                        }else if(selected_name === "*field class"){
+                            this.validation_error.isFieldClassStatus = true;
+                        }
+                    }
+
+                } else{
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html(selected_name+" is required")
+
+                    if (selected_name === "*field name" ){
+                        this.validation_error.isFieldNameStatus = false;
+                    } else if(selected_name === "*field label"){
+                        this.validation_error.isFieldLabelStatus = false;
+                    }else if(selected_name === "*field ID"){
+                        this.validation_error.isFieldIDStatus = false;
+                    }else if(selected_name === "*field class"){
+                        this.validation_error.isFieldClassStatus = false;
+                    }
+                }
+            },
+            checkAndValidateFieldType()
+            {
+                if (!this.quizFormFieldDetails.f_type) {
+                    $('#quizFormFieldType').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldTypeError').html("*field is required");
+                    this.validation_error.isFieldTypeStatus = false;
+
+                } else{
+                    $('#quizFormFieldType').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#fieldTypeError').html("");
+                    this.validation_error.isFieldTypeStatus = true;
+                }
+            },
+            validateAndSubmit()
+            {
+                if (!this.quizFormFieldDetails.f_label){
+                    $('#quizFormFieldLabel').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldLabelError').html("*field label is required");
+                }
+                if (!this.quizFormFieldDetails.f_name){
+
+                    $('#quizFormFieldName').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldNameError').html("*field name is required");
+                }
+
+                if (!this.quizFormFieldDetails.f_id){
+
+                    $('#quizFormFieldID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldIDError').html("*field ID is required");
+                }
+
+                if (!this.quizFormFieldDetails.f_class){
+
+                    $('#quizFormFieldClass').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldClassError').html("*field class is required");
+                }
+                if (!this.quizFormFieldDetails.f_type){
+
+                    $('#quizFormFieldType').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldTypeError').html("*field type is required");
+                }
+                if (this.validation_error.isFieldLabelStatus === true &&
+                    this.validation_error.isFieldNameStatus === true &&
+                    this.validation_error.isFieldIDStatus === true &&
+                    this.validation_error.isFieldClassStatus === true &&
+                    this.validation_error.isFieldTypeStatus === true){
+                    this.quizFormFieldUpdate();
+                }
+            },
             showServerError(errors)
             {
                 $('#fieldLabelError').html("");

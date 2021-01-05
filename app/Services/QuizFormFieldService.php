@@ -89,9 +89,9 @@ class QuizFormFieldService
 
             'quiz_form_id' => 'required',
             'f_label'      => 'required|min: 3|max : 100',
-            'f_name'       => 'required|min: 3|max : 50',
-            'f_id'         => 'required|min: 3|max : 50',
-            'f_class'      => 'required|min: 3|max : 50',
+            'f_name'       => 'required|min: 3|max : 100',
+            'f_id'         => 'required|min: 3|max : 100',
+            'f_class'      => 'required|min: 3|max : 100',
             'f_type'       => 'required',
 
         ]);
@@ -129,9 +129,9 @@ class QuizFormFieldService
 
             'quiz_form_id' => 'required',
             'f_label'      => 'required|min: 3|max : 100',
-            'f_name'       => 'required|min: 3|max : 50',
-            'f_id'         => 'required|min: 3|max : 50',
-            'f_class'      => 'required|min: 3|max : 50',
+            'f_name'       => 'required|min: 3|max : 100',
+            'f_id'         => 'required|min: 3|max : 100',
+            'f_class'      => 'required|min: 3|max : 100',
             'f_type'       => 'required',
 
         ]);

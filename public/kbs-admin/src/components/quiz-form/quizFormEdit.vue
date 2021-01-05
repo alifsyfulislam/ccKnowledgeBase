@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="quizFormName">Quiz Form Name<span class="required">*</span></label>
-                            <input class="form-control" v-on:keyup.enter="quizFormUpdate()" type="text" v-model="quizFormDetails.name"  id="quizFormName" placeholder="Enter first name here!!" required>
+                            <input class="form-control" @keyup="checkAndChangeValidation(quizFormDetails.name, '#quizFormName', '#formNameError', '*quiz form name')" v-on:keyup.enter="validateAndSubmit()" type="text" id="quizFormName" v-model="quizFormDetails.name" required>
                             <span id="formNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -16,7 +16,7 @@
 
                     <div class="col-md-8">
                         <div class="form-group text-left">
-                            <button class="btn common-gradient-btn ripple-btn px-50" @click="quizFormUpdate()">Update</button>
+                            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
                         </div>
                     </div>
                 </div>
@@ -49,11 +49,75 @@
 
                 filter  : {
                     isAdmin             : 1
+                },
+                validation_error:{
+                    isFormNameStatus: true
                 }
             }
         },
 
         methods: {
+            validateAndSubmit()
+            {
+                if (!this.quizFormDetails.name){
+                    $('#quizFormName').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#formNameError').html("*quiz form name field is required");
+                }
+
+
+                if (this.validation_error.isFormNameStatus === true){
+                    //console.log(this.validation_error)
+                    this.quizFormUpdate();
+                }
+            },
+
+            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+            {
+                if (selected_data.length >0) {
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                        if (selected_name === "*quiz form name"){
+                            this.validation_error.isFormNameStatus = false;
+                        }
+
+                    }
+                    else if (selected_data.length >100){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain maximum 100 character");
+
+                        if (selected_name === "*quiz form name"){
+                            this.validation_error.isFormNameStatus = false;
+                        }
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*quiz form name" ){
+                            this.validation_error.isFormNameStatus = true;
+                        }
+                    }
+
+                } else{
+                    $(selected_id).css({
+                        'border-color': '#FF7B88',
+                    });
+                    $(selected_error_id).html(selected_name+" field is required")
+
+                    if (selected_name === "*quiz form name" ){
+                        this.validation_error.isFormNameStatus = false;
+                    }
+                }
+            },
             showServerError(errors)
             {
                 $('#formNameError').html("");
