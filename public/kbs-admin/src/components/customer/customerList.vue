@@ -360,7 +360,8 @@ export default {
                 })
         },
 
-        deleteCustomer() {
+        deleteCustomer()
+        {
             let _that = this;
 
             axios.delete('admin/users/delete',
@@ -392,7 +393,8 @@ export default {
 
         },
 
-        getUserRoles(){
+        getUserRoles()
+        {
             let _that =this;
 
             axios.get('admin/roles',
@@ -416,7 +418,8 @@ export default {
                 })
         },
 
-        deleteUser(userId) {
+        deleteUser(userId)
+        {
             let _that = this;
 
             axios.delete('admin/users/delete',

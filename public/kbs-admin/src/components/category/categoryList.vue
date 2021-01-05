@@ -257,7 +257,7 @@ export default {
                         _that.categoryList      = response.data.category_list.data;
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
-                        console.log(_that.pagination.total);
+                        // console.log(_that.pagination.total);
                     }
                     else
                     {

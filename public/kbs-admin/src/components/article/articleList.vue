@@ -28,7 +28,7 @@
                                     Add Article
                                 </button>
 
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearch=true">
+                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
@@ -68,7 +68,7 @@
                                     <td class="text-center">{{ an_article.id }}</td>
                                     <td class="text-center">
                                         <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
-                                        <span v-else> {{ (an_article.en_title).substring(0,30)+"....." }}</span>
+                                        <span v-else> {{ (an_article.en_title).substring(0,30)+"...." }}</span>
                                     </td>
                                     <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
@@ -82,7 +82,7 @@
                                         </router-link>
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
 
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=an_article.id, isDelete=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=an_article.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -127,14 +127,50 @@
 
         <!-- Common Right SideBar -->
 
-        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isSearch===true">
+        <div class="action-modal-wraper" v-if="success_message">
+            <span>{{ success_message }}</span>
+        </div>
+
+        <div class="action-modal-wraper-error" v-if="error_message">
+            <span>{{ error_message }}</span>
+        </div>
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
+<!--            add-->
+            <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-slide-close="getAddDataFromChild"></ArticleAdd>
+<!--            edit-->
+            <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-close="getEditDataFromChild"></ArticleEdit>
+<!--            delete-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
+                <div class="right-sidebar-content-area px-2">
 
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">Delete Article</h2>
+
+                        <div class="row mt-50 mt-md-80">
+                            <div class="col-md-12">
+                                <figure class="mx-auto text-center">
+                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                </figure>
+                                <p class="text-center"> Confirmation for Deleting Article</p>
+
+                                <div class="form-group d-flex justify-content-center align-items-center">
+                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteArticle()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+<!--            search-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isSearchCheck===true">
                 <div class="right-sidebar-content-area px-2">
 
                     <div class="form-wrapper" >
@@ -195,52 +231,6 @@
             </div>
         </div>
 
-        <div class="action-modal-wraper" v-if="success_message">
-            <span>{{ success_message }}</span>
-        </div>
-
-        <div class="action-modal-wraper-error" v-if="error_message">
-            <span>{{ error_message }}</span>
-        </div>
-
-        <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-data="getArticleDataFromAdd"></ArticleAdd>
-
-
-        <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-data="getArticleDataFromEdit"></ArticleEdit>
-
-        <div class="right-sidebar-wrapper right-sidebar-small-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isDelete===true">
-            <div class="close-bar d-flex align-items-center justify-content-end">
-                <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                    <img src="../../assets/img/cancel.svg" alt="cancel">
-                </button>
-            </div>
-
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden">
-                <div class="right-sidebar-content-area px-2">
-
-                    <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
-
-                        <div class="row mt-50 mt-md-80">
-                            <div class="col-md-12">
-                                <figure class="mx-auto text-center">
-                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                </figure>
-                                <p class="text-center"> Confirmation for Deleting Article</p>
-
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteArticle"><i class="fas fa-trash"></i> Confirm</button>
-                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
         <!-- Common Right SideBar End -->
     </div>
 
@@ -253,6 +243,7 @@ import ArticleAdd from "@/components/article/articleAdd";
 import ArticleEdit from "@/components/article/articleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
+import $ from "jquery";
 
 export default {
     name: "articleList.vue",
@@ -267,31 +258,31 @@ export default {
 
     data() {
         return {
-            isLoading       : false,
-            isEditCheck     : false,
-            isAddCheck      : false,
-            isDelete        : false,
-            isSearch        : false,
+            isLoading           : false,
+            isEditCheck         : false,
+            isAddCheck          : false,
+            isDeleteCheck            : false,
+            isSearchCheck            : false,
 
-            category_parent_id : '',
-            category_name   : '',
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            categoryList    : '',
-            articleList     : '',
+            category_parent_id  : '',
+            category_name       : '',
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            categoryList        : '',
+            articleList         : '',
 
-            article_id :'',
+            article_id          :'',
 
-            filter : {
-                isAdmin : 1,
-                category_id : '',
-                status : '',
-                en_title : '',
-                tag : '',
+            filter      : {
+                isAdmin         : 1,
+                category_id     : '',
+                status          : '',
+                en_title        : '',
+                tag             : '',
             },
 
-            pagination:{
+            pagination  :{
                 from: '',
                 to: '',
                 first_page_url: '',
@@ -303,43 +294,11 @@ export default {
                 per_page: 10,
                 total: ''
             },
-
         }
     },
     methods: {
-
-        removingRightSideWrapper() {
-
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
-            document.body.classList.remove('open-side-slider');
-
-        },
-
-        clearAllChecker() {
-
-            this.isAddCheck = false;
-            this.isDelete   = false;
-            this.isSearch   = false;
-
-        },
-
-        getArticleDataFromAdd (newData) {
-            console.log(newData)
-            //this.articleList.push(newData);
-            this.isAddCheck = false;
-            this.getArticleList();
-        },
-
-        getArticleDataFromEdit (newEditData) {
-            console.log(newEditData)
-            this.isEditCheck = false;
-            this.getArticleList();
-        },
-
-        clearFilter() {
-
+        clearFilter()
+        {
             this.filter.category_id = "";
             this.filter.status   = "";
             this.filter.en_title = "";
@@ -349,9 +308,42 @@ export default {
             this.getArticleList();
 
         },
+        clearAllChecker()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+        },
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
 
-        getCategoryList() {
+            document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+        },
 
+        getAddDataFromChild (status)
+        {
+            this.getArticleList();
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
+
+        getEditDataFromChild (status)
+        {
+            this.getArticleList();
+            this.success_message = status;
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
+
+
+
+        getCategoryList()
+        {
             let _that =this;
 
             axios.get('admin/categories',
@@ -377,88 +369,81 @@ export default {
                 })
         },
 
-        getArticleList(pageUrl) {
-            let _that =this;
+        getArticleList(pageUrl)
+        {
+            let _that = this;
 
             pageUrl = pageUrl == undefined ? 'admin/articles' : pageUrl;
 
             axios.get(pageUrl,
                 {
                     headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
                     params :
                         {
-                            isAdmin : 1,
-                            category_id : this.filter.category_id,
-                            status : this.filter.status,
-                            en_title : this.filter.en_title,
-                            tag : this.filter.tag,
+                            isAdmin         : 1,
+                            category_id     : this.filter.category_id,
+                            status          : this.filter.status,
+                            en_title        : this.filter.en_title,
+                            tag             : this.filter.tag,
                         },
-
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-
-                        console.log(response.data);
-                        _that.articleList = response.data.article_list.data;
-                        _that.pagination  = response.data.article_list;
-                        _that.isLoading   = false;
-                        //_that.setTimeoutElements();
+                        _that.articleList       = response.data.article_list.data;
+                        _that.pagination        = response.data.article_list;
+                        _that.isLoading         = false;
+                        _that.setTimeoutElements();
 
                     }
                     else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
+                        _that.success_message   = "";
+                        _that.error_message     = response.data.error;
                     }
                 })
         },
 
-        setTimeoutElements() {
-
-           // setTimeout(() => this.isLoading = false, 3000);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
-
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
 
-        deleteArticle() {
+        deleteArticle()
+        {
 
             let _that = this;
 
             axios.delete('admin/articles/delete',
                 {
-                    data:
-                        {
-                            id      : _that.article_id
-                        },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    data    : {
+                            id              : _that.article_id
+                    },
+                    headers : {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-
                 if (response.data.status_code == 200)
                 {
                     _that.getArticleList();
-                    _that.error_message   = '';
-                    _that.clearAllChecker();
-                    document.body.classList.remove('open-side-slider');
-                    _that.success_message = "Successfully deleted the Article";
+                    _that.removingRightSideWrapper();
+                    _that.error_message         = '';
+                    _that.success_message       = "Article Deleted Successfully";
                     _that.setTimeoutElements();
 
                 }
                 else
                 {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
                 }
 
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
-
     },
     created() {
         this.isLoading = true;

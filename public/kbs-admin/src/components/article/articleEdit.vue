@@ -1,120 +1,101 @@
 <template>
+    <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isEditCheck">
+        <div class="right-sidebar-content-area px-2">
 
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="isEdit===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
+            <div class="form-wrapper">
+                <h2 class="section-title text-uppercase mb-20">Article Edit</h2>
+                <select v-model="selected_language" class="form-control col-md-12 mb-20">
+                    <option value="english">English</option>
+                    <option value="bangla">Bangla</option>
+                </select>
 
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
-            <div class="right-sidebar-content-area px-2">
+                <div class="row">
 
-                <div class="form-wrapper">
-                    <h2 class="section-title text-uppercase mb-20">Article Edit</h2>
-                    <select v-model="selected_language" class="form-control col-md-12 mb-20">
-                        <option value="english">English</option>
-                        <option value="bangla">Bangla</option>
-                    </select>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="enTitle">Title <span class="required">*</span></label>
+                            <input class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
+                            <span id="enTitleError" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" v-if="selected_language==='bangla'">
+                        <div class="form-group">
+                            <label>Bangla Title </label>
+                            <input class="form-control" type="text" v-model="articleData.bn_title" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="categoryID">Category <span class="required">*</span></label>
+
+                            <select class="form-control" v-model="articleData.category_id" id="categoryID" @change="checkAndValidateSelectType()">
+                                <option value="" disabled>Select A Category</option>
+                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
+                                    {{a_category.name}}
+                                </option>
+                            </select>
+                            <span id="categoryIDError" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="tag">Tag</label>
+                            <input class="form-control" type="text" v-model="articleData.tag" id="tag">
+                        </div>
+                    </div>
 
                     <div class="col-md-12">
-                        <div v-if="success_message" class="alert alert-success" role="alert">
-                            {{ success_message }}
+                        <div class="form-group mb-15">
+                            <label>English Short Summary</label>
+                            <textarea  cols="30" rows="4" class="form-control" v-model="articleData.en_short_summary"></textarea>
                         </div>
-                        <div v-if="error_message" class="alert alert-danger" role="alert">
-                            {{ error_message }}
+                    </div>
+                    <div class="col-md-12" v-if="selected_language=='bangla'">
+                        <div class="form-group mb-15">
+                            <label for="bn_short_summary">Bangla Short Summary</label>
+                            <textarea cols="30" rows="4" class="form-control " v-model="articleData.bn_short_summary" id="bn_short_summary"></textarea>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group mb-15">
+                            <label >English Body</label>
+                            <SummernoteEdit v-if="isMounted"   :idFromParent="enBody" :dataFromParent="enBodyData"></SummernoteEdit>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="enTitle">Title <span class="required">*</span></label>
-                                <input class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
-                                <span id="enTitleError" class="text-danger small"></span>
-                            </div>
                         </div>
-
-                        <div class="col-md-6" v-if="selected_language==='bangla'">
-                            <div class="form-group">
-                                <label>Bangla Title </label>
-                                <input class="form-control" type="text" v-model="articleData.bn_title" >
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="categoryID">Category <span class="required">*</span></label>
-
-                                <select class="form-control" v-model="articleData.category_id" id="categoryID" @change="checkAndValidateSelectType()">
-                                    <option value="" disabled>Select A Category</option>
-                                    <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
-                                        {{a_category.name}}
-                                    </option>
-                                </select>
-                                <span id="categoryIDError" class="text-danger small"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="tag">Tag</label>
-                                <input class="form-control" type="text" v-model="articleData.tag" id="tag">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group mb-15">
-                                <label>English Short Summary</label>
-                                <textarea  cols="30" rows="4" class="form-control" v-model="articleData.en_short_summary"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12" v-if="selected_language=='bangla'">
-                            <div class="form-group mb-15">
-                                <label for="bn_short_summary">Bangla Short Summary</label>
-                                <textarea cols="30" rows="4" class="form-control " v-model="articleData.bn_short_summary" id="bn_short_summary"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group mb-15">
-                                <label >English Body</label>
-                                <SummernoteEdit v-if="isMounted"   :idFromParent="enBody" :dataFromParent="enBodyData"></SummernoteEdit>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-12" v-if="selected_language=='bangla'">
-                            <div class="form-group mb-15">
-                                <label >Bangla Body</label>
-                                <SummernoteEdit  :idFromParent="bnBody" :dataFromParent="bnBodyData"></SummernoteEdit>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select A Status</label>
-                                <select class="form-control" v-model="articleData.status">
-                                    <option value="draft">Draft</option>
-                                    <option value="hide">Hide</option>
-                                    <option value="private">Private</option>
-                                    <option value="public">Public</option>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
 
-
-                    <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="articleUpdate()">Update</button>
+                    <div class="col-md-12" v-if="selected_language=='bangla'">
+                        <div class="form-group mb-15">
+                            <label >Bangla Body</label>
+                            <SummernoteEdit  :idFromParent="bnBody" :dataFromParent="bnBodyData"></SummernoteEdit>
+                        </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select A Status</label>
+                            <select class="form-control" v-model="articleData.status">
+                                <option value="draft">Draft</option>
+                                <option value="hide">Hide</option>
+                                <option value="private">Private</option>
+                                <option value="public">Public</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
+
+                <div class="form-group text-right">
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
+                </div>
             </div>
+
         </div>
     </div>
-
 </template>
 
 <script>
@@ -133,62 +114,53 @@ export default {
 
     data() {
         return {
-            isMounted : false,
-            isEdit : false,
-            enBody : "en_Body",
-            bnBody : "bn_Body",
-            selected_language  : 'english',
-            category_parent_id : '',
-            category_name   : '',
-            selectedCategory : '',
-            categoryList    : '',
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            articleDetails  : '',
+            isMounted               : false,
+            isEdit                  : false,
+            enBody                  : "en_Body",
+            bnBody                  : "bn_Body",
+            selected_language       : 'english',
+            category_parent_id      : '',
+            category_name           : '',
+            selectedCategory        : '',
+            categoryList            : '',
+            success_message         : '',
+            error_message           : '',
+            token                   : '',
+            articleDetails          : '',
+            enBodyData              : '',
+            bnBodyData              : '',
 
-            enBodyData : '',
-            bnBodyData : '',
-
-            articleData     : {
-
-                category_id : '',
-                id :  '',
-                en_title  : '',
-                bn_title  : '',
-                tag  : '',
-                en_short_summary  : '',
-                bn_short_summary  : '',
-                en_body  : '',
-                bn_body  : '',
-                status  : 'draft',
-
+            articleData    : {
+                category_id         : '',
+                id                  :  '',
+                en_title            : '',
+                bn_title            : '',
+                tag                 : '',
+                en_short_summary    : '',
+                bn_short_summary    : '',
+                en_body             : '',
+                bn_body             : '',
+                status              : 'draft',
             },
 
-            validation_error :{
-                isTitleStatus    : false,
-                isCategoryStatus : false,
+            validation_error: {
+                isTitleStatus       : false,
+                isCategoryStatus    : false,
             } ,
 
-            images: [],
-            files: [],
-            url : '',
+            images                  : [],
+            files                   : [],
+            url                     : '',
 
-            filter : {
-                isAdmin : 1
+            filter      : {
+                isAdmin             : 1
             }
         }
     },
 
     methods: {
-
-        clearAllChecker() {
-            this.isEdit = false;
-            this.$emit('article-edit-data', this.isEdit);
-        },
-
-        checkAndValidateSelectType(){
-
+        checkAndValidateSelectType()
+        {
             if (!this.articleData.category_id) {
                 $('#categoryID').css({
                     'border-color': '#FF7B88',
@@ -205,8 +177,8 @@ export default {
             }
         },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
-
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
             if (selected_data.length >0) {
                 if (selected_data.length <3){
                     $(selected_id).css({
@@ -241,8 +213,8 @@ export default {
             }
         },
 
-        validateAndSubmit(){
-
+        validateAndSubmit()
+        {
             if (!this.articleData.en_title){
                 $('#enTitle').css({
                     'border-color': '#FF7B88',
@@ -259,19 +231,17 @@ export default {
 
             if (this.validation_error.isTitleStatus    === true &&
                 this.validation_error.isCategoryStatus === true ){
-                //console.log(this.validation_error)
                 this.articleUpdate();
             }
         },
 
-        showServerError(errors){
-
+        showServerError(errors)
+        {
             $('#enTitleError').html("");
             $('#categoryIDError').html("");
 
             $('#enTitle').css({'border-color': '#ced4da'});
             $('#categoryID').css({'border-color': '#ced4da'});
-
             errors.forEach(val=>{
                 console.log(val);
                 if (val.includes("en title")==true){
@@ -282,22 +252,20 @@ export default {
                     $('#categoryIDError').html(val)
                     $('#categoryID').css({'border-color': '#FF7B88'});
                 }
-
             })
         },
 
-        articleUpdate() {
-
-            let _that = this;
-            let formData = new FormData();
-            let enBody = document.getElementById('en_Body').value;
+        articleUpdate()
+        {
+            let _that           = this;
+            let formData        = new FormData();
+            let enBody          = document.getElementById('en_Body').value;
 
             if (!(document.getElementById('bn_Body'))) {
-                var bnBody = '';
+                var bnBody      = '';
             } else {
-                bnBody  = document.getElementById('bn_Body').value;
+                bnBody          = document.getElementById('bn_Body').value;
             }
-
             formData.append('id', this.articleData.id);
             formData.append('category_id', this.articleData.category_id);
             formData.append('en_title', this.articleData.en_title);
@@ -309,24 +277,20 @@ export default {
             formData.append('bn_body', bnBody);
             formData.append('status', this.articleData.status);
 
-            console.log(formData)
-
             axios.post('admin/article/update-data', formData,
                 {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    headers : {
+                        'Content-Type'      : 'multipart/form-data',
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-
                 if (response.data.status_code == 200){
-                    _that.articleData      = '';
-                    _that.error_message    = '';
-                    _that.success_message  = "Article Updated Successfully";
-                    _that.isEdit = false;
-                    _that.$emit('article-edit-data', _that.articleData);
-                    document.body.classList.remove('open-side-slider')
+                    _that.articleData           = '';
+                    _that.error_message         = '';
+                    _that.success_message       = "Article Updated Successfully";
+                    console.log(_that.success_message);
 
+                    _that.$emit('article-edit-close', _that.success_message);
                 }else if(response.data.status_code === 400){
                     _that.success_message       = "";
                     _that.error_message         = "";
@@ -344,7 +308,6 @@ export default {
         },
 
         getCategoryList() {
-
             let _that =this;
 
             axios.get('admin/categories',
@@ -375,7 +338,6 @@ export default {
 
             let _that = this;
             let articleID = this.articleData.id;
-            console.log("article Id " + articleID);
             let apiUrl = "admin/articles/";
 
             axios.get(apiUrl+articleID,
@@ -417,15 +379,8 @@ export default {
 
     created() {
         this.articleData.id = this.articleId;
-
-        console.log("article_id" + this.articleId);
         this.getArticleDetails();
         this.getCategoryList();
-        this.isEdit = this.isEditCheck;
-
-
-        console.log(this.isEditCheck)
-
     }
 }
 </script>
