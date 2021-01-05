@@ -27,7 +27,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="title">Title <span class="required">*</span></label>
-                                <input type="text" class="form-control" v-model="quizData.name" id="title" placeholder="Enter Quiz Title" required>
+                                <input type="text" class="form-control" v-model="quizData.name" id="title" placeholder="Enter Quiz Title" @keyup="checkAndChangeValidation(quizData.name, '#title', '#titleError', '*title')" required>
                                 <span id="titleError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label>Select Quiz Form</label>
 
-                                <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id">
+                                <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType()">
                                     <option value="" disabled>Select A Quiz Form</option>
                                     <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
                                         {{a_quiz_form.name}}
@@ -50,7 +50,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="duration">Duration (Minutes)</label>
-                                <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30">
+                                <input type="number" class="form-control" v-model="quizData.duration" id="duration" placeholder="Ex : 30" @keyup="checkAndChangeValidation(quizData.duration, '#duration', '#durationError', '*duration')">
                                 <span id="durationError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="totalMarks">Total Marks<span class="required">*</span></label>
-                                <input type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100">
+                                <input type="number" class="form-control" v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100" @keyup="checkAndChangeValidation(quizData.total_marks, '#totalMarks', '#totalMarksError', '*total marks')">
                                 <span id="totalMarksError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
-                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10">
+                                <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
                                 <span id="numberOfQuestionsError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="form-group text-right">
-                        <button class="btn common-gradient-btn ripple-btn px-50" @click="quizUpdate()">Update</button>
+                        <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
                     </div>
                 </div>
 
@@ -126,6 +126,14 @@ export default {
                     status        : '',
                     number_of_questions   : '',
                 },
+
+            validation_error :{
+                isTitleStatus : true,
+                isQuizFormStatus : true,
+                isDurationStatus : true,
+                isTotalMarksStatus : true,
+                isNumberOfQuestionStatus : true,
+            },
         }
     },
 
@@ -136,6 +144,127 @@ export default {
             this.isEdit = false;
             this.$emit('quiz-edit-data', this.isEdit);
 
+        },
+
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
+
+            if (selected_data.length >0) {
+                if (selected_name === "*title"){
+
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+                        if (selected_name === "*title"){
+                            this.validation_error.isTitleStatus = false;
+                        }
+
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*title"){
+                            this.validation_error.isTitleStatus = true;
+                        }
+                    }
+                }else{
+                    $(selected_id).css({
+                        'border-color': '#ced4da',
+                    });
+                    $(selected_error_id).html("");
+
+                    if (selected_name === "*duration"){
+                        this.validation_error.isDurationStatus = true;
+                    }else if(selected_name === "*total marks"){
+                        this.validation_error.isTotalMarksStatus = true;
+                    }else if(selected_name === "*number of questions"){
+                        this.validation_error.isNumberOfQuestionStatus = true;
+                    }
+                }
+
+            } else{
+                $(selected_id).css({
+                    'border-color': '#FF7B88',
+                });
+                $(selected_error_id).html(selected_name+" field is required")
+
+                if (selected_name === "*title"){
+                    this.validation_error.isTitleStatus = true;
+                }else if (selected_name === "*duration"){
+                    this.validation_error.isDurationStatus = true;
+                }else if(selected_name === "*total marks"){
+                    this.validation_error.isTotalMarksStatus = true;
+                }else if(selected_name === "*number of questions"){
+                    this.validation_error.isNumberOfQuestionStatus = true;
+                }
+            }
+        },
+
+        checkAndValidateSelectType(){
+
+            if (!this.quizData.quiz_form_id) {
+                $('#quizForm').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#quizFormError').html("*quiz form field is required");
+                this.validation_error.isQuizFormStatus = false;
+
+            } else{
+                $('#quizForm').css({
+                    'border-color': '#ced4da',
+                });
+                $('#quizFormError').html("");
+                this.validation_error.isQuizFormStatus = true;
+            }
+        },
+
+        validateAndSubmit(){
+
+            if (!this.quizData.name){
+                $('#title').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#titleError').html("*title field is required");
+            }
+            if (!this.quizData.quiz_form_id){
+                $('#quizForm').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#quizFormError').html("*quiz form field is required");
+            }
+            if (!this.quizData.duration){
+                $('#duration').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#durationError').html("*duration field is required");
+            }
+            if (!this.quizData.total_marks){
+                $('#totalMarks').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#totalMarksError').html("*total marks field is required");
+            }
+            if (!this.quizData.number_of_questions){
+                $('#numberOfQuestions').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#numberOfQuestionsError').html("*number of questions field is required");
+            }
+
+            console.log(this.validation_error);
+
+            if (this.validation_error.isTitleStatus === true &&
+                this.validation_error.isQuizFormStatus === true &&
+                this.validation_error.isDurationStatus === true &&
+                this.validation_error.isTotalMarksStatus === true &&
+                this.validation_error.isNumberOfQuestionStatus === true){
+                //console.log(this.validation_error)
+                this.quizUpdate();
+            }
         },
 
         showServerError(errors){
