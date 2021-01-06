@@ -16,6 +16,7 @@ class AuthController
     /**
      * @var UserRepository
      */
+
     protected $userRepository;
 
 
@@ -86,12 +87,9 @@ class AuthController
     }
 
     public function logout(Request $request) {
-        $user      = User::find($request->id);
 
-        if ($user){
-            Token::where('user_id', $request->userId)
-                ->where('id', '<>', $request->tokenId)
-                ->update(['revoked' => true]);
+        if ($request->user()->token()->revoke()){
+
             return response()->json([
                 'status_code'   => 200,
                 'messages'      => config('status.status_code.200'),
@@ -102,7 +100,7 @@ class AuthController
             return response()->json([
                 'status_code'   => 200,
                 'messages'      => config('status.status_code.200'),
-                'data'          => "No data found!"
+                'data'          => "Could not logout"
             ]);
         }
     }

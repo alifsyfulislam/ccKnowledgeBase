@@ -167,7 +167,7 @@ export default {
             axios.post('admin/logout',
                 {
                     id          : this.user_info.id,
-                    tokenID     : localStorage.getItem('authToken')
+                    tokenId     : localStorage.getItem('authToken')
                 },
                 {
                     headers: {
@@ -175,11 +175,17 @@ export default {
                     }
                 }
             ).then(function (response) {
-                console.log(response.data);
-               // _that.token           = response.data.token;
-                // localStorage.removeItem('authToken');
-                localStorage.clear();
-                _that.$router.push('/');
+
+                if (response.data.status_code === 200){
+                    localStorage.clear();
+                    _that.$router.push('/');
+                    _that.error_message   = "";
+                    _that.success_message = response.data.message;
+
+                }else{
+                    _that.success_message           = "";
+                    _that.error_message             = response.data.message;
+                }
             });
         },
 
