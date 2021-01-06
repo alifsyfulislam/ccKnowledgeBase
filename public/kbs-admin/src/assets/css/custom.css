@@ -39,6 +39,14 @@
     max-width: 1100px;
 }
 
+.action-modal-wraper.top-0 {
+    top: 0;
+}
+
+.action-modal-wraper-error.top-0 {
+    top: 0;
+}
+
 .sidebar-menu-wrapper a {
     position: relative;
     display: inline-flex;
