@@ -178,9 +178,10 @@ export default {
 
                 if (response.data.status_code === 200){
                     localStorage.clear();
-                    _that.$router.push('/');
-                    _that.error_message   = "";
-                    _that.success_message = response.data.message;
+                    _that.$router.push({ name: 'login', params: { message : response.data.message }});
+                    // _that.error_message   = "";
+                    // _that.success_message = response.data.message;
+                    // _that.$emit('user-logout', _that.success_message);
 
                 }else{
                     _that.success_message           = "";
