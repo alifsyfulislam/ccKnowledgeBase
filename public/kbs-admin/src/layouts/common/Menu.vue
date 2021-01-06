@@ -175,7 +175,7 @@
                   <li>
                       <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
                           <span class="menu-sub-title">Page Configuration</span>
-                      </a>                      
+                      </a>
 <!--                      <router-link :to="{ name: 'pageConfiguration'}">
                           <span class="menu-sub-title">Page Configuration</span>
                       </router-link>-->
@@ -188,11 +188,22 @@
       </ul>
     </nav>
   </div>
-    <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck= "isConfigurationCheck" @config-data="getPageConfigData"></pageConfiguration>
+
+    <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" >
+        <div class="close-bar d-flex align-items-center justify-content-end">
+            <button class="right-side-config-close-btn ripple-btn-danger" @click="clearAllChecker">
+                <img src="../../assets/img/cancel.svg" alt="cancel">
+            </button>
+        </div>
+
+        <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck="isConfigurationCheck"></pageConfiguration>
+    </div>
+
 </template>
 
 <script>
 import pageConfiguration from "@/components/settings/pageConfigurationNew";
+
 export default {
     name: "Menu.vue",
 
@@ -208,6 +219,14 @@ export default {
         }
     },
     methods :{
+
+        clearAllChecker() {
+
+            this.isConfigurationCheck = false;
+           // this.$emit('config-data', this.is_config_check);
+
+        },
+
         getPageConfigData(newData) {
             console.log(newData)
             this.isConfigurationCheck = false;

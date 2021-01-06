@@ -1,12 +1,7 @@
 <template>
-    <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="is_config_check===true">
-        <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-config-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
-        </div>
 
-        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" >
+
+        <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isConfigurationCheck===true">
             <div class="right-sidebar-content-area px-2">
 
                 <div class="form-wrapper">
@@ -86,7 +81,7 @@
 
             </div>
         </div>
-    </div>
+
 </template>
 
 <script>
@@ -126,13 +121,6 @@ export default {
     },
 
     methods: {
-
-        clearAllChecker() {
-
-            this.is_config_check = false;
-            this.$emit('config-data', this.is_config_check);
-
-        },
 
         onLogoFileChange(e) {
             this.logo_file = e.target.files[0];

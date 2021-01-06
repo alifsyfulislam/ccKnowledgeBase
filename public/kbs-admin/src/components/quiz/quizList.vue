@@ -119,42 +119,6 @@
             <span>{{ error_message }}</span>
         </div>
 
-<!--        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
-            <div class="close-bar d-flex align-items-center justify-content-end">
-                <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
-                    <img src="../../assets/img/cancel.svg" alt="cancel">
-                </button>
-            </div>
-            &lt;!&ndash;            add data&ndash;&gt;
-            <CategoryAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @category-slide-close="getAddDataFromChild"></CategoryAdd>
-            &lt;!&ndash;            edit data&ndash;&gt;
-            <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-slide-close="getEditDataFromChild"></CategoryEdit>
-            &lt;!&ndash;            delete data &ndash;&gt;
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
-                <div class="right-sidebar-content-area px-2">
-
-                    <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete</h2>
-
-                        <div class="row mt-50 mt-md-80">
-                            <div class="col-md-12">
-                                <figure class="mx-auto text-center">
-                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                </figure>
-                                <p class="text-center"> Confirmation for Deleting Category</p>
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
-                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>-->
-
         <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
             <div class="close-bar d-flex align-items-center justify-content-end">
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
