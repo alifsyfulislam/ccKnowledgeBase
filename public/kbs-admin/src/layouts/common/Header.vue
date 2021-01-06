@@ -52,6 +52,12 @@ $(document).on('click', '.right-side-common-form, .right-side-close-btn', functi
     $('body').toggleClass('open-side-slider');
 });
 
+// Right Side Common Forms
+$(document).on('click', '.right-side-config-form, .right-side-config-close-btn', function () {
+    $('.right-side-config-wrapper').toggleClass('right-side-config-form-show');
+    $('body').toggleClass('open-side-slider');
+});
+
 
 import UserProfileBar from './UserProfileBar.vue'
 

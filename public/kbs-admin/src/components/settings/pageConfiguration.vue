@@ -69,7 +69,6 @@
                                             <div class="form-group">
                                                 <label for="name" class="d-block">Logo</label>
                                                 <input type="file" id="files"  ref="files" @change="onLogoFileChange" >
-<!--                                                <input class="form-control" type="text" v-model="categoryData.name" id="name" placeholder="Enter Category Name" required>-->
                                             </div>
                                         </div>
 
@@ -124,17 +123,13 @@
 
                             </div>
                         </div>
-
-
+                        <!-- Common Right SideBar -->
                     </div>
                     <!-- Content Area End -->
                 </div>
             </div>
             <!-- Content Area End -->
         </div>
-
-        <!-- Common Right SideBar -->
-
     </div>
 </template>
 

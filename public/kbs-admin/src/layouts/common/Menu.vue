@@ -173,7 +173,7 @@
               <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
 
                   <li>
-                      <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-common-form">
+                      <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
                           <span class="menu-sub-title">Page Configuration</span>
                       </a>                      
 <!--                      <router-link :to="{ name: 'pageConfiguration'}">
