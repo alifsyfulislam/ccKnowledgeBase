@@ -97,10 +97,10 @@
     line-height: 1.25;
 }
 
-.sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul, 
-.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+.sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul,
+.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul,
 .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li a:hover ~ ul,
-.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+.sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul,
 .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul {
     top: 33px;
 }
@@ -226,8 +226,12 @@ input[type="file"]:focus {
     outline: none;
 }
 
-.sidebar-menu-wrapper a.dropdown-toggle.collapsed:after {    
+.sidebar-menu-wrapper a.dropdown-toggle.collapsed:after {
     content: '+';
+}
+
+.modal-backdrop {
+    z-index: 99 !important;
 }
 
 @media (max-width: 1600px) {
@@ -261,15 +265,15 @@ input[type="file"]:focus {
 
     .sidebar-menu-wrapper a,
     .sidebar-menu-wrapper li .sub-items a .menu-sub-title,
-    .sidebar-wrapper .tree-nav li:hover a .menu-title, 
+    .sidebar-wrapper .tree-nav li:hover a .menu-title,
     .sidebar-wrapper .sidebar-menu-wrapper li:hover a .menu-title {
         font-size: 12px;
     }
 
-    .sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul, 
-    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li a:hover ~ ul,
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul,
     .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li a:hover ~ ul,
-    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul, 
+    .sidebar-wrapper.left-sidebar-hide .tree-nav li:hover a ~ ul,
     .sidebar-wrapper.left-sidebar-hide .sidebar-menu-wrapper li:hover a ~ ul,
     .sidebar-wrapper .sidebar-menu-wrapper li:hover a ~ ul {
         top: 33px;
