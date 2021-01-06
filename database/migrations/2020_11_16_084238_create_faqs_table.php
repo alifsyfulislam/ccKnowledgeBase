@@ -21,7 +21,7 @@ class CreateFaqsTable extends Migration
             $table->string('en_title')->index();
             $table->string('bn_title')->index()->nullable();
             $table->text('tag')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->binary('en_body')->nullable();
             $table->binary('bn_body')->nullable();
             $table->enum('status', ['draft', 'hide', 'private', 'public']);
