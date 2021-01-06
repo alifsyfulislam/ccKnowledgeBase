@@ -166,7 +166,8 @@ export default {
             let _that = this;
             axios.post('admin/logout',
                 {
-                    id  : this.user_info.id
+                    id          : this.user_info.id,
+                    tokenID     : localStorage.getItem('authToken')
                 },
                 {
                     headers: {
