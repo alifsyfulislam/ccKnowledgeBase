@@ -1,7 +1,7 @@
 <template>
-    <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="is_config_check===true">
+    <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" v-if="is_config_check===true">
         <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+            <button class="right-side-config-close-btn ripple-btn-danger" @click="clearAllChecker">
                 <img src="../../assets/img/cancel.svg" alt="cancel">
             </button>
         </div>
