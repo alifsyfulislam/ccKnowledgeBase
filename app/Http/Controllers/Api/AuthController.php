@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -47,7 +48,11 @@ class AuthController
 
         if ($validator->fails()) {
 
-            return response()->json(['status_code' => 400, 'messages'=>config('status.status_code.400'), 'error'=>$validator->messages()->first()]);
+            return response()->json([
+                'status_code' => 400,
+                'messages'=>config('status.status_code.400'),
+                'error'=>$validator->messages()->first()
+            ]);
 
         } else {
 
@@ -69,11 +74,13 @@ class AuthController
 
             } else {
 
-                return response()->json(['status_code' => 401, 'messages'=>config('status.status_code.401')]);
+                return response()->json([
+                    'status_code' => 401,
+                    'messages'=>config('status.status_code.401')
+                ]);
             }
 
         }
 
     }
-
 }

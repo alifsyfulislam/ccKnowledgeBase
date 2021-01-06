@@ -278,9 +278,9 @@ class UserService
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json([
-                'status_code' => 424,
-                'messages'=>config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'status_code'   => 424,
+                'messages'      => config('status.status_code.424'),
+                'error'         => $e->getMessage()
             ]);
         }
 

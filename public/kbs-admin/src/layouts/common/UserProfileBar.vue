@@ -23,13 +23,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-<!--                            <div class="col-md-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="password">Old Password <span class="required">*</span></label>-->
-<!--                                    <input class="form-control" type="text" v-model="userData.old_password" id="oldPassword" @keyup="checkAndValidatePassword()" placeholder="Enter old password here!!" required>-->
-<!--                                    <span id="oldPasswordError" class="text-danger small"> </span>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                            <div class="col-md-12">-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="password">Old Password <span class="required">*</span></label>-->
+                            <!--                                    <input class="form-control" type="text" v-model="userData.old_password" id="oldPassword" @keyup="checkAndValidatePassword()" placeholder="Enter old password here!!" required>-->
+                            <!--                                    <span id="oldPasswordError" class="text-danger small"> </span>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -42,18 +42,26 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                                    <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter confirm password again!!" required>
+                                    <input class="form-control" type="password" @keyup.enter="validateAndSubmit" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter confirm password again!!" required>
                                     <span id="confirmPasswordError" class="small"> </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger rounded btn-sm m-1" data-dismiss="modal">Close</button>
+                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-sm m-1" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success rounded btn-sm m-1" @click="validateAndSubmit">Update</button>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="action-modal-wraper" v-if="success_message">
+            <span>{{ success_message }}</span>
+        </div>
+
+        <div class="action-modal-wraper-error" v-if="error_message">
+            <span>{{ error_message }}</span>
         </div>
     </div>
 </template>
@@ -81,6 +89,7 @@ export default {
 
             userData : {
                 // old_password:'',
+                // id                      : '',
                 password                : '',
                 confirm_password        : ''
             },
@@ -91,6 +100,12 @@ export default {
         }
     },
     methods :{
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
+        },
         showServerError(errors)
         {
             $('#passwordError').html("");
@@ -109,8 +124,9 @@ export default {
         userChangePassword(){
             console.log("okay");
             let _that = this;
-            axios.post('admin/users',
+            axios.post('admin/user/update-password',
                 {
+                    id                  : this.user_info.id,
                     password            : this.userData.password,
                     confirm_password    : this.userData.confirm_password,
                 },
@@ -119,13 +135,16 @@ export default {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                if (response.data.status_code === 201)
+                console.log(response.data)
+                if (response.data.status_code === 200)
                 {
                     _that.userData                  = '';
                     _that.error_message             = '';
-                    _that.success_message           = "User Added Successfully";
+                    _that.success_message           = "Password updated successfully";
+                    _that.setTimeoutElements();
+                    $('#closeModal').click();
+                    $('#confirmPasswordError').html("");
 
-                    // _that.$emit('user-slide-close', _that.success_message);
                 }
                 else if(response.data.status_code === 400)
                 {
@@ -141,11 +160,26 @@ export default {
                 console.log(error);
             });
         },
+
         logout()
         {
-            localStorage.removeItem('authToken');
-            this.$router.push('/admin');
-            //localStorage.setItem('authToken');
+            let _that = this;
+            axios.post('admin/logout',
+                {
+                    id  : this.user_info.id
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                }
+            ).then(function (response) {
+                console.log(response.data);
+               // _that.token           = response.data.token;
+                // localStorage.removeItem('authToken');
+                localStorage.clear();
+                _that.$router.push('/');
+            });
         },
 
         validateAndSubmit()

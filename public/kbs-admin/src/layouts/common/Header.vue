@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <div class="topbar-wrapper px-15 bg-white">
-      <div class="top-bar-content d-flex align-items-center justify-content-between py-10">
-        <div class="sidebar-navbar">
-          <i class="fas fa-bars"></i>
-        </div>
+    <div>
+        <div class="topbar-wrapper px-15 bg-white">
+            <div class="top-bar-content d-flex align-items-center justify-content-between py-10">
+                <div class="sidebar-navbar">
+                    <i class="fas fa-bars"></i>
+                </div>
 
-        <div class="topbar-user-info-area">
-          <div class="d-flex align-items-center justify-content-end">
-            <div class="user-name">{{user_info.email}}</div>
-            <div class="user-image px-15">
-              <img class="img-fluid" src="@/assets/img/user-image.jpg" alt="root@ccpro">
+                <div class="topbar-user-info-area">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <div class="user-name">{{user_info.first_name+' '+user_info.last_name}}</div>
+                        <div class="user-image px-15">
+                            <img class="img-fluid" src="@/assets/img/user-image.jpg" alt="root@ccpro">
+                        </div>
+                        <div class="user-profile-navbar">
+                            <i class="fas fa-stream"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="user-profile-navbar">
-              <i class="fas fa-stream"></i>
-            </div>
-          </div>
         </div>
-      </div>
+        <UserProfileBar></UserProfileBar>
     </div>
-    <UserProfileBar></UserProfileBar>
-  </div>
 
 </template>
 

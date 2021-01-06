@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -120,5 +121,24 @@ class UserController extends Controller
        // return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
     }
 
+    public function logout(Request $request) {
+        $user      = User::find($request->id);
 
+        if ($user){
+
+
+            return response()->json([
+                'status_code'   => 200,
+                'messages'      => config('status.status_code.200'),
+                'data'          => 'Successfully logged out'
+            ]);
+
+        } else{
+            return response()->json([
+                'status_code'   => 200,
+                'messages'      => config('status.status_code.200'),
+                'data'          => "No data found!"
+            ]);
+        }
+    }
 }

@@ -123,7 +123,6 @@ export default {
               _that.token           = response.data.token;
               _that.error_message   = '';
               _that.success_message = response.data.messages;
-              console.log(response.data.user_info);
               localStorage.setItem('authToken', _that.token);
               localStorage.setItem('userInformation', JSON.stringify(response.data.user_info));
               _that.$router.push('/admin/dashboard');
