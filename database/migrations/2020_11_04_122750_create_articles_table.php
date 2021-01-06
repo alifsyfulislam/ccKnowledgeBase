@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
             $table->string('en_title')->index();
             $table->string('bn_title')->index()->nullable();
             $table->text('tag')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('en_short_summary')->nullable();
             $table->text('bn_short_summary')->nullable();
             $table->binary('en_body')->nullable();
