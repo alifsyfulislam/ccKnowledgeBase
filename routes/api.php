@@ -32,6 +32,8 @@ Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizField
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
+    Route::post('user/update-password', 'Api\UserController@changePassword');
+
     Route::apiResource('users','Api\UserController');
     Route::apiResource('roles','Api\RoleController');
     Route::apiResource('permissions', 'Api\PermissionController');

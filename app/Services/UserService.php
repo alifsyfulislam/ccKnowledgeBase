@@ -127,7 +127,7 @@ class UserService
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json([
                 'status_code' => 424,
@@ -201,14 +201,21 @@ class UserService
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => 424, 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
 
     }
 
@@ -229,9 +236,52 @@ class UserService
 
             DB::rollBack();
 
-            Log::info($e->getMessage());
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
             return response()->json(['status_code' => 424, 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+        }
+
+        DB::commit();
+
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+    }
+
+    public function updatePassword($request)
+    {
+        $validator = Validator::make($request->all(),[
+            'password' => 'required|between:8,32|same:confirm_password|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\d)(?=.*[$%&_+-.@#]).+$/',
+
+        ]);
+
+        if($validator->fails()) {
+
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
+
+        }
+
+        $input['password'] = Hash::make($request->password);
+
+        DB::beginTransaction();
+
+        try {
+
+            $this->userRepository->update($input, $request->id);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>config('status.status_code.424'),
+                'error' => $e->getMessage()
+            ]);
         }
 
         DB::commit();

@@ -113,5 +113,12 @@ class UserController extends Controller
 
     }
 
+    public function changePassword(Request $request)
+    {
+        return $this->userService->updatePassword($request);
+
+       // return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
+    }
+
 
 }
