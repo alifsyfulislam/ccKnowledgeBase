@@ -53,7 +53,7 @@ class AuthController
             return response()->json([
                 'status_code' => 400,
                 'messages'=>config('status.status_code.400'),
-                'error'=>$validator->messages()->first()
+                'errors'=>$validator->messages()->all()
             ]);
 
         } else {
@@ -71,15 +71,12 @@ class AuthController
                 $success['token'] = $user->createToken('Knowledge Base')->accessToken;
                 $success['user_info']=$userInfo;
 
-
                 return response()->json($success);
 
             } else {
-
-                return response()->json([
-                    'status_code' => 451,
-                    'messages'    => config('status.status_code.451')
-                ]);
+                $success['status_code'] = 451;
+                $success['messages'] = config('status.status_code.451');
+                return response()->json($success);
             }
 
         }
