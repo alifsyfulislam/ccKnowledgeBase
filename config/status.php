@@ -48,6 +48,7 @@ return [
         426 => 'Upgrade Required',
         449 => 'Retry With',
         450 => 'Blocked by Windows Parental Controls',
+        451 => 'Incorrect Username or Password',
         500 => 'Internal Server Error',
         501 => 'Not Implemented',
         502 => 'Bad Gateway',

@@ -77,8 +77,8 @@ class AuthController
             } else {
 
                 return response()->json([
-                    'status_code' => 401,
-                    'messages'=>config('status.status_code.401')
+                    'status_code' => 451,
+                    'messages'    => config('status.status_code.451')
                 ]);
             }
 
