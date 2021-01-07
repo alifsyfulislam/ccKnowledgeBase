@@ -57,11 +57,11 @@
             </div>
         </div>
 
-        <div class="action-modal-wraper" v-if="success_message">
+        <div class="action-modal-wraper top-0" v-if="success_message">
             <span>{{ success_message }}</span>
         </div>
 
-        <div class="action-modal-wraper-error" v-if="error_message">
+        <div class="action-modal-wraper-error top-0" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
 
