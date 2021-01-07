@@ -18,20 +18,21 @@
 
                                 <div class="login-form pt-20">
                                     <div class="form-group floating-input with-icon user-icon mb-30 mb-md-50">
-                                        <input class="form-control" type="text" v-model="formData.username" id="userName">
+                                        <input class="form-control" type="text" v-model="formData.username" id="userName" @keyup="checkAndChangeValidation(formData.username,'#userName','#userNameError','*user name')">
                                         <label for="userName">User name</label>
                                         <span class="progress-border userName"></span>
+                                        <span id="userNameError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group floating-input with-icon password-icon mb-30 mb-md-50">
-                                        <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="customerLogin()">
+                                        <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="validateAndSubmit()" @keyup="checkAndChangeValidation(formData.password,'#userPassword','#userPasswordError','*user password')">
                                         <label for="userPassword">Password</label>
                                         <span class="password-show-hide"></span>
                                         <span class="progress-border userPassword"></span>
-
+                                        <span id="userPasswordError" class="small text-danger error-password"></span>
                                     </div>
 
                                     <div class="form-group text-center">
-                                        <button class="btn btn-primary btn-common-2 position-relative overflow-hidden ripple-btn btn-with-rightside-icon text-left text-uppercase py-15 px-45" @click="customerLogin()"><span>Sign In</span></button>
+                                        <button class="btn btn-primary btn-common-2 position-relative overflow-hidden ripple-btn btn-with-rightside-icon text-left text-uppercase py-15 px-45" @click="validateAndSubmit()"><span>Sign In</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -116,9 +117,65 @@ export default {
 
             },
             userInfo        : '',
+            validation_error :{
+                isUserNameStatus    : false,
+                isPasswordStatus    : false,
+            },
         }
     },
     methods: {
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
+            if (selected_data.length >0) {
+
+                $(selected_id).css({
+                    'border-color': '#ced4da',
+                });
+                $(selected_error_id).html("");
+                if(selected_name === "*user name"){
+                    this.validation_error.isUserNameStatus = true;
+                }else if(selected_name === "*user password"){
+                    this.validation_error.isPasswordStatus = true;
+                }
+            }else{
+                $(selected_id).css({'border-color': '#FF7B88',});
+                $(selected_error_id).html(selected_name+" field is required")
+                if(selected_name === "*user name"){
+                    this.validation_error.isUserNameStatus = false;
+                }else if(selected_name === "*user password"){
+                    this.validation_error.isPasswordStatus = true;
+                }
+            }
+        },
+        validateAndSubmit()
+        {
+            if (!this.formData.username){
+
+                $('#userName').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#userNameError').html("*user name field is required");
+
+                this.validation_error.isUserNameStatus = false;
+            }
+            if (!this.formData.password){
+
+                $('#userPassword').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#userPasswordError').html("*password field is required");
+
+                this.validation_error.isPasswordStatus = false;
+            }
+            if (this.formData.username && this.formData.password){
+                this.validation_error.isUserNameStatus = true;
+                this.validation_error.isPasswordStatus = true;
+            }
+            if (this.validation_error.isUserNameStatus === true &&
+                this.validation_error.isPasswordStatus === true){
+                this.customerLogin();
+            }
+        },
         setTimeoutElements()
         {
             // setTimeout(() => this.isLoading = false, 3e3);
@@ -164,24 +221,20 @@ export default {
 
         showServerError(errors)
         {
-            $('#loginStatusError').html("");
+            $('#userNameError').html("");
+            $('#userPassword').html("");
 
             $('#userName').css({'border-color': '#ced4da'});
             $('#userPassword').css({'border-color': '#ced4da'});
 
             errors.forEach(val=>{
                 console.log(val);
-                if (val.includes("username")===true){
-                    $('#loginStatusError').html(val)
+                if (val.includes("username")){
+                    $('#userNameError').html(val)
                     $('#userName').css({'border-color': '#FF7B88'});
                 }
-                else if (val.includes("password")==true){
-                    $('#loginStatusError').html(" "+val)
-                    $('#userPassword').css({'border-color': '#FF7B88'});
-                }
-                else if (val.includes("username")===true && val.includes("password")==true){
-                    $('#loginStatusError').html(" "+"The username and password field required");
-                    $('#userName').css({'border-color': '#FF7B88'});
+                else if (val.includes("password")){
+                    $('#userPasswordError').html(" "+val)
                     $('#userPassword').css({'border-color': '#FF7B88'});
                 }
             })
