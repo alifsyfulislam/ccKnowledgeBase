@@ -14,17 +14,20 @@
                                     <span class="acc-type text-uppercase">Knowledge Based System</span>
                                 </div>
 
+                                <div v-if="checkedCounter > 0" class="small text-danger pt-20" id="loginStatusError"></div>
+
                                 <div class="login-form pt-20">
                                     <div class="form-group floating-input with-icon user-icon mb-30 mb-md-50">
                                         <input class="form-control" type="text" v-model="formData.username" id="userName">
                                         <label for="userName">User name</label>
-                                        <span class="progress-border"></span>
+                                        <span class="progress-border userName"></span>
                                     </div>
                                     <div class="form-group floating-input with-icon password-icon mb-30 mb-md-50">
                                         <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="customerLogin()">
                                         <label for="userPassword">Password</label>
                                         <span class="password-show-hide"></span>
-                                        <span class="progress-border"></span>
+                                        <span class="progress-border userPassword"></span>
+
                                     </div>
 
                                     <div class="form-group text-center">
@@ -116,6 +119,7 @@ export default {
             success_message : '',
             error_message   : '',
             token           : '',
+            checkedCounter  : 0,
             formData        : {
                 username : 'admin',
                 password : '123456',
@@ -135,6 +139,8 @@ export default {
         customerLogin() {
             let _that = this;
 
+            ++_that.checkedCounter;
+
             axios.post('login', {
                 username          : this.formData.username,
                 password          : this.formData.password,
@@ -142,24 +148,53 @@ export default {
 
                 if (response.data.status_code == 200)
                 {
+                    _that.checkedCounter  = 0;
                     _that.userInfo        = response.data.user_info;
                     _that.token           = response.data.token;
                     _that.error_message   = '';
                     _that.success_message = response.data.messages;
                     localStorage.setItem('authToken', _that.token);
                     localStorage.setItem('userInformation', JSON.stringify(response.data.user_info));
-                    // _that.$router.push('/admin/dashboard');
                     _that.$router.push({ name: 'dashboard', params: { current_status : "Logged in successfully" }});
                 }
                 else
                 {
                     _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    if (response.data.errors){
+                        _that.showServerError(response.data.errors)
+                    }else{
+                        $('#loginStatusError').html(response.data.messages);
+                    }
                 }
             }).catch(function (error)
             {
                 console.log(error);
             });
+        },
+
+        showServerError(errors)
+        {
+            $('#loginStatusError').html("");
+
+            $('#userName').css({'border-color': '#ced4da'});
+            $('#userPassword').css({'border-color': '#ced4da'});
+
+            errors.forEach(val=>{
+                console.log(val);
+                if (val.includes("username")===true){
+                    $('#loginStatusError').html(val)
+                    $('#userName').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("password")==true){
+                    $('#loginStatusError').html(" "+val)
+                    $('#userPassword').css({'border-color': '#FF7B88'});
+                }
+                else if (val.includes("username")===true && val.includes("password")==true){
+                    $('#loginStatusError').html(" "+"The username and password field required");
+                    $('#userName').css({'border-color': '#FF7B88'});
+                    $('#userPassword').css({'border-color': '#FF7B88'});
+                }
+            })
         },
     },
     created() {
