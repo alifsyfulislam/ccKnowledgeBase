@@ -76,7 +76,7 @@ export default {
             storeName :'',
 
             validation_error :{
-                isRoleNameStatus : false,
+                isRoleNameStatus : true,
             },
 
             filter : {
@@ -161,6 +161,8 @@ export default {
         {
             let _that       = this;
             let rolesID     = this.role_id;
+
+            // console.log(rolesID+" "+ _that.storeName+" "+_that.selectedCheckboxes);
 
             axios.put('admin/roles/update',
                 {

@@ -22,14 +22,26 @@
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
-
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add Role
                                 </button>
-
                             </div>
+                        </div>
 
+
+                        <div class="reload-download-expand-area">
+                            <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0">
+                                <li>
+                                    <button class="reload-btn" @click="clearFilter()">
+                                        <div class="d-flex jsutify-content-center align-items-center">
+                                            <i class="fas fa-sync"></i> <span class="hide-on-responsive">Reload</span>
+                                        </div>
+                                    </button>
+                                </li>
+                                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                                <li><button class="screen-expand-btn role-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                            </ul>
                         </div>
 
                     </div>
@@ -162,6 +174,10 @@ import RoleEdit from "@/components/roles/roleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
 import $ from "jquery";
+
+$(document).on('click','.screen-expand-btn .role-fullscreen',()=>{
+    $('.content-wrapper').toggleClass('expandable-content-area');
+});
 
 export default {
     name: "rolesList",

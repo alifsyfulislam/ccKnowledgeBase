@@ -32,11 +32,24 @@
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
-                            <div>
-                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
-                                    <i class="fa fa-refresh"></i>
-                                    Refresh
-                                </button>
+<!--                            <div>-->
+<!--                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">-->
+<!--                                    <i class="fa fa-refresh"></i>-->
+<!--                                    Refresh-->
+<!--                                </button>-->
+<!--                            </div>-->
+                            <div class="reload-download-expand-area">
+                                <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
+                                    <li>
+                                        <button class="reload-btn" @click="clearFilter()">
+                                            <div class="d-flex jsutify-content-center align-items-center">
+                                                <i class="fas fa-sync"></i> <span class="hide-on-responsive">Reload</span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                                    <li><button class="screen-expand-btn article-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -244,6 +257,10 @@ import ArticleEdit from "@/components/article/articleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
 import $ from "jquery";
+
+$(document).on('click','.screen-expand-btn .article-fullscreen',()=>{
+    $('.content-wrapper').toggleClass('expandable-content-area');
+});
 
 export default {
     name: "articleList.vue",

@@ -16,16 +16,22 @@
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
-<!--                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddFieldCheck=true">-->
-<!--                                    <i class="fas fa-plus"></i>-->
-<!--                                    Add Quiz Form-->
-<!--                                </button>-->
-
-                                <button class="btn common-gradient-btn  new-agent-session  mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="clearFilter()">
-                                    <i class="fa fa-refresh"></i>
-                                    Refresh
-                                </button>
+<!--                                //left-->
                             </div>
+                        </div>
+
+                        <div class="reload-download-expand-area">
+                            <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0">
+                                <li>
+                                    <button class="reload-btn" @click="clearFilter()">
+                                        <div class="d-flex jsutify-content-center align-items-center">
+                                            <i class="fas fa-sync"></i> <span class="hide-on-responsive">Reload</span>
+                                        </div>
+                                    </button>
+                                </li>
+                                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                                <li><button class="screen-expand-btn quiz-form-field-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                            </ul>
                         </div>
                     </div>
                     <!-- list top area end -->
@@ -147,6 +153,10 @@
 
     import axios from "axios";
     import $ from "jquery";
+
+    $(document).on('click','.screen-expand-btn .quiz-form-filed-fullscreen',()=>{
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    });
 
     export default {
         name: "quizFormFieldList.vue",
