@@ -58,11 +58,11 @@
             </div>
         </div>
 
-        <div class="action-modal-wraper" v-if="success_message">
+        <div class="action-modal-wraper top-0" v-if="success_message">
             <span>{{ success_message }}</span>
         </div>
 
-        <div class="action-modal-wraper-error" v-if="error_message">
+        <div class="action-modal-wraper-error top-0" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
 
@@ -71,6 +71,16 @@
 
 <script>
 import $ from 'jquery'
+
+$(document).ready(function(){
+    const event = new FocusEvent('focus', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+    document.getElementById('userName').dispatchEvent(event);
+    document.getElementById('userPassword').dispatchEvent(event);
+});
 
 // Login Form
 $(document).on('focus','.form-group input',function(){
@@ -247,6 +257,7 @@ export default {
         }
     }
 }
+
 </script>
 
 <style scoped>
