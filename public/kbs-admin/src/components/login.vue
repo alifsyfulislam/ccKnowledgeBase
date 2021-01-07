@@ -68,6 +68,16 @@
 <script>
 import $ from 'jquery'
 
+$(document).ready(function(){
+    const event = new FocusEvent('focus', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+    document.getElementById('userName').dispatchEvent(event);
+    document.getElementById('userPassword').dispatchEvent(event);
+});
+
 // Login Form
 $(document).on('focus','.form-group input',function(){
     $(this).parent().addClass('focused');
@@ -159,6 +169,7 @@ export default {
         }
     }
 }
+
 </script>
 
 <style scoped>

@@ -11,7 +11,7 @@
 
             <!-- Content Area -->
             <div class="content-area">
-                <div class="content-title-wrapper px-15 py-20">
+                <div class="content-title-wrapper px-15 py-15">
                     <h2 class="content-title text-uppercase m-0">Dashboard</h2>
                 </div>
 
