@@ -24,7 +24,6 @@ import {createApp} from "@vue/runtime-dom";
 axios.defaults.baseURL  = 'http://localhost/ccKnowledgeBase/public/api';
 //axios.defaults.baseURL = 'http://192.168.10.64/kbs/kbs-base/public/api/';
 
-
 const app2 = createApp(App)
 
 /*window.onbeforeunload = function() {
