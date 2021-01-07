@@ -18,13 +18,13 @@
 
                                 <div class="login-form pt-20">
                                     <div class="form-group floating-input with-icon user-icon mb-30 mb-md-50">
-                                        <input class="form-control" type="text" v-model="formData.username" id="userName" @keyup="checkAndChangeValidation(formData.username,'#userName','#userNameError','*user name')">
+                                        <input class="form-control" type="text" v-model="formData.username" id="userName" @keyup="checkAndChangeValidation(formData.username,'#userName','#userNameError','*username')">
                                         <label for="userName">User name</label>
                                         <span class="progress-border userName"></span>
                                         <span id="userNameError" class="small text-danger error-message"></span>
                                     </div>
                                     <div class="form-group floating-input with-icon password-icon mb-30 mb-md-50">
-                                        <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="validateAndSubmit()" @keyup="checkAndChangeValidation(formData.password,'#userPassword','#userPasswordError','*user password')">
+                                        <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="validateAndSubmit()" @keyup="checkAndChangeValidation(formData.password,'#userPassword','#userPasswordError','*password')">
                                         <label for="userPassword">Password</label>
                                         <span class="password-show-hide"></span>
                                         <span class="progress-border userPassword"></span>
@@ -72,30 +72,20 @@
 <script>
 import $ from 'jquery'
 
-$(document).ready(function(){
-    const event = new FocusEvent('focus', {
-        view: window,
-        bubbles: true,
-        cancelable: true
-    });
-    document.getElementById('userName').dispatchEvent(event);
-    document.getElementById('userPassword').dispatchEvent(event);
-});
+// $(document).ready(function(){
+//     const event = new FocusEvent('focus', {
+//         view: window,
+//         bubbles: true,
+//         cancelable: true
+//     });
+//     document.getElementById('userName').dispatchEvent(event);
+//     document.getElementById('userPassword').dispatchEvent(event);
+// });
 
 // Login Form
-$(document).on('focus','.form-group input',function(){
-    $(this).parent().addClass('focused');
-});
 
-$(document).on('blur','.form-group input',function(){
-    let inputValue = $(this).val();
-    if ( inputValue == "" ) {
-        $(this).removeClass('filled');
-        $(this).parents('.form-group').removeClass('focused');
-    } else {
-        $(this).addClass('filled');
-    }
-});
+
+
 
 
 
@@ -122,8 +112,8 @@ export default {
             token           : '',
             checkedCounter  : 0,
             formData        : {
-                username : 'admin',
-                password : '123456',
+                username : '',
+                password : '',
 
             },
             userInfo        : '',
@@ -134,6 +124,32 @@ export default {
         }
     },
     methods: {
+        clearanceAll(){
+            if (!this.formData.username || !this.formData.password){
+                $(document).on('focus','.form-group input',function(){
+                    $(this).parent().addClass('focused');
+                });
+                $(document).on('blur','.form-group input',function(){
+                    let inputValue = $(this).val();
+                    if ( inputValue == "" ) {
+                        $(this).removeClass('filled');
+                        $(this).parents('.form-group').removeClass('focused');
+                    } else {
+                        $(this).addClass('filled');
+                    }
+                });
+            }else{
+                $(document).ready(function(){
+                    const event = new FocusEvent('focus', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.getElementById('userName').dispatchEvent(event);
+                    document.getElementById('userPassword').dispatchEvent(event);
+                });
+            }
+        },
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
         {
             if (selected_data.length >0) {
@@ -142,7 +158,7 @@ export default {
                     'border-color': '#ced4da',
                 });
                 $(selected_error_id).html("");
-                if(selected_name === "*user name"){
+                if(selected_name === "*username"){
                     this.validation_error.isUserNameStatus = true;
                 }else if(selected_name === "*user password"){
                     this.validation_error.isPasswordStatus = true;
@@ -150,7 +166,7 @@ export default {
             }else{
                 $(selected_id).css({'border-color': '#FF7B88',});
                 $(selected_error_id).html(selected_name+" field is required")
-                if(selected_name === "*user name"){
+                if(selected_name === "*username"){
                     this.validation_error.isUserNameStatus = false;
                 }else if(selected_name === "*user password"){
                     this.validation_error.isPasswordStatus = true;
@@ -164,7 +180,7 @@ export default {
                 $('#userName').css({
                     'border-color': '#FF7B88',
                 });
-                $('#userNameError').html("*user name field is required");
+                $('#userNameError').html("*username field is required");
 
                 this.validation_error.isUserNameStatus = false;
             }
@@ -251,6 +267,7 @@ export default {
         },
     },
     created() {
+        this.clearanceAll();
         if (this.$route.params){
             this.success_message = this.$route.params.message;
             this.setTimeoutElements();
