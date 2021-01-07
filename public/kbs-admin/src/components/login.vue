@@ -21,14 +21,14 @@
                                         <input class="form-control" type="text" v-model="formData.username" id="userName" @keyup="checkAndChangeValidation(formData.username,'#userName','#userNameError','*user name')">
                                         <label for="userName">User name</label>
                                         <span class="progress-border userName"></span>
-                                        <span id="userNameError" class="small text-danger"></span>
+                                        <span id="userNameError" class="small text-danger error-message"></span>
                                     </div>
                                     <div class="form-group floating-input with-icon password-icon mb-30 mb-md-50">
                                         <input class="form-control" type="password" v-model="formData.password" id="userPassword" v-on:keyup.enter="validateAndSubmit()" @keyup="checkAndChangeValidation(formData.password,'#userPassword','#userPasswordError','*user password')">
                                         <label for="userPassword">Password</label>
                                         <span class="password-show-hide"></span>
                                         <span class="progress-border userPassword"></span>
-                                        <span id="userPasswordError" class="small text-danger error-password"></span>
+                                        <span id="userPasswordError" class="small text-danger error-message"></span>
                                     </div>
 
                                     <div class="form-group text-center">
@@ -51,7 +51,7 @@
                             <div class="client-logo">
                                 <img class="img-fluid " src="../assets/img/logo-demo1.png" alt="demo">
                             </div>
-                            <div class="client-info mt-auto"><a href="https://www.genuitysystems.com/">Genuity System Ltd.</a></div>
+                            <div class="client-info mt-auto"><a target="_blank" href="https://www.genuitysystems.com/">Genuity System Ltd.</a></div>
                         </div>
                     </div>
                 </div>
@@ -261,5 +261,8 @@ export default {
 </script>
 
 <style scoped>
-
+    .error-message {
+        position: absolute;
+        bottom: -20px;
+    }
 </style>
