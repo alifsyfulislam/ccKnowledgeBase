@@ -52,8 +52,8 @@ class AuthController
 
             return response()->json([
                 'status_code' => 400,
-                'messages'=>config('status.status_code.400'),
-                'errors'=>$validator->messages()->all()
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->messages()->all()
             ]);
 
         } else {
@@ -66,10 +66,10 @@ class AuthController
 
                 $userInfo = $this->userRepository->get($user->id);
 
-                $success['status_code']= 200;
-                $success['messages']= config('status.status_code.200');
-                $success['token'] = $user->createToken('Knowledge Base')->accessToken;
-                $success['user_info']=$userInfo;
+                $success['status_code'] = 200;
+                $success['messages']    = config('status.status_code.200');
+                $success['token']       = $user->createToken('Knowledge Base')->accessToken;
+                $success['user_info']   = $userInfo;
 
                 return response()->json($success);
 

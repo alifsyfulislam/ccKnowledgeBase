@@ -295,9 +295,9 @@ export default {
     created() {
         //this.getArticleList();
         this.getCategoryList();
-        console.log(this.$route.params);
-        this.success_message = this.$route.params.current_status;
-        this.setTimeoutElements();
+        //console.log(this.$route.params);
+     //   this.success_message = this.$route.params.current_status;
+       // this.setTimeoutElements();
     }
 }
 </script>

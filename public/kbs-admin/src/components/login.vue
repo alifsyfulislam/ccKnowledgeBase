@@ -219,8 +219,8 @@ export default {
                 password          : this.formData.password,
             }).then(function (response) {
 
-                if (response.data.status_code == 200)
-                {
+                if (response.data.status_code === 200){
+                    //console.log(response.data.user_info)
                     _that.checkedCounter  = 0;
                     _that.userInfo        = response.data.user_info;
                     _that.token           = response.data.token;
@@ -268,10 +268,10 @@ export default {
     },
     created() {
         this.clearanceAll();
-        if (this.$route.params){
+    /*    if (this.$route.params){
             this.success_message = this.$route.params.message;
             this.setTimeoutElements();
-        }
+        }*/
     }
 }
 

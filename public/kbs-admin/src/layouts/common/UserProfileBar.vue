@@ -145,9 +145,7 @@ export default {
                     $('#closeModal').click();
                     $('#confirmPasswordError').html("");
 
-                }
-                else if(response.data.status_code === 400)
-                {
+                }else if(response.data.status_code === 400){
                     _that.success_message           = "";
                     _that.error_message             = "";
                     _that.showServerError(response.data.errors);
@@ -182,7 +180,6 @@ export default {
                     // _that.error_message   = "";
                     // _that.success_message = response.data.message;
                     // _that.$emit('user-logout', _that.success_message);
-
                 }else{
                     _that.success_message           = "";
                     _that.error_message             = response.data.message;
