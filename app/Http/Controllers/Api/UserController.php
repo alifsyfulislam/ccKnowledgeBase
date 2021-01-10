@@ -36,7 +36,6 @@ class UserController extends Controller
 
         return $this->userService->paginateData($request);
 
-
     }
 
     /**
@@ -119,5 +118,9 @@ class UserController extends Controller
         return $this->userService->updatePassword($request);
 
        // return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
+    }
+
+    public function exportUsers(){
+        return "Hi";
     }
 }

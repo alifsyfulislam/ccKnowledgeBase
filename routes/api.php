@@ -2,9 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +13,14 @@ use Maatwebsite\Excel\Facades\Excel;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+//Route::get('users/export/', function (){
+//    return Excel::download(new UsersExport, 'users.xlsx');
+//});
+
+Route::get('users/export/', 'Api\ExportController@exportUsers')->name('users.export_mapping');
+
+
 
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
@@ -57,10 +62,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::apiResource('quiz-forms','Api\QuizFormController');
     Route::apiResource('quiz-form-fields','Api\QuizFormFieldController');
     Route::apiResource('quizzes','Api\QuizController');
-
-    Route::post('users/export/', function (){
-        return Excel::download(new UsersExport, 'users.xlsx');
-    });
 });
 
 

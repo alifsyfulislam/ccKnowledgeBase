@@ -38,7 +38,16 @@
                                         </div>
                                     </button>
                                 </li>
-                                <li><button class="download-btn" title="Download CSV" @click="exportAllUserData()"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+
+
+                                <li>
+                                    <a v-if="isExportCheck"
+                                       :href=downloadUrl class="download-btn" title="Download CSV">
+                                        <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
+                                    </a>
+                                </li>
+
+
                                 <li><button class="screen-expand-btn user-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
@@ -237,6 +246,7 @@ export default {
             isEditCheck     : false,
             isDeleteCheck   : false,
             isSearchCheck   : false,
+            isExportCheck   : false,
 
             success_message : '',
             error_message   : '',
@@ -247,6 +257,7 @@ export default {
             userRole        : '',
             customer_id     : '',
             userAllRoles    : '',
+            downloadUrl     : '/users/export/',
 
             filter : {
                 isAdmin     : 1,
@@ -269,15 +280,6 @@ export default {
         }
     },
     methods: {
-        exportAllUserData(){
-            axios.post('admin/users/export',{
-                headers: {
-                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                },
-            }).then((response)=>{
-                console.log(response);
-            })
-        },
         setTimeoutElements()
         {
             // setTimeout(() => this.isLoading = false, 3e3);
@@ -353,6 +355,7 @@ export default {
                         _that.pagination        = response.data.user_list;
                         _that.userList          = response.data.user_list.data;
                         _that.isLoading         = false;
+                        _that.isExportCheck     = true;
                         _that.setTimeoutElements();
                     }
                     else{
@@ -458,6 +461,8 @@ export default {
         this.isLoading  = true;
         this.getUsersList();
         this.getUserRoles();
+        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        console.log(this.downloadUrl)
     }
 }
 </script>
