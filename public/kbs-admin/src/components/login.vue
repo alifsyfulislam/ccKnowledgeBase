@@ -124,6 +124,7 @@ export default {
         }
     },
     methods: {
+
         clearanceAll(){
             if (!this.formData.username || !this.formData.password){
                 $(document).on('focus','.form-group input',function(){
@@ -150,6 +151,7 @@ export default {
                 });
             }
         },
+
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
         {
             if (selected_data.length >0) {
@@ -173,8 +175,9 @@ export default {
                 }
             }
         },
-        validateAndSubmit()
-        {
+
+        validateAndSubmit() {
+
             if (!this.formData.username){
 
                 $('#userName').css({
@@ -202,8 +205,9 @@ export default {
                 this.customerLogin();
             }
         },
-        setTimeoutElements()
-        {
+
+        setTimeoutElements() {
+
             // setTimeout(() => this.isLoading = false, 3e3);
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
@@ -220,7 +224,8 @@ export default {
             }).then(function (response) {
 
                 if (response.data.status_code === 200){
-                    //console.log(response.data.user_info)
+
+                    console.log(response.data.user_info.roles[0].permissions)
                     _that.checkedCounter  = 0;
                     _that.userInfo        = response.data.user_info;
                     _that.token           = response.data.token;
@@ -228,6 +233,7 @@ export default {
                     _that.success_message = response.data.messages;
                     localStorage.setItem('authToken', _that.token);
                     localStorage.setItem('userInformation', JSON.stringify(response.data.user_info));
+                    localStorage.setItem('userPermissions', JSON.stringify(response.data.user_info.roles[0].permissions));
                     _that.$router.push({ name: 'dashboard', params: { current_status : "Logged in successfully" }});
                 }
                 else
@@ -245,8 +251,8 @@ export default {
             });
         },
 
-        showServerError(errors)
-        {
+        showServerError(errors) {
+
             $('#userNameError').html("");
             $('#userPassword').html("");
 
