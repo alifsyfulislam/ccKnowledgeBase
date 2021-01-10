@@ -38,7 +38,7 @@
                                         </div>
                                     </button>
                                 </li>
-                                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                                <li><button class="download-btn" title="Download CSV" @click="exportAllUserData()"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
                                 <li><button class="screen-expand-btn user-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
@@ -269,6 +269,15 @@ export default {
         }
     },
     methods: {
+        exportAllUserData(){
+            axios.post('admin/users/export',{
+                headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                },
+            }).then((response)=>{
+                console.log(response);
+            })
+        },
         setTimeoutElements()
         {
             // setTimeout(() => this.isLoading = false, 3e3);

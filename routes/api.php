@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -54,6 +58,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::apiResource('quiz-form-fields','Api\QuizFormFieldController');
     Route::apiResource('quizzes','Api\QuizController');
 
+    Route::post('users/export/', function (){
+        return Excel::download(new UsersExport, 'users.xlsx');
+    });
 });
 
 
