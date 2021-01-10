@@ -5,7 +5,7 @@
       <img class="small-image" src="@/assets/img/gplex-logo-2.png" alt="gplex">
     </div>
 
-    <nav class="sidebar-menu-wrapper text-left" >
+    <nav class="sidebar-menu-wrapper text-left">
       <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
         <li>
           <router-link :to="{ name: 'dashboard'}">
@@ -25,7 +25,7 @@
           </router-link>
         </li>
 
-        <li>
+        <li v-if="checkPermission('user-list')">
           <router-link :to="{ name: 'customerList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -42,7 +42,7 @@
           </router-link>
         </li>
 
-        <li>
+        <li  v-if="checkPermission('category-list')">
           <router-link :to="{ name: 'categoryList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -58,7 +58,7 @@
           </router-link>
         </li>
 
-        <li>
+        <li  v-if="checkPermission('article-list')">
           <router-link :to="{ name: 'articleList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -75,7 +75,8 @@
             <span class="menu-title">Article</span>
           </router-link>
         </li>
-        <li>
+
+        <li v-if="checkPermission('faq-list')">
           <router-link :to="{ name: 'faqList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -95,7 +96,8 @@
             <span class="menu-title">FAQ</span>
           </router-link>
         </li>
-        <li>
+
+        <li v-if="checkPermission('role-list')">
           <router-link :to="{ name: 'roleList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -131,13 +133,13 @@
           <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
 
 
-          <li>
+          <li v-if="checkPermission('quiz-list')">
               <router-link :to="{ name: 'quizList'}">
                   <span class="menu-sub-title">Quizzes</span>
               </router-link>
           </li>
 
-          <li>
+          <li v-if="checkPermission('quiz-form-list')">
              <router-link :to="{ name: 'quizFormList'}">
                 <span class="menu-sub-title">Quiz Forms</span>
              </router-link>
@@ -214,10 +216,21 @@ export default {
         return {
             isConfigurationCheck : false,
             token: '',
+            permissionMap : '',
             user_info : ''
         }
     },
     methods :{
+
+        checkPermission(permissionForCheck){
+
+            if ((this.permissionMap).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+
+        },
 
         clearAllChecker() {
 
@@ -231,11 +244,14 @@ export default {
             this.isConfigurationCheck = false;
         },
     },
+
     created() {
 
-        this.user_info = JSON.parse(localStorage.getItem("userInformation"));
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        console.log( this.user_permissions);
+        this.user_info         = JSON.parse(localStorage.getItem("userInformation"));
+        const user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.permissionMap     = (user_permissions).map(x => x.slug);
+
+        console.log( localStorage.getItem("userPermissions"));
     }
 }
 </script>
