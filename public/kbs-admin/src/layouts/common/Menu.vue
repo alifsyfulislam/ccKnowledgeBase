@@ -184,7 +184,6 @@
               </ul>
           </li>
 
-
       </ul>
     </nav>
   </div>
@@ -235,7 +234,8 @@ export default {
     created() {
 
         this.user_info = JSON.parse(localStorage.getItem("userInformation"));
-        console.log(this.user_info.roles);
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        console.log( this.user_permissions);
     }
 }
 </script>
