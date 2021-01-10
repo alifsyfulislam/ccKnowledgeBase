@@ -233,7 +233,9 @@ export default {
         },
     },
     created() {
-        //this.user_info = JSON.parse(localStorage.getItem("userInformation"));
+
+        this.user_info = JSON.parse(localStorage.getItem("userInformation"));
+        console.log(this.user_info.roles);
     }
 }
 </script>
