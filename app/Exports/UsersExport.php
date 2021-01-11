@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -13,7 +14,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Http\Traits\QueryTrait;
 
 
-class UsersExport implements FromCollection, WithMapping, WithHeadings
+class UsersExport implements FromArray, WithMapping, WithHeadings
 {
     use Exportable;
 
@@ -49,12 +50,13 @@ class UsersExport implements FromCollection, WithMapping, WithHeadings
             Carbon::parse($user->created_at)->toFormattedDateString(),
             Carbon::parse($user->updated_at)->toFormattedDateString(),
             //$user->email,
-            $user->roles ? $user->roles : 'N/A',
+            //array_key_exists( $user->roles, 0) ?? false
+            $user->roles ? $user->roles->name : 'N/A',
            // $user->created_at,
         ];
     }
 
-    public function collection()
+    public function array() : array
     {
         return $this->ibUserDataCollection;
     }
