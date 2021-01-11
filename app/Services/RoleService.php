@@ -128,7 +128,7 @@ class RoleService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|unique:roles,name',
+            'name' => "required|unique:roles,name,$request->id,id",
             'permission' => 'required',
 
         ]);

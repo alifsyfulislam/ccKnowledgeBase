@@ -16,9 +16,9 @@
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center">
-                            <div class="d-flex align-items-center">
+                            <div>
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
-                                        @click="isAddCheck=true">
+                                        @click="isAddCheck=true" v-if="checkPermission('category-create')">
                                     <i class="fas fa-plus"></i>
                                     Add Category
                                 </button>
@@ -72,11 +72,11 @@
 
                                     <td class="text-center">
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
-                                                @click="category_id=a_category.id, isEditCheck=true">
+                                                @click="category_id=a_category.id, isEditCheck=true" v-if="checkPermission('category-edit')">
                                             <i class="fas fa-pen"></i>
                                         </button>
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                 @click="category_id=a_category.id, isDeleteCheck=true">
+                                                 @click="category_id=a_category.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
                                             <i class="fas fa-trash-restore-alt"></i>
                                         </button>
                                     </td>
@@ -207,6 +207,9 @@ export default {
             categoryList        : '',
             userInfo            : '',
             downloadUrl         : '/categories/export/',
+
+            user_permissions : '',
+            mappedPermission : '',
 
             filter      : {
                 isAdmin         : 1,
@@ -369,11 +372,22 @@ export default {
             setTimeout(() => this.error_message = "", 2e3);
         },
 
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
     },
     created()
     {
         this.isLoading = true;
         this.getCategoryList();
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
         console.log(this.downloadUrl)
     }

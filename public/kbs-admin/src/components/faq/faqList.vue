@@ -23,7 +23,7 @@
                         <div class="adding-btn-area d-md-flex align-items-center justify-content-between">
                             <div>
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
-                                        @click="isAddCheck=true">
+                                        @click="isAddCheck=true" v-if="checkPermission('faq-create')">
                                     <i class="fas fa-plus"></i>
                                     Add FAQ
                                 </button>
@@ -88,10 +88,10 @@
                                             <i class="fas fa-eye"></i>
                                         </router-link>
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
-                                                @click="faq_id=an_faq.id, isEditCheck = true"><i class="fas fa-pen"></i></button>
+                                                @click="faq_id=an_faq.id, isEditCheck = true" v-if="checkPermission('faq-edit')"><i class="fas fa-pen"></i></button>
 
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
-                                                 @click="faq_id=an_faq.id, isDeleteCheck = true"><i class="fas fa-trash-restore-alt"></i></button>
+                                                 @click="faq_id=an_faq.id, isDeleteCheck = true" v-if="checkPermission('faq-delete')"><i class="fas fa-trash-restore-alt"></i></button>
 
                                     </td>
 
@@ -282,6 +282,9 @@ export default {
             token               : '',
             categoryList        : '',
 
+            user_permissions : '',
+            mappedPermission : '',
+
             faqList             : '',
             faq_id              : '',
 
@@ -448,11 +451,21 @@ export default {
                 console.log(error);
             });
         },
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     created() {
         this.isLoading = true;
         this.getFaqList();
         this.getCategoryList();
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
     }
 }
 </script>

@@ -23,7 +23,7 @@
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center justify-content-between w-100">
                             <div>
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true" v-if="checkPermission('article-create')">
                                     <i class="fas fa-plus"></i>
                                     Add Article
                                 </button>
@@ -93,9 +93,9 @@
                                         <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
 
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=an_article.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=an_article.id, isDeleteCheck=true" v-if="checkPermission('article-delete')"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -289,6 +289,9 @@ export default {
             categoryList        : '',
             articleList         : '',
 
+            user_permissions : '',
+            mappedPermission : '',
+
             article_id          :'',
 
             filter      : {
@@ -314,6 +317,15 @@ export default {
         }
     },
     methods: {
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
         clearFilter()
         {
             this.filter.category_id = "";
@@ -466,6 +478,9 @@ export default {
         this.isLoading = true;
         this.getArticleList();
         this.getCategoryList();
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
     }
 }
 </script>
