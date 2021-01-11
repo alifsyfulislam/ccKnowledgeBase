@@ -12,6 +12,7 @@ class ExportController extends Controller
 {
     public function exportUsers(){
         $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->get();
+
       //  'name' => $userData->name
         //dd($userData->roles[0]->name);
 

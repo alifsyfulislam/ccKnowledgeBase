@@ -142,11 +142,13 @@ export default {
 
             $('#name').css({'border-color': '#ced4da'});
 
+            console.log(errors);
+
             errors.forEach(val=>{
                 console.log(val);
                 if (val.includes("name")===true){
-                    $('#nameError').html(val)
-                    $('#name').css({'border-color': '#FF7B88'});
+                    $('#roleNameError').html(val)
+                    $('#role_name').css({'border-color': '#FF7B88'});
                 }
                 else if (val.includes("permission")==true){
                     $('#permissionError').html(" "+val)
