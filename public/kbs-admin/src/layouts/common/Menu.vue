@@ -146,7 +146,7 @@
           </li>
 
 
-         <li>
+         <li  v-if="checkPermission('quiz-form-field-list')">
             <router-link :to="{ name: 'quizFormFieldList'}">
                 <span class="menu-sub-title">Quiz Form Field</span>
             </router-link>
@@ -251,7 +251,7 @@ export default {
         const user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
         this.permissionMap     = (user_permissions).map(x => x.slug);
 
-        console.log( localStorage.getItem("userPermissions"));
+        //console.log( localStorage.getItem("userPermissions"));
     }
 }
 </script>

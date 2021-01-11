@@ -40,16 +40,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password">Password <span class="required">*</span></label>
-                            <input class="form-control" type="password" v-model="userData.password" id="password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
-                            <span id="passwordError" class="text-danger small"> </span>
+                            <input class="form-control" type="password" v-model="userData.password" id="Password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
+                            <span id="PasswordError" class="text-danger small"> </span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                            <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
-                            <span id="confirmPasswordError" class="small"> </span>
+                            <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="ConfirmPassword" placeholder="Enter password again!!" required>
+                            <span id="ConfirmPasswordError" class="small"> </span>
                         </div>
                     </div>
 
@@ -142,34 +142,35 @@ export default {
         },
 
         checkAndValidatePassword(){
+
             if ((this.userData.password).length >0) {
                 if (!this.validPassword(this.userData.password)) {
-                    $('#password').css({
+                    $('#Password').css({
                         'border-color': '#FF7B88',
                     });
-                    $('#passwordError').html("*password should contain at least a Uppercase, lowecase, numeric and special character");
+                    $('#PasswordError').html("*password should contain at least a Uppercase, lowecase, numeric and special character");
                     this.validation_error.isPasswordStatus = false;
 
                 } else if((this.userData.password).length <8) {
-                    $('#password').css({
+                    $('#Password').css({
                         'border-color': '#FF7B88',
                     });
-                    $('#passwordError').html("*password must be 8 characters or longer");
+                    $('#PasswordError').html("*password must be 8 characters or longer");
                     this.validation_error.isPasswordStatus = false;
                 }
                 else {
-                    $('#password').css({
+                    $('#Password').css({
                         'border-color': '#ced4da',
                     });
-                    $('#passwordError').html("");
+                    $('#PasswordError').html("");
                     this.validation_error.isPasswordStatus = true;
                 }
 
             } else{
-                $('#password').css({
+                $('#Password').css({
                     'border-color': '#FF7B88',
                 });
-                $('#passwordError').html("password field is required");
+                $('#PasswordError').html("password field is required");
                 this.validation_error.isPasswordStatus = false;
             }
 
@@ -253,28 +254,29 @@ export default {
         checkPasswordMatch()
         {
             let _that = this;
+
             if (_that.userData.password === _that.userData.confirm_password && _that.userData.password.length == _that.userData.confirm_password.length){
-                $('#confirmPassword').css({
+                $('#ConfirmPassword').css({
                     'border-color': '#ced4da',
                 });
-                $('#confirmPasswordError').css({'color': 'green'});
-                $('#confirmPasswordError').html("password matched!!");
+                $('#ConfirmPasswordError').css({'color': 'green'});
+                $('#ConfirmPasswordError').html("password matched!!");
                 _that.validation_error.isConfirmationStatus = true;
             }else if(!_that.userData.confirm_password){
-                $('#confirmPassword').css({
+                $('#ConfirmPassword').css({
                     'border-color': '#FF7B88',
                 });
-                $('#confirmPasswordError').html("*confirm password field is required")
-                $('#confirmPasswordError').css({'color': '#FF7B88'});
+                $('#ConfirmPasswordError').html("*confirm password field is required")
+                $('#ConfirmPasswordError').css({'color': '#FF7B88'});
                 _that.validation_error.isConfirmationStatus = false;
 
             }
             else{
-                $('#confirmPassword').css({
+                $('#ConfirmPassword').css({
                     'border-color': '#FF7B88',
                 });
-                $('#confirmPasswordError').html("*password not matched")
-                $('#confirmPasswordError').css({'color': '#FF7B88'});
+                $('#ConfirmPasswordError').html("*password not matched")
+                $('#ConfirmPasswordError').css({'color': '#FF7B88'});
                 _that.validation_error.isConfirmationStatus = false;
             }
         },
@@ -322,19 +324,19 @@ export default {
             }
             if (!this.userData.password){
 
-                $('#password').css({
+                $('#Password').css({
                     'border-color': '#FF7B88',
                 });
-                $('#passwordError').html("*password field is required");
+                $('#PasswordError').html("*password field is required");
             }
             if (!this.userData.confirm_password){
 
-                $('#confirmPassword').css({
+                $('#ConfirmPassword').css({
                     'border-color': '#FF7B88',
                 });
 
-                $('#confirmPasswordError').css({'color': '#FF7B88'});
-                $('#confirmPasswordError').html("*confirm password field is required");
+                $('#ConfirmPasswordError').css({'color': '#FF7B88'});
+                $('#ConfirmPasswordError').html("*confirm password field is required");
             }
             if (!this.userData.roles){
 
