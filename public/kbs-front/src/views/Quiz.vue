@@ -3,13 +3,13 @@
         <Loading></Loading>
     </div>
     <div v-else v-cloak class="min-height-wrapper">
-        <section class="inner-search-area py-20">
-            <div class="container">
-                <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
-                    <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
-                </div>
-            </div>
-        </section>
+<!--        <section class="inner-search-area py-20">-->
+<!--            <div class="container">-->
+<!--                <div class="search-input-wrapper d-block d-sm-flex justify-content-between">-->
+<!--                    <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
         <section class="py-50 py-md-60">
             <div class="container">
                 <div class="row">
@@ -36,7 +36,7 @@
                                     <h4 class="my-0 pb-1 q-title">
                                         Duration
                                     </h4>
-                                    <p class="mb-0">{{a_quiz.duration*60}} min</p>
+                                    <p class="mb-0">{{a_quiz.duration}} Min</p>
                                 </div>
                             </div>
                             <div class="q-featured-caption">
