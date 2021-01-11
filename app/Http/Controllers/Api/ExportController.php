@@ -12,7 +12,10 @@ class ExportController extends Controller
 {
     public function exportUsers(){
         $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->get();
-        //dd($userData);
+
+      //  'name' => $userData->name
+        //dd($userData->roles[0]->name);
+
         return Excel::download(new UsersExport($userData), 'users.xlsx');
 
       //  return (new UsersExport($data['users']))->download('users'.date('Y-m-d').'.xlsx');
