@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportController extends Controller
 {
     public function exportUsers(){
+
         $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])
             ->get()->map(function ($userData){
                 return [
@@ -19,14 +20,14 @@ class ExportController extends Controller
                     'first_name'  => $userData->first_name,
                     'last_name'   => $userData->last_name,
                     'email'       => $userData->email,
-                    'role_name'   => $userData->roles ? $userData->roles[0]->name : null,
+                    'role_name'   => (count($userData->roles)>0) ?  $userData->roles[0]->name : 'N/A',
                     'created_at'  => $userData->created_at,
                     'updated_at'  => $userData->updated_at,
                 ];
             });
        // dd($userData);
 
-        return Excel::download(new UsersExport($userData), 'users.xlsx');
+        return Excel::download(new UsersExport($userData), 'users.csv');
 
     }
 }
