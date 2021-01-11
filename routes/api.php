@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('users/export/', 'Api\ExportController@exportUsers')->name('users.export_mapping');
+Route::get('categories/export/', 'Api\ExportController@exportCategories')->name('categories.export_mapping');
 
 
 
