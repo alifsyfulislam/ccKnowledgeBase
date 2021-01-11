@@ -211,7 +211,7 @@ export default {
             this.markCounter = v1/v2;
         },
         quizTimerStart(counter){
-            let timer = counter*60*60;
+            let timer = counter*60;
             this.clearCounter = setInterval(()=>{
                 if (timer> 0){
                     --timer;
@@ -238,7 +238,7 @@ export default {
         let _that = this;
         if (_that.$route.params.quiz_info){
             _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);
-            let timer = _that.quizInfo.duration*60*60;
+            let timer = _that.quizInfo.duration*60;
             _that.printTimer(timer);//total time
             _that.getQuizFormField();
             _that.quizTimerStart(_that.quizInfo.duration);//timeleft
