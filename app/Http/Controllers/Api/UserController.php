@@ -22,7 +22,7 @@ class UserController extends Controller
     public function __construct(UserService $userService)
     {
 
-        $this->middleware('acl:super-admin');
+       // $this->middleware('acl:super-admin');
         $this->userService = $userService;
 
     }
