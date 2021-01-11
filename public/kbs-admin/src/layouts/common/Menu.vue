@@ -215,16 +215,17 @@ export default {
     data() {
         return {
             isConfigurationCheck : false,
-            token: '',
-            permissionMap : '',
-            user_info : ''
+            token            : '',
+            user_permissions : '',
+            mappedPermission : '',
+            user_info        : ''
         }
     },
     methods :{
 
         checkPermission(permissionForCheck){
 
-            if ((this.permissionMap).includes(permissionForCheck) === true) {
+            if ((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {
                 return false;
@@ -236,7 +237,6 @@ export default {
 
             this.isConfigurationCheck = false;
            // this.$emit('config-data', this.is_config_check);
-
         },
 
         getPageConfigData(newData) {
@@ -248,8 +248,8 @@ export default {
     created() {
 
         this.user_info         = JSON.parse(localStorage.getItem("userInformation"));
-        const user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.permissionMap     = (user_permissions).map(x => x.slug);
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
 
         //console.log( localStorage.getItem("userPermissions"));
     }

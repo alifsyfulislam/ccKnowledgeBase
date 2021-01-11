@@ -16,8 +16,8 @@
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
-                        <div class="adding-btn-area d-md-flex align-items-center justify-content-between">
-                            <div>
+                        <div class="adding-btn-area d-md-flex align-items-center justify-content-between"  >
+                            <div v-if="checkPermission('user-create')">
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
                                         @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
@@ -86,8 +86,8 @@
 
                                     <td class="text-center" style="min-width: 120px">
 
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="(a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
 
@@ -259,6 +259,9 @@ export default {
             userAllRoles    : '',
             downloadUrl     : '/users/export/',
 
+            user_permissions : '',
+            mappedPermission : '',
+
             filter : {
                 isAdmin     : 1,
                 username    : '',
@@ -280,14 +283,15 @@ export default {
         }
     },
     methods: {
-        setTimeoutElements()
-        {
+        setTimeoutElements(){
+
             // setTimeout(() => this.isLoading = false, 3e3);
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
         },
-        removingRightSideWrapper()
-        {
+
+        removingRightSideWrapper(){
+
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
@@ -351,7 +355,7 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data.user_list.data);
+                       // console.log(response.data.user_list.data);
                         _that.pagination        = response.data.user_list;
                         _that.userList          = response.data.user_list.data;
                         _that.isLoading         = false;
@@ -422,8 +426,8 @@ export default {
                 })
         },
 
-        deleteUser(userId)
-        {
+        deleteUser(userId){
+
             let _that = this;
 
             axios.delete('admin/users/delete',
@@ -455,14 +459,28 @@ export default {
             });
 
         },
+
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
     },
 
     created() {
         this.isLoading  = true;
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.getUsersList();
         this.getUserRoles();
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
-        console.log(this.downloadUrl)
+
+
+        //console.log(this.downloadUrl)
     }
 }
 </script>
