@@ -133,11 +133,10 @@ export default {
                 $('#role_name').css({
                     'border-color': '#FF7B88',
                 });
-                $('#roleNameError').html("role name field is required");
+                $('#roleNameError').html("*role name field is required");
             }
 
             if (this.validation_error.isRoleNameStatus === true){
-                //console.log(this.validation_error)
                 this.updateRole();
             }
         },
@@ -150,8 +149,8 @@ export default {
             errors.forEach(val=>{
                 console.log(val);
                 if (val.includes("name")===true){
-                    $('#nameError').html(val)
-                    $('#name').css({'border-color': '#FF7B88'});
+                    $('#roleNameError').html(val)
+                    $('#role_name').css({'border-color': '#FF7B88'});
                 }
 
             })
@@ -187,7 +186,8 @@ export default {
                 else
                 {
                     _that.success_message = "";
-                    _that.error_message   = response.data.error;
+                    _that.error_message   = "";
+                    _that.showServerError(response.data.errors);
                 }
 
             }).catch(function (error) {

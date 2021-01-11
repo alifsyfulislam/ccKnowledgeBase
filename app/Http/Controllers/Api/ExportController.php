@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportController extends Controller
 {
     public function exportUsers(){
-        $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->paginate(12);
+        $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->get();
         //dd($userData);
         return Excel::download(new UsersExport($userData), 'users.xlsx');
 

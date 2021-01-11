@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password">Password <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="userData.password" id="password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
+                            <input class="form-control" type="password" v-model="userData.password" id="password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
                             <span id="passwordError" class="text-danger small"> </span>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
+                            <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="confirmPassword" placeholder="Enter password again!!" required>
                             <span id="confirmPasswordError" class="small"> </span>
                         </div>
                     </div>

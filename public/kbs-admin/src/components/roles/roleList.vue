@@ -219,6 +219,7 @@ export default {
         {
             this.isAddCheck         = false;
             this.isDeleteCheck      = false;
+            this.isEditCheck        = false;
             this.isSearchCheck      = false;
         },
         removingRightSideWrapper()
@@ -226,6 +227,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
 
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
