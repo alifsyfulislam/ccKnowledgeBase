@@ -144,8 +144,8 @@ export default {
             },
 
             validation_error: {
-                isTitleStatus       : false,
-                isCategoryStatus    : false,
+                isTitleStatus       : true,
+                isCategoryStatus    : true,
             } ,
 
             images                  : [],

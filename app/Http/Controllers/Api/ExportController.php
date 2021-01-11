@@ -11,13 +11,22 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportController extends Controller
 {
     public function exportUsers(){
-        $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])->get();
-
-      //  'name' => $userData->name
-        //dd($userData->roles[0]->name);
+        $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])
+            ->get()->map(function ($userData){
+                return [
+                    'id'          => $userData->id,
+                    'username'    => $userData->title,
+                    'first_name'  => $userData->first_name,
+                    'last_name'   => $userData->last_name,
+                    'email'       => $userData->email,
+                    'role_name'   => $userData->roles ? $userData->roles[0]->name : null,
+                    'created_at'  => $userData->created_at,
+                    'updated_at'  => $userData->updated_at,
+                ];
+            });
+       // dd($userData);
 
         return Excel::download(new UsersExport($userData), 'users.xlsx');
 
-      //  return (new UsersExport($data['users']))->download('users'.date('Y-m-d').'.xlsx');
     }
 }
