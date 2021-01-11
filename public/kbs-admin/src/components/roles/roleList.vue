@@ -21,7 +21,7 @@
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center" v-if="checkPermission('role-create')">
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add Role
@@ -71,8 +71,8 @@
                                     <td class="text-center">{{ a_role.created_at }}</td>
 
                                     <td class="text-center">
-                                        <button v-if="a_role.name!='Super Admin' " class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="role_id=a_role.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  v-if="a_role.name!='Super Admin' " class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="role_id=a_role.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  v-if="checkPermission('role-edit') && a_role.name!='Super Admin' " class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="role_id=a_role.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button  v-if="checkPermission('role-delete') && a_role.name!='Super Admin' " class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="role_id=a_role.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -131,11 +131,11 @@
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
-<!--            addd-->
+            <!--            addd-->
             <RoelAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-slide-close="getAddDataFromChild"></RoelAdd>
-<!--            edit-->
+            <!--            edit-->
             <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-slide-close="getEditDataFromChild"></RoleEdit>
-<!--            delete-->
+            <!--            delete-->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                 <div class="right-sidebar-content-area px-2">
 
@@ -199,6 +199,9 @@ export default {
             error_message           : '',
             role_id                 : '',
             userRoles               : '',
+
+            user_permissions        : '',
+            mappedPermission        : '',
 
             pagination  : {
                 from           : '',
@@ -309,10 +312,21 @@ export default {
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
         },
+
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     created()
     {
         this.isLoading  = true;
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.getRolesList();
     }
 }
