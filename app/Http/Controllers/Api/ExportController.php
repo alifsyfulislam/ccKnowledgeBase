@@ -16,7 +16,7 @@ class ExportController extends Controller
             ->get()->map(function ($userData){
                 return [
                     'id'          => $userData->id,
-                    'username'    => $userData->title,
+                    'username'    => $userData->username,
                     'first_name'  => $userData->first_name,
                     'last_name'   => $userData->last_name,
                     'email'       => $userData->email,
@@ -25,9 +25,6 @@ class ExportController extends Controller
                     'updated_at'  => $userData->updated_at,
                 ];
             });
-       // dd($userData);
-
         return Excel::download(new UsersExport($userData), 'users.csv');
-
     }
 }
