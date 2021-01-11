@@ -92,6 +92,7 @@
 <script>
 import axios from 'axios'
 import Loading from "@/components/Loading"
+import $ from 'jquery'
 export default {
     name: "StartExam",
 
@@ -232,10 +233,18 @@ export default {
             let z = ss < 10? "0"+ss : ss;
             this.timeCounter = x+":"+y+":"+z;
         },
+        detectTab(){
+            $(window).on("blur",function () {
+                //do something
+                console.log("You left this tab");
+                window.location.reload();
+            })
+        },
     },
 
     created() {
         let _that = this;
+        _that.detectTab();
         if (_that.$route.params.quiz_info){
             _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);
             let timer = _that.quizInfo.duration*60;
@@ -247,7 +256,7 @@ export default {
         }else{
             this.$router.push({ name: 'Quiz' })
         }
-    }
+    },
 }
 </script>
 

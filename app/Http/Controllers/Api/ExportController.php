@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\CategoriesExport;
 use App\Exports\UsersExport;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,7 +12,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportController extends Controller
 {
     public function exportUsers(){
-
         $userData =  User::with(['roles' => function($q) {$q->select('id', 'name');}, 'media'])
             ->get()->map(function ($userData){
                 return [
@@ -26,5 +26,9 @@ class ExportController extends Controller
                 ];
             });
         return Excel::download(new UsersExport($userData), 'users.csv');
+    }
+
+    public function exportCategories(){
+        return Excel::download(new CategoriesExport(), 'categories.csv');
     }
 }

@@ -34,7 +34,14 @@
                                         </div>
                                     </button>
                                 </li>
-                                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+
+                                <li>
+                                    <a v-if="isExportCheck"
+                                       :href=downloadUrl class="download-btn" title="Download CSV">
+                                        <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
+                                    </a>
+                                </li>
+
                                 <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
@@ -187,6 +194,7 @@ export default {
             isEditCheck         : false,
             isAddCheck          : false,
             isDeleteCheck       : false,
+            isExportCheck        :false,
 
             isSearch            : false,
 
@@ -198,6 +206,7 @@ export default {
             token               : '',
             categoryList        : '',
             userInfo            : '',
+            downloadUrl         : '/categories/export/',
 
             filter      : {
                 isAdmin         : 1,
@@ -277,6 +286,7 @@ export default {
                         _that.categoryList      = response.data.category_list.data;
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
+                        _that.isExportCheck     = true;
                         // console.log(_that.pagination.total);
                     }
                     else
@@ -364,6 +374,8 @@ export default {
     {
         this.isLoading = true;
         this.getCategoryList();
+        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        console.log(this.downloadUrl)
     }
 }
 </script>
