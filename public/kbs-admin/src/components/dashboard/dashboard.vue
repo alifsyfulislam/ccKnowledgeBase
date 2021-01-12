@@ -18,97 +18,83 @@
                 <div class="content-wrapper">
                     <!-- Content Area -->
                     <div class="data-content-area pr-15 pb-10">
-                        <div class="gredient-card-wrapper mb-40">
-                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Daily Snap Shot</h2>
-                            </div>
-                            <div class="gredient-card-body p-20 p-md-30" style="background: #20c94c36;">
-                                <div class="row">
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">
-                                            <div class="it-wrapper d-flex align-items-center pb-20">
-                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>
-                                                <h3 class="my-0 font-16">Service Level</h3>
-                                            </div>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                                            <div class="progress bg-green">
-                                                <div class="progress-bar bg-green m-0" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">90%</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">
-                                            <div class="it-wrapper d-flex align-items-center pb-20">
-                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>
-                                                <h3 class="my-0 font-16">Answer Level</h3>
-                                            </div>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                                            <div class="progress bg-red">
-                                                <div class="progress-bar bg-red m-0" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">70%</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">
-                                            <div class="it-wrapper d-flex align-items-center pb-20">
-                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>
-                                                <h3 class="my-0 font-16">AHT</h3>
-                                            </div>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                                            <div class="progress bg-yellow">
-                                                <div class="progress-bar bg-yellow m-0" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="92"><span class="progress-text">92%</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="gredient-card-wrapper mb-40">-->
+<!--                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">-->
+<!--                                <h2 class="card-title my-0 font-16">Daily Snap Shot</h2>-->
+<!--                            </div>-->
+<!--                            <div class="gredient-card-body p-20 p-md-30" style="background: #20c94c36;">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+<!--                                                <h3 class="my-0 font-16">Service Level</h3>-->
+<!--                                            </div>-->
+<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+<!--                                            <div class="progress bg-green">-->
+<!--                                                <div class="progress-bar bg-green m-0" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">90%</span></div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+<!--                                                <h3 class="my-0 font-16">Answer Level</h3>-->
+<!--                                            </div>-->
+<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+<!--                                            <div class="progress bg-red">-->
+<!--                                                <div class="progress-bar bg-red m-0" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">70%</span></div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+<!--                                                <h3 class="my-0 font-16">AHT</h3>-->
+<!--                                            </div>-->
+<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+<!--                                            <div class="progress bg-yellow">-->
+<!--                                                <div class="progress-bar bg-yellow m-0" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="92"><span class="progress-text">92%</span></div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="gredient-card-wrapper mb-40">
                             <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
                                 <h2 class="card-title my-0 font-16">Wallboard 777</h2>
                             </div>
                             <div class="gredient-card-body p-20 p-md-30" style="background: #ff7b8836;">
                                 <div class="row">
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-primary text-white"><i class="fas fa-user-tie"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Agents Logged In</h3>
                                             <div class="counting-number text-primary">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white"><i class="fas fa-user-times"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Not Ready Agents</h3>
                                             <div class="counting-number text-red">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white"><i class="fas fa-hourglass-half"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Avg. Handling Time</h3>
                                             <div class="counting-number text-yellow">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-light-blue text-white"><i class="fas fa-headphones-alt"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Calls in Waiting</h3>
                                             <div class="counting-number text-light-blue">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-purple text-white"><i class="fas fa-chalkboard-teacher"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Idel/ACW Agent</h3>
-                                            <div class="counting-number text-purple">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white"><i class="fas fa-tachometer-alt"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Service Level</h3>
-                                            <div class="counting-number text-green">0.00</div>
                                         </div>
                                     </div>
                                 </div>
@@ -121,47 +107,47 @@
                             </div>
                             <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #2e9edf40;">
                                 <div class="row">
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-primary text-white"><i class="fas fa-user-tie"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Agents Logged In</h3>
                                             <div class="counting-number text-primary">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white"><i class="fas fa-user-times"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Not Ready Agents</h3>
                                             <div class="counting-number text-red">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white"><i class="fas fa-hourglass-half"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Avg. Handling Time</h3>
                                             <div class="counting-number text-yellow">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-light-blue text-white"><i class="fas fa-headphones-alt"></i></div>
                                             <h3 class="my-0 font-16 pt-40 pb-20">Calls in Waiting</h3>
                                             <div class="counting-number text-light-blue">0</div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-purple text-white"><i class="fas fa-chalkboard-teacher"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Idel/ACW Agent</h3>
-                                            <div class="counting-number text-purple">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white"><i class="fas fa-tachometer-alt"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Service Level</h3>
-                                            <div class="counting-number text-green">0</div>
-                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gredient-card-wrapper mb-30">
+                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
+                                <h2 class="card-title my-0 font-16">Pie Chart</h2>
+                            </div>
+
+                            <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #ff7b8836;">
+                                <div class="row">
+                                    <div class="col-md-12">
+
                                     </div>
                                 </div>
                             </div>
@@ -185,13 +171,14 @@
 <script>
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
+
 import axios from "axios";
 
 export default {
     name: "dashboard.vue",
     components: {
         Header,
-        Menu
+        Menu,
     },
 
     data() {
