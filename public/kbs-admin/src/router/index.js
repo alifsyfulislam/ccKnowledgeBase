@@ -38,7 +38,7 @@ let router = createRouter({
     routes: [
 
         {
-            path: '/admin/page-configuration',
+            path: '/page-configuration',
             name: 'pageConfiguration',
             component: pageConfiguration,
             meta: {
@@ -47,7 +47,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/quiz-add',
+            path: '/quiz-add',
             name: 'quizAdd',
             component: quizAdd,
             meta: {
@@ -56,7 +56,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/quiz-list',
+            path: '/quiz-list',
             name: 'quizList',
             component: quizList,
             meta: {
@@ -65,7 +65,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/quiz-edit/:id',
+            path: '/quiz-edit/:id',
             name: 'quizEdit',
             component: quizEdit,
             meta: {
@@ -74,7 +74,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/quiz-form-field-list/',
+            path: '/quiz-form-field-list/',
             name: 'quizFormFieldList',
             component: quizFormFieldList,
             meta: {
@@ -83,7 +83,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/quiz-form-list',
+            path: '/quiz-form-list',
             name: 'quizFormList',
             component: quizFormList,
             meta: {
@@ -92,7 +92,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/role-add',
+            path: '/role-add',
             name: 'roleAdd',
             component: roleAdd,
             meta: {
@@ -100,7 +100,7 @@ let router = createRouter({
             }
         },
         {
-            path: '/admin/role-list',
+            path: '/role-list',
             name: 'roleList',
             component: roleList,
             meta: {
@@ -108,7 +108,7 @@ let router = createRouter({
             }
         },
         {
-            path: '/admin/role-edit/:id',
+            path: '/role-edit/:id',
             name: 'roleEdit',
             component: roleEdit,
             meta: {
@@ -117,7 +117,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/user-list',
+            path: '/user-list',
             name: 'customerList',
             component: customerList,
             meta: {
@@ -127,7 +127,7 @@ let router = createRouter({
 
 
         {
-            path: '/admin/faq-list',
+            path: '/faq-list',
             name: 'faqList',
             component: faqList,
             meta: {
@@ -136,7 +136,7 @@ let router = createRouter({
         },
 
         {
-            path: '/admin/faq-details/:id',
+            path: '/faq-details/:id',
             name: 'faqDetails',
             component: faqDetails,
             meta: {
@@ -146,7 +146,7 @@ let router = createRouter({
 
 
         {
-            path: '/admin/article-list',
+            path: '/article-list',
             name: 'articleList',
             component: articleList,
             meta: {
@@ -154,7 +154,7 @@ let router = createRouter({
             }
         },
         {
-            path: '/admin/article-details/:id',
+            path: '/article-details/:id',
             name: 'articleDetails',
             component: articleDetails,
             meta: {
@@ -162,7 +162,7 @@ let router = createRouter({
             }
         },
         {
-            path: '/admin/category-list',
+            path: '/category-list',
             name: 'categoryList',
             component: categoryList,
             meta: {
@@ -170,7 +170,7 @@ let router = createRouter({
             }
         },
         {
-            path: '/admin/dashboard',
+            path: '/dashboard',
             name: 'dashboard',
             component: dashboard,
             meta: {
@@ -198,7 +198,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!localStorage.getItem('authToken')) {
             next({
-                path: '/admin',
+                path: '/',
                 params: {nextUrl: to.fullPath}
             })
         } else {

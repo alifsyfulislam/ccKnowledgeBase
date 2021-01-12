@@ -63,7 +63,7 @@ class ArticleService
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
-            'en_title' => 'required|string',
+            'en_title' => 'required|min:3|max:190',
             'category_id' => 'required',
         ]);
 

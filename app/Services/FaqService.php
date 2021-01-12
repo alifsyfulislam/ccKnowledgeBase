@@ -48,7 +48,7 @@ class FaqService
     {
         $validator = Validator::make($request->all(),[
 
-            'en_title'      => 'required|string|min:3|max:100',
+            'en_title'      => 'required|string|min:3|max:190',
             'category_id'   => 'required',
        ]);
 

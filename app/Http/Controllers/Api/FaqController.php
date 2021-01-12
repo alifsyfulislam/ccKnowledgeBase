@@ -15,7 +15,7 @@ class FaqController extends Controller
 
     public function __construct(FaqService $faqService)
     {
-        //$this->middleware('auth');
+
         $this->faqService = $faqService;
 
     }
@@ -55,7 +55,7 @@ class FaqController extends Controller
     {
 
         if(Auth::user()->can('faq-create')) {
-            //dd("hello");
+
             return $this->faqService->createItem($request);
 
         } else {
