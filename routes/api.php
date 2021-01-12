@@ -37,6 +37,8 @@ Route::post('delete-file', 'Api\ArticleController@deleteFiles');
 
 Route::get('quiz-list','Api\QuizController@getQuizList');
 
+Route::get('front-page-config', 'Api\PageController@index');
+
 Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizFieldListFromQuizForm');
 
 

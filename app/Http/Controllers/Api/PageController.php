@@ -28,15 +28,7 @@ class PageController extends Controller
 
     public function index()
     {
-        if(Auth::user()->can('page-list')) {
-
-            return $this->pageService->getAll();
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->pageService->getAll();
     }
 
     /**
