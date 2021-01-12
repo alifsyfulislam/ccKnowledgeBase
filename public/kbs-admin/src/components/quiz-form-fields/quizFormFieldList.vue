@@ -61,10 +61,12 @@
                                     <td class="text-center">{{ a_quiz_form_field.f_id }}</td>
                                     <td class="text-center">{{ a_quiz_form_field.f_class }}</td>
                                     <td class="text-center" style="min-width: 120px">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = a_quiz_form_field.id, isEditCheck=true">
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = a_quiz_form_field.id, isEditCheck=true"
+                                                v-if="checkPermission('quiz-form-field-edit')">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = a_quiz_form_field.id, isDeleteCheck=true">
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = a_quiz_form_field.id, isDeleteCheck=true"
+                                                 v-if="checkPermission('quiz-form-field-delete')">
                                             <i class="fas fa-trash-restore-alt"></i>
                                         </button>
                                     </td>
@@ -180,6 +182,9 @@
                 success_message : '',
                 error_message   : '',
                 token           : '',
+
+                user_permissions    : '',
+                mappedPermission    : '',
 
                 allFields    : '',
                 quizFormName : [],
@@ -318,6 +323,15 @@
                 setTimeout(() => this.error_message = "", 2e3);
             },
 
+            checkPermission(permissionForCheck){
+
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
         },
         created()
         {
@@ -331,6 +345,8 @@
             }
             this.isLoading  = true;
             this.getQuizFormFieldList();
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         }
     }
 </script>

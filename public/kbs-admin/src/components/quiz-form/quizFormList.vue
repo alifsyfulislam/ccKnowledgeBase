@@ -16,7 +16,8 @@
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true"
+                                        v-if="checkPermission('quiz-form-create')">
                                     <i class="fas fa-plus"></i>
                                     Add Quiz Form
                                 </button>
@@ -59,15 +60,18 @@
                                     <td class="text-center">{{ a_quiz_field.name }}</td>
                                     <td class="text-center">{{ a_quiz_field.created_at }}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isAddFieldCheck=true">
+                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isAddFieldCheck=true"
+                                                v-if="checkPermission('quiz-form-field-create')">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </td>
                                     <td class="text-center" style="min-width: 120px">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_id = a_quiz_field.id, isEditCheck=true">
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_id = a_quiz_field.id, isEditCheck=true"
+                                                v-if="checkPermission('quiz-form-edit')">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isDeleteCheck=true">
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_id = a_quiz_field.id, isDeleteCheck=true"
+                                                 v-if="checkPermission('quiz-form-delete')">
                                             <i class="fas fa-trash-restore-alt"></i>
                                         </button>
                                     </td>
@@ -191,6 +195,9 @@ export default {
             allQuizField        : '',
 
             allQuizFieldFrom    : '',
+
+            user_permissions    : '',
+            mappedPermission    : '',
 
             filter : {
                 isAdmin         : 1,
@@ -327,10 +334,20 @@ export default {
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
         },
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     created() {
         this.isLoading  = true;
         this.getQuizFormList();
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
     }
 }
 </script>

@@ -282,8 +282,8 @@ export default {
             token               : '',
             categoryList        : '',
 
-            user_permissions : '',
-            mappedPermission : '',
+            user_permissions    : '',
+            mappedPermission    : '',
 
             faqList             : '',
             faq_id              : '',
