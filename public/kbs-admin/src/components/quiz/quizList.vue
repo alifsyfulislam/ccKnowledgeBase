@@ -23,7 +23,7 @@
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div class="d-flex align-items-center">
 
-                                <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
+                                <button v-if="checkPermission('quiz-create')" class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0" @click="isAddCheck=true">
                                     <i class="fas fa-plus"></i>
                                     Add Quiz
                                 </button>
@@ -79,8 +79,8 @@
                                     <td class="text-center" v-else> Active </td>
 
                                     <td class="text-center">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=a_quiz.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=a_quiz.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
+                                        <button  v-if="checkPermission('quiz-edit')" class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=a_quiz.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                        <button  v-if="checkPermission('quiz-delete')" class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=a_quiz.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
 
                                 </tr>
@@ -217,8 +217,11 @@ export default {
             quizList        : '',
             userInfo        : '',
 
+            user_permissions  : '',
+            mappedPermission  : '',
+
             filter : {
-                isAdmin      : 1,
+                isAdmin   : 1,
                 status    : '',
                 name      : '',
             },
@@ -272,21 +275,6 @@ export default {
             this.setTimeoutElements();
         },
 
-        /*getQuizDataFromAdd (newData) {
-            console.log(newData)
-            this.isAddCheck = false;
-            this.getQuizList();
-
-        },
-
-        getQuizDataFromEdit (newEditData) {
-
-            console.log(newEditData)
-            this.isEditCheck = false;
-            this.getQuizList();
-
-        },*/
-
         clearFilter(){
 
             this.filter.status   = "";
@@ -328,6 +316,15 @@ export default {
                         _that.error_message   = response.data.error;
                     }
                 })
+        },
+
+        checkPermission(permissionForCheck){
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
         },
 
         deleteQuiz() {
@@ -374,9 +371,11 @@ export default {
     created() {
 
         this.isLoading = true;
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.getQuizList();
-
     }
+
 }
 </script>
 

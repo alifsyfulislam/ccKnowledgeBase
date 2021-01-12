@@ -155,7 +155,7 @@
           </ul>
         </li>
 
-          <li>
+          <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
               <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
