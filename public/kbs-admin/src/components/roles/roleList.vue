@@ -189,18 +189,18 @@ export default {
     },
     data (){
         return {
-            isLoading               : false,
-            isEditCheck             : false,
-            isAddCheck              : false,
-            isDeleteCheck           : false,
-            isSearchCheck           : false,
-            success_message         : '',
-            error_message           : '',
-            role_id                 : '',
-            userRoles               : '',
+            isLoading         : false,
+            isEditCheck       : false,
+            isAddCheck        : false,
+            isDeleteCheck     : false,
+            isSearchCheck     : false,
+            success_message   : '',
+            error_message     : '',
+            role_id           : '',
+            userRoles         : '',
 
-            user_permissions        : '',
-            mappedPermission        : '',
+            user_permissions  : '',
+            mappedPermission  : '',
 
             pagination  : {
                 from           : '',
