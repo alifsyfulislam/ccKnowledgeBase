@@ -245,11 +245,12 @@
                 $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
             },
 
-            getAddDataFromChild (newData)
+            getAddDataFromChild (status)
             {
-                console.log(newData)
-                this.isAddFieldCheck = false;
                 this.getQuizFormFieldList();
+                this.success_message = status;
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
             },
 
             getEditDataFromChild (status)

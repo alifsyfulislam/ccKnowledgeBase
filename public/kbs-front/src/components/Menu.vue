@@ -5,7 +5,7 @@
           <div class="container">
             <div class="logo">
                 <router-link class="nav-item" :to="{ name: 'Display'}">
-                    <span>KBS</span>
+                    <img :src="frontPageData.logo" style="max-height: 50px; width: auto">
                 </router-link>
             </div>
 
@@ -46,8 +46,33 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "Menu",
+
+        data(){
+            return{
+                frontPageData : '',
+            }
+        },
+
+        methods: {
+            getPageDecorationData()
+            {
+                let _that =this;
+                axios.get('front-page-config', { cache: false })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            console.log(response.data.page_config_info);
+                            _that.frontPageData = response.data.page_config_info;
+                        }
+                    })
+            }
+        },
+        created() {
+            this.getPageDecorationData();
+        }
     }
 </script>
 

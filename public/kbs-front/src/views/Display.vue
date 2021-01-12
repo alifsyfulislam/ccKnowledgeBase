@@ -4,11 +4,11 @@
     </div>
     <div v-else class="display min-height-wrapper" v-cloak>
         <main>
-            <section class="banner-area py-50 py-md-140" :style="{ backgroundImage: 'url(' + require('../assets/img/banner.jpg') + ')' }">
+            <section class="banner-area py-50 py-md-140" :style="{ backgroundImage: 'url(' + frontPageData.banner + ')' }">
                 <div class="container">
                     <div class="search-wrapper text-center">
-                        <h1 class="section-title bottom-bar text-white text-center mb-10 pb-20">Knowledge Base System</h1>
-                        <p class="text-white">Exclusively Made for Knowledge Bases</p>
+                        <h1 class="section-title bottom-bar text-white mb-10 pb-20">{{ frontPageData.title }}</h1>
+                        <p class="text-white">{{ frontPageData.description }}</p>
                         <!--            form-->
                         <searchform></searchform>
 
@@ -72,6 +72,7 @@
             return{
                 isLoading : true,
                 allCategoryArticle:'',
+                frontPageData :'',
                 categoryHasArticle:[],
             }
         },
@@ -92,8 +93,33 @@
                         }
                     })
             },
+
+            getPageDecorationData()
+            {
+                let _that =this;
+                axios.get('front-page-config', { cache: false })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            console.log(response.data.page_config_info);
+                            _that.frontPageData = response.data.page_config_info;
+
+                            // if (_that.frontPageData.position === "left")
+                            // {
+                            //     _that.frontPageData.position = 'text-left';
+                            // }
+                            // else if (_that.frontPageData.position === "right")
+                            // {
+                            //     _that.frontPageData.position = 'text-right';
+                            // }else{
+                            //     _that.frontPageData.position = 'text-center';
+                            // }
+                        }
+                    })
+            }
         },
-        created() {
+        created()
+        {
+            this.getPageDecorationData();
             this.getCategoryArticleList();
         }
     }

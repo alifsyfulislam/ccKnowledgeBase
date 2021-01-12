@@ -1,14 +1,14 @@
 <template>
-  <div class="sidebar-wrapper bg-white">
-    <div class="logo-wrapper text-center py-25 px-10">
-      <img class="big-image" src="@/assets/img/gplex-logo.png" alt="gplex">
-      <img class="small-image" src="@/assets/img/gplex-logo-2.png" alt="gplex">
-    </div>
+    <div class="sidebar-wrapper bg-white">
+        <div class="logo-wrapper text-center py-25 px-10">
+            <img class="big-image" src="@/assets/img/gplex-logo.png" alt="gplex">
+            <img class="small-image" src="@/assets/img/gplex-logo-2.png" alt="gplex">
+        </div>
 
-    <nav class="sidebar-menu-wrapper text-left">
-      <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
-        <li>
-          <router-link :to="{ name: 'dashboard'}">
+        <nav class="sidebar-menu-wrapper text-left">
+            <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
+                <li>
+                    <router-link :to="{ name: 'dashboard'}">
             <span class="anim">
                 <span class="anim">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -19,14 +19,14 @@
                     </svg>
                 </span>
             </span>
-            <span class="menu-title">
+                        <span class="menu-title">
                 Dashboard
             </span>
-          </router-link>
-        </li>
+                    </router-link>
+                </li>
 
-        <li v-if="checkPermission('user-list')">
-          <router-link :to="{ name: 'customerList'}">
+                <li v-if="checkPermission('user-list')">
+                    <router-link :to="{ name: 'customerList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -36,14 +36,14 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">
+                        <span class="menu-title">
                 User
             </span>
-          </router-link>
-        </li>
+                    </router-link>
+                </li>
 
-        <li  v-if="checkPermission('category-list')">
-          <router-link :to="{ name: 'categoryList'}">
+                <li  v-if="checkPermission('category-list')">
+                    <router-link :to="{ name: 'categoryList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -54,12 +54,12 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">Category</span>
-          </router-link>
-        </li>
+                        <span class="menu-title">Category</span>
+                    </router-link>
+                </li>
 
-        <li  v-if="checkPermission('article-list')">
-          <router-link :to="{ name: 'articleList'}">
+                <li  v-if="checkPermission('article-list')">
+                    <router-link :to="{ name: 'articleList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -72,12 +72,12 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">Article</span>
-          </router-link>
-        </li>
+                        <span class="menu-title">Article</span>
+                    </router-link>
+                </li>
 
-        <li v-if="checkPermission('faq-list')">
-          <router-link :to="{ name: 'faqList'}">
+                <li v-if="checkPermission('faq-list')">
+                    <router-link :to="{ name: 'faqList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -93,12 +93,12 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">FAQ</span>
-          </router-link>
-        </li>
+                        <span class="menu-title">FAQ</span>
+                    </router-link>
+                </li>
 
-        <li v-if="checkPermission('role-list')">
-          <router-link :to="{ name: 'roleList'}">
+                <li v-if="checkPermission('role-list')">
+                    <router-link :to="{ name: 'roleList'}">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -109,12 +109,12 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">Roles</span>
-          </router-link>
-        </li>
+                        <span class="menu-title">Roles</span>
+                    </router-link>
+                </li>
 
-        <li v-if="checkPermission('quiz-list') || checkPermission('quiz-form-list') || checkPermission('quiz-form-field-list')">
-          <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
+                <li v-if="checkPermission('quiz-list') || checkPermission('quiz-form-list') || checkPermission('quiz-form-field-list')">
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -128,35 +128,35 @@
                     </g>
                 </svg>
             </span>
-            <span class="menu-title">Quizz</span>
-          </a>
-          <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
+                        <span class="menu-title">Quizz</span>
+                    </a>
+                    <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
 
 
-          <li v-if="checkPermission('quiz-list')">
-              <router-link :to="{ name: 'quizList'}">
-                  <span class="menu-sub-title">Quizzes</span>
-              </router-link>
-          </li>
+                        <li v-if="checkPermission('quiz-list')">
+                            <router-link :to="{ name: 'quizList'}">
+                                <span class="menu-sub-title">Quizzes</span>
+                            </router-link>
+                        </li>
 
-          <li v-if="checkPermission('quiz-form-list')">
-             <router-link :to="{ name: 'quizFormList'}">
-                <span class="menu-sub-title">Quiz Forms</span>
-             </router-link>
-          </li>
+                        <li v-if="checkPermission('quiz-form-list')">
+                            <router-link :to="{ name: 'quizFormList'}">
+                                <span class="menu-sub-title">Quiz Forms</span>
+                            </router-link>
+                        </li>
 
 
-         <li  v-if="checkPermission('quiz-form-field-list')">
-            <router-link :to="{ name: 'quizFormFieldList'}">
-                <span class="menu-sub-title">Quiz Form Field</span>
-            </router-link>
-         </li>
+                        <li  v-if="checkPermission('quiz-form-field-list')">
+                            <router-link :to="{ name: 'quizFormFieldList'}">
+                                <span class="menu-sub-title">Quiz Form Field</span>
+                            </router-link>
+                        </li>
 
-          </ul>
-        </li>
+                    </ul>
+                </li>
 
-          <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
-              <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
+                <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
+                    <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
             <span class="anim">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                     <g>
@@ -170,25 +170,20 @@
                     </g>
                 </svg>
             </span>
-                  <span class="menu-title">Settings</span>
-              </a>
-              <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
+                        <span class="menu-title">Settings</span>
+                    </a>
+                    <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
+                        <li>
+                            <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
+                                <span class="menu-sub-title">Page Configuration</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-                  <li>
-                      <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
-                          <span class="menu-sub-title">Page Configuration</span>
-                      </a>
-<!--                      <router-link :to="{ name: 'pageConfiguration'}">
-                          <span class="menu-sub-title">Page Configuration</span>
-                      </router-link>-->
-                  </li>
-
-              </ul>
-          </li>
-
-      </ul>
-    </nav>
-  </div>
+            </ul>
+        </nav>
+    </div>
 
     <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" >
         <div class="close-bar d-flex align-items-center justify-content-end">
@@ -197,13 +192,21 @@
             </button>
         </div>
 
-        <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck="isConfigurationCheck"></pageConfiguration>
+        <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck="isConfigurationCheck" @page-config-close="getDataFromChild"></pageConfiguration>
+    </div>
+
+    <div class="action-modal-wraper" v-if="success_message">
+        <span>{{ success_message }}</span>
+    </div>
+    <div class="action-modal-wraper-error" v-if="error_message">
+        <span>{{ error_message }}</span>
     </div>
 
 </template>
 
 <script>
 import pageConfiguration from "@/components/settings/pageConfigurationNew";
+import $ from "jquery";
 
 export default {
     name: "Menu.vue",
@@ -218,10 +221,31 @@ export default {
             token            : '',
             user_permissions : '',
             mappedPermission : '',
-            user_info        : ''
+            user_info        : '',
+            success_message     : '',
+            error_message       : ''
         }
     },
     methods :{
+        removingRightSideWrapper()
+        {
+            console.log('working')
+            this.isConfigurationCheck = false;
+
+            document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper.right-side-config-wrapper').toggleClass('right-side-config-form-show');
+        },
+        getDataFromChild(status)
+        {
+            this.success_message = status;
+            this.setTimeoutElements();
+            this.removingRightSideWrapper();
+        },
+        setTimeoutElements()
+        {
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
+        },
 
         checkPermission(permissionForCheck){
 
@@ -233,13 +257,13 @@ export default {
 
         },
 
-        clearAllChecker() {
-
+        clearAllChecker()
+        {
             this.isConfigurationCheck = false;
-           // this.$emit('config-data', this.is_config_check);
         },
 
-        getPageConfigData(newData) {
+        getPageConfigData(newData)
+        {
             console.log(newData)
             this.isConfigurationCheck = false;
         },
