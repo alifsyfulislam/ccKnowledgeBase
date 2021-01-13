@@ -102,7 +102,10 @@ class ArticleService
 
         DB::commit();
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json([
+            'status_code' => 201,
+            'messages'=>config('status.status_code.201')
+        ]);
 
     }
 
@@ -182,9 +185,9 @@ class ArticleService
 
         }
 
-        $input = $request->all();
-        $randomString = Str::random();
-        $input['slug'] = Helper::slugify($input['en_title']).$randomString;
+        $input          = $request->all();
+        $randomString   = Str::random();
+        $input['slug']  = Helper::slugify($input['en_title']).$randomString;
 
         DB::beginTransaction();
 
