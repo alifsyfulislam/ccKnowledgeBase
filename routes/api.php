@@ -26,7 +26,7 @@ Route::get('categories/export/', 'Api\ExportController@exportCategories')->name(
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
 Route::get('category-article-list', 'Api\CategoryController@categoryArticleList');
-Route::get('article/category/{id}','Api\ArticleController@articleCategory');
+Route::get('article/category/{slug}','Api\ArticleController@articleCategory');
 Route::get('article/{id}', 'Api\ArticleController@show');
 Route::get('article-list', 'Api\ArticleController@articleList');
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');

@@ -68,7 +68,7 @@ export default {
 
           data: data,
           type: "POST",
-          url: axios.defaults.baseURL + '/save-file',
+          url: axios.defaults.baseURL + 'admin/save-file',
           cache: false,
           contentType: false,
           processData: false,
@@ -104,7 +104,7 @@ export default {
 
           data: {img_src: img_src},
           type: "POST",
-          url: axios.defaults.baseURL + '/delete-file',
+          url: axios.defaults.baseURL + 'admin/delete-file',
           cache: false,
           dataType: 'json',
           success: function(data) {
