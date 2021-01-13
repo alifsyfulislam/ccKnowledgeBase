@@ -50,65 +50,15 @@
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
                         <Loading v-if="isLoading===true"></Loading>
-                        <!-- Table Data -->
-                        <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-left">Name</th>
-                                    <th class="text-left">Parent Name</th>
-                                    <th class="text-center">Created Date</th>
-                                    <th class="text-center" style="width:120px;">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
 
-                                <tr v-for="(a_category) in categoryList" :key="a_category">
-                                    <td class="text-center">{{ a_category.id }}</td>
-                                    <td class="text-left">{{ a_category.name }}</td>
-                                    <td class="text-left">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
-                                    <td class="text-center">{{ a_category.created_at }}</td>
 
-                                    <td class="text-center">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
-                                                @click="category_id=a_category.id, isEditCheck=true" v-if="checkPermission('category-edit')">
-                                            <i class="fas fa-pen"></i>
-                                        </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                 @click="category_id=a_category.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
-                                            <i class="fas fa-trash-restore-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Table Data End -->
-                        <!-- Pagination -->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getCategoryList('admin/categories?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">{{ n }}</a>
-                                    </li>
 
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <!-- Pagination End -->
+                        <ul id="demo">
+                            <tree-item v-if="isTree" class="item" :item="treeData" @make-folder="makeFolder" @add-item="addItem"></tree-item>
+                        </ul>
+
+
+
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -167,26 +117,63 @@ import Header from '@/layouts/common/Header'
 import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
+import TreeItem from "./TreeItem";
 import $ from "jquery";
 
 
-$(document).on('click','.screen-expand-btn',()=>{
+$(document).on('click','.screen-expand-btn',()  => {
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
 
 
 export default {
-    name: "categoryList.vue",
+    name: "categoryTree.vue",
+
+
+    template: "",
+
+
     components: {
         Header,
         Menu,
         CategoryAdd,
         CategoryEdit,
-        Loading
+        Loading,
+        TreeItem
     },
 
     data() {
         return {
+            isTree : false,
+
+            // treeData : {
+            //     name: "My Tree",
+            //     parent_recursive: [
+            //         { name: "hello" },
+            //         { name: "wat" },
+            //         {
+            //             name: "child folder",
+            //             parent_recursive: [
+            //                 {
+            //                     name: "child folder",
+            //                     parent_recursive: [{ name: "hello" }, { name: "wat" }]
+            //                 },
+            //                 { name: "hello" },
+            //                 { name: "wat" },
+            //                 {
+            //                     name: "child folder",
+            //                     parent_recursive: [{ name: "hello" }, { name: "wat" }]
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+
+            treeData : '',
+
+
+
+
             isLoading           : false,
 
             isEditCheck         : false,
@@ -231,6 +218,19 @@ export default {
     },
     methods: {
 
+        makeFolder: function(item)
+        {
+            this.set(item, "parent_recursive", []);
+            this.addItem(item);
+        },
+
+        addItem: function(item)
+        {
+            item.parent_recursive.push({
+                name: "new stuff"
+            });
+        },
+
         removingRightSideWrapper()
         {
             this.isAddCheck         = false;
@@ -248,8 +248,8 @@ export default {
             this.isDeleteCheck      = false;
         },
 
-        getAddDataFromChild (status){
-
+        getAddDataFromChild (status)
+        {
             this.success_message = status;
             this.getCategoryList();
             this.removingRightSideWrapper();
@@ -284,7 +284,10 @@ export default {
                 {
                     if(response.data.status_code === 200)
                     {
+                        _that.isTree = true;
                         _that.categoryList      = response.data.category_list.data;
+                        // console.log(_that.categoryList);
+                        _that.treeData          = _that.categoryList;
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
@@ -387,6 +390,7 @@ export default {
         this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
         this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        this.getCategoryList();
         console.log(this.downloadUrl)
     }
 }
