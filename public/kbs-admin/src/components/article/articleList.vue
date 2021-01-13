@@ -65,7 +65,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">ID</th>
-                                    <th class="text-center">Title</th>
+                                    <th class="text-left">Title</th>
                                     <th class="text-center">Author</th>
                                     <th class="text-center">Category</th>
                                     <th class="text-center">Status</th>
@@ -79,7 +79,7 @@
                                 <tr v-for="an_article in articleList" :key="an_article.id">
 
                                     <td class="text-center">{{ an_article.id }}</td>
-                                    <td class="text-center">
+                                    <td class="text-left">
                                         <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
                                         <span v-else> {{ (an_article.en_title).substring(0,30)+"...." }}</span>
                                     </td>

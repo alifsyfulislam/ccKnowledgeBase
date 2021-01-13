@@ -50,7 +50,9 @@
                           <ul>
                             <li v-for="has_article in selectedCategory" :key="has_article.id">
                               <router-link :to="{ name: 'ArticleDetail', params: { articleID: has_article.id }}">
-                                {{has_article.en_title}}
+<!--                                {{has_article.en_title}}-->
+                                  <span v-if="(has_article.en_title).length<50"> {{ has_article.en_title }}</span>
+                                  <span v-else> {{ (has_article.en_title).substring(0,50)+"..." }}</span>
                               </router-link>
                               <div v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
 <!--                                <small v-if="a_cat_art.id == has_article.category_id">Category: {{a_cat_art.name}}</small>-->

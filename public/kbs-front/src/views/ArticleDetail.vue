@@ -59,7 +59,10 @@
                     <ul class="recent-articles list-unstyled">
 <!--                      work here-->
                       <li v-for="a_art in allArticle" :key="a_art.id">
-                        <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.id)">{{a_art.en_title}}</a>
+                        <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.id)">
+                            <span v-if="(a_art.en_title).length<30"> {{ a_art.en_title }}</span>
+                            <span v-else> {{ (a_art.en_title).substring(0,30)+"..." }}</span>
+                        </a>
                       </li>
                     </ul>
                   </div>

@@ -39,7 +39,9 @@
                                         <!--                    work-->
                                         <li v-for="a_article in a_cate_art.article" :key="a_article.id">
                                             <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.id }}">
-                                                {{a_article.en_title}}
+<!--                                                {{a_article.en_title}}-->
+                                                <span v-if="(a_article.en_title).length<50"> {{ a_article.en_title }}</span>
+                                                <span v-else> {{ (a_article.en_title).substring(0,50)+"..." }}</span>
                                             </router-link>
                                         </li>
                                     </ul>

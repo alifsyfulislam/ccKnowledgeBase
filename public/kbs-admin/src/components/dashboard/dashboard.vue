@@ -92,62 +92,29 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered gsl-table">
                                         <thead>
-                                            <tr>
-                                                <th class="text-center">ID</th>
-                                                <th class="text-center">Title</th>
-                                                <th class="text-center">Author</th>
-                                                <th class="text-center">Category</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center">Tag</th>
-                                                <th class="text-center">Publish Date</th>
-                                            </tr>
+                                        <tr>
+                                            <th class="text-left">Title</th>
+                                            <th class="text-center">Author</th>
+                                            <th class="text-center">Category</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Tag</th>
+                                            <th class="text-center">Publish Date</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="text-center">16105108767775</td>
-                                                <td class="text-center">sdf</td>
-                                                <td class="text-center">Md Ziaur Rahman</td>
-                                                <td class="text-center">science fiction</td>
-                                                <td class="text-center">draft</td>
-                                                <td class="text-center">sdfd</td>
-                                                <td class="text-center">13 Jan, 2021</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">16105108767775</td>
-                                                <td class="text-center">sdf</td>
-                                                <td class="text-center">Md Ziaur Rahman</td>
-                                                <td class="text-center">science fiction</td>
-                                                <td class="text-center">draft</td>
-                                                <td class="text-center">sdfd</td>
-                                                <td class="text-center">13 Jan, 2021</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">16105108767775</td>
-                                                <td class="text-center">sdf</td>
-                                                <td class="text-center">Md Ziaur Rahman</td>
-                                                <td class="text-center">science fiction</td>
-                                                <td class="text-center">draft</td>
-                                                <td class="text-center">sdfd</td>
-                                                <td class="text-center">13 Jan, 2021</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">16105108767775</td>
-                                                <td class="text-center">sdf</td>
-                                                <td class="text-center">Md Ziaur Rahman</td>
-                                                <td class="text-center">science fiction</td>
-                                                <td class="text-center">draft</td>
-                                                <td class="text-center">sdfd</td>
-                                                <td class="text-center">13 Jan, 2021</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">16105108767775</td>
-                                                <td class="text-center">sdf</td>
-                                                <td class="text-center">Md Ziaur Rahman</td>
-                                                <td class="text-center">science fiction</td>
-                                                <td class="text-center">draft</td>
-                                                <td class="text-center">sdfd</td>
-                                                <td class="text-center">13 Jan, 2021</td>
-                                            </tr>
+                                        <tr v-for="an_article in articleList" :key="an_article.id">
+                                            <td class="text-left">
+                                                <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
+                                                <span v-else> {{ (an_article.en_title).substring(0,30)+"...." }}</span>
+                                            </td>
+                                            <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
+                                            <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
+                                            <td class="text-center">{{ an_article.status  }}</td>
+                                            <td class="text-center">{{ an_article.tag  }}</td>
+                                            <td class="text-center">{{ an_article.created_at  }}</td>
+
+
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -206,6 +173,7 @@ export default {
             categoryList    : '',
             articleList     : '',
             userInfo        : '',
+            recentArticles   : '',
             filter : {
                 isAdmin : 1,
                 category_id : '',
@@ -255,7 +223,6 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data);
                         _that.categoryList = response.data.category_list.data;
                     }
                     else{
@@ -276,17 +243,16 @@ export default {
                     },
                     params :
                         {
-                            isAdmin : 1,
-                            category_id : this.filter.category_id,
-                            status : this.filter.status,
-                            en_title : this.filter.en_title,
-                            tag : this.filter.tag,
+                            isAdmin         : 1,
+                            category_id     : this.filter.category_id,
+                            status          : this.filter.status,
+                            en_title        : this.filter.en_title,
+                            tag             : this.filter.tag,
                         },
 
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data);
                         _that.isArticleList = true;
                         _that.articleList = response.data.article_list.data;
                     }
@@ -299,7 +265,7 @@ export default {
 
     },
     created() {
-        //this.getArticleList();
+        this.getArticleList();
         this.getCategoryList();
         //console.log(this.$route.params);
         //   this.success_message = this.$route.params.current_status;
