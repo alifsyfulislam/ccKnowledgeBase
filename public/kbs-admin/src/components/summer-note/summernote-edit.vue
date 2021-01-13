@@ -68,7 +68,8 @@ export default {
 
           data: data,
           type: "POST",
-          url: axios.defaults.baseURL + 'admin/save-file',
+          url: axios.defaults.baseURL + '/admin/save-file',
+          headers: {  'Authorization': 'Bearer '+localStorage.getItem('authToken') },
           cache: false,
           contentType: false,
           processData: false,
@@ -104,7 +105,8 @@ export default {
 
           data: {img_src: img_src},
           type: "POST",
-          url: axios.defaults.baseURL + 'admin/delete-file',
+          url: axios.defaults.baseURL + '/admin/delete-file',
+          headers: {  'Authorization': 'Bearer '+localStorage.getItem('authToken') },
           cache: false,
           dataType: 'json',
           success: function(data) {
