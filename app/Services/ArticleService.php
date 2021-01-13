@@ -35,9 +35,9 @@ class ArticleService
     {
 
         return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'article_list'=>$this->articleRepository->all()
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'article_list' => $this->articleRepository->all()
         ]);
 
     }
@@ -62,7 +62,7 @@ class ArticleService
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
-            'en_title' => 'required|min:3|max:190',
+            'en_title'    => 'required|min:3|max:190',
             'category_id' => 'required',
         ]);
 
@@ -70,8 +70,8 @@ class ArticleService
 
             return response()->json([
                 'status_code' => 400,
-                'messages' => config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
             ]);
 
         }
@@ -93,7 +93,11 @@ class ArticleService
             DB::rollBack();
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
@@ -141,7 +145,7 @@ class ArticleService
 
         $validator = Validator::make($request->all(),[
 
-            'en_title' => 'required|string',
+            'en_title'    => 'required|string',
             'category_id' => 'required',
 
         ]);
@@ -151,8 +155,8 @@ class ArticleService
             return response()->json([
 
                 'status_code' => 400,
-                'messages'=> config('status.status_code.400'),
-                'errors' =>  $validator->errors()->all()
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
 
             ]);
 
@@ -173,12 +177,19 @@ class ArticleService
             DB::rollBack();
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
         DB::commit();
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200')
+        ]);
     }
 
 
@@ -200,7 +211,11 @@ class ArticleService
 
             Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
 
-            return response()->json(['status_code' => '424', 'messages'=>config('status.status_code.424'), 'error' => $e->getMessage()]);
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
 
         }
 
@@ -209,7 +224,7 @@ class ArticleService
         return response()->json([
 
             'status_code' => 200,
-            'messages'=> "Article Deleted Successfully"
+            'messages'    => "Article Deleted Successfully"
 
         ]);
 
@@ -236,9 +251,9 @@ class ArticleService
 
         return response()->json([
 
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'article_list'=>$this->articleRepository->search($searchString)
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'article_list' => $this->articleRepository->search($searchString)
 
         ]);
 
@@ -250,9 +265,9 @@ class ArticleService
 
         return response()->json([
 
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'article_list'=>$this->articleRepository->searchCategoryArticle($id)
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'article_list' => $this->articleRepository->searchCategoryArticle($id)
 
         ]);
 
@@ -267,8 +282,8 @@ class ArticleService
             return response()->json([
 
                 'status_code' => 200,
-                'messages'=>config('status.status_code.200'),
-                'file_path'=> Helper::base64ImageUpload($request->attachment_save_path, $request->file)
+                'messages'    => config('status.status_code.200'),
+                'file_path'   => Helper::base64ImageUpload($request->attachment_save_path, $request->file)
 
             ]);
 
@@ -287,10 +302,8 @@ class ArticleService
             unlink(public_path().'/'.$mediaName );
 
             return response()->json([
-
                 'status_code' => 200,
-                'messages'=>config('status.status_code.200'),
-
+                'messages'    => config('status.status_code.200'),
             ]);
 
         }
