@@ -46,6 +46,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
     Route::post('user/update-password', 'Api\UserController@changePassword');
 
+    Route::get('latest-article-list', 'Api\ArticleController@articleList');
+
     Route::post('logout', 'Api\AuthController@logout');
 
     Route::apiResource('users','Api\UserController');
