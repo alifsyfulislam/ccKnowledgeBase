@@ -18,54 +18,9 @@
                 <div class="content-wrapper">
                     <!-- Content Area -->
                     <div class="data-content-area pr-15 pb-10">
-                        <!--                        <div class="gredient-card-wrapper mb-40">-->
-                        <!--                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">-->
-                        <!--                                <h2 class="card-title my-0 font-16">Daily Snap Shot</h2>-->
-                        <!--                            </div>-->
-                        <!--                            <div class="gredient-card-body p-20 p-md-30" style="background: #20c94c36;">-->
-                        <!--                                <div class="row">-->
-                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-                        <!--                                                <h3 class="my-0 font-16">Service Level</h3>-->
-                        <!--                                            </div>-->
-                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-                        <!--                                            <div class="progress bg-green">-->
-                        <!--                                                <div class="progress-bar bg-green m-0" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">90%</span></div>-->
-                        <!--                                            </div>-->
-                        <!--                                        </div>-->
-                        <!--                                    </div>-->
-                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-                        <!--                                                <h3 class="my-0 font-16">Answer Level</h3>-->
-                        <!--                                            </div>-->
-                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-                        <!--                                            <div class="progress bg-red">-->
-                        <!--                                                <div class="progress-bar bg-red m-0" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">70%</span></div>-->
-                        <!--                                            </div>-->
-                        <!--                                        </div>-->
-                        <!--                                    </div>-->
-                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-                        <!--                                                <h3 class="my-0 font-16">AHT</h3>-->
-                        <!--                                            </div>-->
-                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-                        <!--                                            <div class="progress bg-yellow">-->
-                        <!--                                                <div class="progress-bar bg-yellow m-0" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="92"><span class="progress-text">92%</span></div>-->
-                        <!--                                            </div>-->
-                        <!--                                        </div>-->
-                        <!--                                    </div>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
                         <div class="gredient-card-wrapper mb-40">
                             <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Wallboard 777</h2>
+                                <h2 class="card-title my-0 font-16">Wallboard</h2>
                             </div>
                             <div class="gredient-card-body p-20 p-md-30" style="background: #ff7b8836;">
                                 <div class="row">
@@ -101,32 +56,105 @@
                             </div>
                         </div>
 
+                        <!-- charts start -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="gredient-card-wrapper mb-30">
+                                    <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
+                                        <h2 class="card-title my-0 font-16">Area Chart</h2>
+                                    </div>
 
-                        <div class="gredient-card-wrapper mb-30">
-                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Area Chart</h2>
+                                    <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #fff;">
+                                        <AreaChart style="height:250px;"/>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="gredient-card-wrapper mb-30">
+                                    <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
+                                        <h2 class="card-title my-0 font-16">Bar Chart</h2>
+                                    </div>
 
-                            <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #ff7b8836;">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <AreaChart/>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <PieChart/>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <BarChart/>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <LineChart/>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <RadarChart/>
+                                    <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #fff;">
+                                        <BarChart style="height:250px;"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- charts end -->
+
+                        <!-- most recent posts -->
+                        <div class="gredient-card-wrapper mb-40">
+                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
+                                <h2 class="card-title my-0 font-16">Recent Articles</h2>
+                            </div>
+                            <div class="gredient-card-body pt-20 pb-20 px-10" style="background: #fff;">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered gsl-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">Title</th>
+                                                <th class="text-center">Author</th>
+                                                <th class="text-center">Category</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Tag</th>
+                                                <th class="text-center">Publish Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center">16105108767775</td>
+                                                <td class="text-center">sdf</td>
+                                                <td class="text-center">Md Ziaur Rahman</td>
+                                                <td class="text-center">science fiction</td>
+                                                <td class="text-center">draft</td>
+                                                <td class="text-center">sdfd</td>
+                                                <td class="text-center">13 Jan, 2021</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">16105108767775</td>
+                                                <td class="text-center">sdf</td>
+                                                <td class="text-center">Md Ziaur Rahman</td>
+                                                <td class="text-center">science fiction</td>
+                                                <td class="text-center">draft</td>
+                                                <td class="text-center">sdfd</td>
+                                                <td class="text-center">13 Jan, 2021</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">16105108767775</td>
+                                                <td class="text-center">sdf</td>
+                                                <td class="text-center">Md Ziaur Rahman</td>
+                                                <td class="text-center">science fiction</td>
+                                                <td class="text-center">draft</td>
+                                                <td class="text-center">sdfd</td>
+                                                <td class="text-center">13 Jan, 2021</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">16105108767775</td>
+                                                <td class="text-center">sdf</td>
+                                                <td class="text-center">Md Ziaur Rahman</td>
+                                                <td class="text-center">science fiction</td>
+                                                <td class="text-center">draft</td>
+                                                <td class="text-center">sdfd</td>
+                                                <td class="text-center">13 Jan, 2021</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">16105108767775</td>
+                                                <td class="text-center">sdf</td>
+                                                <td class="text-center">Md Ziaur Rahman</td>
+                                                <td class="text-center">science fiction</td>
+                                                <td class="text-center">draft</td>
+                                                <td class="text-center">sdfd</td>
+                                                <td class="text-center">13 Jan, 2021</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- most recent posts end -->
+
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -148,23 +176,23 @@ import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 
 import AreaChart from "../chart/AreaChart";
-import PieChart from "../chart/PieChart.vue";
 import BarChart from "../chart/BarChart.vue";
-import LineChart from "../chart/LineChart.vue";
-import RadarChart from "../chart/RadarChart.vue";
+// import PieChart from "../chart/PieChart.vue";
+// import LineChart from "../chart/LineChart.vue";
+// import RadarChart from "../chart/RadarChart.vue";
 
 import axios from "axios";
 
 export default {
     name: "dashboard.vue",
     components: {
-        BarChart,
-        PieChart,
         Header,
         Menu,
         AreaChart,
-        LineChart,
-        RadarChart
+        BarChart,
+        // PieChart,
+        // LineChart,
+        // RadarChart
     },
 
     data() {
