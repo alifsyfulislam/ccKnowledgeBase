@@ -11,11 +11,11 @@ import { Bar } from "vue-chartjs";
 export default {
     extends: Bar,
     methods:{
-        callIntervalGraph() {
-            setInterval(()=>{
-                this.callAfterOneMinute();
-            },5e3);
-        },
+        // callIntervalGraph() {
+        //     setInterval(()=>{
+        //         this.callAfterOneMinute();
+        //     },5e3);
+        // },
         callAfterOneMinute(){
             this.renderChart(
                 {
@@ -53,7 +53,7 @@ export default {
     mounted()
     {
         this.callAfterOneMinute();
-        this.callIntervalGraph();
+        // this.callIntervalGraph();
     }
 };
 </script>

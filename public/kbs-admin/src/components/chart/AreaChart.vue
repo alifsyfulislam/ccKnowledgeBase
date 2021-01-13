@@ -21,11 +21,11 @@ export default {
     },
     methods:{
 
-        callIntervalGraph() {
-            setInterval(()=>{
-                this.callAfterOneMinute();
-            },5e3);
-        },
+        // callIntervalGraph() {
+        //     setInterval(()=>{
+        //         this.callAfterOneMinute();
+        //     },5e3);
+        // },
 
         callAfterOneMinute(){
             this.gradient = this.$refs.canvas
@@ -82,7 +82,7 @@ export default {
     },
     mounted() {
         this.callAfterOneMinute();
-        this.callIntervalGraph();
+        // this.callIntervalGraph();
     }
 };
 </script>
