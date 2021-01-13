@@ -11,6 +11,7 @@
 import $ from 'jquery'
 import '../../../node_modules/summernote/dist/summernote-lite.min.js'
 import '../../../node_modules/summernote/dist/summernote-lite.min.css'
+import axios from 'axios'
 
 export default {
   name: "summernote-edit",
@@ -67,7 +68,7 @@ export default {
 
           data: data,
           type: "POST",
-          url: 'http://localhost/ccKnowledgeBase/public/api/save-file',
+          url: axios.defaults.baseURL + '/save-file',
           cache: false,
           contentType: false,
           processData: false,
@@ -103,7 +104,7 @@ export default {
 
           data: {img_src: img_src},
           type: "POST",
-          url:"http://localhost/ccKnowledgeBase/public/api/delete-file",
+          url: axios.defaults.baseURL + '/delete-file',
           cache: false,
           dataType: 'json',
           success: function(data) {
