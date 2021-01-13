@@ -11,6 +11,7 @@
 import $ from 'jquery'
 import '../../../node_modules/summernote/dist/summernote-lite.min.js'
 import '../../../node_modules/summernote/dist/summernote-lite.min.css'
+import axios from 'axios'
 
 export default {
 name: "summernote",
@@ -68,7 +69,7 @@ props: ['idFromParent'],
           data: data,
           type: "POST",
           //url: "<?php echo $this->url('task=email&act=uploadEmailImage&tid='.$eTickets->ticket_id.'&mid='.$mail_sl); ?>", ////Default Email Image Upload Path
-          url: 'http://localhost/ccKnowledgeBase/public/api/save-file',
+          url: axios.defaults.baseURL + '/save-file',
           cache: false,
           contentType: false,
           processData: false,
@@ -105,7 +106,7 @@ props: ['idFromParent'],
           data: {img_src: img_src},
           type: "POST",
           //url: "<?php echo $this->url('task=email&act=deleteUploadedImage'); ?>", ////default Email image Delete Url
-          url:"http://localhost/ccKnowledgeBase/public/api/delete-file",
+          url: axios.defaults.baseURL + '/delete-file',
           cache: false,
           //contentType: false,
           //processData: false,
