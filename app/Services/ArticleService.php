@@ -117,6 +117,7 @@ class ArticleService
      * @param $id
      * @return JsonResponse
      */
+
     public function getById($id)
     {
 
@@ -126,6 +127,25 @@ class ArticleService
                 'status_code'  => 200,
                 'messages'     => config('status.status_code.200'),
                 'article_info' => $this->articleRepository->get($id)
+            ]);
+
+        return response()->json([
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'article_info' => "Data not found"
+        ]);
+
+    }
+
+    public function getArticleDetailsBySlug($slug)
+    {
+
+        if($this->articleRepository->getBySlug($slug))
+
+            return response()->json([
+                'status_code'  => 200,
+                'messages'     => config('status.status_code.200'),
+                'article_info' => $this->articleRepository->getBySlug($slug)
             ]);
 
         return response()->json([
