@@ -24,10 +24,11 @@ class ArticleRepository implements RepositoryInterface
 
     public function latestArticleList($request)
     {
-        if ($request->is_admin){
+        if ($request->isAdmin){
             return Article::with('user','category')
                 ->orderBy('created_at', 'DESC')
-                ->take(10)->get();
+                ->take(5)
+                ->get();
         }
         else
             return Article::orderBy('created_at', 'DESC')->take(5)->get();

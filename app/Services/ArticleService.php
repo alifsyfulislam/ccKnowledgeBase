@@ -46,9 +46,9 @@ class ArticleService
     {
 
         return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'article_list'=>$this->articleRepository->latestArticleList($request)
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'article_list' => $this->articleRepository->latestArticleList($request)
         ]);
     }
 
