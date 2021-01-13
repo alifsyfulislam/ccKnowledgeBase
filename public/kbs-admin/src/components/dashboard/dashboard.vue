@@ -18,51 +18,51 @@
                 <div class="content-wrapper">
                     <!-- Content Area -->
                     <div class="data-content-area pr-15 pb-10">
-<!--                        <div class="gredient-card-wrapper mb-40">-->
-<!--                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">-->
-<!--                                <h2 class="card-title my-0 font-16">Daily Snap Shot</h2>-->
-<!--                            </div>-->
-<!--                            <div class="gredient-card-body p-20 p-md-30" style="background: #20c94c36;">-->
-<!--                                <div class="row">-->
-<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-<!--                                                <h3 class="my-0 font-16">Service Level</h3>-->
-<!--                                            </div>-->
-<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-<!--                                            <div class="progress bg-green">-->
-<!--                                                <div class="progress-bar bg-green m-0" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">90%</span></div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-<!--                                                <h3 class="my-0 font-16">Answer Level</h3>-->
-<!--                                            </div>-->
-<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-<!--                                            <div class="progress bg-red">-->
-<!--                                                <div class="progress-bar bg-red m-0" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">70%</span></div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
-<!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
-<!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
-<!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
-<!--                                                <h3 class="my-0 font-16">AHT</h3>-->
-<!--                                            </div>-->
-<!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
-<!--                                            <div class="progress bg-yellow">-->
-<!--                                                <div class="progress-bar bg-yellow m-0" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="92"><span class="progress-text">92%</span></div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <!--                        <div class="gredient-card-wrapper mb-40">-->
+                        <!--                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">-->
+                        <!--                                <h2 class="card-title my-0 font-16">Daily Snap Shot</h2>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="gredient-card-body p-20 p-md-30" style="background: #20c94c36;">-->
+                        <!--                                <div class="row">-->
+                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-green text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+                        <!--                                                <h3 class="my-0 font-16">Service Level</h3>-->
+                        <!--                                            </div>-->
+                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+                        <!--                                            <div class="progress bg-green">-->
+                        <!--                                                <div class="progress-bar bg-green m-0" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">90%</span></div>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+                        <!--                                                <h3 class="my-0 font-16">Answer Level</h3>-->
+                        <!--                                            </div>-->
+                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+                        <!--                                            <div class="progress bg-red">-->
+                        <!--                                                <div class="progress-bar bg-red m-0" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><span class="progress-text">70%</span></div>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">-->
+                        <!--                                        <div class="box-with-left-icon position-relative bg-white p-20 my-30">-->
+                        <!--                                            <div class="it-wrapper d-flex align-items-center pb-20">-->
+                        <!--                                                <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white mr-10"><i class="fas fa-tachometer-alt"></i></div>-->
+                        <!--                                                <h3 class="my-0 font-16">AHT</h3>-->
+                        <!--                                            </div>-->
+                        <!--                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>-->
+                        <!--                                            <div class="progress bg-yellow">-->
+                        <!--                                                <div class="progress-bar bg-yellow m-0" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="92"><span class="progress-text">92%</span></div>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="gredient-card-wrapper mb-40">
                             <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
                                 <h2 class="card-title my-0 font-16">Wallboard 777</h2>
@@ -101,53 +101,28 @@
                             </div>
                         </div>
 
-                        <div class="gredient-card-wrapper mb-30">
-                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Wallboard 778</h2>
-                            </div>
-                            <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #2e9edf40;">
-                                <div class="row">
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-primary text-white"><i class="fas fa-user-tie"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Agents Logged In</h3>
-                                            <div class="counting-number text-primary">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white"><i class="fas fa-user-times"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Not Ready Agents</h3>
-                                            <div class="counting-number text-red">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white"><i class="fas fa-hourglass-half"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Avg. Handling Time</h3>
-                                            <div class="counting-number text-yellow">0</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
-                                        <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
-                                            <div class="icon d-inline-flex justify-content-center align-items-center bg-light-blue text-white"><i class="fas fa-headphones-alt"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Calls in Waiting</h3>
-                                            <div class="counting-number text-light-blue">0</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="gredient-card-wrapper mb-30">
                             <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Pie Chart</h2>
+                                <h2 class="card-title my-0 font-16">Area Chart</h2>
                             </div>
 
                             <div class="gredient-card-body p-20 p-md-30 with-bottom-shape" style="background: #ff7b8836;">
                                 <div class="row">
-                                    <div class="col-md-12">
-
+                                    <div class="col-md-6">
+                                        <AreaChart/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <PieChart/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <BarChart/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <LineChart/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <RadarChart/>
                                     </div>
                                 </div>
                             </div>
@@ -172,13 +147,24 @@
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 
+import AreaChart from "../chart/AreaChart";
+import PieChart from "../chart/PieChart.vue";
+import BarChart from "../chart/BarChart.vue";
+import LineChart from "../chart/LineChart.vue";
+import RadarChart from "../chart/RadarChart.vue";
+
 import axios from "axios";
 
 export default {
     name: "dashboard.vue",
     components: {
+        BarChart,
+        PieChart,
         Header,
         Menu,
+        AreaChart,
+        LineChart,
+        RadarChart
     },
 
     data() {
@@ -198,6 +184,11 @@ export default {
                 status : '',
                 en_title : '',
                 tag : '',
+            },
+            chartData: {
+                Books: 24,
+                Magazine: 30,
+                Newspapers: 10
             }
         }
     },
@@ -283,8 +274,8 @@ export default {
         //this.getArticleList();
         this.getCategoryList();
         //console.log(this.$route.params);
-     //   this.success_message = this.$route.params.current_status;
-       // this.setTimeoutElements();
+        //   this.success_message = this.$route.params.current_status;
+        // this.setTimeoutElements();
     }
 }
 </script>
