@@ -44,6 +44,13 @@ class ArticleRepository implements RepositoryInterface
         return Article::with('user','category')->find($id);
     }
 
+    public function getBySlug($slug)
+    {
+        return Article::with('user','category')
+            ->where('slug', $slug)
+            ->first();
+    }
+
     /**
      * @param array $data
      * @return mixed
@@ -141,11 +148,16 @@ class ArticleRepository implements RepositoryInterface
 
 
 
-    public function searchCategoryArticle($id = '')
+    public function searchCategoryArticle($slug = '')
     {
+        $query = Article::Query();
 
-//        return Article::where('category_id', $id)->orderBy('id', 'DESC')->get();
-        return Article::where('category_id', $id)->orderBy('id', 'DESC')->paginate(5);
+        $query = $query->whereHas('category', function ($q) use ($slug) {
 
+            $q->where('slug', $slug);
+
+        });
+
+        return $query->orderBy('id', 'DESC')->paginate(5);
     }
 }

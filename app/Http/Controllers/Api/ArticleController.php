@@ -85,6 +85,13 @@ class ArticleController extends Controller
         return $this->articleService->getById($id);
     }
 
+    public function articleDetails($slug)
+    {
+
+        return $this->articleService->getArticleDetailsBySlug($slug);
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

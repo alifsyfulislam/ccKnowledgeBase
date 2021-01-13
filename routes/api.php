@@ -26,14 +26,13 @@ Route::get('categories/export/', 'Api\ExportController@exportCategories')->name(
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
 Route::get('category-article-list', 'Api\CategoryController@categoryArticleList');
-Route::get('article/category/{id}','Api\ArticleController@articleCategory');
-Route::get('article/{id}', 'Api\ArticleController@show');
+Route::get('article/category/{slug}','Api\ArticleController@articleCategory');
+Route::get('article-details/{slug}', 'Api\ArticleController@articleDetails');
 Route::get('article-list', 'Api\ArticleController@articleList');
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');
 Route::get('faqs','Api\FaqController@index');
 Route::get('faqs/{any}','Api\FaqController@show');
-Route::post('save-file', 'Api\ArticleController@saveFiles');
-Route::post('delete-file', 'Api\ArticleController@deleteFiles');
+
 
 Route::get('quiz-list','Api\QuizController@getQuizList');
 
@@ -44,6 +43,8 @@ Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizField
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
+    Route::post('save-file', 'Api\ArticleController@saveFiles');
+    Route::post('delete-file', 'Api\ArticleController@deleteFiles');
     Route::post('user/update-password', 'Api\UserController@changePassword');
 
     Route::get('latest-article-list', 'Api\ArticleController@articleList');
