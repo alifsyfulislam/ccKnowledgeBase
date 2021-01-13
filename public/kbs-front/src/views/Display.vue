@@ -90,7 +90,9 @@
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
                                 if (val.article.length!=0){
-                                    _that.categoryHasArticle.push(val);
+                                    if (_that.categoryHasArticle.length <12){
+                                        _that.categoryHasArticle.push(val);
+                                    }
                                 }
                             })
                         }
