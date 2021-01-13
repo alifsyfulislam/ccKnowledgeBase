@@ -236,7 +236,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/articles',
+            axios.get('admin/latest-article-list',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -244,17 +244,14 @@ export default {
                     params :
                         {
                             isAdmin         : 1,
-                            category_id     : this.filter.category_id,
-                            status          : this.filter.status,
-                            en_title        : this.filter.en_title,
-                            tag             : this.filter.tag,
                         },
 
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
                         _that.isArticleList = true;
-                        _that.articleList = response.data.article_list.data;
+                        console.log(response.data.article_list)
+                        _that.articleList = response.data.article_list;
                     }
                     else{
                         _that.success_message = "";

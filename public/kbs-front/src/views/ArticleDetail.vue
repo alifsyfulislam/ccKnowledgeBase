@@ -74,7 +74,7 @@
 <!--                      work here-->
                       <li v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                         <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
-                          <h6 class="m-0 p-0">{{a_cate_art.name}}</h6>
+                          <h6 class="m-0 p-1">{{a_cate_art.name}}</h6>
                         </router-link>
                       </li>
                     </ul>

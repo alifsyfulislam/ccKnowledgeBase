@@ -85,6 +85,7 @@
                 axios.get('category-article-list', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
+                            console.log(response.data.category_list);
                             _that.isLoading = false;
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
@@ -102,7 +103,6 @@
                 axios.get('front-page-config', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data.page_config_info);
                             _that.frontPageData = response.data.page_config_info;
 
                             // if (_that.frontPageData.position === "left")
