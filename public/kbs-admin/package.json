@@ -18,6 +18,7 @@
     "summernote": "^0.8.18",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.0",
+    "vue-chart.js": "^0.2.0",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-rc.1"
