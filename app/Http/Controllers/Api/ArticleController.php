@@ -156,10 +156,10 @@ class ArticleController extends Controller
     }
 
 
-    public function articleList()
+    public function articleList(Request $request)
     {
 
-        return $this->articleService->getFive();
+        return $this->articleService->getLatestList($request);
 
     }
 

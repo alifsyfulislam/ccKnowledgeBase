@@ -22,10 +22,15 @@ class ArticleRepository implements RepositoryInterface
 
     }
 
-    public function five()
+    public function latestArticleList($request)
     {
-
-        return Article::orderBy('created_at', 'DESC')->take(5)->get();
+        if ($request->is_admin){
+            return Article::with('user','category')
+                ->orderBy('created_at', 'DESC')
+                ->take(10)->get();
+        }
+        else
+            return Article::orderBy('created_at', 'DESC')->take(5)->get();
 
     }
 
