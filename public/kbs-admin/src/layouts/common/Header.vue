@@ -39,6 +39,7 @@ $(document).children('a').on('click', '.item-has-children', function (event) {
 // Left Sidebar show hide
 $(document).on('click', '.sidebar-navbar > i', function () {
     $('.sidebar-wrapper').toggleClass('left-sidebar-hide');
+    $('.main-content-wrapper').toggleClass('left-sidebar-hide');
 });
 
 // Right Side user profile show hide
