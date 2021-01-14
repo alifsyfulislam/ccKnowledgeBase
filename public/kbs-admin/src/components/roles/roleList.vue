@@ -177,6 +177,11 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .role-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "rolesList",
@@ -189,30 +194,30 @@ export default {
     },
     data (){
         return {
-            isLoading         : false,
-            isEditCheck       : false,
-            isAddCheck        : false,
-            isDeleteCheck     : false,
-            isSearchCheck     : false,
-            success_message   : '',
-            error_message     : '',
-            role_id           : '',
-            userRoles         : '',
+            isLoading           : false,
+            isEditCheck         : false,
+            isAddCheck          : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
+            success_message     : '',
+            error_message       : '',
+            role_id             : '',
+            userRoles           : '',
 
-            user_permissions  : '',
-            mappedPermission  : '',
+            user_permissions    : '',
+            mappedPermission    : '',
 
             pagination  : {
-                from           : '',
-                to             : '',
-                first_page_url : '',
-                last_page      : '',
-                last_page_url  : '',
-                next_page_url  :'',
-                prev_page_url  : '',
-                path           : '',
-                per_page       : 10,
-                total          : ''
+                from            : '',
+                to              : '',
+                first_page_url  : '',
+                last_page       : '',
+                last_page_url   : '',
+                next_page_url   :'',
+                prev_page_url   : '',
+                path            : '',
+                per_page        : 10,
+                total           : ''
             },
         }
     },
@@ -312,8 +317,8 @@ export default {
             setTimeout(() => this.error_message = "", 2e3);
         },
 
-        checkPermission(permissionForCheck){
-
+        checkPermission(permissionForCheck)
+        {
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {

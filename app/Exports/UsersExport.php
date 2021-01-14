@@ -51,5 +51,4 @@ class UsersExport implements FromCollection, WithMapping, WithHeadings
     {
         return $this->userDataCollection;
     }
-
 }

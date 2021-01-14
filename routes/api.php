@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('users/export/', 'Api\ExportController@exportUsers')->name('users.export_mapping');
 Route::get('categories/export/', 'Api\ExportController@exportCategories')->name('categories.export_mapping');
+Route::get('articles/export/', 'Api\ExportController@exportArticles')->name('articles.export_mapping');
+
 
 
 
@@ -42,7 +44,6 @@ Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizField
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
-
     Route::post('save-file', 'Api\ArticleController@saveFiles');
     Route::post('delete-file', 'Api\ArticleController@deleteFiles');
     Route::post('user/update-password', 'Api\UserController@changePassword');

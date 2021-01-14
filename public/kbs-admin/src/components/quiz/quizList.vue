@@ -169,7 +169,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Common Right SideBar End -->
     </div>
 </template>
@@ -187,6 +186,11 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .quiz-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "quizList",
@@ -200,49 +204,42 @@ export default {
 
     data() {
         return {
-
-            isLoading       : false,
-            isEditCheck     : false,
-            isAddCheck      : false,
-            isDeleteCheck   : false,
-            isSearch        : false,
-
-            success_message : '',
-            error_message   : '',
-            token           : '',
-
-            quiz_id         : '',
-
-            articleList     : '',
-            quizList        : '',
-            userInfo        : '',
-
-            user_permissions  : '',
-            mappedPermission  : '',
-
-            filter : {
-                isAdmin   : 1,
-                status    : '',
-                name      : '',
+            isLoading           : false,
+            isEditCheck         : false,
+            isAddCheck          : false,
+            isDeleteCheck       : false,
+            isSearch            : false,
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            quiz_id             : '',
+            articleList         : '',
+            quizList            : '',
+            userInfo            : '',
+            user_permissions    : '',
+            mappedPermission    : '',
+            filter      : {
+                isAdmin         : 1,
+                status          : '',
+                name            : '',
             },
 
-            pagination:{
-                from : '',
-                to   : '',
-                first_page_url : '',
-                last_page      : '',
-                last_page_url  : '',
-                next_page_url  :'',
-                prev_page_url  : '',
-                path     : '',
-                per_page : 10,
-                total    : ''
+            pagination  : {
+                from            : '',
+                to              : '',
+                first_page_url  : '',
+                last_page       : '',
+                last_page_url   : '',
+                next_page_url   :'',
+                prev_page_url   : '',
+                path            : '',
+                per_page        : 10,
+                total           : ''
             },
         }
     },
 
     methods: {
-
         removingRightSideWrapper()
         {
             this.isAddCheck         = false;
@@ -252,21 +249,20 @@ export default {
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
-
-        clearAllChecker() {
+        clearAllChecker()
+        {
             this.isAddCheck    = false;
             this.isDeleteCheck = false;
             this.isSearch      = false;
         },
-
-        getAddDataFromChild (status){
+        getAddDataFromChild (status)
+        {
 
             this.success_message = status;
             this.getQuizList();
             this.removingRightSideWrapper();
             this.setTimeoutElements();
         },
-
         getEditDataFromChild (status)
         {
             this.success_message = status;
@@ -274,17 +270,16 @@ export default {
             this.removingRightSideWrapper();
             this.setTimeoutElements();
         },
-
-        clearFilter(){
-
+        clearFilter()
+        {
             this.filter.status   = "";
             this.filter.name     = "";
             this.success_message = "";
             this.error_message   = "";
             this.getQuizList();
         },
-
-        getQuizList(pageUrl){
+        getQuizList(pageUrl)
+        {
 
             let _that =this;
 
@@ -317,9 +312,8 @@ export default {
                     }
                 })
         },
-
-        checkPermission(permissionForCheck){
-
+        checkPermission(permissionForCheck)
+        {
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {
@@ -327,7 +321,8 @@ export default {
             }
         },
 
-        deleteQuiz() {
+        deleteQuiz()
+        {
             let _that = this;
 
             axios.delete('admin/quizzes/delete',
@@ -360,7 +355,8 @@ export default {
 
         },
 
-        setTimeoutElements() {
+        setTimeoutElements()
+        {
             //setTimeout(() => this.isLoading = false, 3000);
             setTimeout(() => this.success_message = "", 3000);
             setTimeout(() => this.error_message = "", 3000);
@@ -368,8 +364,8 @@ export default {
 
     },
 
-    created() {
-
+    created()
+    {
         this.isLoading = true;
         this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
         this.mappedPermission = (this.user_permissions ).map(x => x.slug);

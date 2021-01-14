@@ -119,8 +119,4 @@ class UserController extends Controller
 
        // return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
     }
-
-    public function exportUsers(){
-        return "Hi";
-    }
 }

@@ -4,19 +4,15 @@
         <!-- sidebar -->
         <Menu></Menu>
         <!-- sidebar end -->
-
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
             <!-- Topbar -->
             <Header></Header>
-
             <!-- Topbar End -->
-
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
                     <h2 class="content-title text-uppercase m-0">FAQ List</h2>
                 </div>
-
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
@@ -27,14 +23,12 @@
                                     <i class="fas fa-plus"></i>
                                     Add FAQ
                                 </button>
-
                                 <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0"
                                         @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
                             </div>
                         </div>
-
                         <div class="reload-download-expand-area">
                             <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
                                 <li>
@@ -48,11 +42,8 @@
                                 <li><button class="screen-expand-btn faq-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
-
                     </div>
                     <!-- list top area end -->
-
-
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
                         <Loading v-if="isLoading===true"></Loading>
@@ -72,9 +63,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 <tr v-for="an_faq in faqList" :key="an_faq">
-
                                     <td class="text-center">{{ an_faq.id  }}</td>
                                     <td>{{ an_faq.en_title  }}</td>
                                     <td class="text-center">{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
@@ -82,26 +71,27 @@
                                     <td class="text-center">{{ an_faq.status  }}</td>
                                     <td class="text-center">{{ an_faq.tag  }}</td>
                                     <td class="text-center">{{ an_faq.created_at  }}</td>
-
                                     <td class="text-center" style="width:120px">
                                         <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
-                                                @click="faq_id=an_faq.id, isEditCheck = true" v-if="checkPermission('faq-edit')"><i class="fas fa-pen"></i></button>
+                                                @click="faq_id=an_faq.id, isEditCheck = true"
+                                                v-if="checkPermission('faq-edit')">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
 
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
-                                                 @click="faq_id=an_faq.id, isDeleteCheck = true" v-if="checkPermission('faq-delete')"><i class="fas fa-trash-restore-alt"></i></button>
-
+                                                 @click="faq_id=an_faq.id, isDeleteCheck = true"
+                                                 v-if="checkPermission('faq-delete')">
+                                            <i class="fas fa-trash-restore-alt"></i>
+                                        </button>
                                     </td>
-
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
                         <!-- Table Data End -->
-
                         <!-- Pagination -->
                         <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                             <nav aria-label="Page navigation">
@@ -132,9 +122,7 @@
             </div>
             <!-- Content Area End -->
         </div>
-
         <!-- Common Right SideBar -->
-
         <div class="action-modal-wraper" v-if="success_message">
             <span>{{ success_message }}</span>
         </div>
@@ -149,7 +137,6 @@
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
-
 <!--            add-->
             <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
 <!--            edit-->
@@ -160,7 +147,6 @@
 
                     <div class="form-wrapper">
                         <h2 class="section-title text-uppercase mb-20">Delete FAQ</h2>
-
                         <div class="row mt-50 mt-md-80">
                             <div class="col-md-12">
                                 <figure class="mx-auto text-center">
@@ -174,9 +160,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
 <!--            search-->
@@ -185,7 +169,6 @@
 
                     <div class="form-wrapper" >
                         <h2 class="section-title text-uppercase mb-20">Search</h2>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-15">
@@ -199,9 +182,7 @@
                                     <input class="form-control" type="text" v-model="filter.tag" id="closedReasonCode">
                                 </div>
                             </div>
-
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -236,12 +217,9 @@
                             <button class="btn common-gradient-btn ripple-btn px-50" @click="getFaqList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
         <!-- Common Right SideBar End -->
     </div>
 </template>
@@ -257,6 +235,11 @@ import $ from "jquery";
 
 $(document).on('click','.screen-expand-btn .faq-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
+});
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
 });
 
 export default {
@@ -276,18 +259,14 @@ export default {
             isAddCheck          : false,
             isDeleteCheck       : false,
             isSearchCheck       : false,
-
             success_message     : '',
             error_message       : '',
             token               : '',
             categoryList        : '',
-
             user_permissions    : '',
             mappedPermission    : '',
-
             faqList             : '',
             faq_id              : '',
-
             filter      : {
                 isAdmin         : 1,
                 category_id     : '',
@@ -296,17 +275,17 @@ export default {
                 tag             : '',
             },
 
-            pagination:{
-                from: '',
-                to: '',
-                first_page_url: '',
-                last_page: '',
-                last_page_url: '',
-                next_page_url:'',
-                prev_page_url: '',
-                path: '',
-                per_page: 10,
-                total: ''
+            pagination  : {
+                from            : '',
+                to              : '',
+                first_page_url  : '',
+                last_page       : '',
+                last_page_url   : '',
+                next_page_url   :'',
+                prev_page_url   : '',
+                path            : '',
+                per_page        : 10,
+                total           : ''
             },
         }
     },
@@ -356,7 +335,8 @@ export default {
             this.setTimeoutElements();
         },
 
-        getEditDataFromChild (status) {
+        getEditDataFromChild (status)
+        {
             console.log(status);
             this.success_message = "FAQ updated successfully!";
             this.getFaqList();
@@ -390,7 +370,8 @@ export default {
                 })
         },
 
-        getFaqList(pageUrl) {
+        getFaqList(pageUrl)
+        {
             let _that =this;
             pageUrl = pageUrl == undefined ? 'admin/faqs' : pageUrl;
 
@@ -451,7 +432,8 @@ export default {
                 console.log(error);
             });
         },
-        checkPermission(permissionForCheck){
+        checkPermission(permissionForCheck)
+        {
 
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
@@ -460,7 +442,8 @@ export default {
             }
         },
     },
-    created() {
+    created()
+    {
         this.isLoading = true;
         this.getFaqList();
         this.getCategoryList();

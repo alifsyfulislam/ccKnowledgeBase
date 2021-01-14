@@ -4,15 +4,12 @@
         <div class="main-content-wrapper w-100 position-relative overflow-auto bg-white" >
             <!-- Topbar -->
             <Header></Header>
-
             <!-- Topbar End -->
-
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
                     <h2 class="content-title text-uppercase m-0">User List</h2>
                 </div>
-
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
                     <div class="list-top-area px-15 py-10 d-sm-flex justify-content-between align-items-center">
@@ -23,7 +20,6 @@
                                     <i class="fas fa-plus"></i>
                                     Add User
                                 </button>
-
                                 <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
                                 </button>
@@ -38,23 +34,17 @@
                                         </div>
                                     </button>
                                 </li>
-
-
                                 <li>
                                     <a v-if="isExportCheck"
                                        :href=downloadUrl class="download-btn" title="Download CSV">
                                         <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
                                     </a>
                                 </li>
-
-
                                 <li><button class="screen-expand-btn user-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
                     </div>
-
                     <!-- list top area end -->
-
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
                         <Loading v-if="isLoading===true"></Loading>
@@ -74,7 +64,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 <tr v-for="(a_user) in userList" :key="a_user.id">
                                     <td class="text-center">{{ a_user.id }}</td>
                                     <td class="text-center">{{ a_user.username }}</td>
@@ -83,14 +72,11 @@
                                     <td class="text-center">{{ a_user.last_name }}</td>
                                     <td class="text-center">{{ a_user.email }}</td>
                                     <td class="text-center">{{ a_user.created_at }}</td>
-
                                     <td class="text-center" style="min-width: 120px">
-
                                         <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                     </td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -136,35 +122,28 @@
 <!--                delete-->
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                     <div class="right-sidebar-content-area px-2">
-
                         <div class="form-wrapper">
                             <h2 class="section-title text-uppercase mb-20">User Delete</h2>
-
                             <div class="row mt-50 mt-md-80">
                                 <div class="col-md-12">
                                     <figure class="mx-auto text-center">
                                         <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                     </figure>
                                     <p class="text-center"> Confirmation for Deleting User</p>
-
                                     <div class="form-group d-flex justify-content-center align-items-center">
                                         <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteCustomer()"><i class="fas fa-trash"></i> Confirm</button>
                                         <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
 <!--                search-->
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isSearchCheck">
                     <div class="right-sidebar-content-area px-2">
-
                         <div class="form-wrapper" >
                             <h2 class="section-title text-uppercase mb-20">Search from User</h2>
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-15">
@@ -178,9 +157,7 @@
                                         <input class="form-control" type="email" placeholder="Enter email here!" v-model="filter.email" id="closedReasonCode">
                                     </div>
                                 </div>
-
                             </div>
-
                             <div class="form-group text-right">
                                 <button class="btn common-gradient-btn ripple-btn px-50" @click="getUsersList(), removingRightSideWrapper()"><i class="fas fa-search"></i> <span class="ml-1">Search</span></button>
                             </div>
@@ -190,11 +167,9 @@
                 </div>
             </div>
         </div>
-
         <div class="action-modal-wraper" v-if="success_message">
             <span>{{ success_message }}</span>
         </div>
-
         <div class="action-modal-wraper-error" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
@@ -213,6 +188,11 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .user-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "customerList.vue",
@@ -226,57 +206,54 @@ export default {
 
     data() {
         return {
-            isLoading       : false,
-            isAddCheck      : false,
-            isEditCheck     : false,
-            isDeleteCheck   : false,
-            isSearchCheck   : false,
-            isExportCheck   : false,
-
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            categoryList    : '',
-            articleList     : '',
-            userList        : '',
-            userRole        : '',
-            customer_id     : '',
-            userAllRoles    : '',
-            downloadUrl     : '/users/export/',
-
-            user_permissions : '',
-            mappedPermission : '',
-
-            filter : {
-                isAdmin     : 1,
-                username    : '',
-                email       : '',
-                role        : ''
+            isLoading           : false,
+            isAddCheck          : false,
+            isEditCheck         : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
+            isExportCheck       : false,
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            categoryList        : '',
+            articleList         : '',
+            userList            : '',
+            userRole            : '',
+            customer_id         : '',
+            userAllRoles        : '',
+            downloadUrl         : 'users/export/',
+            user_permissions    : '',
+            mappedPermission    : '',
+            filter      : {
+                isAdmin         : 1,
+                username        : '',
+                email           : '',
+                role            : ''
             },
-            pagination:{
-                from: '',
-                to: '',
-                first_page_url: '',
-                last_page: '',
-                last_page_url: '',
-                next_page_url:'',
-                prev_page_url: '',
-                path: '',
-                per_page: 10,
-                total: ''
+            pagination  :{
+                from            : '',
+                to              : '',
+                first_page_url  : '',
+                last_page       : '',
+                last_page_url   : '',
+                next_page_url   :'',
+                prev_page_url   : '',
+                path            : '',
+                per_page        : 10,
+                total           : ''
             },
         }
     },
     methods: {
-        setTimeoutElements(){
-
+        setTimeoutElements()
+        {
             // setTimeout(() => this.isLoading = false, 3e3);
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
         },
 
-        removingRightSideWrapper(){
-
+        removingRightSideWrapper()
+        {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
@@ -352,7 +329,6 @@ export default {
                     }
                 })
         },
-
         deleteCustomer()
         {
             let _that = this;
@@ -383,9 +359,7 @@ export default {
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
-
         getUserRoles()
         {
             let _that =this;
@@ -410,8 +384,8 @@ export default {
                     }
                 })
         },
-
-        deleteUser(userId){
+        deleteUser(userId)
+        {
 
             let _that = this;
 
@@ -444,8 +418,8 @@ export default {
             });
 
         },
-
-        checkPermission(permissionForCheck){
+        checkPermission(permissionForCheck)
+        {
 
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
@@ -456,16 +430,14 @@ export default {
 
     },
 
-    created() {
+    created()
+    {
         this.isLoading  = true;
         this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
         this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.getUsersList();
         this.getUserRoles();
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
-
-
-        //console.log(this.downloadUrl)
     }
 }
 </script>

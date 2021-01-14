@@ -24,7 +24,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="reload-download-expand-area">
                             <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
                                 <li>
@@ -34,14 +33,12 @@
                                         </div>
                                     </button>
                                 </li>
-
                                 <li>
                                     <a v-if="isExportCheck"
                                        :href=downloadUrl class="download-btn" title="Download CSV">
                                         <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
                                     </a>
                                 </li>
-
                                 <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
@@ -63,13 +60,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 <tr v-for="(a_category) in categoryList" :key="a_category">
                                     <td class="text-center">{{ a_category.id }}</td>
                                     <td class="text-left">{{ a_category.name }}</td>
                                     <td class="text-left">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
                                     <td class="text-center">{{ a_category.created_at }}</td>
-
                                     <td class="text-center">
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
                                                 @click="category_id=a_category.id, isEditCheck=true" v-if="checkPermission('category-edit')">
@@ -173,7 +168,11 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
-
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "categoryList.vue",
@@ -188,14 +187,11 @@ export default {
     data() {
         return {
             isLoading           : false,
-
             isEditCheck         : false,
             isAddCheck          : false,
             isDeleteCheck       : false,
             isExportCheck        :false,
-
             isSearch            : false,
-
             category_id         : '',
             category_parent_id  : '',
             category_name       : '',
@@ -204,16 +200,13 @@ export default {
             token               : '',
             categoryList        : '',
             userInfo            : '',
-            downloadUrl         : '/categories/export/',
-
-            user_permissions : '',
-            mappedPermission : '',
-
+            downloadUrl         : 'categories/export/',
+            user_permissions    : '',
+            mappedPermission    : '',
             filter      : {
                 isAdmin         : 1,
                 name            : ''
             },
-
             pagination  :{
                 from            : '',
                 to              : '',
@@ -226,11 +219,9 @@ export default {
                 per_page        : 10,
                 total           : ''
             },
-
         }
     },
     methods: {
-
         removingRightSideWrapper()
         {
             this.isAddCheck         = false;
@@ -267,7 +258,6 @@ export default {
         getCategoryList(pageUrl)
         {
             let _that = this;
-
             pageUrl = pageUrl == undefined ? 'admin/categories' : pageUrl;
 
             axios.get(pageUrl,
@@ -333,7 +323,6 @@ export default {
         deleteCategory()
         {
             let _that = this;
-
             axios.delete('admin/categories/delete',
                 {
                     data:
@@ -357,7 +346,6 @@ export default {
                     _that.error_message         = response.data.error;
 
                 }
-
             }).catch(function (error) {
                 console.log(error);
             });
@@ -370,8 +358,8 @@ export default {
             setTimeout(() => this.error_message = "", 2e3);
         },
 
-        checkPermission(permissionForCheck){
-
+        checkPermission(permissionForCheck)
+        {
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {
@@ -387,7 +375,6 @@ export default {
         this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
         this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
-        console.log(this.downloadUrl)
     }
 }
 </script>

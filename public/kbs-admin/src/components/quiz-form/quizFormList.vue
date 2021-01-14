@@ -168,7 +168,11 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .quiz-form-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
-
+$(document).on('keyup',(e)=> {
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 export default {
     name: "quizFormList.vue",
     components: {
@@ -179,43 +183,37 @@ export default {
         QuizFromFieldAdd,
         Loading
     },
-
     data() {
         return {
             isLoading           : false,
             isAddFieldCheck     : false,
-
             isAddCheck          : false,
             isEditCheck         : false,
             isDeleteCheck       : false,
-
             success_message     : '',
             error_message       : '',
             token               : '',
             allQuizField        : '',
-
             allQuizFieldFrom    : '',
-
             user_permissions    : '',
             mappedPermission    : '',
-
-            filter : {
+            filter      : {
                 isAdmin         : 1,
                 username        : '',
                 email           : '',
                 role            : ''
             },
-            pagination:{
-                from: '',
-                to: '',
-                first_page_url: '',
-                last_page: '',
-                last_page_url: '',
-                next_page_url:'',
-                prev_page_url: '',
-                path: '',
-                per_page: 10,
-                total: ''
+            pagination  :{
+                from            : '',
+                to              : '',
+                first_page_url  : '',
+                last_page       : '',
+                last_page_url   : '',
+                next_page_url   :'',
+                prev_page_url   : '',
+                path            : '',
+                per_page        : 10,
+                total           : ''
             },
         }
     },
@@ -334,8 +332,8 @@ export default {
             setTimeout(() => this.success_message = "", 2e3);
             setTimeout(() => this.error_message = "", 2e3);
         },
-        checkPermission(permissionForCheck){
-
+        checkPermission(permissionForCheck)
+        {
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {
@@ -343,7 +341,8 @@ export default {
             }
         },
     },
-    created() {
+    created()
+    {
         this.isLoading  = true;
         this.getQuizFormList();
         this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));

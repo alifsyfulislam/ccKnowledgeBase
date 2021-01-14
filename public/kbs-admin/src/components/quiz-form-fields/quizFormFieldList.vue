@@ -151,15 +151,16 @@
     import Loading from "@/components/loader/loading";
     import QuizFromFieldEdit from "../quiz-form-fields/quizFormFieldEdit";
     // import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
-
-
     import axios from "axios";
     import $ from "jquery";
-
     $(document).on('click','.screen-expand-btn .quiz-form-filed-fullscreen',()=>{
         $('.content-wrapper').toggleClass('expandable-content-area');
     });
-
+    $(document).on('keyup',(e)=> {
+        if (e.code == "Escape"){
+            $('.content-wrapper').toggleClass('expandable-content-area');
+        }
+    });
     export default {
         name: "quizFormFieldList.vue",
         components: {
@@ -172,56 +173,48 @@
 
         data() {
             return {
-                isLoading       : false,
-                isAddFieldCheck : false,
-
-                isAddCheck      : false,
-                isEditCheck     : false,
-                isDeleteCheck   : false,
-
-                success_message : '',
-                error_message   : '',
-                token           : '',
-
+                isLoading           : false,
+                isAddFieldCheck     : false,
+                isAddCheck          : false,
+                isEditCheck         : false,
+                isDeleteCheck       : false,
+                success_message     : '',
+                error_message       : '',
+                token               : '',
                 user_permissions    : '',
                 mappedPermission    : '',
-
-                allFields    : '',
-                quizFormName : [],
-                quiz_form_field_id:'',
-
-                allQuizFieldFrom : '',
-
-                filter : {
-                    isAdmin     : 1,
-                    username    : '',
-                    email       : '',
-                    role        : ''
+                allFields           : '',
+                quizFormName        : [],
+                quiz_form_field_id  :'',
+                allQuizFieldFrom    : '',
+                filter          : {
+                    isAdmin         : 1,
+                    username        : '',
+                    email           : '',
+                    role            : ''
                 },
-                pagination:{
-                    from : '',
-                    to   : '',
-                    first_page_url : '',
-                    last_page      : '',
-                    last_page_url  : '',
-                    next_page_url  :'',
-                    prev_page_url  : '',
-                    path     : '',
-                    per_page : 10,
-                    total    : ''
+                pagination      : {
+                    from            : '',
+                    to              : '',
+                    first_page_url  : '',
+                    last_page       : '',
+                    last_page_url   : '',
+                    next_page_url   :'',
+                    prev_page_url   : '',
+                    path            : '',
+                    per_page        : 10,
+                    total           : ''
                 },
             }
         },
 
         methods: {
-
             clearFilter()
             {
                 this.getQuizFormFieldList();
                 this.isAddCheck         = false;
                 this.isDeleteCheck      = false;
                 this.isSearchCheck      = false;
-
                 // this.filter.username    = "";
                 // this.filter.email       = "";
                 // this.filter.role        = "";
@@ -316,7 +309,6 @@
                         }
                     })
             },
-
             setTimeoutElements()
             {
                 // setTimeout(() => this.isLoading = false, 3e3);
@@ -324,8 +316,8 @@
                 setTimeout(() => this.error_message = "", 2e3);
             },
 
-            checkPermission(permissionForCheck){
-
+            checkPermission(permissionForCheck)
+            {
                 if((this.mappedPermission).includes(permissionForCheck) === true) {
                     return true;
                 } else {
