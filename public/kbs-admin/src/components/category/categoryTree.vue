@@ -288,6 +288,7 @@ export default {
                         _that.categoryList      = response.data.category_list.data;
                         // console.log(_that.categoryList);
                         _that.treeData          = _that.categoryList;
+                        _that.makeChildrenTree();
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
@@ -300,6 +301,31 @@ export default {
                     }
                 });
 
+        },
+
+        makeChildrenTree(){
+            let element = [];
+
+            let parent_recursive = [];
+
+            this.treeData.forEach((val,index) =>{
+
+                if (val.parent_recursive != null){
+                    console.log(val.parent_recursive.name)
+                    // console.log(typeof val.parent_recursive);
+                    element[index] = {
+                        name : val.name, children : parent_recursive[name] = val.parent_recursive
+                    };
+                }else{
+                    element[index] = {
+                        name : val.name, children : null
+                    };
+                }
+
+
+            })
+
+            console.log(element);
         },
 
         categoryUpdate(categoryId)
@@ -373,8 +399,8 @@ export default {
             setTimeout(() => this.error_message = "", 2e3);
         },
 
-        checkPermission(permissionForCheck){
-
+        checkPermission(permissionForCheck)
+        {
             if((this.mappedPermission).includes(permissionForCheck) === true) {
                 return true;
             } else {
