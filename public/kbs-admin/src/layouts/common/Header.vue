@@ -40,7 +40,7 @@ import '@/assets/js/jquery.treenav.js'
 $(window).scroll(function() {
     let scroll = $(window).scrollTop();
     // Scroll to top
-    if (scroll > 100) {
+    if (scroll > 300) {
         $('.totop').css('bottom', '5px');
     } else {
         $('.totop').css('bottom', '-50px');
