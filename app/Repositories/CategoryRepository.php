@@ -105,11 +105,9 @@ class CategoryRepository implements RepositoryInterface
 
         }
         else{
-
             return Category::with('parentRecursive')
                 ->orderBy('id','DESC')
                 ->paginate(10);
-
         }
 
 

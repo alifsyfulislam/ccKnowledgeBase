@@ -56,8 +56,8 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">ID</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">Parent Name</th>
+                                    <th class="text-left">Name</th>
+                                    <th class="text-left">Parent Name</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center" style="width:120px;">Action</th>
                                 </tr>
@@ -66,8 +66,8 @@
 
                                 <tr v-for="(a_category) in categoryList" :key="a_category">
                                     <td class="text-center">{{ a_category.id }}</td>
-                                    <td class="text-center">{{ a_category.name }}</td>
-                                    <td class="text-center">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
+                                    <td class="text-left">{{ a_category.name }}</td>
+                                    <td class="text-left">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
                                     <td class="text-center">{{ a_category.created_at }}</td>
 
                                     <td class="text-center">
@@ -153,9 +153,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

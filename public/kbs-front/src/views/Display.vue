@@ -30,7 +30,7 @@
                             <div class="topics-category-holder my-20">
                                 <div class="topics-category-title mb10">
                                     <!--                  work-->
-                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
+                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
                                         <h4 class="mb-3">{{a_cate_art.name}}</h4>
                                     </router-link>
                                 </div>
@@ -38,7 +38,7 @@
                                     <ul>
                                         <!--                    work-->
                                         <li v-for="a_article in a_cate_art.article" :key="a_article.id">
-                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.id }}">
+                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
 <!--                                                {{a_article.en_title}}-->
                                                 <span v-if="(a_article.en_title).length<50"> {{ a_article.en_title }}</span>
                                                 <span v-else> {{ (a_article.en_title).substring(0,50)+"..." }}</span>

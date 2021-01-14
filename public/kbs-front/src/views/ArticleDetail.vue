@@ -59,7 +59,7 @@
                     <ul class="recent-articles list-unstyled">
 <!--                      work here-->
                       <li v-for="a_art in allArticle" :key="a_art.id">
-                        <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.id)">
+                        <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.slug)">
                             <span v-if="(a_art.en_title).length<30"> {{ a_art.en_title }}</span>
                             <span v-else> {{ (a_art.en_title).substring(0,30)+"..." }}</span>
                         </a>
@@ -115,7 +115,7 @@
                 _that.articleID = v;
                 _that.articleCounter++;
                 _that.articleIDArr.push(_that.articleID);
-                axios.get('article/'+_that.articleID)
+                axios.get('article-details/'+_that.articleID)
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
                         _that.$router.push('/article-detail/'+_that.articleID)
@@ -153,7 +153,7 @@
                 _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
                 _that.articleID = _that.articleIDArr[_that.articleIDArr.length-1];
                 if (_that.articleID){
-                    axios.get('article/'+_that.articleID)
+                    axios.get('article-details/'+_that.articleID)
                         .then(function (response) {
                             _that.aArticle = response.data.article_info;
                             _that.$router.push('/article-detail/'+_that.articleID)
