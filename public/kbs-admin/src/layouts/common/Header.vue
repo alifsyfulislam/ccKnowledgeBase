@@ -19,6 +19,13 @@
                 </div>
             </div>
         </div>
+
+        <!-- scroll to top -->
+        <div class="totop">
+            <i class="fa fa-angle-up" aria-hidden="true"></i>
+        </div>
+        <!-- scroll to top end-->
+
         <UserProfileBar></UserProfileBar>
     </div>
 
@@ -28,6 +35,23 @@
 
 import $ from 'jquery'
 import '@/assets/js/jquery.treenav.js'
+
+// scroll to top
+$(window).scroll(function() {
+    let scroll = $(window).scrollTop();
+    // Scroll to top
+    if (scroll > 100) {
+        $('.totop').css('bottom', '5px');
+    } else {
+        $('.totop').css('bottom', '-50px');
+    }
+});
+
+$(document).on('click', '.totop', function(){
+    $('html,body').animate({
+        scrollTop: 0
+    }, 1000);
+});
 
 // Sub Menu]
 $(document).children('a').on('click', '.item-has-children', function (event) {

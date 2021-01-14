@@ -268,7 +268,7 @@ input[type="file"]:focus {
 
 .main-content-wrapper {
     padding-top: 55px;
-    left: 212px;
+    margin-left: 212px;
     width: calc(100% - 212px) !important;
     transition: all 0.4s;
 }
@@ -289,12 +289,52 @@ input[type="file"]:focus {
 }
 
 .main-content-wrapper.left-sidebar-hide {
-    left: 60px;
+    margin-left: 60px;
     width: calc(100% - 60px) !important;
 }
 
 .main-content-wrapper.left-sidebar-hide .topbar-wrapper {
     width: calc(100% - 75px) !important;
+}
+
+.totop {
+    position: fixed;
+    bottom: -55px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #2E9EDF;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 50px;
+    box-shadow: 0 0 5px rgba(255,255,255,0.3);
+    transition: all 0.4s;
+    z-index: 99;
+}
+
+.totop:hover {
+    color: #fff;
+    background: lighten(#2E9EDF, 15%);
+}
+
+.totop:hover i {
+    animation: toTopFromBottom 0.3s forwards;
+}
+
+@keyframes toTopFromBottom {
+    49% {
+        transform: translateY(-100%);
+    }
+    50% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    51% {
+        opacity: 1;
+    }
 }
 
 @media (max-width: 1600px) {
@@ -370,7 +410,7 @@ input[type="file"]:focus {
     }
 
     .main-content-wrapper {
-        left: 60px;
+        margin-left: 60px;
         width: calc(100% - 60px) !important;
     }
 
