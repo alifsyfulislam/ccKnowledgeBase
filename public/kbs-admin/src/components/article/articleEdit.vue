@@ -7,11 +7,15 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="checkbox" id="checkbox1"  v-model="selected_checkbox" checked disabled>
-                        <label for="checkbox1">English</label>
+                        <div class="d-inline-block pr-15">
+                            <input type="checkbox" id="checkbox1"  v-model="selected_checkbox" checked disabled>
+                            <label for="checkbox1" class="ml-2">English</label>
+                        </div>
 
-                        <input type="checkbox" id="checkbox2" v-model="bangla_checkbox" @change="changeCheckBox()">
-                        <label for="checkbox2">Bangla</label>
+                        <div class="d-inline-block pr-15">
+                            <input type="checkbox" id="checkbox2" v-model="bangla_checkbox" @change="changeCheckBox()">
+                            <label for="checkbox2" class="ml-2">Bangla</label>
+                        </div>
                     </div>
                 </div>
 
