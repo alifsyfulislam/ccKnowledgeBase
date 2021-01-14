@@ -84,7 +84,7 @@ import axios from "axios";
     articleSearch(v){
       let _that = this;
       let articleID = v;
-      axios.get('article/'+articleID)
+      axios.get('article-details/'+articleID)
           .then(function (response) {
             _that.aArticle = response.data.article_info;
 

@@ -90,7 +90,7 @@
                                     <td class="text-center">{{ an_article.created_at  }}</td>
 
                                     <td class="text-center" style="width:120px">
-                                        <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
+                                        <router-link :to="{ name: 'articleDetails', params: { id: an_article.slug }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
