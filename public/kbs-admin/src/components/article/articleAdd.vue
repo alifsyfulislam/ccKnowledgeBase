@@ -3,10 +3,23 @@
         <div class="right-sidebar-content-area px-2">
             <div class="form-wrapper">
                 <h2 class="section-title text-uppercase mb-20">Add New Article</h2>
-                <select v-model="selected_language" class="form-control col-md-12 mb-20">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="checkbox" id="checkbox1"  v-model="selected_checkbox" checked disabled>
+                        <label for="checkbox1">English</label>
+
+                        <input type="checkbox" id="checkbox2" v-model="bangla_checkbox" @change="changeCheckBox()">
+                        <label for="checkbox2">Bangla</label>
+                    </div>
+                </div>
+
+
+
+<!--                <select v-model="selected_language" class="form-control col-md-12 mb-20">
                     <option value="english">English</option>
                     <option value="bangla">Bangla</option>
-                </select>
+                </select>-->
 
                 <div class="row">
 
@@ -110,6 +123,7 @@ export default {
     },
     data() {
         return {
+            checked :true,
             enBody                  : "en_Body",
             bnBody                  : "bn_Body",
             selected_language       : 'english',
@@ -136,6 +150,9 @@ export default {
                 isCategoryStatus    : false,
             },
 
+            selected_checkbox    : '',
+            bangla_checkbox      : '',
+
             images                  : [],
             files                   : [],
             url                     : '',
@@ -143,6 +160,12 @@ export default {
         }
     },
     methods: {
+        changeCheckBox() {
+            if (this.bangla_checkbox === true)
+                this.selected_language = 'bangla';
+            else
+                this.selected_language = 'english';
+        },
 
         checkAndValidateSelectType()
         {
