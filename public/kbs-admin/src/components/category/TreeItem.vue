@@ -60,21 +60,23 @@ export default {
         // console.log(objectLenght);
         let element = [];
 
-        // let parent_recursive = [];
+        let parent_recursive = [];
 
         this.item.forEach((val,index) =>{
 
-
-
-
             if (val.parent_recursive != null){
-                console.log(val.parent_recursive)
+                console.log(val.parent_recursive.name)
+                // console.log(typeof val.parent_recursive);
+                element[index] = {
+                    name : val.name, children : parent_recursive[name] = val.parent_recursive.name
+                };
+            }else{
+                element[index] = {
+                    name : val.name, children : null
+                };
             }
 
-            element[index] = {
-                name : val.name,
-                // parent_recursive : parent_recursive
-            };
+
         })
 
         console.log(element);
