@@ -47,7 +47,12 @@
                                             </div>
                                         </button>
                                     </li>
-                                    <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                                    <li>
+                                        <a v-if="isExportCheck"
+                                           :href=downloadUrl class="download-btn" title="Download CSV">
+                                            <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
+                                        </a>
+                                    </li>
                                     <li><button class="screen-expand-btn article-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                                 </ul>
                             </div>
@@ -261,6 +266,12 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .article-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
+$(document).on('keyup',(e)=> {
+    console.log(e);
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "articleList.vue",
@@ -278,8 +289,9 @@ export default {
             isLoading           : false,
             isEditCheck         : false,
             isAddCheck          : false,
-            isDeleteCheck            : false,
-            isSearchCheck            : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
+            isExportCheck       : false,
 
             category_parent_id  : '',
             category_name       : '',
@@ -288,6 +300,8 @@ export default {
             token               : '',
             categoryList        : '',
             articleList         : '',
+
+            downloadUrl         : 'articles/export/',
 
             user_permissions : '',
             mappedPermission : '',
@@ -423,6 +437,7 @@ export default {
                         _that.articleList       = response.data.article_list.data;
                         _that.pagination        = response.data.article_list;
                         _that.isLoading         = false;
+                        _that.isExportCheck     = true;
                         _that.setTimeoutElements();
 
                     }
