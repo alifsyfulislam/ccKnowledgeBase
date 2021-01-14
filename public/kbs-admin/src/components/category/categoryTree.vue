@@ -287,8 +287,7 @@ export default {
                         _that.isTree = true;
                         _that.categoryList      = response.data.category_list.data;
                         // console.log(_that.categoryList);
-                        _that.treeData          = _that.categoryList;
-                        _that.makeChildrenTree();
+                        _that.makeChildrenTree(_that.categoryList);
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
@@ -303,29 +302,28 @@ export default {
 
         },
 
-        makeChildrenTree(){
-            let element = [];
+        makeChildrenTree(treeData){
+            console.log(treeData)
 
-            let parent_recursive = [];
-
-            this.treeData.forEach((val,index) =>{
-
-                if (val.parent_recursive != null){
-                    console.log(val.parent_recursive.name)
-                    // console.log(typeof val.parent_recursive);
-                    element[index] = {
-                        name : val.name, children : parent_recursive[name] = val.parent_recursive
-                    };
-                }else{
-                    element[index] = {
-                        name : val.name, children : null
-                    };
+            treeData.forEach((val,index) =>{
+                if (val.parent_id!=0){
+                    console.log(val + " "+ index)
                 }
-
-
             })
-
-            console.log(element);
+            // let element = [];
+            //
+            // let parent_recursive = [];
+            //
+            // this.treeData.forEach((val,index) =>{
+            //
+            //     element[index] = {
+            //         name : val.name, children : parent_recursive[index] = val.parent_recursive
+            //     };
+            //
+            //
+            // })
+            //
+            // console.log(element);
         },
 
         categoryUpdate(categoryId)
@@ -417,7 +415,6 @@ export default {
         this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
         this.getCategoryList();
-        console.log(this.downloadUrl)
     }
 }
 </script>
