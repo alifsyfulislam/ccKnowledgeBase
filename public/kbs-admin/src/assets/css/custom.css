@@ -268,7 +268,7 @@ input[type="file"]:focus {
 
 .main-content-wrapper {
     padding-top: 55px;
-    left: 212px;
+    margin-left: 212px;
     width: calc(100% - 212px) !important;
     transition: all 0.4s;
 }
@@ -289,7 +289,7 @@ input[type="file"]:focus {
 }
 
 .main-content-wrapper.left-sidebar-hide {
-    left: 60px;
+    margin-left: 60px;
     width: calc(100% - 60px) !important;
 }
 
@@ -370,7 +370,7 @@ input[type="file"]:focus {
     }
 
     .main-content-wrapper {
-        left: 60px;
+        margin-left: 60px;
         width: calc(100% - 60px) !important;
     }
 
