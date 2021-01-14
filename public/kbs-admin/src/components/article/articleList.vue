@@ -261,6 +261,12 @@ import $ from "jquery";
 $(document).on('click','.screen-expand-btn .article-fullscreen',()=>{
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
+$(document).on('keyup',(e)=> {
+    console.log(e);
+    if (e.code == "Escape"){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
 
 export default {
     name: "articleList.vue",
