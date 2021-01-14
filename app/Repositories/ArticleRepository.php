@@ -60,19 +60,20 @@ class ArticleRepository implements RepositoryInterface
         $randomString = Str::random();
 
         $dataObj =  new Article;
-        $dataObj->id = $data['id'];
-        $dataObj->user_id = $data['user_id'];
+
+        $dataObj->id          = $data['id'];
+        $dataObj->user_id     = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
-        $dataObj->en_title = $data['en_title'];
-        $dataObj->bn_title = $data['bn_title'];
-        $dataObj->tag = $data['tag'];
-        $dataObj->slug = Helper::slugify($data['en_title']).$randomString;
+        $dataObj->en_title    = $data['en_title'];
+        $dataObj->bn_title    = $data['bn_title'];
+        $dataObj->tag         = $data['tag'];
+        $dataObj->slug        = Helper::slugify($data['en_title']).$randomString;
+        $dataObj->en_body     = $data['en_body'];
+        $dataObj->bn_body     = $data['bn_body'];
+        $dataObj->status      = $data['status'] ?? 'draft';
+        $dataObj->publish_date = $data['publish_date'];
         $dataObj->en_short_summary = $data['en_short_summary'];
         $dataObj->bn_short_summary = $data['bn_short_summary'];
-        $dataObj->en_body = $data['en_body'];
-        $dataObj->bn_body = $data['bn_body'];
-        $dataObj->status = $data['status'] ?? 'draft';
-        $dataObj->publish_date = $data['publish_date'];
 
         return $dataObj->save();
 
