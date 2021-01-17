@@ -77,7 +77,7 @@ class RoleService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => 'required|unique:roles,name',
+            'name' => 'required|min:3|max:50|unique:roles,name',
             'permission' => 'required',
 
         ]);
@@ -128,7 +128,7 @@ class RoleService
 
         $validator = Validator::make($request->all(),[
 
-            'name' => "required|unique:roles,name,$request->id,id",
+            'name' => "required|min:3|max:50|unique:roles,name,$request->id,id",
             'permission' => 'required',
 
         ]);
@@ -216,6 +216,20 @@ class RoleService
             'role_list'   => $this->roleRepository->getWithPagination($request)
         ]);
 
+    }
+
+    public function getRoleExist($request){
+        $validator = Validator::make($request->all(),[
+            'name'   => 'required|string|max:50|min:3|unique:roles',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
+        }
     }
 
 }

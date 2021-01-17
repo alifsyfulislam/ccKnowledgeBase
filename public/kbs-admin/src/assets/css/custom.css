@@ -275,7 +275,7 @@ input[type="file"]:focus {
 
 .sidebar-wrapper {
     position: fixed;
-    z-index: 998;
+    z-index: 99;
 }
 
 .topbar-wrapper {

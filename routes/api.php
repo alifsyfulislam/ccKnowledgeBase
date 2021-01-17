@@ -46,6 +46,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::post('delete-file', 'Api\ArticleController@deleteFiles');
     Route::post('user/update-password', 'Api\UserController@changePassword');
 
+    Route::post('user/username', 'Api\UserController@checkUserNameExist');
+    Route::post('user/email', 'Api\UserController@checkUserEmailExist');
+
     Route::get('latest-article-list', 'Api\ArticleController@articleList');
 
     Route::post('logout', 'Api\AuthController@logout');

@@ -149,6 +149,11 @@ class RoleController extends Controller
 
     }
 
+    public function checkRoleExist(Request  $request)
+    {
+        return $this->roleService->getRoleExist($request);
+    }
+
 
     /**
      * @param Request $request
