@@ -169,19 +169,6 @@ import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
 import $ from "jquery";
 
-
-$(document).on('click','.screen-expand-btn',()=>{
-    $('.content-wrapper').toggleClass('expandable-content-area');
-});
-
-$(document).on('keyup',(e)=> {
-    console.log(e);
-    if (e.code == "Escape"){
-        $('.content-wrapper').toggleClass('expandable-content-area');
-    }
-});
-
-
 export default {
     name: "categoryList.vue",
     components: {

@@ -83,6 +83,18 @@ $(document).on('click', '.right-side-config-form, .right-side-config-close-btn',
     $('body').toggleClass('open-side-slider');
 });
 
+//click to fullscreen
+$(document).on('click','.screen-expand-btn',()=>{
+    $('.content-wrapper').toggleClass('expandable-content-area');
+});
+
+//ESC TO REACH FULL SCREEN
+$(document).on('keyup',(e)=> {
+    if (e.keyCode === 27){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
+});
+
 
 import UserProfileBar from './UserProfileBar.vue'
 
