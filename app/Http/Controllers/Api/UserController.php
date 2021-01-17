@@ -119,4 +119,12 @@ class UserController extends Controller
 
        // return redirect()->route('admin.auth.user.index')->withFlashSuccess(__('alerts.backend.users.updated_password'));
     }
+
+    public function checkUserNameExist(Request $request){
+        return $this->userService->getUserNameExist($request);
+    }
+
+    public function checkUserEmailExist(Request $request){
+        return $this->userService->getUserEmailExist($request);
+    }
 }

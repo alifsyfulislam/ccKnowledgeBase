@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Helpers\Helper;
 use App\Repositories\UserRepository;
 use Exception;
+use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +66,35 @@ class UserService
             'user_info'=>"Data not found"
         ]);
     }
+
+    public function getUserNameExist($request){
+        $validator = Validator::make($request->all(),[
+            'username'   => 'unique:users',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'error'      => $validator->errors()->first()
+            ]);
+        }
+    }
+
+    public function getUserEmailExist($request){
+        $validator = Validator::make($request->all(),[
+            'email'   => 'unique:users',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'error'      => $validator->errors()->first()
+            ]);
+        }
+    }
+
 
 
     /**
