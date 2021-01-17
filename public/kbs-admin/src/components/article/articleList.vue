@@ -269,6 +269,9 @@ export default {
                 per_page        : 10,
                 total           : ''
             },
+
+            success_message : '',
+            error_message   : '',
         }
     },
     methods: {
