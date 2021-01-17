@@ -149,13 +149,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-15">
                                         <label for="title">Username</label>
-                                        <input class="form-control" type="text" placeholder="Enter username here!" v-model="filter.username"  id="title">
+                                        <input class="form-control" type="text" placeholder="Enter username here!" v-model="filter.username"  id="title" @keyup.enter="getUsersList(), removingRightSideWrapper()">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-15">
                                         <label for="closedReasonCode">Email</label>
-                                        <input class="form-control" type="email" placeholder="Enter email here!" v-model="filter.email" id="closedReasonCode">
+                                        <input class="form-control" type="email" placeholder="Enter email here!" v-model="filter.email" id="closedReasonCode" @keyup.enter="getUsersList(), removingRightSideWrapper()">
                                     </div>
                                 </div>
                             </div>

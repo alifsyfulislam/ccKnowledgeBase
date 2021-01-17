@@ -169,13 +169,13 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-15">
                                     <label for="title">Title</label>
-                                    <input class="form-control" type="text" v-model="filter.en_title"  id="title">
+                                    <input class="form-control" type="text" v-model="filter.en_title"  id="title" @keyup.enter="getArticleList(), removingRightSideWrapper()">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-15">
                                     <label for="closedReasonCode">Tag</label>
-                                    <input class="form-control" type="text" v-model="filter.tag" id="closedReasonCode">
+                                    <input class="form-control" type="text" v-model="filter.tag" id="closedReasonCode" @keyup.enter="getArticleList(), removingRightSideWrapper()">
                                 </div>
                             </div>
                         </div>
