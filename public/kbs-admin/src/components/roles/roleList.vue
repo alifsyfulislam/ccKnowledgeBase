@@ -39,7 +39,7 @@
                                     </button>
                                 </li>
                                 <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                                <li><button class="screen-expand-btn role-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                                <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
 
@@ -131,7 +131,7 @@
                 </button>
             </div>
             <!--            addd-->
-            <RoelAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-slide-close="getAddDataFromChild"></RoelAdd>
+            <RoleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @role-slide-close="getAddDataFromChild"></RoleAdd>
             <!--            edit-->
             <RoleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :roleId="role_id" @role-slide-close="getEditDataFromChild"></RoleEdit>
             <!--            delete-->
@@ -168,27 +168,18 @@
 <script>
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
-import RoelAdd from "@/components/roles/roleAdd";
+import RoleAdd from "@/components/roles/roleAdd";
 import RoleEdit from "@/components/roles/roleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
 import $ from "jquery";
-
-$(document).on('click','.screen-expand-btn .role-fullscreen',()=>{
-    $('.content-wrapper').toggleClass('expandable-content-area');
-});
-$(document).on('keyup',(e)=> {
-    if (e.code == "Escape"){
-        $('.content-wrapper').toggleClass('expandable-content-area');
-    }
-});
 
 export default {
     name: "rolesList",
     components: {
         Header,
         Menu,
-        RoelAdd,
+        RoleAdd,
         RoleEdit,
         Loading
     },

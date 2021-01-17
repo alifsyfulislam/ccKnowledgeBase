@@ -2,7 +2,10 @@
 
 namespace App\Exports;
 
+<<<<<<< HEAD
 use App\Models\Article;
+=======
+>>>>>>> 44cdcd7365250699f7a5fecf20bee265ffa52536
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -11,6 +14,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class ArticlesExport implements FromCollection, WithHeadings,WithMapping
 {
     /**
+<<<<<<< HEAD
     * @return \Illuminate\Support\Collection
     */
 //    public function collection()
@@ -22,6 +26,10 @@ class ArticlesExport implements FromCollection, WithHeadings,WithMapping
 //            'updated_at'
 //        ]);
 //    }
+=======
+     * @return \Illuminate\Support\Collection
+     */
+>>>>>>> 44cdcd7365250699f7a5fecf20bee265ffa52536
     use Exportable;
 
     protected $articleDataCollection;

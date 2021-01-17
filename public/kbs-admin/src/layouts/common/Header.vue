@@ -83,6 +83,32 @@ $(document).on('click', '.right-side-config-form, .right-side-config-close-btn',
     $('body').toggleClass('open-side-slider');
 });
 
+let fullScreenEscape = false;
+let cCounter  = 1;
+//click to fullscreen
+
+$(document).on('click','.screen-expand-btn',() => {
+    cCounter++;
+    if (fullScreenEscape === false && cCounter%2 == 0){
+        escapeButtonActive(fullScreenEscape);
+        cCounter = cCounter -1;
+    }
+    $('.content-wrapper').toggleClass('expandable-content-area');
+});
+
+function escapeButtonActive(fullScreenEscape){
+    $(document).on('keyup',(e)=> {
+        if (e.keyCode === 27 && fullScreenEscape === false){
+            $('.content-wrapper').removeClass('expandable-content-area');
+        }
+    });
+}
+
+
+
+
+
+
 
 import UserProfileBar from './UserProfileBar.vue'
 

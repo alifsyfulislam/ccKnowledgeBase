@@ -23,8 +23,6 @@ Route::get('categories/export/', 'Api\ExportController@exportCategories')->name(
 Route::get('articles/export/', 'Api\ExportController@exportArticles')->name('articles.export_mapping');
 
 
-
-
 Route::post('login', 'Api\AuthController');
 Route::get('category-list','Api\CategoryController@categoryList');
 Route::get('category-article-list', 'Api\CategoryController@categoryArticleList');

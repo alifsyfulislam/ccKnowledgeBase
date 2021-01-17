@@ -164,6 +164,7 @@ export default {
         }
     },
     methods: {
+
         changeCheckBox() {
             if (this.bangla_checkbox === true)
                 this.selected_language = 'bangla';

@@ -30,7 +30,7 @@
                                     </button>
                                 </li>
                                 <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                                <li><button class="screen-expand-btn quiz-form-field-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                                <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
                     </div>
@@ -153,14 +153,7 @@
     // import QuizFromFieldAdd from "../quiz-form-fields/quizFormFieldAdd";
     import axios from "axios";
     import $ from "jquery";
-    $(document).on('click','.screen-expand-btn .quiz-form-filed-fullscreen',()=>{
-        $('.content-wrapper').toggleClass('expandable-content-area');
-    });
-    $(document).on('keyup',(e)=> {
-        if (e.code == "Escape"){
-            $('.content-wrapper').toggleClass('expandable-content-area');
-        }
-    });
+
     export default {
         name: "quizFormFieldList.vue",
         components: {

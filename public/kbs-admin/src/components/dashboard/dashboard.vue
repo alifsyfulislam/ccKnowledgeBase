@@ -15,7 +15,7 @@
                     <h2 class="content-title text-uppercase m-0">Dashboard</h2>
                 </div>
 
-                <div class="content-wrapper">
+                <div class="content-wrapper d-fullscreen">
                     <!-- Content Area -->
                     <div class="data-content-area pr-15 pb-10">
                         <div class="gredient-card-wrapper mb-40">
@@ -139,6 +139,17 @@
 </template>
 
 <script>
+
+import $ from "jquery";
+
+$(document).on('keyup',(e)=> {
+    if (e.keyCode === 27){
+        // $('.content-wrapper').toggleClass('expandable-content-area');
+        $('.content-wrapper.d-fullscreen').removeClass('expandable-content-area');
+    }
+});
+
+
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 
