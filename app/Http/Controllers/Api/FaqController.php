@@ -22,7 +22,7 @@ class FaqController extends Controller
 
     public function index(Request $request)
     {
-         /* if(Auth::user()->can('faq-list')) {
+        if(Auth::user()->can('faq-list')) {
 
             return $this->faqService->paginateData($request);
 
@@ -30,11 +30,19 @@ class FaqController extends Controller
 
             return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        } */
+        }
 
-       return $this->faqService->paginateData($request);
+        // return $this->faqService->paginateData($request);
 
     }
+
+    public function faqList(Request $request)
+    {
+
+         return $this->faqService->getFaqList($request);
+
+    }
+
 
     /**
      * @return void

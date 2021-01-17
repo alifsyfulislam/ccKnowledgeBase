@@ -90,7 +90,21 @@ class FaqRepository implements RepositoryInterface
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('id','DESC')->paginate(10);
+        return $query->orderBy('id','DESC')->paginate(20);
+
+    }
+
+    public function getFaqListForFrontend($request)
+    {
+
+        $query = Faq::with( 'user', 'category');
+        $whereFilterList = ['category_id', 'status'];
+        $likeFilterList  = ['en_title', 'tag'];
+        $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
+
+        return $query->where('status', 'public')
+            ->orderBy('id','DESC')
+            ->paginate(20);
 
     }
 

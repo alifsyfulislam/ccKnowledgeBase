@@ -26,6 +26,7 @@ class ArticleRepository implements RepositoryInterface
     {
         if ($request->isAdmin){
             return Article::with('user','category')
+                ->where('status', 'public')
                 ->orderBy('created_at', 'DESC')
                 ->take(5)
                 ->get();
@@ -113,7 +114,7 @@ class ArticleRepository implements RepositoryInterface
         $likeFilterList = ['en_title', 'tag'];
         $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('id', 'DESC')->paginate(10);
+        return $query->orderBy('id', 'DESC')->paginate(20);
 
     }
 
@@ -140,7 +141,9 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Article::with('category')->where('en_title', 'like', "%{$query}%")
+        return Article::with('category')
+            ->where('en_title', 'like', "%{$query}%")
+            ->where('status', 'public')
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")

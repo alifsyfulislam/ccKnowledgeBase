@@ -30,7 +30,8 @@ Route::get('article/category/{slug}','Api\ArticleController@articleCategory');
 Route::get('article-details/{slug}', 'Api\ArticleController@articleDetails');
 Route::get('article-list', 'Api\ArticleController@articleList');
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');
-Route::get('faqs','Api\FaqController@index');
+
+Route::get('faq-list','Api\FaqController@faqList');
 Route::get('faqs/{any}','Api\FaqController@show');
 
 
