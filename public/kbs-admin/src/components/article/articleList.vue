@@ -47,8 +47,13 @@
                                             </div>
                                         </button>
                                     </li>
-                                    <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                                    <li><button class="screen-expand-btn article-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                                    <li>
+                                        <a v-if="isExportCheck"
+                                           :href=downloadUrl class="download-btn" title="Download CSV">
+                                            <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
+                                        </a>
+                                    </li>
+                                    <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                                 </ul>
                             </div>
                         </div>
@@ -90,7 +95,7 @@
                                     <td class="text-center">{{ an_article.created_at  }}</td>
 
                                     <td class="text-center" style="width:120px">
-                                        <router-link :to="{ name: 'articleDetails', params: { id: an_article.id }}" class="btn btn-primary btn-xs m-1">
+                                        <router-link :to="{ name: 'articleDetails', params: { id: an_article.slug }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
@@ -258,10 +263,6 @@ import Loading from "@/components/loader/loading";
 import axios from "axios";
 import $ from "jquery";
 
-$(document).on('click','.screen-expand-btn .article-fullscreen',()=>{
-    $('.content-wrapper').toggleClass('expandable-content-area');
-});
-
 export default {
     name: "articleList.vue",
 
@@ -278,8 +279,9 @@ export default {
             isLoading           : false,
             isEditCheck         : false,
             isAddCheck          : false,
-            isDeleteCheck            : false,
-            isSearchCheck            : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
+            isExportCheck       : false,
 
             category_parent_id  : '',
             category_name       : '',
@@ -288,6 +290,8 @@ export default {
             token               : '',
             categoryList        : '',
             articleList         : '',
+
+            downloadUrl         : 'articles/export/',
 
             user_permissions : '',
             mappedPermission : '',
@@ -423,6 +427,7 @@ export default {
                         _that.articleList       = response.data.article_list.data;
                         _that.pagination        = response.data.article_list;
                         _that.isLoading         = false;
+                        _that.isExportCheck     = true;
                         _that.setTimeoutElements();
 
                     }

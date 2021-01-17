@@ -39,7 +39,7 @@
                                     </button>
                                 </li>
                                 <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
-                                <li><button class="screen-expand-btn role-fullscreen"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
+                                <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
                             </ul>
                         </div>
 
@@ -173,10 +173,6 @@ import RoleEdit from "@/components/roles/roleEdit";
 import Loading from "@/components/loader/loading";
 import axios from "axios";
 import $ from "jquery";
-
-$(document).on('click','.screen-expand-btn .role-fullscreen',()=>{
-    $('.content-wrapper').toggleClass('expandable-content-area');
-});
 
 export default {
     name: "rolesList",

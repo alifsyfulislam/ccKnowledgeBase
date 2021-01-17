@@ -4,10 +4,19 @@
             <div class="form-wrapper">
                 <h2 class="section-title text-uppercase mb-20">Add New FAQ</h2>
 
-                <select v-model="selected_language" class="form-control col-md-12 mb-20">
-                    <option value="english">English</option>
-                    <option value="bangla">Bangla</option>
-                </select>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-inline-block pr-15">
+                            <input type="checkbox" id="checkbox1"  v-model="selected_checkbox" checked disabled>
+                            <label for="checkbox1" class="ml-2">English</label>
+                        </div>
+
+                        <div class="d-inline-block">
+                            <input type="checkbox" id="checkbox2" v-model="bangla_checkbox" @change="changeCheckBox()">
+                            <label for="checkbox2" class="ml-2">Bangla</label>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
 
@@ -114,6 +123,9 @@ export default {
             userInfo            : '',
             isSummerNoteError   : false,
 
+            selected_checkbox    : '',
+            bangla_checkbox      : '',
+
             faqData      : {
 
                 en_title        : '',
@@ -131,6 +143,13 @@ export default {
         }
     },
     methods: {
+
+        changeCheckBox() {
+            if (this.bangla_checkbox === true)
+                this.selected_language = 'bangla';
+            else
+                this.selected_language = 'english';
+        },
 
         checkAndValidateSelectType(){
 

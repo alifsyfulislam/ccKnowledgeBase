@@ -19,6 +19,13 @@
                 </div>
             </div>
         </div>
+
+        <!-- scroll to top -->
+        <div class="totop">
+            <i class="fa fa-angle-up" aria-hidden="true"></i>
+        </div>
+        <!-- scroll to top end-->
+
         <UserProfileBar></UserProfileBar>
     </div>
 
@@ -28,6 +35,23 @@
 
 import $ from 'jquery'
 import '@/assets/js/jquery.treenav.js'
+
+// scroll to top
+$(window).scroll(function() {
+    let scroll = $(window).scrollTop();
+    // Scroll to top
+    if (scroll > 300) {
+        $('.totop').css('bottom', '5px');
+    } else {
+        $('.totop').css('bottom', '-50px');
+    }
+});
+
+$(document).on('click', '.totop', function(){
+    $('html,body').animate({
+        scrollTop: 0
+    }, 1000);
+});
 
 // Sub Menu]
 $(document).children('a').on('click', '.item-has-children', function (event) {
@@ -39,6 +63,7 @@ $(document).children('a').on('click', '.item-has-children', function (event) {
 // Left Sidebar show hide
 $(document).on('click', '.sidebar-navbar > i', function () {
     $('.sidebar-wrapper').toggleClass('left-sidebar-hide');
+    $('.main-content-wrapper').toggleClass('left-sidebar-hide');
 });
 
 // Right Side user profile show hide
@@ -56,6 +81,18 @@ $(document).on('click', '.right-side-common-form, .right-side-close-btn', functi
 $(document).on('click', '.right-side-config-form, .right-side-config-close-btn', function () {
     $('.right-side-config-wrapper').toggleClass('right-side-config-form-show');
     $('body').toggleClass('open-side-slider');
+});
+
+//click to fullscreen
+$(document).on('click','.screen-expand-btn',()=>{
+    $('.content-wrapper').toggleClass('expandable-content-area');
+});
+
+//ESC TO REACH FULL SCREEN
+$(document).on('keyup',(e)=> {
+    if (e.keyCode === 27){
+        $('.content-wrapper').toggleClass('expandable-content-area');
+    }
 });
 
 
