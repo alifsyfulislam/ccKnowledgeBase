@@ -76,7 +76,7 @@ class QuizFormRepository
     {
         return QuizForm::with('quizFormField')
             ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->paginate(20);
     }
 
 }

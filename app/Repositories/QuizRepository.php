@@ -89,7 +89,7 @@ class QuizRepository
         $likeFilterList  = ['name'];
         $query = self::filterQuiz($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('id', 'DESC')->paginate(10);
+        return $query->orderBy('id', 'DESC')->paginate(20);
 
     }
 
