@@ -81,8 +81,8 @@ class FaqService
 
             return response()->json([
                 'status_code' => 424,
-                'messages'=>config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
             ]);
         }
 
@@ -105,9 +105,17 @@ class FaqService
     public function getById($id)
     {
         if($this->faqRepository->get($id))
-            return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_info'=>$this->faqRepository->get($id)]);
+            return response()->json([
+                'status_code' => 200,
+                'messages'=>config('status.status_code.200'),
+                'faq_info'=>$this->faqRepository->get($id)
+            ]);
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'faq_info'=>"Data not found"]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'faq_info'    => "Data not found"
+        ]);
 
     }
 
@@ -147,8 +155,8 @@ class FaqService
 
             return response()->json([
                 'status_code' => 424,
-                'messages'=> config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
             ]);
         }
 
@@ -156,7 +164,7 @@ class FaqService
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200')
+            'messages'    => config('status.status_code.200')
         ]);
     }
 
@@ -181,8 +189,8 @@ class FaqService
 
             return response()->json([
                 'status_code' => 424,
-                'messages'=>config('status.status_code.424'),
-                'error' => $e->getMessage()
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
             ]);
         }
 
@@ -200,8 +208,19 @@ class FaqService
 
         return response()->json([
             'status_code' => 200,
-            'messages'=>config('status.status_code.200'),
-            'faq_list'=>$this->faqRepository->getWithPagination($request)
+            'messages'    => config('status.status_code.200'),
+            'faq_list'    => $this->faqRepository->getWithPagination($request)
+        ]);
+
+    }
+
+    public function getFaqList(Request $request)
+    {
+
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'faq_list'    => $this->faqRepository->getFaqListForFrontend($request)
         ]);
 
     }
