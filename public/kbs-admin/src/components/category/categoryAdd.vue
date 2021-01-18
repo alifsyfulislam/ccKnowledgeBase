@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" @keyup="checkAndChangeValidation()" placeholder="Enter Category Name" required>
+                            <input class="form-control" type="text" v-model="categoryData.name" id="categoryName" @change="checkCategoryNameExist(categoryData.name)" @keyup="checkAndChangeValidation()" placeholder="Enter Category Name" required>
                             <span id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
                             </span>
@@ -59,6 +59,35 @@ export default {
         }
     },
     methods: {
+
+        checkCategoryNameExist(categoryInfo){
+            let _that = this;
+            let category_info  =  categoryInfo.trim();
+            if (category_info == null){
+                $('#categoryNameError').html("*name field is required");
+            }
+            else if (category_info.length > 2 || category_info.length < 100){
+                axios.post('admin/category/name',
+                    {
+                        name            : this.categoryData.name,
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if(response.data.status_code === 400)
+                    {
+                        _that.success_message           = "";
+                        _that.error_message             = "";
+                        $('#categoryNameError').html("*"+response.data.error);
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
 
         //keyup validation
         checkAndChangeValidation(){

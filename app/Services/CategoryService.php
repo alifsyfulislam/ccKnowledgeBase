@@ -71,6 +71,30 @@ class CategoryService
      * @param $request
      * @return JsonResponse
      */
+
+    public function getCategoryNameExist($request){
+        if (!empty($request->id)){
+            $validator = Validator::make($request->all(),[
+                'name' => "required|min:3|max:100|unique:categories,name,$request->id,id",
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(),[
+                'name' => "required|min:3|max:100|unique:categories,name,$request->id,id",
+            ]);
+        }
+
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'error'      => $validator->errors()->first()
+            ]);
+        }
+    }
+
+
     public function createItem($request)
     {
 

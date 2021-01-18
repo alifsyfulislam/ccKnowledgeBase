@@ -171,4 +171,8 @@ class CategoryController extends Controller
 
 
     }
+
+    public function checkCategoryNameExist(Request $request){
+        return $this->categoryService->getCategoryNameExist($request);
+    }
 }
