@@ -52,6 +52,7 @@
                         <div class="form-group">
                             <label for="tag">Tag</label>
                             <input class="form-control" type="text" v-model="faqData.tag" id="tag">
+                            <tag-input></tag-input>
                         </div>
                     </div>
 
@@ -100,13 +101,15 @@
 import axios from 'axios'
 
 import Summernote from "@/components/summer-note/summernote";
+import TagInput from "../tag/TagComponent";
 import $ from "jquery";
 export default {
     name: "faqAdd.vue",
 
     props: ['isAddCheck'],
     components: {
-        Summernote
+        Summernote,
+        TagInput
     },
 
     data() {
