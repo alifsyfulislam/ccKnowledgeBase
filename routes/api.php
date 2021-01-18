@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
 
     Route::post('category/name', 'Api\CategoryController@checkCategoryNameExist');
+    Route::post('role/name', 'Api\RoleController@checkRoleNameExist');
 
 
     Route::get('latest-article-list', 'Api\ArticleController@articleList');

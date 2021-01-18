@@ -275,7 +275,7 @@ export default {
     created() {
         this.getArticleList();
         this.getCategoryList();
-        //console.log(this.$route.params);
+        console.log(localStorage.getItem('authToken'));
         //   this.success_message = this.$route.params.current_status;
         // this.setTimeoutElements();
     }

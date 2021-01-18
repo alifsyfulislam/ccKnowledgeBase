@@ -18,7 +18,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="role_name">Role Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="storeName" id="role_name" placeholder="Enter Role Name" @keyup="checkAndChangeValidation(storeName, '#role_name', '#roleNameError', '*role name')" required>
+                            <input class="form-control" type="text" v-model="storeName" id="role_name" placeholder="Enter Role Name" @change="checkRoleNameExist(storeName)" @keyup="checkAndChangeValidation(storeName, '#role_name', '#roleNameError', '*role name')" required>
                             <span id="roleNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -86,6 +86,38 @@ export default {
     },
 
     methods: {
+        checkRoleNameExist(roleInfo)
+        {
+            let _that = this;
+            let role_info  =  roleInfo.trim();
+            if (role_info == null){
+                $('#roleNameError').html("*name field is required");
+            }
+            else if (role_info.length > 2 || role_info.length < 100){
+                axios.post('admin/role/name',
+                    {
+                        id              : this.role_id,
+                        name            : this.storeName,
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                        console.log(response)
+                    if(response.data.status_code === 400)
+                    {
+                        _that.success_message           = "";
+                        _that.error_message             = "";
+                        $('#roleNameError').html("*"+response.data.error);
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+
         showSelectedItem()
         {
             console.log(this.selectedCheckboxes);

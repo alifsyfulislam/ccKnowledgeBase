@@ -72,6 +72,28 @@ class RoleService
      * @param $request
      * @return JsonResponse
      */
+    public function getRoleNameExist($request){
+        if (!empty($request->id)){
+            $validator = Validator::make($request->all(),[
+                'name' => "required|min:3|max:50|unique:roles,name,$request->id,id",
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(),[
+                'name' => 'required|min: 3|max: 100|unique:roles,name',
+            ]);
+        }
+
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'error'      => $validator->errors()->first()
+            ]);
+        }
+    }
+
     public function createItem($request)
     {
 
