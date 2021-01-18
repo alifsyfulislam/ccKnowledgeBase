@@ -1,3 +1,35 @@
+/* Featured Section */
+.featured-item {
+    border-radius: 15px;
+    box-shadow: 0 60px 120px rgba(150,155,187,.2);
+    transition: all 0.4s;
+}
+
+.featured-item .featured-image {
+    min-height: 200px;
+}
+
+.featured-item .featured-image img{
+    width: 100%;
+    height: auto;
+}
+
+.featured-content-box h4 {
+    color: #000;
+    transition: all 0.4s;
+}
+
+.featured-item:hover {
+    box-shadow: 0 60px 120px rgba(150,155,187,.4);
+}
+
+.featured-item:hover .featured-content-box h4 {
+    color: #2496a2;
+}
+
+
+/* Featured Section End */
+
 .ta-content-wrapper img {
     display: inline-block;
     margin-right: 15px;
