@@ -10,7 +10,7 @@
 
                         <div class="form-group">
                             <label for="categoryName">Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="category_name" id="categoryName" @change="checkCategoryNameExist(category_name)" @keyup="checkAndChangeValidation()" required>
+                            <input class="form-control" type="text" v-model="category_name" id="categoryName" @keyup="checkAndChangeValidation()" @change="checkCategoryNameExist(category_name)" required>
                             <span  id="categoryNameError" class="small text-danger category_name" role="alert">
                                 {{ error_messages[0] }}
                             </span>

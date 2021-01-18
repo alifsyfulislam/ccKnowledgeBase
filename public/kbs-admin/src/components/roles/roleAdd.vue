@@ -18,7 +18,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="role_name">Role Name <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="roles" id="role_name" placeholder="Enter Role Name" @keyup="checkAndChangeValidation(roles, '#role_name', '#roleNameError', '*role name')" required>
+                            <input class="form-control" type="text" v-model="roles" id="role_name" placeholder="Enter Role Name" @change="checkRoleNameExist(roles)" @keyup="checkAndChangeValidation(roles, '#role_name', '#roleNameError', '*role name')" required>
                             <span id="roleNameError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -78,6 +78,36 @@ export default {
     },
 
     methods: {
+        checkRoleNameExist(roleInfo)
+        {
+            let _that = this;
+            let role_info  =  roleInfo.trim();
+            if (role_info == null){
+                $('#roleNameError').html("*name field is required");
+            }
+            else if (role_info.length > 2 || role_info.length < 100){
+                axios.post('admin/role/name',
+                    {
+                        name            : this.roles,
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if(response.data.status_code === 400)
+                    {
+                        _that.success_message           = "";
+                        _that.error_message             = "";
+                        $('#roleNameError').html("*"+response.data.error);
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
         {
             if (selected_data.length >0) {

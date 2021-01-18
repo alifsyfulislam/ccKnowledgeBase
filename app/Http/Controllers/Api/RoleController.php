@@ -159,6 +159,11 @@ class RoleController extends Controller
      * @param Request $request
      * @return mixed
      */
+    public function checkRoleNameExist(Request $request){
+        return $this->roleService->getRoleNameExist($request);
+    }
+
+
     public function destroy(Request $request)
     {
 
