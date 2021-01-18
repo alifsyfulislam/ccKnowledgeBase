@@ -323,54 +323,45 @@ input[type="file"]:focus {
 .totop:hover i {
     animation: toTopFromBottom 0.3s forwards;
 }
-.tag-input{
+
+
+.tag-input-wrapper {
     display: inline;
 }
 
-.tag-group{
+.tag-input-wrapper .tag-group {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: #00bcd4;
+    color: #ffffff;
+    margin-right: 6px;
+    margin-bottom: 7px;
+    padding: 4px 6px;
+    border-radius: 6px 7px 7px 6px;
+}
+
+.tag-input-wrapper .tag-primary {
+    padding-right: 25px;
+    font-size: 14px;
+}
+
+.tag-input-wrapper .tag-delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 20px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
+    background: #ff7b88;
+    color: #ffffff;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.tag-group:not(:last-child){
-    margin-right: 0.5rem;
-}
-
-tag{
-    align-items: center;
-    display: inline-flex;
-    font-size: 0.75rem;
     justify-content: center;
-    line-height: 1.5;
-    white-space: nowrap;
-    background-color: whitesmoke;
-    border-radius: 5px;
-    color: #4a4a4a;
-    height: 2em;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-}
-
-.tag:not(:last-child) {
-    margin-right: 0.5rem;
-}
-
-.tag-delete{
-    margin-left: 0.25rem;
-    padding: 0;
-    background-color: #3182ce;
-}
-
-.tag-primary{
-    background-color: #3182ce;
-    color: #fff;
-}
-
-.tag-secondary{
-    background-color: #a0acc0;
-    color: #fff;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
 }
 
 @keyframes toTopFromBottom {
