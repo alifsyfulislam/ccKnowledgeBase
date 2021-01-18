@@ -30,6 +30,57 @@
 
 /* Featured Section End */
 
+/* Category start */
+.menu-wrapper {
+    border-radius: 0.25rem;
+    box-shadow: 1px 2px 15px #e5e5e5;
+    transition: all 0.4s;
+}
+
+.menu-wrapper:hover {
+    box-shadow: 1px 2px 30px #dddddd;
+}
+
+.menu-wrapper .menu-title {
+    position: relative;
+    font-size: 20px;
+    color: #000000;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.menu-wrapper .nav-link {
+    padding: 0.35rem 1rem;
+}
+
+.tag-list-wrapper li a {
+    display: inline-block;
+    background: #3fc6d4;
+    color: #ffffff;
+    margin: 0 5px 5px 0;
+    padding: 4px 6px;
+    border-radius: 0.25rem;
+    line-height: 1;
+    min-width: 25px;
+    text-transform: lowercase;
+}
+
+/* Category end */
+
+/* Article Item start  */
+.article-item-box {
+    box-shadow: 1px 2px 15px #e5e5e5;
+    transition: all 0.4s;
+}
+
+.article-item-box .article-image img {
+    width: 100%;
+}
+
+.article-content-box .article-title {
+    font-size: 16px;
+}
+/* Article Item end */
+
 .ta-content-wrapper img {
     display: inline-block;
     margin-right: 15px;
