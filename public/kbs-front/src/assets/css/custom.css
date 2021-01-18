@@ -5,18 +5,29 @@
     transition: all 0.4s;
 }
 
+.featured-item.border-radius-0 {
+    border-radius: 0;
+}
+
 .featured-item .featured-image {
     min-height: 200px;
 }
 
-.featured-item .featured-image img{
+.featured-item .featured-image img {
     width: 100%;
     height: auto;
+    transform: scale(1.0);
+    transition: all 0.4s;
 }
 
 .featured-content-box h4 {
     color: #000;
     transition: all 0.4s;
+}
+
+.featured-item p {
+    color: #000000;
+    line-height: 1.3;
 }
 
 .featured-item:hover {
@@ -27,6 +38,13 @@
     color: #2496a2;
 }
 
+.featured-item:hover .featured-image img {
+    transform: scale(1.05);
+}
+
+.font-14 {
+    font-size: 14px;
+}
 
 /* Featured Section End */
 
