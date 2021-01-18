@@ -69,6 +69,7 @@
 /* Article Item start  */
 .article-item-box {
     box-shadow: 1px 2px 15px #e5e5e5;
+    border-radius: 0.25rem;
     transition: all 0.4s;
 }
 
