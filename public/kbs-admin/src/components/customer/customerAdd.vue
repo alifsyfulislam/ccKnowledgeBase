@@ -144,7 +144,7 @@ export default {
                     {
                         _that.success_message           = "";
                         _that.error_message             = "";
-                        $('#emailError').html(response.data.error);
+                        $('#emailError').html("*"+response.data.error);
 
                     }
                 }).catch(function (error) {
@@ -169,12 +169,11 @@ export default {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                        console.log(response)
                     if(response.data.status_code === 400)
                     {
                         _that.success_message           = "";
                         _that.error_message             = "";
-                        $('#userNameError').html(response.data.error);
+                        $('#userNameError').html("*"+response.data.error);
 
                     }
                 }).catch(function (error) {
