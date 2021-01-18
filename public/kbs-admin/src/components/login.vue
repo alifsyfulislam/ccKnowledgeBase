@@ -14,7 +14,7 @@
                                     <span class="acc-type text-uppercase">Knowledge Based System</span>
                                 </div>
 
-                                <div v-if="checkedCounter > 0" class="small text-danger pt-20" id="loginStatusError"></div>
+                                <div style="min-height:39px"><div v-if="checkedCounter > 0" class="small text-danger pt-20" id="loginStatusError"></div></div>
 
                                 <div class="login-form pt-20">
                                     <div class="form-group floating-input with-icon user-icon mb-30 mb-md-50">
