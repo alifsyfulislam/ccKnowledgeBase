@@ -41,8 +41,11 @@ class UserService
     public function getAll()
     {
 
-        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'), 'user_list'=>$this->userRepository->all()]);
-
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+            'user_list'=>$this->userRepository->all()
+        ]);
     }
 
 
@@ -68,9 +71,17 @@ class UserService
     }
 
     public function getUserNameExist($request){
-        $validator = Validator::make($request->all(),[
-            'username'   => 'unique:users',
-        ]);
+        if (!empty($request->id)){
+            $validator = Validator::make($request->all(),[
+                'username'   => "required|string|max:50|min:3|unique:users,username,$request->id,id",
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(),[
+                'username'   => 'unique:users',
+            ]);
+        }
+
 
         if($validator->fails()) {
             return response()->json([
@@ -82,9 +93,15 @@ class UserService
     }
 
     public function getUserEmailExist($request){
-        $validator = Validator::make($request->all(),[
-            'email'   => 'unique:users',
-        ]);
+        if (!empty($request->id)){
+            $validator = Validator::make($request->all(),[
+                'email'      => "required|unique:users,email,$request->id,id",
+            ]);
+        }else{
+            $validator = Validator::make($request->all(),[
+                'email'   => 'unique:users',
+            ]);
+        }
 
         if($validator->fails()) {
             return response()->json([

@@ -50,6 +50,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::post('user/username', 'Api\UserController@checkUserNameExist');
     Route::post('user/email', 'Api\UserController@checkUserEmailExist');
 
+
+    Route::post('category/name', 'Api\CategoryController@checkCategoryNameExist');
+
+
     Route::get('latest-article-list', 'Api\ArticleController@articleList');
 
     Route::post('logout', 'Api\AuthController@logout');

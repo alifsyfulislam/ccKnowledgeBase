@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="userName">Username <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="userData.username" id="userName" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" placeholder="Enter username here!!" required>
+                            <input class="form-control" type="text" v-model="userData.username" id="userName" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" @change="checkUserNameExist(userData.username)" placeholder="Enter username here!!" required>
                             <span id="userNameError" class="text-danger small"> </span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email">Email <span class="required">*</span></label>
-                            <input class="form-control" type="email" v-model="userData.email" id="email" @keyup="checkAndValidateEmail()" placeholder="Enter last name here!!" required>
+                            <input class="form-control" type="email" v-model="userData.email" id="email" @keyup="checkAndValidateEmail()" @change="checkUserEmailExist(userData.email)" placeholder="Enter last name here!!" required>
                             <span id="emailError" class="text-danger small"> </span>
                         </div>
                     </div>
@@ -116,6 +116,67 @@ export default {
     },
 
     methods: {
+        checkUserEmailExist(userInfo)
+        {
+            let _that = this;
+            let user_info  =  userInfo.trim();
+            if (user_info == null){
+                $('#userEmailError').html("*email field is required");
+            }
+            else if (user_info.length > 2 || user_info.length < 100){
+                axios.post('admin/user/email',
+                    {
+                        email            : this.userData.email,
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    console.log(response.data)
+                    if(response.data.status_code === 400)
+                    {
+                        _that.success_message           = "";
+                        _that.error_message             = "";
+                        $('#emailError').html("*"+response.data.error);
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+
+        checkUserNameExist(userInfo){
+            let _that = this;
+            let user_info  =  userInfo.trim();
+            if (user_info == null){
+                $('#userNameError').html("*username field is required");
+            }
+            else if (user_info.length > 2 || user_info.length < 100){
+                axios.post('admin/user/username',
+                    {
+                        id                  : this.userData.id,
+                        username            : this.userData.username,
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    console.log(response)
+                    if(response.data.status_code === 400)
+                    {
+                        _that.success_message           = "";
+                        _that.error_message             = "";
+                        $('#userNameError').html("*"+response.data.error);
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
         //update button pressed
         validateAndSubmit()
         {
