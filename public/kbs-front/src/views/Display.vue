@@ -59,7 +59,7 @@
                                         <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-20">
-                                        <h4 class="mb-10 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
                                         <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
                                     </div>
                                 </a>
@@ -72,7 +72,7 @@
                                         <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-20">
-                                        <h4 class="mb-10 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
                                         <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
                                     </div>
                                 </a>
@@ -85,7 +85,7 @@
                                         <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-20">
-                                        <h4 class="mb-10 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
                                         <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
                                     </div>
                                 </a>
