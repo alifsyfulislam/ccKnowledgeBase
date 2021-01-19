@@ -49,24 +49,22 @@
               </div>
 
               <div class="col-lg-8 col-md-7" v-if="selectedCategory">
-                <div class="mb-30 mt-20">
+                <div class="mb-30 mt-0">
                   <h1 class="mb-3">ARTICLE LIST</h1>
                   <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
 
                   <div class="row article-items">
-                    <div class="col-lg-4 col-md-6 mb-30" v-for="has_article in selectedCategory" :key="has_article.id">
+                    <div class="col-lg-6 col-md-6 mb-30" v-for="has_article in selectedCategory" :key="has_article.id">
                       <router-link class="article-item-box d-block bg-white position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
                         <div class="article-image">
                           <img src="../assets/img/no-image.png" alt="no image" class="img-fluid">
                         </div>
                         <div class="article-content-box p-15">
                           <h3 class="article-title mb-0 pb-10">
-                            <span v-if="(has_article.en_title).length<40"> {{ has_article.en_title }}</span>
-                            <span v-else> {{ (has_article.en_title).substring(0,40)+"..." }}</span>
+                            <span v-if="(has_article.en_title).length<70"> {{ has_article.en_title }}</span>
+                            <span v-else> {{ (has_article.en_title).substring(0,70)+"..." }}</span>
                           </h3>
-                          <div v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
-                            <small>Post on: {{has_article.created_at}}</small>
-                          </div>
+                          <p class="font-14 mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat, possimus, obcaecati...</p>
                         </div>
                       </router-link>
                     </div>
