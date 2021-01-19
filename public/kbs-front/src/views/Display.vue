@@ -26,34 +26,85 @@
                     </div>
 
                     <div class="row text-left">
-                        <div class="col-xl-4 col-lg-4" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                            <div class="topics-category-holder my-20">
-                                <div class="topics-category-title mb10">
-                                    <!--                  work-->
-                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
-                                        <h4 class="mb-3">{{a_cate_art.name}}</h4>
-                                    </router-link>
-                                </div>
-                                <div class="topics-category-items pb-10" style="min-height: 190px">
-                                    <ul>
-                                        <!--                    work-->
-                                        <li v-for="a_article in a_cate_art.article" :key="a_article.id">
-                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
-<!--                                                {{a_article.en_title}}-->
-                                                <span v-if="(a_article.en_title).length<50"> {{ a_article.en_title }}</span>
-                                                <span v-else> {{ (a_article.en_title).substring(0,50)+"..." }}</span>
-                                            </router-link>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="topics-category-footer mt-20 pb-20">
-                                    <router-link class="btn btn-outline-primary btn-block py-3" :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
-                                        <h4 class="mb-0">Explore All</h4>
-                                    </router-link>
-                                </div>
+                        <div class="col-xl-4 col-lg-4 mb-30" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
+                            <div class="featured-item position-relative overflow-hidden bg-white">
+                                <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
+                                    <div class="featured-image">
+                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    </div>
+                                    <div class="featured-content-box p-15 p-md-30">
+                                        <h4 class="mb-10 mb-lg-0 text-center">{{a_cate_art.name}}</h4>
+                                    </div>
+                                </router-link>
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section class="topics-area py-50 py-md-60">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-lg-8">
+                            <h1 class="section-title bottom-bar text-center mb-10 pb-20">Featured Articles</h1>
+                            <p class="font-20 text-center pt-10">We did our best to cover all topics related to this product.</p>
+                        </div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-xl-4 col-lg-4 mb-30">
+                            <div class="featured-item position-relative overflow-hidden bg-white border-radius-0">
+                                <a href="#">
+                                    <div class="featured-image">
+                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    </div>
+                                    <div class="featured-content-box p-15 p-md-20">
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 mb-30">
+                            <div class="featured-item position-relative overflow-hidden bg-white border-radius-0">
+                                <a href="#">
+                                    <div class="featured-image">
+                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    </div>
+                                    <div class="featured-content-box p-15 p-md-20">
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 mb-30">
+                            <div class="featured-item position-relative overflow-hidden bg-white border-radius-0">
+                                <a href="#">
+                                    <div class="featured-image">
+                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    </div>
+                                    <div class="featured-content-box p-15 p-md-20">
+                                        <h4 class="mb-15 font-18">Lorem ipsum dolor sit amet consecte adipisicing elit.</h4>
+                                        <p class="font-14 mb-0">Lorem ipsum dolor sit amet consecte adipiscing elit, molestie venenatis felis...</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topics-area py-50 py-md-60">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-lg-8">
+                            <h1 class="section-title bottom-bar text-center mb-10 pb-20">Faq</h1>
+                            <p class="font-20 text-center pt-10">Frequently Asked Questions</p>
+                        </div>
+                    </div>
+
+                    
                 </div>
             </section>
         </main>

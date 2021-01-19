@@ -1,7 +1,226 @@
+/* Featured Section */
+.featured-item {
+    border-radius: 15px;
+    box-shadow: 0 60px 120px rgba(150,155,187,.2);
+    transition: all 0.4s;
+}
+
+.featured-item.border-radius-0 {
+    border-radius: 0;
+}
+
+.featured-item .featured-image {
+    min-height: 200px;
+}
+
+.featured-item .featured-image img {
+    width: 100%;
+    height: auto;
+    transform: scale(1.0);
+    transition: all 0.4s;
+}
+
+.featured-content-box h4 {
+    color: #000;
+    transition: all 0.4s;
+}
+
+.featured-item p {
+    color: #000000;
+    line-height: 1.3;
+}
+
+.featured-item:hover {
+    box-shadow: 0 60px 120px rgba(150,155,187,.4);
+}
+
+.featured-item:hover .featured-content-box h4 {
+    color: #2496a2;
+}
+
+.featured-item:hover .featured-image img {
+    transform: scale(1.05);
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+/* Featured Section End */
+
+/* Category start */
+.menu-wrapper {
+    border-radius: 0.25rem;
+    box-shadow: 1px 2px 15px #e5e5e5;
+    transition: all 0.4s;
+}
+
+.menu-wrapper:hover {
+    box-shadow: 1px 2px 30px #dddddd;
+}
+
+.menu-wrapper .menu-title {
+    position: relative;
+    font-size: 20px;
+    color: #000000;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.menu-wrapper .nav-link {
+    padding: 0.35rem 1rem;
+    text-transform: capitalize;
+}
+
+.menu-wrapper .nav-pills .nav-link.active {
+    color: #ffffff;
+}
+
+.menu-wrapper .nav-pills li a {
+    color: #000000;
+    text-transform: capitalize;
+}
+
+.menu-wrapper .nav-pills li a:hover {
+    color: #3fc6d4;
+}
+
+.tag-list-wrapper li a {
+    display: inline-block;
+    background: #3fc6d4;
+    color: #ffffff;
+    margin: 0 5px 5px 0;
+    padding: 4px 6px;
+    border-radius: 0.25rem;
+    line-height: 1;
+    min-width: 25px;
+    text-transform: lowercase;
+}
+
+/* Category end */
+
+/* Article Item start  */
+.article-item-box {
+    box-shadow: 1px 2px 15px #e5e5e5;
+    border-radius: 0.25rem;
+    transition: all 0.4s;
+}
+
+.article-item-box:hover .article-content-box .article-title {
+    color: #3fc6d4;
+}
+
+.article-item-box .article-image img {
+    width: 100%;
+}
+
+.article-content-box {
+    color: #000000;
+}
+
+.article-content-box .article-title {
+    font-size: 18px;
+    color: #000000;
+    font-weight: 600;
+    transition: all 0.4s;
+}
+
+/* .article-list-items .col-lg-12:last-child .article-item-list-box {
+    border-bottom: 1px solid #f1f1f1;
+} */
+
+.article-item-list-box {
+    padding: 10px 0;
+    border: 1px solid #f1f1f1;
+    transition: all 0.4s;
+}
+
+.article-item-list-box:hover {
+    border: 1px solid #3fc6d4;
+}
+
+.article-item-list-box:hover .article-content-list-box .article-list-title {
+    color: #3fc6d4;
+}
+
+.article-item-list-box .article-list-image {
+    width: 170px;
+}
+
+.article-content-list-box {
+    color: #000000;
+}
+
+.article-content-list-box .article-list-title {
+    font-weight: 600;
+    transition: all 0.4s;
+}
+
+/* Article Item end */
+
+/* Article details */
+.menu-wrapper ul li .nav-link {
+    color: #000;
+}
+
+.menu-wrapper ul li .nav-link:hover {
+    color: #3fc6d4;
+}
+
+.menu-wrapper ul li:last-child .recent-article-item-wrapper {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.recent-article-item-wrapper {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 5px 0;
+    transition: all 0.4s;
+}
+
+.recent-article-item-wrapper .ra-item-image {
+    min-width: 70px;
+    width: 70px;
+    margin-right: 10px;
+}
+
+.recent-article-item-wrapper .ra-item-content {
+    font-size: 14px;
+}
+
+.ta-content-wrapper iframe {
+    width: 100% !important;
+}
+/* Article details end*/
+
+/* breadcrumbs */
+.breadcrumbs ul li {
+    position: relative;
+    padding-right: 10px;
+}
+
+.breadcrumbs ul li:last-child {
+    padding-right: 0;
+}
+
+.breadcrumbs ul li:after {
+    position: absolute;
+    content: "/";
+    right: 0;
+    top: 0;
+    color: #dadada;
+}
+
+.breadcrumbs ul li:last-child:after {
+    display: none;
+}
+
+/* breadcrumbs end */
+
 .ta-content-wrapper img {
     display: inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
+    max-width: 100%;
 }
 
 .ta-content-wrapper img.note-float-left {

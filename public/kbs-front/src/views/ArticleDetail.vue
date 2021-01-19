@@ -6,7 +6,7 @@
       <main>
         <section class="inner-search-area py-20">
           <div class="container">
-            <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
+            <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
               <div class="input-group order-sm-2">
                 <input type="text" v-on:keyup.enter="searchData()" v-model="query_string" class="form-control" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                 <div class="input-group-append">
@@ -18,7 +18,14 @@
                   </button>
                 </div>
               </div>
-              <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+              <!-- <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button> -->
+              <div class="breadcrumbs mt-10 mt-sm-0">
+                <ul class="list-inline list-unstyled mb-0">
+                  <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i></a></li>
+                  <li class="list-inline-item"><a href="">Categories</a></li>
+                  <li class="list-inline-item">Global COVID-19 deaths top 1.6m: Johns Hopkins</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -46,18 +53,44 @@
                   <h3 class="">{{aArticle.en_title}}</h3>
                 </div>
                   <div class="ta-content-wrapper">
-                      <p class="text-justify" v-html="aArticle.en_body"></p>
+                      <div v-html="aArticle.en_body"></div>
                   </div>
 
               </div>
-              <div class="col-lg-3 col-md-4 text-right">
+              <div class="col-lg-3 col-md-4">
                 <div class="article-sidebar">
-                  <div class="sidebar-title">
-                    <h3>Recent Articles</h3>
+                  <div class="menu-wrapper bg-white mb-30">
+                      <h3 class="menu-title mb-0 p-15">Recent Articles</h3>
+                      <ul class="nav nav-pills flex-column pb-2">
+                        <li class="nav-item" v-for="a_art in allArticle" :key="a_art.id">
+                          <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
+                            <div class="recent-article-item-wrapper d-flex">
+                              <!-- <div class="ra-item-image">
+                                <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                              </div> -->
+                              <div class="ra-item-content px-15">
+                                <span v-if="(a_art.en_title).length<40"> {{ a_art.en_title }}</span>
+                                <span v-else> {{ (a_art.en_title).substring(0,40)+"..." }}</span>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
                   </div>
-                  <div class="sidebar-content">
+
+                  <div class="menu-wrapper bg-white mb-30">
+                      <h3 class="menu-title mb-20 p-15">Categories</h3>
+                      <ul class="nav nav-pills flex-column px-15 pb-15">
+                        <li class="nav-item" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
+                          <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
+                              {{a_cate_art.name}}
+                          </router-link>
+                        </li>
+                      </ul>
+                  </div>
+
+                  <!-- <div class="sidebar-content">
                     <ul class="recent-articles list-unstyled">
-<!--                      work here-->
                       <li v-for="a_art in allArticle" :key="a_art.id">
                         <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.slug)">
                             <span v-if="(a_art.en_title).length<30"> {{ a_art.en_title }}</span>
@@ -65,20 +98,19 @@
                         </a>
                       </li>
                     </ul>
-                  </div>
-                  <div class="sidebar-title">
+                  </div> -->
+                  <!-- <div class="sidebar-title">
                     <h3>Categories</h3>
                   </div>
                   <div class="sidebar-content">
                     <ul class="recent-articles list-unstyled">
-<!--                      work here-->
                       <li v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                         <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
                           <h6 class="m-0 p-1">{{a_cate_art.name}}</h6>
                         </router-link>
                       </li>
                     </ul>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
