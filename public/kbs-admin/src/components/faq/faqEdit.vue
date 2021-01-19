@@ -153,7 +153,6 @@ export default {
 
     methods: {
         collectTagList(tagList){
-            console.log(tagList);
             this.faqData.tag = tagList.join();
         },
 

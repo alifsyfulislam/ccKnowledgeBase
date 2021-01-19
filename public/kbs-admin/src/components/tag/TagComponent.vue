@@ -70,8 +70,8 @@ export default {
             this.tags.splice(i,1)
             if (this.tagList.length <= 10){
                 this.isExceed = true;
-                // console.log(this.tagList);
             }
+            this.$emit('tag-list', this.tagList);
         },
         updateTag(tag,index){
             this.tagValue = tag;

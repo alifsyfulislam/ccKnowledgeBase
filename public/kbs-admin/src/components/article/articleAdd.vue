@@ -57,8 +57,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="tag">Tag</label>
-                            <input class="form-control" type="text" v-model="articleData.tag" id="tag">
+                            <label for="tag" class="d-block">Tag</label>
+<!--                            <input class="form-control" type="text" v-model="articleData.tag" id="tag">-->
+                            <tag-input id="tag" class="tag-input-wrapper" @tag-list="collectArticleList"/>
                         </div>
                     </div>
 
@@ -117,13 +118,15 @@
 <script>
 import axios from 'axios'
 import Summernote from "@/components/summer-note/summernote";
+import TagInput from "../tag/TagComponent";
 import $ from "jquery";
 
 export default {
     name: "articleAdd.vue",
     props: ['isAddCheck'],
     components: {
-        Summernote
+        Summernote,
+        TagInput
     },
     data() {
         return {
@@ -164,6 +167,9 @@ export default {
         }
     },
     methods: {
+        collectArticleList(tagList){
+            this.articleData.tag = tagList.join();
+        },
 
         changeCheckBox() {
             if (this.bangla_checkbox === true)
