@@ -99,7 +99,7 @@ class CategoryRepository implements RepositoryInterface
     {
         if ($request->filled('without_pagination')) {
 
-            return Category::with('parentRecursive')
+            return Category::Query()
                 ->orderBy('id','DESC')
                 ->get();
 

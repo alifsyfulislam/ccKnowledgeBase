@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Helpers\Helper;
+use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -168,14 +169,26 @@ class CategoryService
         try {
             $input = $request->all();
 
-            $this->categoryRepository->update([
+            $parentCheck = Category::where('id',$input['parent_id'])
+                            ->where('parent_id', $input['id'])
+                            ->first();
 
-                'name' => $request->input('name'),
-                'slug' => Helper::slugify($request->input('name')),
-                'parent_id' => $request->input('parent_id') ?? 0
+            if ($parentCheck){
+                return response()->json([
+                    'status_code' => 424,
+                    'messages'    => config('status.status_code.424'),
+                    'error'      => "This Category can not be added as Parent because it's already in as it's child"
+                ]);
 
-            ], $request->id);
+            }else{
+                $this->categoryRepository->update([
 
+                    'name' => $request->input('name'),
+                    'slug' => Helper::slugify($request->input('name')),
+                    'parent_id' => $request->input('parent_id') ?? 0
+
+                ], $request->id);
+            }
 
         } catch (Exception $e) {
 
