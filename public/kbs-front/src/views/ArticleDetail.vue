@@ -46,7 +46,7 @@
                   <h3 class="">{{aArticle.en_title}}</h3>
                 </div>
                   <div class="ta-content-wrapper">
-                      <p class="text-justify" v-html="aArticle.en_body"></p>
+                      <div v-html="aArticle.en_body"></div>
                   </div>
 
               </div>
