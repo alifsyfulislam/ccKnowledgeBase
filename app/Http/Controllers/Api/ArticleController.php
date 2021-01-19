@@ -165,6 +165,7 @@ class ArticleController extends Controller
 
     public function articleList(Request $request)
     {
+        //dd($request->all());
 
         return $this->articleService->getLatestList($request);
 

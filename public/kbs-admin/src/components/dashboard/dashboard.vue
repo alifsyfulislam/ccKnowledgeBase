@@ -254,11 +254,12 @@ export default {
                     },
                     params :
                         {
-                            isAdmin         : 1,
+                            isAdmin : 1,
                         },
 
                 })
                 .then(function (response) {
+                    console.log(response.data.article_list);
                     if(response.data.status_code === 200){
                         _that.isArticleList = true;
                         console.log(response.data.article_list)
@@ -275,7 +276,7 @@ export default {
     created() {
         this.getArticleList();
         this.getCategoryList();
-        console.log(localStorage.getItem('authToken'));
+        //console.log(localStorage.getItem('authToken'));
         //   this.success_message = this.$route.params.current_status;
         // this.setTimeoutElements();
     }

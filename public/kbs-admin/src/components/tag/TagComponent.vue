@@ -21,7 +21,7 @@ export default {
             tagValue : '',
             tagList : [],
             tagSeparator: ' ',
-            error_message: ''
+            error_message: '',
         }
     },
     computed: {
@@ -51,8 +51,13 @@ export default {
                 .replace('px','')) + 1 + "px")
             tagControlHidden.remove();
         },
-        createTag(e){
-            if (this.tagValue.length > 0 && this.tagList.includes(this.tagValue)!=true){
+
+        createTag(e)
+        {
+            this.tagValue = this.tagValue.replace(/[^\w\s]/gi, '');
+            this.tagValue = this.tagValue.replace(/[0-9]/g, '');
+            // console.log(this.tagValue)
+            if (this.tagValue.length > 0 && this.tagList.includes(this.tagValue)!=true ){
                 if (this.tagValue.includes(this.tagSeparator) || e.key === 'Enter'){
                     this.tagList.push(this.tagValue.replace(this.tagSeparator, '').trim())
                     this.tagValue = "";
