@@ -164,6 +164,7 @@
     display: inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
+    max-width: 100%;
 }
 
 .ta-content-wrapper img.note-float-left {
