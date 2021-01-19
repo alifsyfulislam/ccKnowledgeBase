@@ -5,7 +5,7 @@
             <span class="tag tag-delete tag-secondary" @click="removeTag(index)">X</span>
         </div>
         <input v-if="isExceed" type="text" class="tag-control form-control" placeholder="Add a new tag" v-model="tagValue" @keyup="error_message = ''" @input="autoWidth($event)"
-        @keyup.enter="createTag($event)">
+               @keyup.enter="createTag($event)">
         <span class="text-danger" v-if="error_message">{{error_message}}</span>
     </div>
 </template>
@@ -13,7 +13,9 @@
 <script>
 
 export default {
-    name: "TagComponent",
+    name: "TagEditComponent",
+
+    props: ['faqInfo'],
 
     data(){
         return{
@@ -78,6 +80,11 @@ export default {
             this.removeTag(index)
         }
     },
+    mounted() {
+        // console.log(this.faqInfo.tag);
+        this.tagList = this.faqInfo.tag;
+        this.tagList = this.tagList.split(',');
+    }
 
 }
 </script>
