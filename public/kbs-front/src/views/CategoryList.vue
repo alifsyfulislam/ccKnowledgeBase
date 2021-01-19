@@ -6,7 +6,7 @@
       <main>
         <section class="inner-search-area py-20">
           <div class="container">
-            <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
+            <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
               <div class="input-group order-sm-2">
                 <input type="text" class="form-control" v-on:keyup.enter="searchData()" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                 <div class="input-group-append">
@@ -18,7 +18,13 @@
                   </button>
                 </div>
               </div>
-              <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+              <!-- <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button> -->
+              <div class="breadcrumbs mt-10 mt-sm-0">
+                <ul class="list-inline list-unstyled mb-0">
+                  <li class="list-inline-item"><a href="#"><i class="fa fa-home"></i></a></li>
+                  <li class="list-inline-item">Categories</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -53,14 +59,27 @@
                   <h1 class="mb-3">ARTICLE LIST</h1>
                   <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
 
-                  <div class="row article-items">
-                    <div class="col-lg-6 col-md-6 mb-30" v-for="has_article in selectedCategory" :key="has_article.id">
-                      <router-link class="article-item-box d-block bg-white position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
+                  <div class="row article-list-items">
+                    <div class="col-lg-12 mb-15" v-for="has_article in selectedCategory" :key="has_article.id">
+                      <!-- <router-link class="article-item-box d-block bg-white position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
                         <div class="article-image">
                           <img src="../assets/img/no-image.png" alt="no image" class="img-fluid">
                         </div>
                         <div class="article-content-box p-15">
                           <h3 class="article-title mb-0 pb-10">
+                            <span v-if="(has_article.en_title).length<70"> {{ has_article.en_title }}</span>
+                            <span v-else> {{ (has_article.en_title).substring(0,70)+"..." }}</span>
+                          </h3>
+                          <p class="font-14 mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat, possimus, obcaecati...</p>
+                        </div>
+                      </router-link> -->
+
+                      <router-link class="article-item-list-box d-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
+                        <div class="article-list-image">
+                          <img src="../assets/img/no-image.png" alt="no image" class="img-fluid">
+                        </div>
+                        <div class="article-content-list-box pl-10">
+                          <h3 class="article-list-title mb-0 pb-10 font-20">
                             <span v-if="(has_article.en_title).length<70"> {{ has_article.en_title }}</span>
                             <span v-else> {{ (has_article.en_title).substring(0,70)+"..." }}</span>
                           </h3>
