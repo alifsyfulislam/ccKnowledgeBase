@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label>Select A Parent</label>
                             <select class="form-control" v-model="category_parent_id" id="categoryParent">
-                                <option value="">Select A Category</option>
+                                <option value="0">Select A Category</option>
                                 <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
                                     {{a_category.name}}
                                 </option>
@@ -202,10 +202,10 @@ export default {
                     console.log(response);
 
                 if (response.data.status_code === 200){
-                    _that.category_name             = '',
-                    _that.category_parent_id        = '',
-                    _that.error_message            = '';
-                    _that.success_message           = "Category Updated Successfully";
+                    _that.category_name           = '',
+                    _that.category_parent_id      = '',
+                    _that.error_message           = '';
+                    _that.success_message         = "Category Updated Successfully";
                     _that.$emit('category-slide-close',_that.success_message);
                 }
                 else if(response.data.status_code === 400)
@@ -236,27 +236,21 @@ export default {
         getCategoryList()
         {
             let _that = this;
-            axios.get('admin/categories',
+            axios.get('admin/category-list-for-update',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     },
                     params :
                         {
-                            isAdmin : 1,
-                            without_pagination : 1
+                            id : _that.category_id
                         },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        _that.tempCategoryList   = response.data.category_list;
+                        console.log(response.data.category_list);
+                        _that.categoryList   = response.data.category_list;
 
-                        _that.tempCategoryList.forEach(aCategory => {
-
-                            if (aCategory.id!= _that.category_id && aCategory.parent_id!=_that.category_id ){
-                                _that.categoryList.push(aCategory);
-                            }
-                        })
                     }
                     else{
                         _that.success_message   = "";
@@ -278,8 +272,9 @@ export default {
                 .then(function (response) {
                     if (response.data.status_code === 200) {
                         console.log(response.data);
-                        _that.categoryDetails           = response.data.category_info;
-                        _that.category_name             =  _that.categoryDetails.name;
+                        _that.categoryDetails         = response.data.category_info;
+                        _that.category_name           =  _that.categoryDetails.name;
+                        _that.category_parent_id      =  _that.categoryDetails.parent_id;
 
                     } else {
                         _that.success_message           = "";

@@ -42,6 +42,7 @@ Route::get('front-page-config', 'Api\PageController@index');
 Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizFieldListFromQuizForm');
 
 
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::post('save-file', 'Api\ArticleController@saveFiles');
     Route::post('delete-file', 'Api\ArticleController@deleteFiles');
@@ -63,6 +64,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::apiResource('roles','Api\RoleController');
     Route::apiResource('permissions', 'Api\PermissionController');
     Route::apiResource('categories','Api\CategoryController');
+
+    Route::get('category-list-for-update', 'Api\CategoryController@getCategoryForEdit');
 
     Route::apiResource('articles','Api\ArticleController', ['except' => ['update']]);
 

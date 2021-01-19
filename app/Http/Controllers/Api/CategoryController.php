@@ -192,4 +192,10 @@ class CategoryController extends Controller
         return $this->categoryService->getCategoryNameExist($request);
 
     }
+
+    public function getCategoryForEdit(Request $request){
+
+        return $this->categoryService->getCategoryListForUpdate($request);
+
+    }
 }

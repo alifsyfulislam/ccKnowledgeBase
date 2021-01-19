@@ -5,9 +5,11 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements RepositoryInterface
 {
+    public $subCat =[];
 
     /**
      * @return mixed
@@ -60,6 +62,7 @@ class CategoryRepository implements RepositoryInterface
     public function update(array $data, $id)
     {
        // dd($data);
+
         return Category::where('id', $id )->update([
             'name' => $data['name'],
             'parent_id' => $data['parent_id'] ?? 0
@@ -83,6 +86,7 @@ class CategoryRepository implements RepositoryInterface
      * @param $category_id
      */
     public static function deleteSubcategory($category_id){
+
        $request = Category::where('parent_id', '=', $category_id)->pluck('id');
 
        foreach ($request as $cat){
@@ -99,7 +103,7 @@ class CategoryRepository implements RepositoryInterface
     {
         if ($request->filled('without_pagination')) {
 
-            return Category::Query()
+            return Category::with('parentRecursive')
                 ->orderBy('id','DESC')
                 ->get();
 
@@ -113,8 +117,6 @@ class CategoryRepository implements RepositoryInterface
 
     }
 
-
-
     public function categoryArticles()
     {
 
@@ -124,6 +126,25 @@ class CategoryRepository implements RepositoryInterface
                 return $query;
 
         });
+
+    }
+
+    public function categoryListForUpdate($request)
+    {
+
+        $categoryChildArray = Category::where('id', '!=', $request->id)
+            ->where('parent_id',  $request->id)
+            ->pluck('id')->toArray();
+
+        $categoryChildArray[] = $request->id;
+
+       // dd($categoryChildArray);
+
+        $categoryList = DB::table('categories')
+            ->whereNotIn('id', $categoryChildArray)
+            ->whereNotIn('parent_id',$categoryChildArray)->get();
+
+        return $categoryList;
 
     }
 

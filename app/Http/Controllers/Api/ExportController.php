@@ -34,31 +34,10 @@ class ExportController extends Controller
         return Excel::download(new CategoriesExport(), 'categories-'.date("d-m-y-H-i-s").'.csv');
     }
 
-<<<<<<< HEAD
-    public function exportArticles(){
-        $articleData = Article::with(['user'=> function($q) {$q->select('id', 'first_name','last_name');},'category'=> function($q) {$q->select('id', 'name');}])->get()->map(function ($articleData){
-            return [
-                'id'                        => $articleData->id,
-                'en_title'                  => $articleData->en_title,
-                'en_body'                   => strip_tags($articleData->en_body),
-                'category_name'             => $articleData->category->name,
-                'author_name'               => $articleData->user->first_name.' '.$articleData->user->last_name,
-                'status'                    => $articleData->status,
-                'tag'                       => $articleData->tag ? $articleData->tag : "N/A",
-                'publish_date'              => $articleData->created_at,
-            ];
-        });
-//        dd($articleData);
-        return Excel::download(new ArticlesExport($articleData), 'articles-'.date("d-m-y-H-i-s").'.csv');
-=======
 
     public function exportArticles()
     {
-        $articleData = Article::with(['user' => function ($q) {
-            $q->select('id', 'first_name', 'last_name');
-        }, 'category' => function ($q) {
-            $q->select('id', 'name');
-        }])->get()->map(function ($articleData) {
+        $articleData = Article::with(['user' => function ($q) {$q->select('id', 'first_name', 'last_name');}, 'category' => function ($q) {$q->select('id', 'name');}])->get()->map(function ($articleData) {
             return [
                 'id' => $articleData->id,
                 'en_title' => $articleData->en_title,
@@ -72,6 +51,5 @@ class ExportController extends Controller
         });
 //        dd($articleData);
         return Excel::download(new ArticlesExport($articleData), 'articles-' . date("d-m-y-H-i-s") . '.csv');
->>>>>>> 44cdcd7365250699f7a5fecf20bee265ffa52536
     }
 }

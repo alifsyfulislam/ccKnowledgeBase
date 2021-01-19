@@ -169,18 +169,31 @@ class CategoryService
         try {
             $input = $request->all();
 
-            $parentCheck = Category::where('id',$input['parent_id'])
-                            ->where('parent_id', $input['id'])
-                            ->first();
+            $categoryOldData = Category::where('id', $input['id'])->first();
 
-            if ($parentCheck){
-                return response()->json([
-                    'status_code' => 424,
-                    'messages'    => config('status.status_code.424'),
-                    'error'      => "This Category can not be added as Parent because it's already in as it's child"
-                ]);
+
+            if ($categoryOldData->parent_id == $input['parent_id']){
+
+                $this->categoryRepository->update([
+
+                    'name' => $request->input('name'),
+                    'slug' => Helper::slugify($request->input('name')),
+                    'parent_id' => $request->input('parent_id') ?? 0
+
+                ], $request->id);
 
             }else{
+
+                $categoryChildArray = Category::where('id', '!=', $input['id'])
+                    ->where('parent_id',  $input['id'])
+                    ->pluck('id')->toArray();
+
+                foreach ($categoryChildArray as $aChild){
+                    Category::where('id', $aChild )->update([
+                        'parent_id' =>  0
+                    ]);
+                }
+
                 $this->categoryRepository->update([
 
                     'name' => $request->input('name'),
@@ -262,6 +275,16 @@ class CategoryService
             'status_code'   => 200,
             'messages'      => config('status.status_code.200'),
             'category_list' => $this->categoryRepository->categoryArticles()]);
+
+    }
+
+    public function getCategoryListForUpdate($request)
+    {
+
+        return response()->json([
+            'status_code'   => 200,
+            'messages'      => config('status.status_code.200'),
+            'category_list' => $this->categoryRepository->categoryListForUpdate($request)]);
 
     }
 
