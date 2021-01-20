@@ -118,7 +118,7 @@ class ArticleRepository implements RepositoryInterface
         $likeFilterList = ['en_title', 'tag'];
         $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('id', 'DESC')->paginate(5);
+        return $query->orderBy('id', 'DESC')->paginate(20);
 
     }
 

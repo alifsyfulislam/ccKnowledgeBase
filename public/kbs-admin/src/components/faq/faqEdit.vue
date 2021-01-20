@@ -52,6 +52,7 @@
                         <div class="form-group">
                             <label for="tag" class="d-block">Tag</label>
                             <tag-input-edit class="tag-input-wrapper" v-if="faqData.tag" id="tag" :faqInfo="faqData" @tag-list="collectTagList"/>
+                            <tag-input-edit class="tag-input-wrapper" v-else  :faqInfo="faqData" @tag-list="collectTagList"/>
                         </div>
                     </div>
 
