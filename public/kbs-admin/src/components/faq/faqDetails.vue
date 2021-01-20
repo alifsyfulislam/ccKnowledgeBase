@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="ta-content-wrapper">
-                            <p class="text-justify" v-html="faqDetails.en_body"></p>
+                            <div v-html="faqDetails.en_body"></div>
                         </div>
                     </div>
 
