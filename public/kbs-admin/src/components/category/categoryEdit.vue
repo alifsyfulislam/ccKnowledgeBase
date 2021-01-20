@@ -42,7 +42,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label  class="d-block">Logo</label>
+                            <label  class="d-block">Image</label>
                             <input type="file" id="files" class="form-control" ref="files" @change="onLogoFileChange" >
                         </div>
                     </div>
