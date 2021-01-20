@@ -4,7 +4,7 @@
             <span class="tag tag-primary" @dblclick="updateTag(tag,index)">{{tag}}</span>
             <span class="tag tag-delete tag-secondary" @click="removeTag(index)">X</span>
         </div>
-        <input v-if="isExceed" type="text" class="tag-control form-control" placeholder="Add a new tag" v-model="tagValue" @keyup="error_message = ''" @input="autoWidth($event)"
+        <input v-if="isExceed" type="text" class="tag-control form-control" placeholder="Add a new tag" v-model="tagValue" @keyup="error_message = ''" @blur="tagValue = ''" @input="autoWidth($event)"
                @keyup.enter="createTag($event)">
         <span class="text-danger" v-if="error_message">{{error_message}}</span>
     </div>
@@ -54,6 +54,8 @@ export default {
             tagControlHidden.remove();
         },
         createTag(e){
+            this.tagValue = this.tagValue.replace(/[^\w\s]/gi, '');
+            this.tagValue = this.tagValue.replace(/[0-9]/g, '');
             if (this.tagValue.length > 0 && this.tagList.includes(this.tagValue)!=true){
                 if (this.tagValue.includes(this.tagSeparator) || e.key === 'Enter'){
                     this.tagList.push(this.tagValue.replace(this.tagSeparator, '').trim())
@@ -70,10 +72,10 @@ export default {
         },
         removeTag(i){
             this.tags.splice(i,1)
-            if (this.tagList.length <= 10){
+            if (this.tagList.length <= 10 && this.tagList.length != 0 ){
                 this.isExceed = true;
+                this.$emit('tag-list', this.tagList);
             }
-            this.$emit('tag-list', this.tagList);
         },
         updateTag(tag,index){
             this.tagValue = tag;
