@@ -30,7 +30,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="d-block">Logo</label>
-                            <input type="file" id="files"  ref="files" @change="onLogoFileChange" >
+                            <input type="file" id="files" class="form-control" ref="files" @change="onLogoFileChange" >
                         </div>
                     </div>
 
@@ -156,10 +156,13 @@ export default {
         categoryAdd(){
 
             let _that = this;
-            axios.post('admin/categories', {
-                    name        : this.categoryData.name,
-                    parent_id   : this.selectedCategory,
-                },
+            let formData = new FormData();
+
+            formData.append('logo', this.logo_file);
+            formData.append('name', this.categoryData.name);
+            formData.append('parent_id', this.selectedCategory);
+
+            axios.post('admin/categories', formData,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
