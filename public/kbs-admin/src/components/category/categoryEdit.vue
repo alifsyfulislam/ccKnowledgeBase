@@ -249,6 +249,7 @@ export default {
         getCategoryList()
         {
             let _that = this;
+
             axios.post('admin/category-list-for-update',
                 {
                     id : _that.category_id
@@ -302,6 +303,7 @@ export default {
         this.category_id = this.categoryId;
         this.getCategoryList();
         this.getCategoryDetails(this.category_id);
+        console.log(axios);
     }
 }
 </script>
