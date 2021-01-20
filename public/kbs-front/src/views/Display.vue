@@ -4,7 +4,7 @@
     </div>
     <div v-else class="display min-height-wrapper" v-cloak>
         <main>
-            <section class="banner-area py-70 py-md-140" :style="{ backgroundImage: 'url(' + frontPageData.banner + ')' }">
+            <section class="banner-area py-70 py-md-140" :style="{ backgroundImage: 'url(' + (frontPageData.banner ? frontPageData.banner : static_image['banner']) + ')' }">
                 <div class="container">
                     <div class="search-wrapper text-center">
                         <h1 class="section-title bottom-bar text-white mb-10 pb-20">{{ frontPageData.title }}</h1>
@@ -54,23 +54,19 @@
                     <div class="row text-left">
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                             <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100 border-radius-0">
-                                <a href="#">
-
+                                <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.slug }}">
                                     <div class="featured-image">
-                                        <img  v-if="articleImageArray.indexOf(a_latest_art.id)" class="img-fluid" :src="articleImageArray[a_latest_art.id] ? articleImageArray[a_latest_art.id] : static_image " alt="no image">
+                                        <img  v-if="articleImageArray.indexOf(a_latest_art.id)" class="img-fluid" :src="articleImageArray[a_latest_art.id] ? articleImageArray[a_latest_art.id] : static_image['article'] " alt="no image">
                                     </div>
-
                                     <div class="featured-content-box p-15 p-md-20">
-
                                         <h4 class="mb-15 font-18" v-if="(a_latest_art.en_title).length<35"> {{ a_latest_art.en_title }}</h4>
                                         <h4 class="mb-15 font-18" v-else> {{ (a_latest_art.en_title).substring(0,35)+"..." }}</h4>
 
                                         <p class="font-14 mb-0" v-if="(a_latest_art.en_short_summary)== null"> N/A </p>
                                         <p class="font-14 mb-0" v-else-if="(a_latest_art.en_short_summary).length < 100"> {{ a_latest_art.en_short_summary }} </p>
                                         <p class="font-14 mb-0" v-else> {{ (a_latest_art.en_short_summary).substring(0,100)+"..." }}</p>
-
                                     </div>
-                                </a>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -103,14 +99,14 @@
         },
         data() {
             return {
-                static_image : 'http://localhost/ccKnowledgeBase/public/kbs-front/src/assets/img/no-image.png',
-                isLoading : true,
-                allCategoryArticle:'',
-                frontPageData :'',
-                categoryHasArticle:[],
-                allLatestArticles : '',
-                regexImg           : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-                articleImageArray : []
+                static_image            : [],
+                isLoading               : true,
+                allCategoryArticle      : '',
+                frontPageData           : '',
+                categoryHasArticle      : [],
+                allLatestArticles       : '',
+                regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                articleImageArray       : []
             }
         },
         methods:{
@@ -149,12 +145,9 @@
                                 }
 
                             })
-
-                            console.log(_that.articleImageArray);
                         }
                     })
             },
-
             getPageDecorationData()
             {
                 let _that =this;
@@ -164,10 +157,17 @@
                             _that.frontPageData = response.data.page_config_info;
                         }
                     })
+            },
+            getStaticMedia()
+            {
+                this.static_image['category']   = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+                this.static_image['article']    = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+                this.static_image['banner']     = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/banner.jpg';
             }
         },
         created()
         {
+            this.getStaticMedia()
             this.getPageDecorationData();
             this.getCategoryArticleList();
             this.getLatestArticleList();

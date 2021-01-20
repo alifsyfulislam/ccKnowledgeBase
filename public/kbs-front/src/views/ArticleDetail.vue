@@ -59,7 +59,8 @@
                           <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
                             <div class="recent-article-item-wrapper d-flex">
                               <div class="ra-item-image">
-                                <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+<!--                                <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">-->
+                                  <img  v-if="articleImageArray.indexOf(a_art.id)" class="img-fluid" :src="articleImageArray[a_art.id] ? articleImageArray[a_art.id] : static_image['article'] " alt="no image">
                               </div>
                               <div class="ra-item-content">
                                 <span v-if="(a_art.en_title).length<40"> {{ a_art.en_title }}</span>
@@ -131,7 +132,12 @@
                 allCategoryArticle:'',
                 categoryHasArticle:[],
                 allArticle:'',
-                query_string:''
+                query_string:'',
+
+
+                static_image            : [],
+                regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                articleImageArray       : []
             }
         },
         methods:{
@@ -155,6 +161,14 @@
                 axios.get('article-list')
                     .then(function (response) {
                         _that.allArticle = response.data.article_list;
+
+                        response.data.article_list.forEach(val => {
+                            if ( val.en_body.includes('<img '))
+                            {
+                                _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
+                            }
+
+                        })
                     })
             },
             getCategoryArticleList()
@@ -187,12 +201,19 @@
                 else{
                     _that.$router.push('/');
                 }
+            },
+            getStaticMedia()
+            {
+                this.static_image['category']   = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+                this.static_image['article']    = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+                this.static_image['banner']     = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/banner.jpg';
             }
         },
         created() {
             this.articleID = this.$route.params.articleID;
             this.articleSearch(this.articleID);
             this.getCategoryArticleList();
+            this.getStaticMedia();
             this.getRecentArticleList();
             localStorage.clear();
         }
