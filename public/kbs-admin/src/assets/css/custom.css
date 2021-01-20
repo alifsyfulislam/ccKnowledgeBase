@@ -273,6 +273,10 @@ input[type="file"]:focus {
     transition: all 0.4s;
 }
 
+.main-content-wrapper .content-area .content-wrapper {
+    min-height: 90vh;
+}
+
 .sidebar-wrapper {
     position: fixed;
     z-index: 99;
