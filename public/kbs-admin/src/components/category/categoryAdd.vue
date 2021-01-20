@@ -26,6 +26,19 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="d-block">Logo</label>
+                            <input type="file" id="files" class="form-control" ref="files" @change="onLogoFileChange" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" v-if="logo_url">
+                        <div class="form-group" >
+                            <img class="preview" style="height:250px; width: auto" :src="logo_url"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group text-right">
                     <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
@@ -46,19 +59,26 @@ export default {
     props: ['isAddCheck'],
     data() {
         return {
-            success_message         : '',
-            error_messages          : [],
-            token                   : '',
-            categoryList            : '',
-            selectedCategory        : '',
-            userInfo                : '',
+            success_message  : '',
+            error_messages   : [],
+            token            : '',
+            categoryList     : '',
+            selectedCategory : '',
+            userInfo         : '',
+            logo_file        : '',
+            logo_url         : '',
 
-            categoryData      : {
+            categoryData     : {
                 name                : '',
             },
         }
     },
     methods: {
+
+        onLogoFileChange(e) {
+            this.logo_file = e.target.files[0];
+            this.logo_url = URL.createObjectURL(this.logo_file);
+        },
 
         checkCategoryNameExist(categoryInfo){
             let _that = this;
@@ -136,10 +156,13 @@ export default {
         categoryAdd(){
 
             let _that = this;
-            axios.post('admin/categories', {
-                    name        : this.categoryData.name,
-                    parent_id   : this.selectedCategory,
-                },
+            let formData = new FormData();
+
+            formData.append('logo', this.logo_file);
+            formData.append('name', this.categoryData.name);
+            formData.append('parent_id', this.selectedCategory);
+
+            axios.post('admin/categories', formData,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

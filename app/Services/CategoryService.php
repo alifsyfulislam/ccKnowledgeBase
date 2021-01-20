@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Models\Category;
+use App\Models\Media;
 use App\Repositories\CategoryRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -41,7 +42,8 @@ class CategoryService
         return response()->json([
             'status_code' => 200,
             'messages'    => config('status.status_code.200'),
-            'category_list' => $this->categoryRepository->all()]);
+            'category_list' => $this->categoryRepository->all()
+        ]);
     }
 
 
@@ -123,6 +125,19 @@ class CategoryService
 
             $this->categoryRepository->create($input);
 
+            $category = $this->categoryRepository->get($input['id']);
+
+            if($request->hasFile('logo')) {
+                $logo_url  = Helper::base64PageLogoUpload("category/images", $request->logo);
+            }
+
+            $category->media()->create([
+
+                'url' => $logo_url
+
+            ]);
+
+
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -169,39 +184,82 @@ class CategoryService
         try {
             $input = $request->all();
 
-            $categoryOldData = Category::where('id', $input['id'])->first();
+            $this->categoryRepository->update([
+
+                'name' => $request->input('name'),
+                'slug' => Helper::slugify($request->input('name')),
+                'parent_id' => $request->input('parent_id') ?? 0
+
+            ], $request->id);
 
 
-            if ($categoryOldData->parent_id == $input['parent_id']){
+            if($request->hasFile('logo')) {
 
-                $this->categoryRepository->update([
+                $category = $this->categoryRepository->get($input['id']);
 
-                    'name' => $request->input('name'),
-                    'slug' => Helper::slugify($request->input('name')),
-                    'parent_id' => $request->input('parent_id') ?? 0
+                $media= Media::where('mediable_id', $input['id'])->first();
 
-                ], $request->id);
-
-            }else{
-
-                $categoryChildArray = Category::where('id', '!=', $input['id'])
-                    ->where('parent_id',  $input['id'])
-                    ->pluck('id')->toArray();
-
-                foreach ($categoryChildArray as $aChild){
-                    Category::where('id', $aChild )->update([
-                        'parent_id' =>  0
-                    ]);
+                if ($media){
+                    $mediaName =  substr($media->url, strpos($media->url, "media") );
+                    unlink(public_path().'/'.$mediaName );
+                    $media->delete();
                 }
 
-                $this->categoryRepository->update([
-
-                    'name' => $request->input('name'),
-                    'slug' => Helper::slugify($request->input('name')),
-                    'parent_id' => $request->input('parent_id') ?? 0
-
-                ], $request->id);
+                $logo_url  = Helper::base64PageLogoUpload("category/images", $request->logo);
             }
+
+            $category->media()->create([
+
+                'url' => $logo_url
+
+            ]);
+
+            /*if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                $article = $this->getItemById($request->id);
+
+                $mediaList = Media::where('mediable_id', $request->id)->get();
+
+                if (count($mediaList) > 0)
+                {
+
+                    foreach($mediaList as $media)
+                    {
+
+                        $mediaName =  substr($media->url, strpos($media->url, "media") );
+                        unlink(public_path().'/'.$mediaName );
+                        $media->delete();
+
+                    }
+
+                }
+
+                $thumbImageList = $request->uploaded_file;
+
+                $fileLength = count($thumbImageList);
+
+                if(count($thumbImageList) > 0) {
+                    for ($i = 1; $i <= $fileLength; $i++) {
+
+                        $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
+
+                        if(strstr($mime, "video/"))
+                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
+                        else
+                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
+
+                    }
+                }
+
+
+                $article->media()->create([
+
+                    'url' => $image
+
+                ]);
+
+            }*/
+
 
         } catch (Exception $e) {
 

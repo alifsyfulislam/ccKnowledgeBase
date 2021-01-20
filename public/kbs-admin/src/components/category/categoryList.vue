@@ -264,6 +264,7 @@ export default {
                 {
                     if(response.data.status_code === 200)
                     {
+                        console.log(response.data);
                         _that.categoryList      = response.data.category_list.data;
                         _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;

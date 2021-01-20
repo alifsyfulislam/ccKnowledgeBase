@@ -14,6 +14,7 @@ class CategoryRepository implements RepositoryInterface
     /**
      * @return mixed
      */
+
     public function all()
     {
         return Category::with('childrenRecursive')
@@ -23,15 +24,15 @@ class CategoryRepository implements RepositoryInterface
 
     }
 
-
-
     /**
      * @param $id
      * @return mixed
      */
     public function get($id)
     {
-        return Category::find($id);
+        return Category::with('media')
+            ->where('id', $id)
+            ->first();
 
         //return Category::with(['permissions' => function($q) {$q->select('id', 'name');}])->find($id);
 
@@ -103,13 +104,13 @@ class CategoryRepository implements RepositoryInterface
     {
         if ($request->filled('without_pagination')) {
 
-            return Category::with('parentRecursive')
+            return Category::with('parentRecursive', 'media')
                 ->orderBy('id','DESC')
                 ->get();
 
         }
         else{
-            return Category::with('parentRecursive')
+            return Category::with('parentRecursive', 'media')
                 ->orderBy('id','DESC')
                 ->paginate(20);
         }

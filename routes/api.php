@@ -65,7 +65,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
     Route::apiResource('users','Api\UserController');
     Route::apiResource('roles','Api\RoleController');
     Route::apiResource('permissions', 'Api\PermissionController');
-    Route::apiResource('categories','Api\CategoryController');
+
+    Route::apiResource('categories','Api\CategoryController', ['except' => ['update']]);
+
+    Route::post('category/update-data', 'Api\CategoryController@update');
 
     Route::get('category-list-for-update', 'Api\CategoryController@getCategoryForEdit');
 
