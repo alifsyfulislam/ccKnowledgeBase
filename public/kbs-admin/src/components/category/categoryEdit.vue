@@ -249,15 +249,14 @@ export default {
         getCategoryList()
         {
             let _that = this;
-            axios.get('admin/category-list-for-update',
+            axios.post('admin/category-list-for-update',
+                {
+                    id : _that.category_id
+                },
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
-                            id : _that.category_id
-                        },
+                    }
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){

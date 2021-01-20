@@ -70,7 +70,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
     Route::post('category/update-data', 'Api\CategoryController@update');
 
-    Route::get('category-list-for-update', 'Api\CategoryController@getCategoryForEdit');
+    Route::post('category-list-for-update', 'Api\CategoryController@getCategoryForEdit');
 
     Route::apiResource('articles','Api\ArticleController', ['except' => ['update']]);
 

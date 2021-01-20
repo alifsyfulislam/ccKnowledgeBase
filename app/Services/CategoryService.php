@@ -193,8 +193,8 @@ class CategoryService
             ], $request->id);
 
 
-            if($request->hasFile('logo')) {
 
+            if($request->hasFile('logo')) {
                 $category = $this->categoryRepository->get($input['id']);
 
                 $media= Media::where('mediable_id', $input['id'])->first();
@@ -206,13 +206,15 @@ class CategoryService
                 }
 
                 $logo_url  = Helper::base64PageLogoUpload("category/images", $request->logo);
+
+                $category->media()->create([
+
+                    'url' => $logo_url
+
+                ]);
             }
 
-            $category->media()->create([
 
-                'url' => $logo_url
-
-            ]);
 
             /*if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
 
