@@ -259,7 +259,6 @@ export default {
 
                 })
                 .then(function (response) {
-                    console.log(response.data.article_list);
                     if(response.data.status_code === 200){
                         _that.isArticleList = true;
                         console.log(response.data.article_list)
