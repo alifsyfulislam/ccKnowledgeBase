@@ -56,6 +56,7 @@ export default {
         createTag(e){
             this.tagValue = this.tagValue.replace(/[^\w\s]/gi, '');
             this.tagValue = this.tagValue.replace(/[0-9]/g, '');
+            this.tagValue = this.tagValue.replace(" ", '');
             if (this.tagValue.length > 0 && this.tagList.includes(this.tagValue)!=true){
                 if (this.tagValue.includes(this.tagSeparator) || e.key === 'Enter'){
                     this.tagList.push(this.tagValue.replace(this.tagSeparator, '').trim())
@@ -67,7 +68,7 @@ export default {
                 this.autoWidth(e);
                 this.$emit('tag-list', this.tagList);
             }else{
-                this.error_message = "*tag can not be null or tag already exist";
+                this.error_message = "*tag can not be empty or tag already exist";
             }
         },
         removeTag(i){
@@ -84,8 +85,10 @@ export default {
     },
     mounted() {
         console.log(this.faqInfo);
-        this.tagList = this.faqInfo.tag;
-        this.tagList = this.tagList.split(',');
+        if (this.faqInfo.tag){
+            this.tagList = this.faqInfo.tag;
+            this.tagList = this.tagList.split(',');
+        }
     }
 
 }
