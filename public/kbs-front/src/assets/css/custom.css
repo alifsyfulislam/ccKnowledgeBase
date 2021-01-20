@@ -11,6 +11,8 @@
 
 .featured-item .featured-image {
     min-height: 200px;
+    max-height: 200px;
+    overflow: hidden;
 }
 
 .featured-item .featured-image img {
