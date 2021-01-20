@@ -44,7 +44,10 @@ class CategoryController extends Controller
 
         } else {
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
 
         }
 
@@ -72,7 +75,10 @@ class CategoryController extends Controller
 
         } else {
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
 
         }
 
@@ -111,7 +117,10 @@ class CategoryController extends Controller
 
         } else {
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
 
         }
 
@@ -133,7 +142,10 @@ class CategoryController extends Controller
 
         } else {
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
 
         }
     }
@@ -151,7 +163,10 @@ class CategoryController extends Controller
 
         } else {
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
         }
 
     }
@@ -173,6 +188,14 @@ class CategoryController extends Controller
     }
 
     public function checkCategoryNameExist(Request $request){
+
         return $this->categoryService->getCategoryNameExist($request);
+
+    }
+
+    public function getCategoryForEdit(Request $request){
+
+        return $this->categoryService->getCategoryListForUpdate($request);
+
     }
 }
