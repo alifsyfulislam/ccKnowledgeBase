@@ -56,6 +56,7 @@ export default {
         {
             this.tagValue = this.tagValue.replace(/[^\w\s]/gi, '');
             this.tagValue = this.tagValue.replace(/[0-9]/g, '');
+            this.tagValue = this.tagValue.replace(" ", '');
             // console.log(this.tagValue)
             if (this.tagValue.length > 0 && this.tagList.includes(this.tagValue)!=true ){
                 if (this.tagValue.includes(this.tagSeparator) || e.key === 'Enter'){
@@ -68,7 +69,7 @@ export default {
                 this.autoWidth(e);
                 this.$emit('tag-list', this.tagList);
             }else{
-                this.error_message = "*tag can not be null or tag already exist";
+                this.error_message = "*tag can not be empty or tag already exist";
             }
         },
         removeTag(i){
