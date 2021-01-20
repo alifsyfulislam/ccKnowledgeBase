@@ -123,6 +123,19 @@ class CategoryService
 
             $this->categoryRepository->create($input);
 
+            $category = $this->categoryRepository->get($input['id']);
+
+            if($request->hasFile('logo')) {
+                $logo_url  = Helper::base64PageLogoUpload("category/images", $request->logo);
+            }
+
+            $category->media()->create([
+
+                'url' => $logo_url
+
+            ]);
+
+
         } catch (Exception $e) {
 
             DB::rollBack();

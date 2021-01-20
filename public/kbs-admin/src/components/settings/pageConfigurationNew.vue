@@ -16,7 +16,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="name" class="d-block">Logo</label>
+                            <label  class="d-block">Logo</label>
                             <input type="file" id="files"  ref="files" @change="onLogoFileChange" >
                         </div>
                     </div>
