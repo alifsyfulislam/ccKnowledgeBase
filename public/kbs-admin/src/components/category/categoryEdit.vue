@@ -18,7 +18,6 @@
 
                 <div class="row">
 
-
                     <div class="col-md-12" v-if="categoryId ? category_id=categoryId : ''">
 
                         <div class="form-group">
@@ -40,6 +39,20 @@
                             <span  id="categoryParentError" class="small text-danger category_parent_id" role="alert"></span>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="d-block">Image</label>
+                            <input type="file" id="files" class="form-control" ref="files" @change="onLogoFileChange" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" v-if="logo_url">
+                        <div class="form-group" >
+                            <img class="preview" style="height:250px; width: auto" :src="logo_url"/>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="form-group text-right">
@@ -63,19 +76,27 @@ export default {
 
     data() {
         return {
-            category_id             : '',
-            category_parent_id      : '',
-            category_name           : '',
-            categoryDetails         : '',
-            tempCategoryList        : '',
-            categoryList            : [],
-            error_message           : '',
-            success_message         : '',
-            token                   : '',
+            category_id          : '',
+            category_parent_id   : '',
+            category_name        : '',
+            categoryDetails      : '',
+            tempCategoryList     : '',
+            categoryList         : [],
+            error_message        : '',
+            success_message      : '',
+            token                : '',
+
+            logo_file        : '',
+            logo_url         : '',
         }
     },
 
     methods: {
+
+        onLogoFileChange(e) {
+            this.logo_file = e.target.files[0];
+            this.logo_url = URL.createObjectURL(this.logo_file);
+        },
 
         checkCategoryNameExist(categoryInfo){
 
@@ -173,27 +194,19 @@ export default {
                 $('#categoryNameError').html("*The name must be between 3 to 100 charecter");
 
             }
-
-           /* if (!_that.category_name){
-                _that.error_messages[0]     = "*The category name is required";
-            }
-            else if (_that.category_name && (_that.category_name).length >2 && (_that.category_name).length <100){
-                _that.categoryUpdate();
-            }
-            else{
-                _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
-            }*/
         },
 
         categoryUpdate()
         {
             let _that = this;
+            let formData = new FormData();
 
-            axios.put('admin/categories/update', {
-                    id              : this.categoryDetails.id,
-                    name            : this.category_name,
-                    parent_id       : this.category_parent_id,
-                },
+            formData.append('id', _that.category_id);
+            formData.append('logo', _that.logo_file);
+            formData.append('name', _that.category_name);
+            formData.append('parent_id', _that.category_parent_id);
+
+            axios.post('admin/category/update-data', formData,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -236,15 +249,15 @@ export default {
         getCategoryList()
         {
             let _that = this;
-            axios.get('admin/category-list-for-update',
+
+            axios.post('admin/category-list-for-update',
+                {
+                    id : _that.category_id
+                },
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
-                            id : _that.category_id
-                        },
+                    }
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
@@ -275,6 +288,7 @@ export default {
                         _that.categoryDetails         = response.data.category_info;
                         _that.category_name           =  _that.categoryDetails.name;
                         _that.category_parent_id      =  _that.categoryDetails.parent_id;
+                        _that.logo_url                =  (_that.categoryDetails.media).length > 0 ? _that.categoryDetails.media[0].url : '';
 
                     } else {
                         _that.success_message           = "";
@@ -289,6 +303,7 @@ export default {
         this.category_id = this.categoryId;
         this.getCategoryList();
         this.getCategoryDetails(this.category_id);
+        console.log(axios);
     }
 }
 </script>

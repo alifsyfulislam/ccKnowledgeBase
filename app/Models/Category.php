@@ -66,4 +66,9 @@ class Category extends Model
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
     }
+
+    public function media()
+    {
+        return $this->morphMany(Media::class, 'mediable');
+    }
 }
