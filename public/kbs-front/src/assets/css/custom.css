@@ -1,3 +1,64 @@
+html, body {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+body.home {
+    padding-top: 0;
+}
+
+body {
+    padding-top: 64px;
+}
+
+.header {
+    transition: all 0.4s;
+}
+
+.header .bg-light {
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+header.fixed-header .bg-light {
+    background: #ffffff !important;
+    border-color: #e5e5e5 !important;
+}
+
+header.fixed-header .navbar .logo img {
+    height: inherit;
+    max-height: 45px;
+}
+
+.banner-area {
+    position: relative;
+    background-position: bottom right;
+    background-size: auto;
+    min-height: 600px;
+}
+
+.banner-area:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(0deg, rgb(253 214 114 / 0.2), transparent);
+}
+
+.search-input-wrapper .input-group {
+    border-radius: 35px;
+    border: 1px solid #3fc6d4;
+}
+
+.navbar .logo img {
+    height: inherit;
+    max-height: 70px;
+    transition: 0.4s all;
+}
+
 /* Featured Section */
 .featured-item {
     border-radius: 15px;

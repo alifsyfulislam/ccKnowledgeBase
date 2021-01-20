@@ -4,14 +4,13 @@
     </div>
     <div v-else class="display min-height-wrapper" v-cloak>
         <main>
-            <section class="banner-area py-70 py-md-140" :style="{ backgroundImage: 'url(' + (frontPageData.banner ? frontPageData.banner : static_image['banner']) + ')' }">
-                <div class="container">
-                    <div class="search-wrapper text-center">
-                        <h1 class="section-title bottom-bar text-white mb-10 pb-20">{{ frontPageData.title }}</h1>
-                        <p class="text-white">{{ frontPageData.description }}</p>
+            <section class="banner-area d-flex align-items-center py-70 py-md-150" :style="{ backgroundImage: 'url(' + (frontPageData.banner ? frontPageData.banner : static_image['banner']) + ')' }">
+                <div class="container d-flex">
+                    <div class="search-wrapper position-relative">
+                        <h1 class="section-title pb-10 mb-0">{{ frontPageData.title }}</h1>
+                        <p>{{ frontPageData.description }}</p>
                         <!--            form-->
                         <searchform></searchform>
-
                     </div>
                 </div>
             </section>
@@ -171,7 +170,13 @@
             this.getPageDecorationData();
             this.getCategoryArticleList();
             this.getLatestArticleList();
-        }
+        },
+        mounted () {
+            document.body.classList.add('home')
+        },
+        unmounted () {
+            document.body.classList.remove('home')
+        },
     }
 </script>
 

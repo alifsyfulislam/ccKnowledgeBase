@@ -5,7 +5,7 @@
           <div class="container">
             <div class="logo">
                 <router-link class="nav-item" :to="{ name: 'Display'}">
-                    <img :src="frontPageData.logo" style="max-height: 50px; width: auto">
+                    <img :src="frontPageData.logo">
                 </router-link>
             </div>
 
@@ -46,7 +46,19 @@
 </template>
 
 <script>
+    import $ from 'jquery'
     import axios from "axios";
+
+    // window scroll
+    $(window).scroll(function() {
+        let scroll = $(window).scrollTop();
+        // Scroll to top
+        if (scroll) {
+            $('.header').addClass('fixed-header');
+        } else {
+            $('.header').removeClass('fixed-header');
+        }
+    });
 
     export default {
         name: "Menu",
