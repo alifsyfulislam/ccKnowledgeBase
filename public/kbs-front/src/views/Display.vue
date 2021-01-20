@@ -55,12 +55,11 @@
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                             <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100 border-radius-0">
                                 <a href="#">
-                                    <div class="featured-image" v-if="(a_latest_art.en_body).includes('<img ')">
-                                        <img v-if="regexImg.exec(a_latest_art.en_body)" :src="regexImg.exec(a_latest_art.en_body)[1]">
+
+                                    <div class="featured-image">
+                                        <img  v-if="articleImageArray.indexOf(a_latest_art.id)" class="img-fluid" :src="articleImageArray[a_latest_art.id] ? articleImageArray[a_latest_art.id] : static_image " alt="no image">
                                     </div>
-                                    <div v-else>
-                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
-                                    </div>
+
                                     <div class="featured-content-box p-15 p-md-20">
 
                                         <h4 class="mb-15 font-18" v-if="(a_latest_art.en_title).length<35"> {{ a_latest_art.en_title }}</h4>
@@ -104,12 +103,14 @@
         },
         data() {
             return {
+                static_image : 'http://localhost/ccKnowledgeBase/public/kbs-front/src/assets/img/no-image.png',
                 isLoading : true,
                 allCategoryArticle:'',
                 frontPageData :'',
                 categoryHasArticle:[],
                 allLatestArticles : '',
                 regexImg           : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                articleImageArray : []
             }
         },
         methods:{
@@ -140,6 +141,16 @@
                     .then(function (response) {
                         if(response.data.status_code === 200){
                             _that.allLatestArticles = response.data.article_list;
+
+                            response.data.article_list.forEach(val => {
+                                if ( val.en_body.includes('<img '))
+                                {
+                                    _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
+                                }
+
+                            })
+
+                            console.log(_that.articleImageArray);
                         }
                     })
             },
