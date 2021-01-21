@@ -29,7 +29,7 @@
                         <div class="col-lg-9 col-md-8">
                             <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
                             <div>
-                                <small class="font-16"><strong>Category: </strong>{{aArticle.category.name}}</small>
+                                <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
                             </div>
                             <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
                             <div class="ta-wrapper d-flex align-items-center py-10 my-40">
@@ -59,7 +59,6 @@
                                             <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
                                                 <div class="recent-article-item-wrapper d-flex">
                                                     <div class="ra-item-image">
-                                                        <!--                                <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">-->
                                                         <img  v-if="articleImageArray.indexOf(a_art.id)" class="img-fluid" :src="articleImageArray[a_art.id] ? articleImageArray[a_art.id] : static_image['article'] " alt="no image">
                                                     </div>
                                                     <div class="ra-item-content">
@@ -136,7 +135,7 @@ export default {
 
 
             static_image            : [],
-            regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+            regexImg                : /(http:\/\/[^">]+)/g,
             articleImageArray       : []
         }
     },
@@ -165,7 +164,8 @@ export default {
                     response.data.article_list.forEach(val => {
                         if ( val.en_body.includes('<img '))
                         {
-                            _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
+                            // _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
+                            _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
                         }
 
                     })

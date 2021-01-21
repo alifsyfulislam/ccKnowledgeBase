@@ -105,7 +105,7 @@
                 categoryHasArticle      : [],
                 allLatestArticles       : '',
                 // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-                regexImg                : /(http:\/\/[^">]+)/img,
+                regexImg                : /(http:\/\/[^">]+)/g,
                 // regexImg                : /(http:\/\/[^">]+)/g,
                 articleImageArray       : []
             }
@@ -117,7 +117,7 @@
                 axios.get('category-article-list', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data.category_list);
+                            // console.log(response.data.category_list);
                             _that.isLoading = false;
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
@@ -127,7 +127,7 @@
                                     }
                                 }
                             })
-                            console.log(_that.categoryHasArticle);
+                            // console.log(_that.categoryHasArticle);
                         }
                     })
             },
@@ -143,9 +143,12 @@
                             response.data.article_list.forEach(val => {
                                 if ( val.en_body.includes('<img '))
                                 {
-                                    console.log(val.en_body.match( _that.regexImg));
+
+                                    // console.log(val.en_body.match( _that.regexImg));
                                     _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
                                 }
+
+                                // console.log(_that.articleImageArray);
 
                             })
                         }
