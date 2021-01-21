@@ -158,7 +158,7 @@ class ArticleRepository implements RepositoryInterface
 
     public function searchCategoryArticle($slug = '')
     {
-        $query = Article::Query();
+        $query = Article::with('category');
 
         $query = $query->whereHas('category', function ($q) use ($slug) {
 
