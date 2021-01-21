@@ -5,7 +5,7 @@
           <div class="container">
             <div class="logo">
                 <router-link class="nav-item" :to="{ name: 'Display'}">
-                    <img :src="frontPageData.logo" style="max-height: 50px; width: auto">
+                    <img :src="frontPageData.logo">
                 </router-link>
             </div>
 
@@ -42,12 +42,42 @@
           </div>
         </nav>
       </header>
+
+      <!-- scroll to top -->
+        <div class="totop">
+            <i class="fa fa-angle-up" aria-hidden="true"></i>
+        </div>
+        <!-- scroll to top end-->
     </div>
 </template>
 
 <script>
+    import $ from 'jquery'
     import axios from "axios";
 
+    // window scroll
+    $(window).scroll(function() {
+        let scroll = $(window).scrollTop();
+        // Scroll to top
+        if (scroll) {
+            $('.header').addClass('fixed-header');
+        } else {
+            $('.header').removeClass('fixed-header');
+        }
+
+        if (scroll > 500) {
+            $('.totop').css('bottom', '5px');
+        } else {
+            $('.totop').css('bottom', '-50px');
+        }
+    });
+
+    $(document).on('click', '.totop', function(){
+        $('html,body').animate({
+            scrollTop: 0
+        }, 1000);
+    });
+    
     export default {
         name: "Menu",
 
