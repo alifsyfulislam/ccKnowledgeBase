@@ -29,11 +29,11 @@
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                             <div class="featured-item position-relative overflow-hidden bg-white">
                                 <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
-                                    <div class="featured-image">
-                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    <div class="featured-image" >
+                                        <img class="img-fluid"  :src="(a_cate_art.media).length > 0 ? a_cate_art.media[0].url  :static_image['category']" alt="no image">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-30">
-                                        <h4 class="mb-10 mb-lg-0 text-center">{{a_cate_art.name}}</h4>
+                                        <h4 class="mb-10 mb-lg-0 text-center">{{ a_cate_art.name }}</h4>
                                     </div>
                                 </router-link>
                             </div>
@@ -105,7 +105,9 @@
                 frontPageData           : '',
                 categoryHasArticle      : [],
                 allLatestArticles       : '',
-                regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                regexImg                : /(http:\/\/[^">]+)/img,
+                // regexImg                : /(http:\/\/[^">]+)/g,
                 articleImageArray       : []
             }
         },
@@ -116,16 +118,17 @@
                 axios.get('category-article-list', { cache: false })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            // console.log(response.data.category_list);
+                            console.log(response.data.category_list);
                             _that.isLoading = false;
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
                                 if (val.article.length!=0){
-                                    if (_that.categoryHasArticle.length <12){
+                                    if (_that.categoryHasArticle.length <6){
                                         _that.categoryHasArticle.push(val);
                                     }
                                 }
                             })
+                            console.log(_that.categoryHasArticle);
                         }
                     })
             },
@@ -141,7 +144,8 @@
                             response.data.article_list.forEach(val => {
                                 if ( val.en_body.includes('<img '))
                                 {
-                                    _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
+                                    console.log(val.en_body.match( _that.regexImg));
+                                    _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
                                 }
 
                             })
