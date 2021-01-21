@@ -42,6 +42,12 @@
           </div>
         </nav>
       </header>
+
+      <!-- scroll to top -->
+        <div class="totop">
+            <i class="fa fa-angle-up" aria-hidden="true"></i>
+        </div>
+        <!-- scroll to top end-->
     </div>
 </template>
 
@@ -58,8 +64,20 @@
         } else {
             $('.header').removeClass('fixed-header');
         }
+
+        if (scroll > 500) {
+            $('.totop').css('bottom', '5px');
+        } else {
+            $('.totop').css('bottom', '-50px');
+        }
     });
 
+    $(document).on('click', '.totop', function(){
+        $('html,body').animate({
+            scrollTop: 0
+        }, 1000);
+    });
+    
     export default {
         name: "Menu",
 

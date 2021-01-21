@@ -437,9 +437,9 @@ header.fixed-header .navbar .logo img {
     font-size: 16px;
 }
 
-.min-height-wrapper {
-    min-height: calc(100vh - 130px);
-}
+/* .min-height-wrapper {
+    min-height: calc(100vh + 190px);
+} */
 
 .exam-wrapper {
     background: #fff;
@@ -468,6 +468,46 @@ header.fixed-header .navbar .logo img {
 
 .btn-outline-primary:hover {
     color: #FFFFFF;
+}
+
+.totop {
+    position: fixed;
+    bottom: -55px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #2E9EDF;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 50px;
+    box-shadow: 0 0 5px rgba(255,255,255,0.3);
+    transition: all 0.4s;
+    z-index: 99;
+}
+
+.totop:hover {
+    color: #fff;
+    background: lighten(#2E9EDF, 15%);
+}
+
+.totop:hover i {
+    animation: toTopFromBottom 0.3s forwards;
+}
+
+@keyframes toTopFromBottom {
+    49% {
+        transform: translateY(-100%);
+    }
+    50% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    51% {
+        opacity: 1;
+    }
 }
 
 
