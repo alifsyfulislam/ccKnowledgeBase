@@ -149,5 +149,4 @@ class CategoryRepository implements RepositoryInterface
         return $categoryList;
 
     }
-
 }

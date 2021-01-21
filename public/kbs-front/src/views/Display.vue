@@ -55,7 +55,7 @@
                             <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100 border-radius-0">
                                 <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.slug }}">
                                     <div class="featured-image">
-                                        <img  v-if="articleImageArray.indexOf(a_latest_art.id)" class="img-fluid" :src="articleImageArray[a_latest_art.id] ? articleImageArray[a_latest_art.id] : static_image['article'] " alt="no image">
+                                        <img :src="((a_latest_art.en_body).match(regexImg) ? (a_latest_art.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-20">
                                         <h4 class="mb-15 font-18" v-if="(a_latest_art.en_title).length<35"> {{ a_latest_art.en_title }}</h4>
@@ -105,9 +105,7 @@
                 categoryHasArticle      : [],
                 allLatestArticles       : '',
                 // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-                regexImg                : /(http:\/\/[^">]+)/g,
-                // regexImg                : /(http:\/\/[^">]+)/g,
-                articleImageArray       : []
+                regexImg                : /(http:\/\/[^">]+)/img,
             }
         },
         methods:{
@@ -139,18 +137,6 @@
                     .then(function (response) {
                         if(response.data.status_code === 200){
                             _that.allLatestArticles = response.data.article_list;
-
-                            response.data.article_list.forEach(val => {
-                                if ( val.en_body.includes('<img '))
-                                {
-
-                                    // console.log(val.en_body.match( _that.regexImg));
-                                    _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
-                                }
-
-                                // console.log(_that.articleImageArray);
-
-                            })
                         }
                     })
             },

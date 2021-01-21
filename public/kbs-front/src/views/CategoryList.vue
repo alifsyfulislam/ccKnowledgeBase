@@ -63,12 +63,11 @@
                             <div class="mb-30 mt-0">
                                 <h1 class="mb-3">ARTICLE LIST</h1>
                                 <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
-
                                 <div class="row article-list-items">
                                     <div class="col-lg-12 mb-15" v-for="(has_article) in selectedCategory" :key="has_article.id">
                                         <router-link class="article-item-list-box d-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
                                             <div class="article-list-image">
-                                                <img src="../assets/img/no-image.png" alt="no image" class="img-fluid">
+                                                <img :src="((has_article.en_body).match(regexImg) ? (has_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                             </div>
                                             <div class="article-content-list-box pl-10">
                                                 <h3 class="article-list-title mb-0 pb-10 font-20">
@@ -83,25 +82,26 @@
 
                                 <div class="item-list text-left">
                                     <div v-if="selectedCategory">
-                                        <div v-for="(has_article,index) in selectedCategory" :key="has_article.id">
-                                            <div v-if="index===0">
+                                        <div v-for="(has_article, index) in selectedCategory" :key="has_article.id">
+                                            {{has_article.slug}}
+                                            <div v-if="index === 0">
                                                 <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                                                     <ul class="pagination">
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category_id,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category_id,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
                                                         </li>
                                                         <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category_id,'article/category/'+has_article.category_id+'?page='+n)" class="px-3 bg-primary text-white py-2 rounded-sm" href="#">{{ n }}</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,'article/category/'+has_article.slug+'?page='+n)" class="px-3 bg-primary text-white py-2 rounded-sm" href="#">{{ n }}</a>
                                                         </li>
 
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category_id,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category_id,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -139,6 +139,8 @@ export default {
             selectedCategory:'',
             selectedCategoryArr : [],
             query_string:'',
+            regexImg                : /(http:\/\/[^">]+)/img,
+            static_image    : [],
             pagination:{
                 from: '',
                 to: '',
@@ -155,6 +157,12 @@ export default {
         }
     },
     methods:{
+        getStaticMedia()
+        {
+            this.static_image['category']   = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+            this.static_image['article']    = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
+            this.static_image['banner']     = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/banner.jpg';
+        },
         searchData(){
             let _that = this;
             _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
@@ -181,54 +189,48 @@ export default {
             _that.categoryID = v;
             let pageUrl;
             pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-            _that.selectedCategoryArr.push(_that.categoryID);
-
             axios.get(pageUrl)
                 .then(function (response) {
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination  = response.data.article_list;
                     _that.$router.push('/category-list/'+_that.categoryID)
+                    console.log(_that.selectedCategory)
                 })
         },
 
         changeCategoryArticlePage(categoryID,pageUrl){
             console.log(categoryID,pageUrl);
-            let _that =this;
-            _that.categoryID = categoryID;
-            pageUrl = pageUrl == undefined ? 'admin/articles'+_that.categoryID : pageUrl;
-            axios.get(pageUrl)
-                .then(function (response) {
-                    _that.selectedCategory = response.data.article_list.data;
-                    _that.pagination  = response.data.article_list;
-                    _that.$router.push('/category-list/'+_that.categoryID)
-                })
         },
 
-        dynamicBackFunc(){
-            let _that = this;
-
-            _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
-
-            _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
-
-            let pageUrl;
-            pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-
-            if (_that.categoryID){
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.selectedCategory = response.data.article_list.data;
-                        _that.pagination  = response.data.article_list;
-                    })
-            }else{
-                _that.$router.push('/');
-            }
-        }
+        // dynamicBackFunc(){
+        //     let _that = this;
+        //
+        //     _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
+        //
+        //     _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
+        //
+        //     let pageUrl;
+        //     pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
+        //
+        //     if (_that.categoryID){
+        //         axios.get(pageUrl)
+        //             .then(function (response) {
+        //                 _that.selectedCategory = response.data.article_list.data;
+        //                 _that.pagination  = response.data.article_list;
+        //             })
+        //     }else{
+        //         _that.$router.push('/');
+        //     }
+        // }
     },
     created() {
         this.categoryID = this.$route.params.categoryID;
+        console.log(this.categoryID);
         this.getCategoryArticleList();
+
         this.categorySearch(this.categoryID);
+
+        this.getStaticMedia();
         localStorage.clear();
     }
 }

@@ -347,5 +347,4 @@ class CategoryService
             'category_list' => $this->categoryRepository->categoryListForUpdate($request)]);
 
     }
-
 }
