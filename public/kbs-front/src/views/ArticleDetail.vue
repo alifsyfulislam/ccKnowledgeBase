@@ -75,7 +75,7 @@
                                     <h3 class="menu-title mb-20 p-15">Categories</h3>
                                     <ul class="nav nav-pills flex-column px-15 pb-15">
                                         <li class="nav-item" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                                            <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
+                                            <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
                                                 {{a_cate_art.name}}
                                             </router-link>
                                         </li>

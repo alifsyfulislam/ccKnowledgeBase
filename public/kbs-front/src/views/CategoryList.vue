@@ -39,7 +39,7 @@
                         <div class="col-lg-4 col-md-5 text-left" v-if="categoryHasArticle">
                             <div class="menu-wrapper bg-white">
                                 <h3 class="menu-title mb-20 p-15">Categories</h3>
-                                <ul class="nav nav-pills flex-column px-15 pb-15">
+                                <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">
                                     <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
                                         <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
                                             {{a_cat_art.name}}
@@ -83,25 +83,24 @@
                                 <div class="item-list text-left">
                                     <div v-if="selectedCategory">
                                         <div v-for="(has_article, index) in selectedCategory" :key="has_article.id">
-                                            {{has_article.slug}}
                                             <div v-if="index === 0">
                                                 <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                                                     <ul class="pagination">
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
                                                         </li>
                                                         <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,'article/category/'+has_article.slug+'?page='+n)" class="px-3 bg-primary text-white py-2 rounded-sm" href="#">{{ n }}</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,'article/category/'+has_article.category.slug+'?page='+n)" class="px-3 bg-primary text-white py-2 rounded-sm" href="#">{{ n }}</a>
                                                         </li>
 
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.slug,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -199,7 +198,17 @@ export default {
         },
 
         changeCategoryArticlePage(categoryID,pageUrl){
-            console.log(categoryID,pageUrl);
+            let _that = this;
+            pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
+            console.log(pageUrl);
+
+            axios.get(pageUrl)
+                .then(function (response) {
+                    _that.selectedCategory = response.data.article_list.data;
+                    _that.pagination  = response.data.article_list;
+                    _that.$router.push('/category-list/'+_that.categoryID)
+                    console.log(_that.selectedCategory)
+                })
         },
 
         // dynamicBackFunc(){
