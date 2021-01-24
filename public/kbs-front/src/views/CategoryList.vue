@@ -70,11 +70,12 @@
                                                 <img :src="((has_article.en_body).match(regexImg) ? (has_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                             </div>
                                             <div class="article-content-list-box pl-10">
+                                                <small class="font-8 mb-0">Published at: {{has_article.created_at}}</small>
                                                 <h3 class="article-list-title mb-0 pb-10 font-20">
                                                     <span v-if="(has_article.en_title).length<70"> {{ has_article.en_title }}</span>
                                                     <span v-else> {{ (has_article.en_title).substring(0,70)+"..." }}</span>
                                                 </h3>
-                                                <p class="font-14 mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat, possimus, obcaecati...</p>
+                                                <p class="font-14 mb-0">{{has_article.en_short_summary}}</p>
                                             </div>
                                         </router-link>
                                     </div>
