@@ -144,18 +144,29 @@ export default {
             let _that = this;
             _that.articleID = v;
             _that.articleCounter++;
-            _that.articleIDArr.push(_that.articleID);
-            axios.get('article-details/'+_that.articleID)
-                .then(function (response) {
-                    _that.aArticle = response.data.article_info;
-                    _that.$router.push('/article-detail/'+_that.articleID)
-                })
+            let last_history_article = _that.articleIDArr[_that.articleIDArr.length - 1];
+
+            if (last_history_article != _that.articleID){
+                _that.articleIDArr.push(_that.articleID);
+                axios.get('article-details/'+_that.articleID)
+                    .then(function (response) {
+                        _that.aArticle = response.data.article_info;
+                        _that.$router.push('/article-detail/'+_that.articleID)
+                    })
+            }else{
+                console.log(last_history_article);
+            }
+
         },
-        searchData(){
+        searchData()
+        {
             let _that = this;
             _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
         },
-        getRecentArticleList(){
+
+
+        getRecentArticleList()
+        {
             let _that = this;
             axios.get('article-list')
                 .then(function (response) {
@@ -171,6 +182,8 @@ export default {
                     })
                 })
         },
+
+
         getCategoryArticleList()
         {
             let _that =this;
@@ -187,6 +200,8 @@ export default {
                     }
                 })
         },
+
+
         dynamicBackFunc() {
             let _that =this;
             _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
