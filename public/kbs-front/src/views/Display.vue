@@ -78,6 +78,13 @@
                         <div class="col-lg-8">
                             <h1 class="section-title bottom-bar text-center mb-10 pb-20">Faq</h1>
                             <p class="font-20 text-center pt-10">Frequently Asked Questions</p>
+
+                            <div style="min-height: 350px">
+                                <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
+                                    <div class="heading">{{a_faq.en_title}}</div>
+                                    <div class="contents" v-html="a_faq.en_body"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,6 +113,7 @@
                 allLatestArticles       : '',
                 // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
                 regexImg                : /(http:\/\/[^">]+)/img,
+                all_Faqs                : '',
             }
         },
         methods:{
@@ -156,7 +164,15 @@
                 this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
                 this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
                 this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
-            }
+            },
+            allFaqs(){
+                let _that = this;
+                axios.get('faq-list')
+                    .then(function (response) {
+                        // _that.isLoading= false;
+                        _that.all_Faqs = response.data.faq_list.data;
+                    })
+            },
         },
         created()
         {
@@ -164,6 +180,7 @@
             this.getPageDecorationData();
             this.getCategoryArticleList();
             this.getLatestArticleList();
+            this.allFaqs();
         },
         mounted () {
             document.body.classList.add('home')

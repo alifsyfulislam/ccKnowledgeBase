@@ -239,7 +239,6 @@ export default {
         this.getCategoryArticleList();
 
         this.categorySearch(this.categoryID);
-
         this.getStaticMedia();
         localStorage.clear();
     }
