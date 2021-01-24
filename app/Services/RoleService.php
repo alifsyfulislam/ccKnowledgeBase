@@ -204,7 +204,21 @@ class RoleService
 
         try {
 
-            $this->roleRepository->delete($id);
+            $userRoleCheck = DB::table('users_roles')->where('role_id', $id)->get();
+
+            if ($userRoleCheck->isNotEmpty()){
+
+                return response()->json([
+                    'status_code' => 400,
+                    'messages'    => config('status.status_code.400'),
+                    'error'       => 'Please remove this role from all user'
+                ]);
+
+            }else{
+                $this->roleRepository->delete($id);
+            }
+
+
 
         } catch (Exception $e) {
 
