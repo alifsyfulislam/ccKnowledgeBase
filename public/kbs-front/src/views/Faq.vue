@@ -52,7 +52,7 @@ export default {
     methods:{
         allFaqs(){
             let _that = this;
-            axios.get('faqs')
+            axios.get('faq-list')
                 .then(function (response) {
                     _that.isLoading= false;
                     _that.all_Faqs = response.data.faq_list.data;

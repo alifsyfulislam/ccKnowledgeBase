@@ -121,12 +121,13 @@ class CategoryRepository implements RepositoryInterface
     public function categoryArticles()
     {
 
-        return Category::with(['article'])->orderBy('id','DESC')->get()->map(function ($query) {
+        return Category::with(['article','media'])->orderBy('id','DESC')->get()->map(function ($query) {
 
                 $query->setRelation('article', $query->article->take(-3));
                 return $query;
 
         });
+//        return Category::with(['article','media'])->latest()->take(5)->get();
 
     }
 
@@ -148,5 +149,4 @@ class CategoryRepository implements RepositoryInterface
         return $categoryList;
 
     }
-
 }

@@ -517,6 +517,13 @@ header.fixed-header .navbar .logo img {
     }
 }
 
+@media screen and (min-width: 1600px) {
+    .search-input-wrapper .input-group {
+        max-width: 50%;
+        width: 50%;
+    }
+}
+
 @media (max-width: 991px) {
     .quiz-item .q-featured-caption {
         flex: 0 0 50%;

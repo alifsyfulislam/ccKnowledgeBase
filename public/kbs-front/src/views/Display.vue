@@ -28,11 +28,11 @@
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                             <div class="featured-item position-relative overflow-hidden bg-white">
                                 <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
-                                    <div class="featured-image">
-                                        <img class="img-fluid" src="../assets/img/no-image.png" alt="no image">
+                                    <div class="featured-image" >
+                                        <img class="img-fluid"  :src="(a_cate_art.media).length > 0 ? a_cate_art.media[0].url  :static_image['category']" alt="no image">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-30">
-                                        <h4 class="mb-10 mb-lg-0 text-center">{{a_cate_art.name}}</h4>
+                                        <h4 class="mb-10 mb-lg-0 text-center">{{ a_cate_art.name }}</h4>
                                     </div>
                                 </router-link>
                             </div>
@@ -55,7 +55,7 @@
                             <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100 border-radius-0">
                                 <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.slug }}">
                                     <div class="featured-image">
-                                        <img  v-if="articleImageArray.indexOf(a_latest_art.id)" class="img-fluid" :src="articleImageArray[a_latest_art.id] ? articleImageArray[a_latest_art.id] : static_image['article'] " alt="no image">
+                                        <img :src="((a_latest_art.en_body).match(regexImg) ? (a_latest_art.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                     </div>
                                     <div class="featured-content-box p-15 p-md-20">
                                         <h4 class="mb-15 font-18" v-if="(a_latest_art.en_title).length<35"> {{ a_latest_art.en_title }}</h4>
@@ -104,8 +104,8 @@
                 frontPageData           : '',
                 categoryHasArticle      : [],
                 allLatestArticles       : '',
-                regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-                articleImageArray       : []
+                // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+                regexImg                : /(http:\/\/[^">]+)/img,
             }
         },
         methods:{
@@ -120,11 +120,12 @@
                             _that.allCategoryArticle = response.data.category_list;
                             _that.allCategoryArticle.forEach(val =>{
                                 if (val.article.length!=0){
-                                    if (_that.categoryHasArticle.length <12){
+                                    if (_that.categoryHasArticle.length <6){
                                         _that.categoryHasArticle.push(val);
                                     }
                                 }
                             })
+                            // console.log(_that.categoryHasArticle);
                         }
                     })
             },
@@ -136,14 +137,6 @@
                     .then(function (response) {
                         if(response.data.status_code === 200){
                             _that.allLatestArticles = response.data.article_list;
-
-                            response.data.article_list.forEach(val => {
-                                if ( val.en_body.includes('<img '))
-                                {
-                                    _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
-                                }
-
-                            })
                         }
                     })
             },

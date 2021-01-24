@@ -67,4 +67,11 @@ let router = createRouter({
     base:'kbs'
 });
 
+router.beforeEach((to, from, next) => {
+    window.scrollTo(0, 0);
+
+    // More code ...
+    next();
+});
+
 export default router
