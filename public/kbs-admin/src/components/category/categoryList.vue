@@ -136,6 +136,10 @@
                     <div class="form-wrapper">
                         <h2 class="section-title text-uppercase mb-20">Delete</h2>
 
+                        <div class="text-danger" v-if="error_message">
+                            <h5>{{ error_message }}</h5>
+                        </div>
+
                         <div class="row mt-50 mt-md-80">
                             <div class="col-md-12">
                                 <figure class="mx-auto text-center">
@@ -335,6 +339,8 @@ export default {
                 } else {
                     _that.success_message       = "";
                     _that.error_message         = response.data.error;
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
 
                 }
             }).catch(function (error) {
@@ -345,8 +351,8 @@ export default {
         setTimeoutElements()
         {
             // setTimeout(() => this.isLoading = false, 3e3);
-            setTimeout(() => this.success_message = "", 2e3);
-            setTimeout(() => this.error_message = "", 2e3);
+            setTimeout(() => this.success_message = "", 3e3);
+            setTimeout(() => this.error_message = "", 3e3);
         },
 
         checkPermission(permissionForCheck)

@@ -215,54 +215,6 @@ class CategoryService
             }
 
 
-
-            /*if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
-
-                $article = $this->getItemById($request->id);
-
-                $mediaList = Media::where('mediable_id', $request->id)->get();
-
-                if (count($mediaList) > 0)
-                {
-
-                    foreach($mediaList as $media)
-                    {
-
-                        $mediaName =  substr($media->url, strpos($media->url, "media") );
-                        unlink(public_path().'/'.$mediaName );
-                        $media->delete();
-
-                    }
-
-                }
-
-                $thumbImageList = $request->uploaded_file;
-
-                $fileLength = count($thumbImageList);
-
-                if(count($thumbImageList) > 0) {
-                    for ($i = 1; $i <= $fileLength; $i++) {
-
-                        $mime = $thumbImageList[$fileLength-$i]->getClientMimeType();
-
-                        if(strstr($mime, "video/"))
-                            $thumbFile[] = Helper::videoUpload("article/video", $thumbImageList[count($thumbImageList)-$i]);
-                        else
-                            $thumbFile[] = Helper::base64ImageUpload("article/images", $thumbImageList[count($thumbImageList)-$i]);
-
-                    }
-                }
-
-
-                $article->media()->create([
-
-                    'url' => $image
-
-                ]);
-
-            }*/
-
-
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -290,8 +242,21 @@ class CategoryService
         DB::beginTransaction();
 
         try {
+            $childCheck = Category::where('parent_id', $id)->get();
 
-            $this->categoryRepository->delete($id);
+            if ($childCheck->isNotEmpty()){
+
+                return response()->json([
+                    'status_code' => 400,
+                    'messages'    => config('status.status_code.400'),
+                    'error'       => 'Please delete the child category first'
+                ]);
+
+            }else{
+                $this->categoryRepository->delete($id);
+            }
+
+
 
         } catch (Exception $e) {
 
