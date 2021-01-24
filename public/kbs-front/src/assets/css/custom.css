@@ -31,6 +31,14 @@ header.fixed-header .navbar .logo img {
     max-height: 45px;
 }
 
+.navbar-light .navbar-toggler[aria-expanded="false"] .navbar-toggler-icon {
+    background-image: url(../img/toggler-icon.svg);
+}
+
+.navbar-light .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background-image: url(../img/toggler-close-icon.svg);
+}
+
 .banner-area {
     position: relative;
     background-position: bottom right;
@@ -530,8 +538,40 @@ header.fixed-header .navbar .logo img {
         max-width: 50%;
         margin-bottom: 20px;
     }
+
+    .banner-area {
+        background-position: bottom center;
+        background-size: 50%
+    }
 }
 
+@media (max-width: 767px) {
+    .header .navbar .navbar-collapse {
+        flex-basis: auto;
+        position: fixed;
+        left: -213px;
+        top: 0;
+        padding: 65px 15px 10px;
+        /* background: #42484d; */
+        background: #ab831d;
+        z-index: 999;
+        min-width: 213px;
+        min-height: 100vh;
+        transition: 0.4s all;
+    }
+
+    .header .navbar .navbar-collapse.show {
+        left: 0;
+    }
+
+    .navbar.navbar-light .navbar-nav .nav-link {
+        color: #fff;
+    }
+
+    .navbar .navbar-nav .nav-link.nav-button {
+        margin-top: 10px !important;
+    }
+}
 @media (max-width: 575px) {
     .quiz-item .q-featured-caption {
         flex: 0 0 100%;
@@ -543,5 +583,20 @@ header.fixed-header .navbar .logo img {
 
     .min-height-wrapper {
         min-height: calc(100vh - 80px);
+    }
+
+    .search-input-wrapper .input-group,
+    .search-input-wrapper .input-group.focused, 
+    .search-input-wrapper .input-group.filled {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .section-title {
+        font-size: 40px;
+    }
+
+    .search-wrapper p {
+        font-size: 18px;
     }
 }
