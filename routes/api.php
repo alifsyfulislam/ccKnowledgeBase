@@ -34,6 +34,7 @@ Route::get('article-list', 'Api\ArticleController@articleList');
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');
 
 Route::get('faq-list','Api\FaqController@faqList');
+
 Route::get('faqs/{any}','Api\FaqController@show');
 
 

@@ -256,8 +256,6 @@ class CategoryService
                 $this->categoryRepository->delete($id);
             }
 
-
-
         } catch (Exception $e) {
 
             DB::rollBack();

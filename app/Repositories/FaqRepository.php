@@ -102,9 +102,19 @@ class FaqRepository implements RepositoryInterface
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->where('status', 'public')
-            ->orderBy('id','DESC')
-            ->paginate(20);
+        if ($request->isLatest){
+            return $query->where('status', 'public')
+                ->orderBy('created_at', 'DESC')
+                ->take(5)
+                ->get();
+
+        }else{
+
+            return $query->where('status', 'public')
+                ->orderBy('id','DESC')
+                ->paginate(20);
+
+        }
 
     }
 

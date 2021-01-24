@@ -78,15 +78,19 @@
                         <div class="col-lg-8">
                             <h1 class="section-title bottom-bar text-center mb-10 pb-20">Faq</h1>
                             <p class="font-20 text-center pt-10">Frequently Asked Questions</p>
-
-                            <div style="min-height: 350px">
-                                <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
-                                    <div class="heading">{{a_faq.en_title}}</div>
-                                    <div class="contents" v-html="a_faq.en_body"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-lg-12" style="min-height: 350px ; ">
+                            <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
+                                <div class="heading">{{a_faq.en_title}}</div>
+                                <div class="contents" v-html="a_faq.en_body"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </section>
         </main>
@@ -94,101 +98,107 @@
 </template>
 
 <script>
-    import searchform from "@/components/Search";
-    import Loading from "@/components/Loading";
-    import axios from 'axios'
-    export default {
-        name: "Display",
-        components:{
-            searchform,
-            Loading
-        },
-        data() {
-            return {
-                static_image            : [],
-                isLoading               : true,
-                allCategoryArticle      : '',
-                frontPageData           : '',
-                categoryHasArticle      : [],
-                allLatestArticles       : '',
-                // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-                regexImg                : /(http:\/\/[^">]+)/img,
-                all_Faqs                : '',
-            }
-        },
-        methods:{
-            getCategoryArticleList()
-            {
-                let _that =this;
-                axios.get('category-article-list', { cache: false })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            // console.log(response.data.category_list);
-                            _that.isLoading = false;
-                            _that.allCategoryArticle = response.data.category_list;
-                            _that.allCategoryArticle.forEach(val =>{
-                                if (val.article.length!=0){
-                                    if (_that.categoryHasArticle.length <6){
-                                        _that.categoryHasArticle.push(val);
-                                    }
-                                }
-                            })
-                            // console.log(_that.categoryHasArticle);
-                        }
-                    })
-            },
-            getLatestArticleList()
-            {
-                let _that =this;
-
-                axios.get('article-list')
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.allLatestArticles = response.data.article_list;
-                        }
-                    })
-            },
-            getPageDecorationData()
-            {
-                let _that =this;
-                axios.get('front-page-config', { cache: false })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.frontPageData = response.data.page_config_info;
-                        }
-                    })
-            },
-
-            getStaticMedia()
-            {
-                this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-                this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-                this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
-            },
-            allFaqs(){
-                let _that = this;
-                axios.get('faq-list')
-                    .then(function (response) {
-                        // _that.isLoading= false;
-                        _that.all_Faqs = response.data.faq_list.data;
-                    })
-            },
-        },
-        created()
+import searchform from "@/components/Search";
+import Loading from "@/components/Loading";
+import axios from 'axios'
+export default {
+    name: "Display",
+    components:{
+        searchform,
+        Loading
+    },
+    data() {
+        return {
+            static_image            : [],
+            isLoading               : true,
+            allCategoryArticle      : '',
+            frontPageData           : '',
+            categoryHasArticle      : [],
+            allLatestArticles       : '',
+            // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+            regexImg                : /(http:\/\/[^">]+)/img,
+            all_Faqs                : '',
+        }
+    },
+    methods:{
+        getCategoryArticleList()
         {
-            this.getStaticMedia()
-            this.getPageDecorationData();
-            this.getCategoryArticleList();
-            this.getLatestArticleList();
-            this.allFaqs();
+            let _that =this;
+            axios.get('category-article-list', { cache: false })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        // console.log(response.data.category_list);
+                        _that.isLoading = false;
+                        _that.allCategoryArticle = response.data.category_list;
+                        _that.allCategoryArticle.forEach(val =>{
+                            if (val.article.length!=0){
+                                if (_that.categoryHasArticle.length <6){
+                                    _that.categoryHasArticle.push(val);
+                                }
+                            }
+                        })
+                        // console.log(_that.categoryHasArticle);
+                    }
+                })
         },
-        mounted () {
-            document.body.classList.add('home')
+        getLatestArticleList()
+        {
+            let _that =this;
+
+            axios.get('article-list')
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.allLatestArticles = response.data.article_list;
+                    }
+                })
         },
-        unmounted () {
-            document.body.classList.remove('home')
+        getPageDecorationData()
+        {
+            let _that =this;
+            axios.get('front-page-config', { cache: false })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.frontPageData = response.data.page_config_info;
+                    }
+                })
         },
-    }
+
+        getStaticMedia()
+        {
+            this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
+        },
+
+        allFaqs(){
+            let _that = this;
+            axios.get('faq-list',{
+                params : {
+                    isLatest : 1
+                },
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    // _that.isLoading= false;
+                    _that.all_Faqs = response.data.faq_list;
+                })
+        },
+    },
+    created()
+    {
+        this.getStaticMedia()
+        this.getPageDecorationData();
+        this.getCategoryArticleList();
+        this.getLatestArticleList();
+        this.allFaqs();
+    },
+    mounted () {
+        document.body.classList.add('home')
+    },
+    unmounted () {
+        document.body.classList.remove('home')
+    },
+}
 </script>
 
 <style scoped>
