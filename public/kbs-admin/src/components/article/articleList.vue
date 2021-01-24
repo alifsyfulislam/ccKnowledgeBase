@@ -299,6 +299,7 @@ export default {
         // slider close
         clearAllChecker()
         {
+            this.isSearchCheck      = false;
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
@@ -309,6 +310,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
 
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');

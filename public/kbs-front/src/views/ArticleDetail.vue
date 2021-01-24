@@ -202,11 +202,12 @@ export default {
                 _that.$router.push('/');
             }
         },
+
         getStaticMedia()
         {
-            this.static_image['category']   = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
-            this.static_image['article']    = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/no-image.png';
-            this.static_image['banner']     = axios.defaults.baseURL.replace('api','')+'kbs-front/src/assets/img/banner.jpg';
+            this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
         }
     },
     created() {
