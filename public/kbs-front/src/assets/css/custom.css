@@ -552,7 +552,8 @@ header.fixed-header .navbar .logo img {
         left: -213px;
         top: 0;
         padding: 65px 15px 10px;
-        background: #42484d;
+        /* background: #42484d; */
+        background: #ab831d;
         z-index: 999;
         min-width: 213px;
         min-height: 100vh;
