@@ -66,7 +66,7 @@
         }
 
         if (scroll > 500) {
-            $('.totop').css('bottom', '5px');
+            $('.totop').css('bottom', '60px');
         } else {
             $('.totop').css('bottom', '-50px');
         }
@@ -77,7 +77,7 @@
             scrollTop: 0
         }, 1000);
     });
-    
+
     export default {
         name: "Menu",
 
