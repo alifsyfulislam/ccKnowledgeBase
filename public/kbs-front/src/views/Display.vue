@@ -26,7 +26,7 @@
 
                     <div class="row text-left">
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                            <div class="featured-item position-relative overflow-hidden bg-white">
+                            <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
                                 <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
                                     <div class="featured-image" >
                                         <img class="img-fluid"  :src="(a_cate_art.media).length > 0 ? a_cate_art.media[0].url  :static_image['category']" alt="no image">
