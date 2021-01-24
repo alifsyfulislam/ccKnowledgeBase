@@ -48,7 +48,7 @@
                                 </ul>
                             </div>
 
-                            <div class="menu-wrapper bg-white mt-30">
+<!--                            <div class="menu-wrapper bg-white mt-30">
                                 <h3 class="menu-title mb-20 p-15">Tags</h3>
                                 <ul class="list-inline list-unstyled px-15 pb-15 tag-list-wrapper">
                                     <li class="d-inline-block"><a href="#">Sports</a></li>
@@ -56,7 +56,7 @@
                                     <li class="d-inline-block"><a href="#">covid 19</a></li>
                                     <li class="d-inline-block"><a href="#">Sci-fi</a></li>
                                 </ul>
-                            </div>
+                            </div>-->
                         </div>
 
                         <div class="col-lg-8 col-md-7" v-if="selectedCategory">
