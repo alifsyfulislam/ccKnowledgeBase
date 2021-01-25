@@ -37,7 +37,7 @@
                                     <ul>
                                         <li v-for="a_article in allArticles" :key="a_article.id">
                                             <!--                      <a href="#" style="font-size: 18px; color: #2bb3c1">{{a_article.en_title}}</a>-->
-                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.id }}">
+                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
                                                 {{a_article.en_title}}
                                             </router-link>
                                             <div>
@@ -130,7 +130,6 @@ export default {
             let _that = this;
             let query_string = _that.query_string;
             _that.allSearchQuery.push(_that.query_string);
-            console.log(_that.allSearchQuery);
             localStorage.setItem("query_string",_that.query_string);
             pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
             axios.get(pageUrl).then((response)=>{

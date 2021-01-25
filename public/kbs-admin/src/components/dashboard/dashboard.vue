@@ -19,9 +19,9 @@
                     <!-- Content Area -->
                     <div class="data-content-area pr-15 pb-10">
                         <div class="gredient-card-wrapper mb-40">
-                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">
-                                <h2 class="card-title my-0 font-16">Wallboard</h2>
-                            </div>
+<!--                            <div class="gredient-card-header p-10" style="background:#f8f9fa;color:#323232;">-->
+<!--                                <h2 class="card-title my-0 font-16">Wallboard</h2>-->
+<!--                            </div>-->
                             <div class="gredient-card-body p-20 p-md-30" style="background: #ff7b8836;">
                                 <div class="row">
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
@@ -94,11 +94,12 @@
                                         <thead>
                                         <tr>
                                             <th class="text-left">Title</th>
-                                            <th class="text-center">Author</th>
-                                            <th class="text-center">Category</th>
-                                            <th class="text-center">Status</th>
-                                            <th class="text-center">Tag</th>
-                                            <th class="text-center">Publish Date</th>
+                                            <th class="text-left">Category</th>
+                                            <th class="text-left">Author</th>
+
+                                            <th class="text-left">Status</th>
+                                            <th class="text-left">Tag</th>
+                                            <th class="text-left">Publish Date</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -107,11 +108,12 @@
                                                 <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
                                                 <span v-else> {{ (an_article.en_title).substring(0,30)+"...." }}</span>
                                             </td>
-                                            <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
-                                            <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
-                                            <td class="text-center">{{ an_article.status  }}</td>
-                                            <td class="text-center">{{ an_article.tag  }}</td>
-                                            <td class="text-center">{{ an_article.created_at  }}</td>
+                                            <td class="text-left">{{ an_article.category ? an_article.category.name : ''  }}</td>
+                                            <td class="text-left">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
+
+                                            <td class="text-left">{{ an_article.status  }}</td>
+                                            <td class="text-left">{{ an_article.tag  }}</td>
+                                            <td class="text-left">{{ an_article.created_at  }}</td>
 
 
                                         </tr>

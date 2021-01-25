@@ -127,14 +127,9 @@
                          </g>
                       </svg>
                    </span>
-                    <span class="menu-title">Quizz</span>
+                    <span class="menu-title">Quiz</span>
                     </a>
                     <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
-                        <li v-if="checkPermission('quiz-list')">
-                            <router-link :to="{ name: 'quizList'}">
-                                <span class="menu-sub-title">Quizzes</span>
-                            </router-link>
-                        </li>
                         <li v-if="checkPermission('quiz-form-list')">
                             <router-link :to="{ name: 'quizFormList'}">
                                 <span class="menu-sub-title">Quiz Forms</span>
@@ -143,6 +138,11 @@
                         <li  v-if="checkPermission('quiz-form-field-list')">
                             <router-link :to="{ name: 'quizFormFieldList'}">
                                 <span class="menu-sub-title">Quiz Form Field</span>
+                            </router-link>
+                        </li>
+                        <li v-if="checkPermission('quiz-list')">
+                            <router-link :to="{ name: 'quizList'}">
+                                <span class="menu-sub-title">Quizzes</span>
                             </router-link>
                         </li>
                     </ul>
@@ -167,7 +167,7 @@
                     <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
                         <li v-if="checkPermission('user-list')">
                             <router-link :to="{ name: 'customerList'}">
-                                <span class="menu-sub-title">User</span>
+                                <span class="menu-sub-title">Users</span>
                             </router-link>
                         </li>
                         <li v-if="checkPermission('role-list')">
