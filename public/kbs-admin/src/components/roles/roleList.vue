@@ -220,6 +220,7 @@ export default {
             this.isEditCheck        = false;
             this.isSearchCheck      = false;
         },
+
         removingRightSideWrapper()
         {
             this.isAddCheck         = false;
@@ -295,6 +296,8 @@ export default {
                 {
                     _that.success_message   = "";
                     _that.error_message     = response.data.error;
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -304,8 +307,8 @@ export default {
         setTimeoutElements()
         {
             // setTimeout(() => this.isLoading = false, 3e3);
-            setTimeout(() => this.success_message = "", 2e3);
-            setTimeout(() => this.error_message = "", 2e3);
+            setTimeout(() => this.success_message = "", 3e3);
+            setTimeout(() => this.error_message = "", 3e3);
         },
 
         checkPermission(permissionForCheck)

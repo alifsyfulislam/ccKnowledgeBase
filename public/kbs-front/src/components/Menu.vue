@@ -28,7 +28,8 @@
                       </router-link>
                   </li>
 
-                <li class="nav-item"><a class="nav-link nav-button bordered" href="#">LOGIN</a></li>
+<!--                <li class="nav-item"><a class="nav-link nav-button bordered" href="#">LOGIN</a></li>-->
+
                 <!-- Dropdown -->
 <!--                <li class="nav-item dropdown">-->
 <!--                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">EN</a>-->
