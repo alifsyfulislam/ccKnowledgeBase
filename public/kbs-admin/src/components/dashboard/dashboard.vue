@@ -27,28 +27,28 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-primary text-white"><i class="fas fa-user-tie"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Agents Logged In</h3>
+                                            <h3 class="my-0 font-16 pt-40 pb-20">Total Users</h3>
                                             <div class="counting-number text-primary">0</div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white"><i class="fas fa-user-times"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Not Ready Agents</h3>
+                                            <h3 class="my-0 font-16 pt-40 pb-20">Total Articles</h3>
                                             <div class="counting-number text-red">0</div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white"><i class="fas fa-hourglass-half"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Avg. Handling Time</h3>
+                                            <h3 class="my-0 font-16 pt-40 pb-20">Total FAQs</h3>
                                             <div class="counting-number text-yellow">0</div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                         <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                                             <div class="icon d-inline-flex justify-content-center align-items-center bg-light-blue text-white"><i class="fas fa-headphones-alt"></i></div>
-                                            <h3 class="my-0 font-16 pt-40 pb-20">Calls in Waiting</h3>
+                                            <h3 class="my-0 font-16 pt-40 pb-20">Total Quiz</h3>
                                             <div class="counting-number text-light-blue">0</div>
                                         </div>
                                     </div>
