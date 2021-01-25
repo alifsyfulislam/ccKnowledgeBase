@@ -315,7 +315,7 @@ header.fixed-header .navbar .logo img {
     position: relative;
     padding-left: 25px;
     min-height: 60px;
-    max-height: 60px;
+    max-height: 100px;
     overflow: hidden;
 }
 
@@ -586,7 +586,7 @@ header.fixed-header .navbar .logo img {
     }
 
     .search-input-wrapper .input-group,
-    .search-input-wrapper .input-group.focused, 
+    .search-input-wrapper .input-group.focused,
     .search-input-wrapper .input-group.filled {
         max-width: 100%;
         width: 100%;

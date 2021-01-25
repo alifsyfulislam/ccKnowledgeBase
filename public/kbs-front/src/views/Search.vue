@@ -8,9 +8,9 @@
                 <div class="container">
                     <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
                         <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="searchData()" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="searchData">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -41,7 +41,12 @@
                                                 {{a_article.en_title}}
                                             </router-link>
                                             <div>
+                                                <div class="featured-image">
+                                                    <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" height="25">
+                                                </div>
                                                 <small style="font-size: 12px;">Post on: {{a_article.created_at}}</small>
+                                                <p v-if="a_article.en_short_summary.length < 120">{{ a_article.en_short_summary }}</p>
+                                                <p v-else>{{ a_article.en_short_summary.substring(0,120)+"..."}}</p>
                                             </div>
                                         </li>
                                     </ul>
@@ -108,6 +113,8 @@ export default {
             query_string:'',
             allArticles:'',
             allSearchQuery:[],
+            regexImg                : /(http:\/\/[^">]+)/img,
+            static_image : [],
             pagination:{
                 from: '',
                 to: '',
@@ -154,12 +161,19 @@ export default {
             }else{
                 _that.$router.push('/');
             }
-        }
+        },
+        getStaticMedia()
+        {
+            this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
+            this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
+        },
     },
     created()
     {
-        this.query_string = localStorage.getItem("query_string")
+        this.query_string = localStorage.getItem("query_string");
         this.searchData();
+        this.getStaticMedia();
     },
 }
 </script>

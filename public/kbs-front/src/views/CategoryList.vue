@@ -8,9 +8,9 @@
                 <div class="container">
                     <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
                         <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="searchData()" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="searchData">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -166,7 +166,13 @@ export default {
 
         searchData(){
             let _that = this;
-            _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
+            if (localStorage.query_string){
+                localStorage.setItem('query_string','');
+                localStorage.setItem('query_string',this.query_string);
+            }else{
+                localStorage.setItem('query_string',this.query_string);
+            }
+            _that.$router.push({ name: 'Search'});
         },
         getCategoryArticleList()
         {
