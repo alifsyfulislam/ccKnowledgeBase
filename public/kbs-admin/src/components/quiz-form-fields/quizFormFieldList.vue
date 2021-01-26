@@ -207,7 +207,7 @@
                 this.getQuizFormFieldList();
                 this.isAddCheck         = false;
                 this.isDeleteCheck      = false;
-                this.isSearchCheck      = false;
+                this.isEditCheck        = false;
                 // this.filter.username    = "";
                 // this.filter.email       = "";
                 // this.filter.role        = "";
@@ -218,7 +218,7 @@
             {
                 this.isAddCheck         = false;
                 this.isDeleteCheck      = false;
-                this.isSearchCheck      = false;
+                this.isEditCheck        = false;
             },
 
             removingRightSideWrapper()
