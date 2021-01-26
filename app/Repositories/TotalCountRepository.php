@@ -4,23 +4,30 @@
 namespace App\Repositories;
 
 
+use App\Models\Article;
+use Illuminate\Support\Facades\DB;
+
 class TotalCountRepository
 {
     public function allTotalCount($request)
     {
-        if ($request->isAdmin){
+        $totalCategory = DB::table('categories')->count();
+        $totalArticle  = DB::table('articles')->count();
+        $totalFAQ      = DB::table('faqs')->count();
+        $totalUser     = DB::table('users')->count();
+        $totalQuiz     = DB::table('quizzes')->count();
 
-            return Article::with('user','category')->orderBy('created_at', 'DESC')
-                ->take(5)
-                ->get();
+        $totalArray = [
+          'tatal_category' =>  $totalCategory,
+          'total_article'  =>  $totalArticle,
+          'total_faq'      =>  $totalFAQ,
+          'total_user'     =>  $totalUser,
+          'total_quiz'     =>  $totalQuiz,
+        ];
 
-        } else{
+       // dd($totalArray);
 
-            return Article::with('user','category')
-                ->where('status', 'public')
-                ->orderBy('created_at', 'DESC')
-                ->take(5)
-                ->get();
-        }
+        return $totalArray;
+
     }
 }

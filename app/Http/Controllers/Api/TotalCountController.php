@@ -28,7 +28,8 @@ class TotalCountController extends Controller
     public function totalCount(Request $request)
     {
 
-        return $this->totalCountService->getTotalCount($request);
+     return $this->totalCountService->getTotalCount($request);
+       // dd($hello);
     }
 
 }
