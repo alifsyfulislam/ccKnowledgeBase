@@ -91,8 +91,15 @@
                                     <h3 class="menu-title mb-20 p-15">Categories</h3>
                                     <ul class="nav nav-pills flex-column px-15 pb-15">
                                         <li class="nav-item" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                                            <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
-                                                {{a_cate_art.name}}
+                                            <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
+                                                <div class="recent-article-item-wrapper d-flex">
+                                                    <div class="ra-item-image">
+                                                        <img class="img-fluid" :src="a_cate_art.media[0] ? a_cate_art.media[0].url : static_image['article'] " alt="no image">
+                                                    </div>
+                                                    <div class="ra-item-content">
+                                                        {{a_cate_art.name}}
+                                                    </div>
+                                                </div>
                                             </router-link>
                                         </li>
                                     </ul>
@@ -220,6 +227,7 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
+                        console.log(_that.categoryHasArticle);
                     }
                 })
         },

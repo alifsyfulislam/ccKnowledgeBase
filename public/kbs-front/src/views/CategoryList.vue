@@ -47,6 +47,7 @@
                                     <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
                                         <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
                                             {{a_cat_art.name}}
+                                            <span>+</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -192,6 +193,7 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
+                        console.log(_that.categoryHasArticle);
                     }
                 })
         },
@@ -206,14 +208,14 @@ export default {
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination  = response.data.article_list;
                     _that.$router.push('/category-list/'+_that.categoryID)
-                    console.log(_that.selectedCategory)
+                    // console.log(_that.selectedCategory)
                 })
         },
 
         changeCategoryArticlePage(categoryID,pageUrl){
             let _that = this;
             pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
-            console.log(pageUrl);
+            // console.log(pageUrl);
 
             axios.get(pageUrl)
                 .then(function (response) {
