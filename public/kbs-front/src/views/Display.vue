@@ -52,7 +52,7 @@
 
                     <div class="row text-left">
                         <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
-                            <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100 border-radius-0">
+                            <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
                                 <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.slug }}">
                                     <div class="featured-image">
                                         <img :src="((a_latest_art.en_body).match(regexImg) ? (a_latest_art.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">

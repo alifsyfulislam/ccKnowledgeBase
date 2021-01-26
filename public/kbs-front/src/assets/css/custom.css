@@ -231,6 +231,11 @@ header.fixed-header .navbar .logo img {
     transition: all 0.4s;
 }
 
+.article-details-cat-wrapper {
+    max-height: 275px;
+    overflow-y: auto;
+}
+
 /* Article Item end */
 
 /* Article details */
