@@ -47,7 +47,9 @@
                                     <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
                                         <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
                                             {{a_cat_art.name}}
-                                            <span>+</span>
+                                            <span v-if="(a_cat_art.children_recursive).length > 0">
+                                                <i class="fa fa-2x fa-plus"></i>
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
