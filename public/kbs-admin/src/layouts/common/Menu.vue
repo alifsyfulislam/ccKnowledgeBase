@@ -2,8 +2,8 @@
 
     <div class="sidebar-wrapper bg-white">
         <div class="logo-wrapper text-center py-25 px-10">
-            <img class="big-image" src="@/assets/img/gplex-logo.png" alt="gplex">
-            <img class="small-image" src="@/assets/img/gplex-logo-2.png" alt="gplex">
+            <img class="big-image" :src="static_image['dashboard_logo']" alt="gplex">
+            <img class="small-image" :src="static_image['dashboard_sm_logo']" height="50" alt="gplex">
         </div>
         <nav class="sidebar-menu-wrapper text-left">
             <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
@@ -206,6 +206,7 @@
 
 <script>
 import pageConfiguration from "@/components/settings/pageConfigurationNew";
+import axios from "axios";
 import $ from "jquery";
 
 export default {
@@ -223,7 +224,8 @@ export default {
             mappedPermission : '',
             user_info        : '',
             success_message     : '',
-            error_message       : ''
+            error_message       : '',
+            static_image        : [],
         }
     },
     methods :{
@@ -271,11 +273,13 @@ export default {
 
     created() {
 
-        this.user_info         = JSON.parse(localStorage.getItem("userInformation"));
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+        this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
+        this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
 
         //console.log( localStorage.getItem("userPermissions"));
+        this.static_image['dashboard_logo']     = axios.defaults.baseURL.replace('api','')+'media/new-logo.png';
+        this.static_image['dashboard_sm_logo'] = axios.defaults.baseURL.replace('api','')+'media/small-logo.png';
     }
 }
 </script>
