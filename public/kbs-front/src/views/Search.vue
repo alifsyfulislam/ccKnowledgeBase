@@ -37,17 +37,32 @@
                                     <ul>
                                         <li v-for="a_article in allArticles" :key="a_article.id">
                                             <!--                      <a href="#" style="font-size: 18px; color: #2bb3c1">{{a_article.en_title}}</a>-->
-                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
-                                                {{a_article.en_title}}
-                                            </router-link>
-                                            <div>
-                                                <div class="featured-image">
-                                                    <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" height="25">
+<!--                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">-->
+<!--                                                {{a_article.en_title}}-->
+<!--                                            </router-link>-->
+<!--                                            <div>-->
+<!--                                                <div class="featured-image">-->
+<!--                                                    <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" height="25">-->
+<!--                                                </div>-->
+<!--                                                <small style="font-size: 12px;">Post on: {{a_article.created_at}}</small>-->
+<!--                                                <p v-if="a_article.en_short_summary.length < 120">{{ a_article.en_short_summary }}</p>-->
+<!--                                                <p v-else>{{ a_article.en_short_summary.substring(0,120)+"..."}}</p>-->
+<!--                                            </div>-->
+
+                                            <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
+                                                <div class="article-list-image mb-20 mb-sm-0">
+                                                    <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                                 </div>
-                                                <small style="font-size: 12px;">Post on: {{a_article.created_at}}</small>
-                                                <p v-if="a_article.en_short_summary.length < 120">{{ a_article.en_short_summary }}</p>
-                                                <p v-else>{{ a_article.en_short_summary.substring(0,120)+"..."}}</p>
-                                            </div>
+                                                <div class="article-content-list-box pl-0 pl-sm-10">
+                                                    <h3 class="article-list-title mb-0 pb-2 font-20">
+                                                        <span v-if="(a_article.en_title).length<70"> {{ a_article.en_title }}</span>
+                                                        <span v-else> {{ (a_article.en_title).substring(0,70)+"..." }}</span>
+                                                    </h3>
+                                                    <small class="font-8 mb-0 pb-2 d-block">Published at: {{a_article.created_at}}</small>
+                                                    <p class="font-14 mb-0" v-if="(a_article.en_short_summary).length<200">{{a_article.en_short_summary}}</p>
+                                                    <p class="font-14 mb-0" v-else>{{(a_article.en_short_summary).substring(0,200)+"..."}}</p>
+                                                </div>
+                                            </router-link>
                                         </li>
                                     </ul>
                                 </div>

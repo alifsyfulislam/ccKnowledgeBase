@@ -18,7 +18,23 @@
                                 </button>
                             </div>
                         </div>
-                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+
+                        <div class="breadcrumbs mt-10 mt-sm-0">
+                            <ul class="list-inline list-unstyled mb-0">
+                                <li class="list-inline-item">
+                                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                                        <i class="fa fa-home"></i>
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: aArticle.category.slug }}">
+                                        categories
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">{{ aArticle.category? (aArticle.category.name).toLowerCase() : '' }}</li>
+                            </ul>
+                        </div>
+<!--                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
                     </div>
                 </div>
             </section>
@@ -123,6 +139,7 @@ export default {
     },
     data(){
         return{
+            routePath : '',
             isLoading : true,
             articleID:'',
             aArticle:'',
@@ -152,6 +169,7 @@ export default {
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
                         _that.$router.push('/article-detail/'+_that.articleID)
+                        // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
                     })
             }else{
                 console.log(last_history_article);
@@ -181,7 +199,6 @@ export default {
                     response.data.article_list.forEach(val => {
                         if ( val.en_body.includes('<img '))
                         {
-                            // _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
                             _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
                         }
 
