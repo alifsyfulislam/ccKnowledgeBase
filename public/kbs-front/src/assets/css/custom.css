@@ -573,6 +573,14 @@ header.fixed-header .navbar .logo img {
     .min-height-wrapper {
         min-height: calc(100vh - 100px);
     }
+
+    .banner-area .section-title {
+        font-size: 35px;
+    }
+
+    .banner-area .search-wrapper p {
+        font-size: 16px;
+    }
 }
 
 @media screen and (min-width: 1600px) {
