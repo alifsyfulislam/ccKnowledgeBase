@@ -202,5 +202,7 @@ export default {
 </script>
 
 <style scoped>
-
+    .banner-area .section-title:first-letter {
+        color: #d84a4f;
+    }
 </style>
