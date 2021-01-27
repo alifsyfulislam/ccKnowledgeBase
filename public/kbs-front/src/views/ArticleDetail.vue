@@ -73,7 +73,7 @@
                                     <ul class="nav nav-pills flex-column pb-10">
                                         <li class="nav-item" v-for="a_art in allArticle" :key="a_art.id">
                                             <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
-                                                <div class="recent-article-item-wrapper d-flex">
+                                                <div class="recent-article-item-wrapper d-flex p-1">
                                                     <div class="ra-item-image">
                                                         <img  v-if="articleImageArray.indexOf(a_art.id)" class="img-fluid" :src="articleImageArray[a_art.id] ? articleImageArray[a_art.id] : static_image['article'] " alt="no image">
                                                     </div>
