@@ -93,7 +93,7 @@ class Helper
 
     public static function fileUpload($url, $file)
     {
-        $fileName = time(). '.' . $file->getClientOriginalExtension();
+        $fileName = uniqid(). '.' . $file->getClientOriginalExtension();
 
         $dir = "media/" . $url . "/";
 

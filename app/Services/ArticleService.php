@@ -99,6 +99,7 @@ class ArticleService
 
                     if (count($thumbImageList) > 0) {
                         for ($i = 1; $i <= $fileLength; $i++) {
+                          //  dd($thumbImageList[count($thumbImageList) - $i]);
                             $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
                         }
                     }
@@ -296,7 +297,25 @@ class ArticleService
 
         try {
 
+            $article = $this->getItemById($id);
+            $mediaList = Media::where('mediable_id', $id)->get();
+
+            if (count($mediaList) > 0)
+            {
+
+                foreach($mediaList as $media)
+                {
+
+                    $mediaName =  substr($media->url, strpos($media->url, "media") );
+                    unlink(public_path().'/'.$mediaName );
+                    $media->delete();
+
+                }
+
+            }
             $this->articleRepository->delete($id);
+
+
 
         } catch (Exception $e) {
 

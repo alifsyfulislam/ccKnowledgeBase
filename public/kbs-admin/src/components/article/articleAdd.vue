@@ -100,6 +100,22 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12 mb-15" v-if="article_files.length >0">
+                        <div class="card">
+                            <div class="card-header bg-light-2 px-10 py-1">List of Files</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-10 py-1"
+                                    v-for="(file, index) in article_files"
+                                    :key="index"
+                                >
+                                    <a :href="file.url" class="font-12 text-body d-flex justify-content-between align-items-center">{{ file.name }} <span class="close-btn" @click="deleteUploadedFile(index)">x</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Status</label>
@@ -171,18 +187,26 @@ export default {
             bangla_checkbox      : '',
 
             fileUrl       : [],
-            files         : [],
+            article_files : [],
             url           : '',
             video_files   : ''
         }
     },
     methods: {
 
+        deleteUploadedFile(index){
+            (this.article_files).splice(index, 1);
+        },
+
         fileUploadChange(e) {
-           // const selectedFiles = e.target.files[0];
-            //this.url = URL.createObjectURL(selectedFiles);
-          //  this.fileUrl.push(URL.createObjectURL(selectedFiles)) ;
-            this.files.push(e.target.files[0])
+            let _that = this;
+            const selectedFiles = e.target.files;
+
+            for(var j=0; j<selectedFiles.length; j++){
+               // console.log(selectedFiles[j]);
+                _that.article_files.push(selectedFiles[j]);
+            }
+
         },
 
         collectArticleList(tagList){
@@ -299,8 +323,8 @@ export default {
             let _that       = this;
             let formData    = new FormData();
 
-            for( var i = 0; i < this.files.length; i++ ){
-                let file = this.files[i];
+            for( var i = 0; i < this.article_files.length; i++ ){
+                let file = this.article_files[i];
 
                 formData.append('uploaded_file[' + i + ']', file);
             }
@@ -387,5 +411,19 @@ export default {
 </script>
 
 <style scoped>
+    .font-12 {
+        font-size: 12px;
+    }
 
+    .close-btn {
+        cursor: pointer;
+        background: #ff7b88;
+        color: #ffffff;
+        width: 18px;
+        height: 18px;
+        text-align: center;
+        line-height: 16px;
+        border-radius: 50%;
+        text-indent: 1px;
+    }
 </style>
