@@ -264,7 +264,7 @@ export default {
         this.getCategoryArticleList();
         this.getStaticMedia();
         this.getRecentArticleList();
-        localStorage.clear();
+        // localStorage.clear();
     }
 }
 </script>

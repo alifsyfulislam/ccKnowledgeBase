@@ -256,7 +256,7 @@ export default {
 
         this.categorySearch(this.categoryID);
         this.getStaticMedia();
-        localStorage.clear();
+        // localStorage.clear();
     }
 }
 </script>
