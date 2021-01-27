@@ -340,6 +340,13 @@ export default {
         {
             let _that           = this;
             let formData        = new FormData();
+
+            for( var i = 0; i < this.article_files.length; i++ ){
+                let file = this.article_files[i];
+
+                formData.append('uploaded_file[' + i + ']', file);
+            }
+
             let enBody          = document.getElementById('en_Body').value;
 
             if (!(document.getElementById('bn_Body'))) {
@@ -446,8 +453,6 @@ export default {
                         _that.enBodyData  = _that.articleData.en_body;
                         _that.bnBodyData  = _that.articleData.bn_body;
                         _that.isMounted   = true;
-
-                        console.log('enBody',  + _that.enBodyData);
 
                     } else {
                         _that.success_message = "";
