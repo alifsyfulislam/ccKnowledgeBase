@@ -555,6 +555,10 @@ header.fixed-header .navbar .logo img {
     width: 50%;
 }
 
+.banner-area .section-title {
+    font-size: 45px;
+}
+
 @keyframes toTopFromBottom {
     49% {
         transform: translateY(-100%);
