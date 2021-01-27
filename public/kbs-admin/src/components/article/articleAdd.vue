@@ -108,13 +108,14 @@
                                     v-for="(file, index) in article_files"
                                     :key="index"
                                 >
-                                    <a :href="file.url" class="font-12 text-body d-flex justify-content-between align-items-center">{{ file.name }} <span class="close-btn" @click="deleteUploadedFile(index)">x</span></a>
+                                    <a :href="file.url" class="font-12 text-body d-flex justify-content-between align-items-center">
+                                        {{ file.name }}
+                                        <span class="close-btn" @click="deleteUploadedFile(index)">x</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
-
 
                     <div class="col-md-12">
                         <div class="form-group">
@@ -197,6 +198,7 @@ export default {
     methods: {
 
         deleteUploadedFile(index){
+            document.getElementById('files').value= "";
             (this.article_files).splice(index, 1);
         },
 
