@@ -11,10 +11,10 @@ class Article extends Model
         'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_short_summary', 'bn_short_summary', 'en_body', 'bn_body', 'status', 'publish_date'
     ];
 
-    /*public function media()
+    public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
-    }*/
+    }
 
     public function user()
     {

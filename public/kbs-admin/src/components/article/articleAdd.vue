@@ -93,6 +93,14 @@
                     </div>
 
                     <div class="col-md-12">
+
+                        <div class="form-group mb-15">
+                            <label class="form-label" >Upload Files</label>
+                            <input type="file"  id="files" class="form-control" ref="files" multiple @change="fileUploadChange"  >
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Status</label>
                             <select class="form-control" v-model="articleData.status">
@@ -120,6 +128,8 @@ import axios from 'axios'
 import Summernote from "@/components/summer-note/summernote";
 import TagInput from "../tag/TagComponent";
 import $ from "jquery";
+// import "@/jquery.fileupload.js";
+
 
 export default {
     name: "articleAdd.vue",
@@ -160,13 +170,21 @@ export default {
             selected_checkbox    : '',
             bangla_checkbox      : '',
 
-            images                  : [],
-            files                   : [],
-            url                     : '',
-            video_files             : ''
+            fileUrl       : [],
+            files         : [],
+            url           : '',
+            video_files   : ''
         }
     },
     methods: {
+
+        fileUploadChange(e) {
+           // const selectedFiles = e.target.files[0];
+            //this.url = URL.createObjectURL(selectedFiles);
+          //  this.fileUrl.push(URL.createObjectURL(selectedFiles)) ;
+            this.files.push(e.target.files[0])
+        },
+
         collectArticleList(tagList){
             this.articleData.tag = tagList.join();
         },
@@ -232,6 +250,7 @@ export default {
         },
 
         validateAndSubmit(){
+
             if (!this.articleData.en_title){
                 $('#enTitle').css({
                     'border-color': '#FF7B88',
@@ -279,6 +298,13 @@ export default {
 
             let _that       = this;
             let formData    = new FormData();
+
+            for( var i = 0; i < this.files.length; i++ ){
+                let file = this.files[i];
+
+                formData.append('uploaded_file[' + i + ']', file);
+            }
+
             let enBody      = document.getElementById('en_Body').value;
 
             if (!(document.getElementById('bn_Body'))) {

@@ -58,7 +58,6 @@ class ArticleService
      */
     public function createItem(Request $request)
     {
-
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
@@ -82,11 +81,39 @@ class ArticleService
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
 
+        $thumbImageList = $request->uploaded_file;
+
         DB::beginTransaction();
 
         try {
 
             $this->articleRepository->create($input);
+
+            $article = $this->getItemById($input['id']);
+
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                if (isset($request->uploaded_file)) {
+
+                    $fileLength = count($thumbImageList);
+
+                    if (count($thumbImageList) > 0) {
+                        for ($i = 1; $i <= $fileLength; $i++) {
+                            $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
+                        }
+                    }
+                }
+
+                foreach ($thumbFile as $file):
+
+                    $article->media()->create([
+
+                        'url' => $file
+
+                    ]);
+
+                endforeach;
+            }
 
         } catch (Exception $e) {
 
@@ -194,6 +221,49 @@ class ArticleService
         try {
 
             $this->articleRepository->update($input, $input['id']);
+
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                $article = $this->getItemById($request->id);
+
+                $mediaList = Media::where('mediable_id', $request->id)->get();
+
+                if (count($mediaList) > 0)
+                {
+
+                    foreach($mediaList as $media)
+                    {
+
+                        $mediaName =  substr($media->url, strpos($media->url, "media") );
+                        unlink(public_path().'/'.$mediaName );
+                        $media->delete();
+
+                    }
+
+                }
+
+                $thumbImageList = $request->uploaded_file;
+
+                $fileLength = count($thumbImageList);
+
+                if(count($thumbImageList) > 0) {
+                    for ($i = 1; $i <= $fileLength; $i++) {
+
+                        $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
+
+                    }
+                }
+
+                foreach ($thumbFile as $file):
+
+                    $article->media()->create([
+
+                        'url' => $file
+
+                    ]);
+
+                endforeach;
+            }
 
         } catch (Exception $e) {
 

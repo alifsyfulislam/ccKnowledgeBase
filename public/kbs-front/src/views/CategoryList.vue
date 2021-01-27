@@ -157,6 +157,7 @@ export default {
         }
     },
     methods:{
+
         getStaticMedia()
         {
             this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
