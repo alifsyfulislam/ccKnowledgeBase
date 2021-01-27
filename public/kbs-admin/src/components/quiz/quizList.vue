@@ -244,7 +244,7 @@ export default {
         {
             this.isAddCheck    = false;
             this.isDeleteCheck = false;
-            this.isSearch      = false;
+            this.isEditCheck      = false;
         },
         getAddDataFromChild (status)
         {

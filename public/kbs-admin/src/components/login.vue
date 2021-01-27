@@ -6,7 +6,7 @@
                     <div class="col-sm-6">
                         <div class="login-form-wrapper d-flex flex-wrap flex-column py-20 py-sm-40 pl-20 pl-sm-40 pr-20">
                             <div class="gplex-logo text-center">
-                                <img src="../assets/img/gplex-logo.png" alt="gplex" class="img-fluid">
+                                <img :src="static_image['dashboard_logo']" alt="gplex" class="img-fluid">
                             </div>
 
                             <div class="login-middle-wrapper py-40">
@@ -49,7 +49,7 @@
                     <div class="col-sm-6 centered-login-bg d-none d-sm-block" :style="{ backgroundImage: 'url(' + require('../assets/img/call-center.png') + ')' }">
                         <div class="information-wrapper d-flex align-items-end flex-column h-100 p-40">
                             <div class="client-logo">
-                                <img class="img-fluid " src="../assets/img/logo-demo1.png" alt="demo">
+                                <img class="img-fluid " src="../assets/img/gplex-logo.png" alt="demo">
                             </div>
                             <div class="client-info mt-auto"><a target="_blank" href="https://www.genuitysystems.com/">Genuity System Ltd.</a></div>
                         </div>
@@ -110,6 +110,7 @@ export default {
             success_message : '',
             error_message   : '',
             token           : '',
+            static_image        : [],
             checkedCounter  : 0,
             formData        : {
                 username : '',
@@ -273,6 +274,7 @@ export default {
         },
     },
     created() {
+        this.static_image['dashboard_logo']     = axios.defaults.baseURL.replace('api','')+'media/new-logo.png';
         this.clearanceAll();
     /*    if (this.$route.params){
             this.success_message = this.$route.params.message;

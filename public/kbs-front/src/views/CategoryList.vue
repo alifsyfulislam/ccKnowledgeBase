@@ -8,9 +8,9 @@
                 <div class="container">
                     <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
                         <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="searchData()" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="searchData">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -26,7 +26,11 @@
                                         <i class="fa fa-home"></i>
                                     </router-link>
                                 </li>
-                                <li class="list-inline-item">Categories</li>
+                                <li class="list-inline-item">
+                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: routePath ? routePath : categoryID }}">
+                                        categories
+                                    </router-link>
+                                </li>
                                 <li class="list-inline-item">{{ routePath ? routePath : categoryID }}</li>
                             </ul>
                         </div>
@@ -37,12 +41,15 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4 col-md-5 text-left" v-if="categoryHasArticle">
-                            <div class="menu-wrapper bg-white">
+                            <div class="menu-wrapper bg-white mb-50">
                                 <h3 class="menu-title mb-20 p-15">Categories</h3>
                                 <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">
                                     <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
                                         <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
                                             {{a_cat_art.name}}
+<!--                                            <span v-if="(a_cat_art.children_recursive).length > 0">-->
+<!--                                                <i class="fa fa-2x fa-plus"></i>-->
+<!--                                            </span>-->
                                         </a>
                                     </li>
                                 </ul>
@@ -65,17 +72,18 @@
                                 <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
                                 <div class="row article-list-items">
                                     <div class="col-lg-12 mb-15" v-for="(has_article) in selectedCategory" :key="has_article.id">
-                                        <router-link class="article-item-list-box d-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
-                                            <div class="article-list-image">
+                                        <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
+                                            <div class="article-list-image mb-20 mb-sm-0">
                                                 <img :src="((has_article.en_body).match(regexImg) ? (has_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
                                             </div>
-                                            <div class="article-content-list-box pl-10">
-                                                <small class="font-8 mb-0">Published at: {{has_article.created_at}}</small>
-                                                <h3 class="article-list-title mb-0 pb-10 font-20">
+                                            <div class="article-content-list-box pl-0 pl-sm-10">
+                                                <h3 class="article-list-title mb-0 pb-2 font-20">
                                                     <span v-if="(has_article.en_title).length<70"> {{ has_article.en_title }}</span>
                                                     <span v-else> {{ (has_article.en_title).substring(0,70)+"..." }}</span>
                                                 </h3>
-                                                <p class="font-14 mb-0">{{has_article.en_short_summary}}</p>
+                                                <small class="font-8 mb-0 d-block pb-2">Published at: {{has_article.created_at}}</small>
+                                                <p class="font-14 mb-0" v-if="(has_article.en_short_summary).length<200">{{has_article.en_short_summary}}</p>
+                                                <p class="font-14 mb-0" v-else>{{(has_article.en_short_summary).substring(0,200)+"..."}}</p>
                                             </div>
                                         </router-link>
                                     </div>
@@ -167,7 +175,13 @@ export default {
 
         searchData(){
             let _that = this;
-            _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
+            if (localStorage.query_string){
+                localStorage.setItem('query_string','');
+                localStorage.setItem('query_string',this.query_string);
+            }else{
+                localStorage.setItem('query_string',this.query_string);
+            }
+            _that.$router.push({ name: 'Search'});
         },
         getCategoryArticleList()
         {
@@ -182,6 +196,7 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
+                        console.log(_that.categoryHasArticle);
                     }
                 })
         },
@@ -196,14 +211,14 @@ export default {
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination  = response.data.article_list;
                     _that.$router.push('/category-list/'+_that.categoryID)
-                    console.log(_that.selectedCategory)
+                    // console.log(_that.selectedCategory)
                 })
         },
 
         changeCategoryArticlePage(categoryID,pageUrl){
             let _that = this;
             pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
-            console.log(pageUrl);
+            // console.log(pageUrl);
 
             axios.get(pageUrl)
                 .then(function (response) {
@@ -242,7 +257,7 @@ export default {
 
         this.categorySearch(this.categoryID);
         this.getStaticMedia();
-        localStorage.clear();
+        // localStorage.clear();
     }
 }
 </script>

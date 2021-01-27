@@ -1,3 +1,13 @@
+::-webkit-scrollbar {
+    width: 4px;
+    background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 4px;
+}
+
 .right-sidebar-wrapper {
     width: 70vw;
     right: -71vw;
@@ -390,7 +400,7 @@ input[type="file"]:focus {
     font-size: 1rem;
 }
 
-.tag-input-wrapper .tag-delete {    
+.tag-input-wrapper .tag-delete {
     background: #fff;
     color: #000;
     line-height: 1;

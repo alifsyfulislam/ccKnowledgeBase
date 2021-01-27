@@ -6,11 +6,11 @@
         <main>
             <section class="inner-search-area py-20">
                 <div class="container">
-                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
+                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
                         <div class="input-group order-sm-2">
-                            <input type="text" v-on:keyup.enter="searchData()" v-model="query_string" class="form-control" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" class="form-control" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="searchData">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -18,7 +18,23 @@
                                 </button>
                             </div>
                         </div>
-                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+
+                        <div class="breadcrumbs mt-10 mt-sm-0">
+                            <ul class="list-inline list-unstyled mb-0">
+                                <li class="list-inline-item">
+                                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                                        <i class="fa fa-home"></i>
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    <router-link :to="{ name: 'CategoryList', params: { categoryID: aArticle.category.slug }}">
+                                        categories
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">{{ aArticle.category? (aArticle.category.name).toLowerCase() : '' }}</li>
+                            </ul>
+                        </div>
+<!--                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
                     </div>
                 </div>
             </section>
@@ -73,13 +89,22 @@
 
                                 <div class="menu-wrapper bg-white mb-30">
                                     <h3 class="menu-title mb-20 p-15">Categories</h3>
-                                    <ul class="nav nav-pills flex-column px-15 pb-15">
-                                        <li class="nav-item" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                                            <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
-                                                {{a_cate_art.name}}
-                                            </router-link>
-                                        </li>
-                                    </ul>
+                                    <div class="article-details-cat-wrapper">
+                                        <ul class="nav nav-pills flex-column px-15 pb-15">
+                                            <li class="nav-item" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
+                                                <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
+                                                    <div class="recent-article-item-wrapper d-flex">
+                                                        <div class="ra-item-image">
+                                                            <img class="img-fluid" :src="a_cate_art.media[0] ? a_cate_art.media[0].url : static_image['article'] " alt="no image">
+                                                        </div>
+                                                        <div class="ra-item-content">
+                                                            {{a_cate_art.name}}
+                                                        </div>
+                                                    </div>
+                                                </router-link>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <!-- <div class="sidebar-content">
@@ -123,6 +148,7 @@ export default {
     },
     data(){
         return{
+            routePath : '',
             isLoading : true,
             articleID:'',
             aArticle:'',
@@ -152,6 +178,7 @@ export default {
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
                         _that.$router.push('/article-detail/'+_that.articleID)
+                        // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
                     })
             }else{
                 console.log(last_history_article);
@@ -161,7 +188,13 @@ export default {
         searchData()
         {
             let _that = this;
-            _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
+            if (localStorage.query_string){
+                localStorage.setItem('query_string','');
+                localStorage.setItem('query_string',this.query_string);
+            }else{
+                localStorage.setItem('query_string',this.query_string);
+            }
+            _that.$router.push({ name: 'Search'});
         },
 
 
@@ -175,7 +208,6 @@ export default {
                     response.data.article_list.forEach(val => {
                         if ( val.en_body.includes('<img '))
                         {
-                            // _that.articleImageArray[val.id]  = _that.regexImg.exec(val.en_body)[1];
                             _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
                         }
 
@@ -197,6 +229,7 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
+                        console.log(_that.categoryHasArticle);
                     }
                 })
         },
@@ -231,7 +264,7 @@ export default {
         this.getCategoryArticleList();
         this.getStaticMedia();
         this.getRecentArticleList();
-        localStorage.clear();
+        // localStorage.clear();
     }
 }
 </script>
