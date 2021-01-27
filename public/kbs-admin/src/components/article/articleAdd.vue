@@ -100,8 +100,8 @@
                                 <option value="hide">Hide</option>
                                 <option value="private">Private</option>
                                 <option value="public">Public</option>
-                                <option value="scheduling">Scheduling</option>
-                                <option value="announcement">Announcement</option>
+<!--                                <option value="scheduling">Scheduling</option>-->
+<!--                                <option value="announcement">Announcement</option>-->
                             </select>
                         </div>
                     </div>
