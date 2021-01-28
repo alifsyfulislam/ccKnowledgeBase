@@ -159,7 +159,7 @@ class ArticleRepository implements RepositoryInterface
     public function searchCategoryArticle($slug = '')
     {
         $query = Article::with('category')
-                 ->where('status', 'public');
+            ->where('status', 'public');
 
         $query = $query->whereHas('category', function ($q) use ($slug) {
 
@@ -168,5 +168,15 @@ class ArticleRepository implements RepositoryInterface
         });
 
         return $query->orderBy('id', 'DESC')->paginate(5);
+    }
+
+    public function changeStatus($request){
+
+        return Article::where('id', $request->id)->update([
+
+            'status' => $request->status
+
+        ]);
+
     }
 }

@@ -128,4 +128,10 @@ class FaqController extends Controller
         }
 
     }
+
+    public function changeFAQStatus(Request $request){
+
+        return $this->faqService->faqStatusChange($request);
+
+    }
 }

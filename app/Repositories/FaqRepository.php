@@ -139,4 +139,14 @@ class FaqRepository implements RepositoryInterface
 
     }
 
+    public function changeStatus($request){
+
+        return Faq::where('id', $request->id)->update([
+
+            'status' => $request->status
+
+        ]);
+
+    }
+
 }

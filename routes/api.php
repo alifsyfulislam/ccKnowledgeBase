@@ -48,6 +48,8 @@ Route::get('quiz-form/field-list/{id}','Api\QuizFormFieldController@getQuizField
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
+    Route::post('logout', 'AuthController@logout');
+
     Route::post('save-file', 'ArticleController@saveFiles');
     Route::post('delete-file', 'ArticleController@deleteFiles');
     Route::post('user/update-password', 'UserController@changePassword');
@@ -61,8 +63,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Api', 'middleware' => 'auth:a
 
 
     Route::get('latest-article-list', 'ArticleController@articleList');
-
-    Route::post('logout', 'AuthController@logout');
+    Route::post('change-article-status', 'ArticleController@changeArticleStatus');
 
     Route::apiResource('users','UserController');
     Route::apiResource('roles','RoleController');
@@ -83,6 +84,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Api', 'middleware' => 'auth:a
     Route::post('pages/update-data', 'PageController@update');
 
     Route::apiResource('faqs','FaqController');
+    Route::post('change-faq-status', 'FaqController@changeFAQStatus');
+
     Route::apiResource('quiz-forms','QuizFormController');
     Route::apiResource('quiz-form-fields','QuizFormFieldController');
     Route::apiResource('quizzes','QuizController');
