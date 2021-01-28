@@ -49,8 +49,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-sm m-1" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success rounded btn-sm m-1" @click="validateAndSubmit">Update</button>
+                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-1" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary rounded btn-md m-1" @click="validateAndSubmit">Update</button>
                     </div>
                 </div>
             </div>
@@ -177,9 +177,6 @@ export default {
                 if (response.data.status_code === 200){
                     localStorage.clear();
                     _that.$router.push({ name: 'login', params: { message : response.data.message }});
-                    // _that.error_message   = "";
-                    // _that.success_message = response.data.message;
-                    // _that.$emit('user-logout', _that.success_message);
                 }else{
                     _that.success_message           = "";
                     _that.error_message             = response.data.message;

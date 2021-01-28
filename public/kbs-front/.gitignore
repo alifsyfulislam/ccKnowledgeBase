@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+/public/kbs-front/src/main.js
+/public/kbs-admin/src/main.js
 
 # local env files
 .env.local

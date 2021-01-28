@@ -68,7 +68,16 @@
                                     <td>{{ an_faq.en_title  }}</td>
                                     <td class="text-center">{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_faq.category ? an_faq.category.name : ''  }}</td>
-                                    <td class="text-center">{{ an_faq.status  }}</td>
+                                    <td class="text-center">
+                                        <select class="form-control" v-model="an_faq.status" @change="faqStatusRequest(an_faq)">
+                                            <option value="draft">Draft</option>
+                                            <option value="hide">Hide</option>
+                                            <option value="private">Private</option>
+                                            <option value="public">Public</option>
+                                            <!--                                <option value="scheduling">Scheduling</option>-->
+                                            <!--                                <option value="announcement">Announcement</option>-->
+                                        </select>
+                                    </td>
                                     <td class="text-center">{{ an_faq.tag  }}</td>
                                     <td class="text-center">{{ an_faq.created_at  }}</td>
                                     <td class="text-center" style="width:120px">
@@ -221,6 +230,23 @@
             </div>
         </div>
         <!-- Common Right SideBar End -->
+        <div class="modal fade" id="alertModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h5 class="pt-10 pb-15 mb-0">Are you sure to perform this action?</h5>
+                                <div>
+                                    <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-2" data-dismiss="modal" @click="getFaqList()">Close</button>
+                                    <button type="button" class="btn btn-primary rounded btn-md m-2" @click="changeFaqStatus();">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -245,6 +271,7 @@ export default {
 
     data() {
         return {
+            isFaqStatus         : '',
             isLoading           : false,
             isEditCheck         : false,
             isAddCheck          : false,
@@ -281,6 +308,32 @@ export default {
         }
     },
     methods: {
+        faqStatusRequest(selected){
+            $('#alertModal').modal('show');
+            localStorage.setItem('faq_status', JSON.stringify(selected));
+        },
+        changeFaqStatus(){
+            this.isFaqStatus = JSON.parse(localStorage.getItem("faq_status"));
+            $('#alertModal').modal('toggle');
+            axios.post('admin/change-faq-status',
+                {
+                    id          : this.isFaqStatus.id,
+                    status      : this.isFaqStatus.status,
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                }).then(function (response) {
+                if (response.data.status_code === 200){
+                    // this.getArticleList();
+                    // this.success_message   = "Article status changed successfully!";
+                    localStorage.removeItem("faq_status");
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
         clearFilter()
         {
             this.filter.category_id     = "";

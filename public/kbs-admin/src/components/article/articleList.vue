@@ -75,7 +75,7 @@
                                     <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
                                     <td class="text-center">
-                                        <select class="form-control" v-model="an_article.status" @change="articleStatusRequest(an_article.id)">
+                                        <select class="form-control" v-model="an_article.status" @change="articleStatusRequest(an_article)">
                                             <option value="draft">Draft</option>
                                             <option value="hide">Hide</option>
                                             <option value="private">Private</option>
@@ -230,10 +230,10 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <h5 class="pt-5 pb-5">Are you sure to perform this action?</h5>
+                                <h5 class="pt-10 pb-15 mb-0">Are you sure to perform this action?</h5>
                                 <div>
-                                    <button type="button" id="closeModal" class="btn btn-danger rounded btn-sm m-1" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-success rounded btn-sm m-1">Update</button>
+                                    <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-2" data-dismiss="modal" @click="getArticleList()">Close</button>
+                                    <button type="button" class="btn btn-primary rounded btn-md m-2" @click="changeArticleStatus();">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -268,6 +268,7 @@ export default {
     },
     data() {
         return {
+            isArticleStatus     : '',
             isExportCheck       : false,
             isLoading           : false,
             isEditCheck         : false,
@@ -305,10 +306,30 @@ export default {
     },
     methods: {
         articleStatusRequest(selected){
-
-
             $('#alertModal').modal('show');
-           console.log(selected);
+            localStorage.setItem('article_status', JSON.stringify(selected));
+        },
+        changeArticleStatus(){
+            this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
+            $('#alertModal').modal('toggle');
+            axios.post('admin/change-article-status',
+                {
+                    id          : this.isArticleStatus.id,
+                    status      : this.isArticleStatus.status,
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                }).then(function (response) {
+                if (response.data.status_code === 200){
+                    // this.getArticleList();
+                    // this.success_message   = "Article status changed successfully!";
+                    localStorage.removeItem("article_status");
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         // acl permission
         checkPermission(permissionForCheck)
