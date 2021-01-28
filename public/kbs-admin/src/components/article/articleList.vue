@@ -74,7 +74,16 @@
                                     </td>
                                     <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
                                     <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
-                                    <td class="text-center">{{ an_article.status  }}</td>
+                                    <td class="text-center">
+                                        <select class="form-control" v-model="an_article.status" @change="articleStatusRequest(an_article.id)">
+                                            <option value="draft">Draft</option>
+                                            <option value="hide">Hide</option>
+                                            <option value="private">Private</option>
+                                            <option value="public">Public</option>
+                                            <!--                                <option value="scheduling">Scheduling</option>-->
+                                            <!--                                <option value="announcement">Announcement</option>-->
+                                        </select>
+                                    </td>
                                     <td class="text-center">{{ an_article.tag  }}</td>
                                     <td class="text-center">{{ an_article.created_at  }}</td>
                                     <td class="text-center" style="width:120px">
@@ -213,6 +222,26 @@
                 </div>
             </div>
         </div>
+
+<!--        change status modal-->
+        <div class="modal fade" id="alertModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h5 class="pt-5 pb-5">Are you sure to perform this action?</h5>
+                                <div>
+                                    <button type="button" id="closeModal" class="btn btn-danger rounded btn-sm m-1" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-success rounded btn-sm m-1">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Common Right SideBar End -->
     </div>
 </template>
@@ -275,6 +304,12 @@ export default {
         }
     },
     methods: {
+        articleStatusRequest(selected){
+
+
+            $('#alertModal').modal('show');
+           console.log(selected);
+        },
         // acl permission
         checkPermission(permissionForCheck)
         {
