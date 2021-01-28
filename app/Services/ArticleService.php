@@ -237,7 +237,8 @@ class ArticleService
 
                         $mediaName =  substr($media->url, strpos($media->url, "media") );
                         unlink(public_path().'/'.$mediaName );
-                        $media->delete();
+                        //$media->delete();
+                        Media::find($media->id)->delete();
 
                     }
 
@@ -308,7 +309,7 @@ class ArticleService
 
                     $mediaName =  substr($media->url, strpos($media->url, "media") );
                     unlink(public_path().'/'.$mediaName );
-                    $media->delete();
+                    Media::find($media->id)->delete();
 
                 }
 
