@@ -96,20 +96,20 @@
                                                 <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                                                     <ul class="pagination">
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">First</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Previous</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                                         </li>
                                                         <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
                                                             <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,'article/category/'+has_article.category.slug+'?page='+n)" class="px-3 bg-primary text-white py-2 rounded-sm" href="#">{{ n }}</a>
                                                         </li>
 
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Next</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                                         </li>
                                                         <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm">Last</a>
+                                                            <a @click.prevent="changeCategoryArticlePage(has_article.category.slug,pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-sm"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                                                         </li>
                                                     </ul>
                                                 </div>
