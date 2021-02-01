@@ -43,9 +43,15 @@
                         <div class="col-lg-4 col-md-5 text-left" v-if="categoryHasArticle">
                             <div class="menu-wrapper bg-white mb-50">
                                 <h3 class="menu-title mb-20 p-15">Categories</h3>
-
                                 <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">
-                                    <tree-view class="item" :item="treeData"></tree-view>
+                                    <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
+                                        <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
+                                            {{a_cat_art.name}}
+                                            <!--                                            <span v-if="(a_cat_art.children_recursive).length > 0">-->
+                                            <!--                                                <i class="fa fa-2x fa-plus"></i>-->
+                                            <!--                                            </span>-->
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -122,26 +128,16 @@
 
 <script>
 import Loading from "@/components/Loading";
-import TreeView from "@/components/TreeView"
 import axios from 'axios'
 // import searchform from "@/components/Search";
 export default {
     name: "CategoryList",
     components:{
         Loading,
-        TreeView
         // searchform
     },
     data(){
         return{
-
-            treeData        : {
-                id                          : 404,
-                name                        : 'Categories',
-                slug                        : 'default',
-                children_recursive          : ''
-            },
-
             routePath : '',
             isLoading: true,
             allCategoryArticle:'',
@@ -169,7 +165,6 @@ export default {
         }
     },
     methods:{
-
         getStaticMedia()
         {
             this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
@@ -177,8 +172,7 @@ export default {
             this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
         },
 
-        searchData()
-        {
+        searchData(){
             let _that = this;
             if (localStorage.query_string){
                 localStorage.setItem('query_string','');
@@ -188,7 +182,6 @@ export default {
             }
             _that.$router.push({ name: 'Search'});
         },
-
         getCategoryArticleList()
         {
             let _that =this;
@@ -202,11 +195,7 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
-                        // console.log(_that.categoryHasArticle);
-
-                        _that.treeData.children_recursive = _that.categoryHasArticle;
-                        // console.log(_that.treeData);
-
+                        console.log(_that.categoryHasArticle);
                     }
                 })
         },
@@ -242,9 +231,9 @@ export default {
         // dynamicBackFunc(){
         //     let _that = this;
         //
-        //     _that.selectedCategoryArr = _that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
+        //     that.selectedCategoryArr = that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
         //
-        //     _that.categoryID = _that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
+        //     that.categoryID = that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
         //
         //     let pageUrl;
         //     pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
@@ -263,10 +252,11 @@ export default {
     created() {
         this.categoryID = this.$route.params.categoryID;
         console.log(this.categoryID);
-        console.log(this.categoryID);
         this.getCategoryArticleList();
+
         this.categorySearch(this.categoryID);
         this.getStaticMedia();
+        // localStorage.clear();
     }
 }
 </script>
