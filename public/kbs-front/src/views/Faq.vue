@@ -21,7 +21,7 @@
                             </div>
 
 
-                            <button class="btn btn-outline-primary py-15 px-15 px-sm-25 rounded-pill d-flex align-items-center ml-2 bg-white" @click="clearFilter()"><i class="fa fa-refresh"></i> <span class="pl-2">Reload</span></button>
+                            <button class="btn btn-outline-primary py-15 px-15 px-sm-25 rounded-pill d-flex align-items-center ml-1 text-primary" @click="clearFilter()"><i class="fa fa-refresh"></i> <span class="pl-2">Reload</span></button>
                         </div>
 
 
@@ -131,7 +131,10 @@ export default {
         max-width: 100%;
     }
 
-    .inner-search-area .search-input-wrapper .btn.btn-outline-primary:hover {
-        background: #3fc6d4 !important;
+    .inner-search-area .search-input-wrapper .btn.btn-outline-primary,
+    .inner-search-area .search-input-wrapper .btn.btn-outline-primary:focus {
+        border-color: transparent !important;
+        box-shadow: inherit;
+        background-color: transparent;
     }
 </style>
