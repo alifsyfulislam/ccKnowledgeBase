@@ -20,7 +20,8 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-outline-primary py-15 px-15 px-sm-25 rounded-pill d-flex align-items-center ml-2 bg-white"><i class="fa fa-refresh"></i> <span class="pl-2">Reload</span></button>
+
+                            <button class="btn btn-outline-primary py-15 px-15 px-sm-25 rounded-pill d-flex align-items-center ml-2 bg-white" @click="clearFilter()"><i class="fa fa-refresh"></i> <span class="pl-2">Reload</span></button>
                         </div>
 
 
@@ -84,6 +85,18 @@ export default {
         }
     },
     methods:{
+        clearFilter(){
+
+            localStorage.clear('faq_query');
+
+            let _that = this;
+            axios.get('faq-list')
+                .then(function (response) {
+                    _that.isLoading= false;
+                    _that.all_Faqs = response.data.faq_list.data;
+                })
+
+        },
         searchData(pageUrl){
             let _that = this;
             pageUrl = pageUrl == undefined ? 'faq/search/'+_that.faq_query+'?page=1' : pageUrl;
@@ -109,7 +122,7 @@ export default {
 
 <style scoped>
     .inner-search-area .search-input-wrapper .input-group,
-    .inner-search-area .search-input-wrapper .input-group.focused, 
+    .inner-search-area .search-input-wrapper .input-group.focused,
     .inner-search-area .search-input-wrapper .input-group.filled {
         max-width: 100%;
     }

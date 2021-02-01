@@ -6,9 +6,9 @@
         <main>
             <section class="inner-search-area py-20">
                 <div class="container">
-                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
+                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
                         <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +18,24 @@
                                 </button>
                             </div>
                         </div>
-                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+
+                        <div class="breadcrumbs mt-10 mt-sm-0">
+                            <ul class="list-inline list-unstyled mb-0">
+                                <li class="list-inline-item">
+                                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                                        <i class="fa fa-home"></i>
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    search
+                                </li>
+
+                                <li class="list-inline-item">
+                                    {{query_string}}
+                                </li>
+                            </ul>
+                        </div>
+<!--                        <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
                     </div>
                 </div>
             </section>
@@ -160,23 +177,23 @@ export default {
                 _that.pagination  = response.data.article_list;
             })
         },
-        dynamicBackFunc(){
-            let _that = this;
-            _that.allSearchQuery = _that.allSearchQuery.slice(0,_that.allSearchQuery.length-1);
-            _that.query_string = _that.allSearchQuery[_that.allSearchQuery.length-1]
-            let pageUrl;
-            pageUrl = pageUrl == undefined ? 'article/search/'+_that.query_string+'?page=1' : pageUrl;
-            if (_that.query_string){
-                axios.get(pageUrl)
-                    .then(function (response) {
-                        _that.isLoading= false;
-                        _that.allArticles = response.data.article_list.data;
-                        _that.pagination  = response.data.article_list;
-                    })
-            }else{
-                _that.$router.push('/');
-            }
-        },
+        // dynamicBackFunc(){
+        //     let _that = this;
+        //     _that.allSearchQuery = _that.allSearchQuery.slice(0,_that.allSearchQuery.length-1);
+        //     _that.query_string = _that.allSearchQuery[_that.allSearchQuery.length-1]
+        //     let pageUrl;
+        //     pageUrl = pageUrl == undefined ? 'article/search/'+_that.query_string+'?page=1' : pageUrl;
+        //     if (_that.query_string){
+        //         axios.get(pageUrl)
+        //             .then(function (response) {
+        //                 _that.isLoading= false;
+        //                 _that.allArticles = response.data.article_list.data;
+        //                 _that.pagination  = response.data.article_list;
+        //             })
+        //     }else{
+        //         _that.$router.push('/');
+        //     }
+        // },
         getStaticMedia()
         {
             this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';

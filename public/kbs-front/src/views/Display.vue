@@ -76,7 +76,7 @@
                 <div class="container">
                     <div class="row justify-content-md-center">
                         <div class="col-lg-8">
-                            <h1 class="section-title bottom-bar text-center mb-10 pb-20">Faq</h1>
+                            <h1 class="section-title bottom-bar text-center mb-10 pb-20">FAQ</h1>
                             <p class="font-20 text-center pt-10">Frequently Asked Questions</p>
                         </div>
                     </div>
