@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
@@ -12,7 +11,6 @@ class Media extends Model
      */
     protected $fillable = ['url'];
 
-
     /**
      * @return MorphTo
      */
@@ -21,14 +19,22 @@ class Media extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
 }

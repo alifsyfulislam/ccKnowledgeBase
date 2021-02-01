@@ -2,30 +2,57 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Faq extends Model
 {
+    /**
+     * @var string[]
+     */
     protected $fillable = [
-        'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_body', 'status', 'publish_date'
+        'id',
+        'user_id',
+        'category_id',
+        'en_title',
+        'bn_title',
+        'tag',
+        'slug',
+        'en_body',
+        'status',
+        'publish_date'
     ];
 
-    public function user(){
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function category(){
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 }

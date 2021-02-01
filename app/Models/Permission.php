@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
 
+    /**
+     * @var string[]
+     */
     protected $fillable = ['name', 'slug'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles()
     {
 
@@ -17,6 +22,9 @@ class Permission extends Model
 
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users()
     {
 
@@ -24,13 +32,21 @@ class Permission extends Model
 
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 }

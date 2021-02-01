@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Permissions\HasPermissionsTrait;
-use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
@@ -19,7 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'username', 'first_name', 'last_name', 'email', 'password', 'status'
+        'id',
+        'username',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'status'
     ];
 
     /**
@@ -40,12 +44,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function media()
     {
         return $this->morphOne(Media::class, 'mediable');
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function article()
     {
 
@@ -53,13 +62,21 @@ class User extends Authenticatable
 
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 }

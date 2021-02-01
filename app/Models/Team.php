@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-    //
-
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 }

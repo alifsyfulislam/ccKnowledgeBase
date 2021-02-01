@@ -2,30 +2,53 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Quiz extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'quizzes';
 
-    protected $fillable = [ "quiz_form_id", "name", "slug", "duration",
-        "total_marks", "number_of_questions", "status"];
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        "quiz_form_id",
+        "name",
+        "slug",
+        "duration",
+        "total_marks",
+        "number_of_questions",
+        "status"
+    ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function quizForm(){
 
         return $this->belongsTo(QuizForm::class);
 
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
 }

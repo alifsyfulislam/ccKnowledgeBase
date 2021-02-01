@@ -2,27 +2,47 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
+    /**
+     * @var string
+     */
     protected $table   = 'pages';
-    protected $guarded = ['created_at', 'updated_at'];
 
+    /**
+     * @var string[]
+     */
+    protected $guarded = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function media()
     {
         return $this->morphOne(Media::class, 'mediable');
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
 }

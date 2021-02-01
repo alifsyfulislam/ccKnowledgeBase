@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Database\Eloquent\Relations\BelongsTo;
-//use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
     /**
      * @var string[]
      */
-    protected $fillable = ['title','parent_id', 'slug'];
+    protected $fillable = [
+        'title',
+        'parent_id',
+        'slug'
+    ];
 
 
     /**
@@ -29,7 +30,6 @@ class Category extends Model
     public function childrenRecursive()
     {
         return $this->children()->with('childrenRecursive');
-
     }
 
     /**
@@ -49,24 +49,35 @@ class Category extends Model
         return $this->parent()->with('parentRecursive');
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function article()
     {
-
         return $this->hasMany(Article::class);
-
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @param $date
+     * @return false|string
+     */
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format("j M, Y");
+        return date('j M, Y', strtotime($date));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
