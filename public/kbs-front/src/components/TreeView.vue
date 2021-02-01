@@ -5,8 +5,8 @@
             <div :class="{bold: isFolder}">
                 <router-link class="nav-link" :to="{ name: 'CategoryList', params: { categoryID: item.slug }}">
                     {{ item.name }}
-                    <span v-if="isFolder" @click="toggle">[{{ isOpen ? '-' : '+' }}]</span>
                 </router-link>
+                <span class="" v-if="isFolder" @click="toggle">[{{ isOpen ? '-' : '+' }}]</span>
             </div>
 
             <ul v-show="isOpen" v-if="isFolder">
@@ -21,6 +21,11 @@
 <script>
 // import $ from 'jquery'
 // import axios from "axios";
+
+// $(window).ready(function(){
+//     $('#treeLevel404').click();
+// });
+
 
 export default {
     name: "TreeView",
@@ -46,6 +51,7 @@ export default {
         },
     },
     created() {
+        // $('#treeLevel404').trigger('click');
         // console.log(this.categorySlug);
     }
 }

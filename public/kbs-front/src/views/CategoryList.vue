@@ -136,6 +136,7 @@ export default {
         return{
 
             treeData        : {
+                id                          : 404,
                 name                        : 'Categories',
                 slug                        : 'default',
                 children_recursive          : ''
@@ -204,7 +205,7 @@ export default {
                         // console.log(_that.categoryHasArticle);
 
                         _that.treeData.children_recursive = _that.categoryHasArticle;
-                        console.log(_that.treeData);
+                        // console.log(_that.treeData);
 
                     }
                 })
