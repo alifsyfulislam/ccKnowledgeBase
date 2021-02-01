@@ -6,8 +6,20 @@
         <main>
             <section class="inner-search-area py-20">
                 <div class="container">
-                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
-                        <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
+                        <div class="breadcrumbs mt-10 mt-sm-0">
+                            <ul class="list-inline list-unstyled mb-0">
+                                <li class="list-inline-item">
+                                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                                        <i class="fa fa-home"></i>
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    contact
+                                </li>
+                            </ul>
+                        </div>
+<!--                        <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
                     </div>
                 </div>
             </section>

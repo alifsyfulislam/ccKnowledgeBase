@@ -33,7 +33,10 @@
                                     </router-link>
                                 </li>
                                 <li class="list-inline-item">
-                                    faq
+                                    FAQ
+                                </li>
+                                <li v-if="faq_query" class="list-inline-item">
+                                    {{faq_query}}
                                 </li>
                             </ul>
                         </div>
