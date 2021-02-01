@@ -32,6 +32,7 @@ Route::get('article-details/{slug}', 'Api\ArticleController@articleDetails');
 Route::get('article-list', 'Api\ArticleController@articleList');
 
 Route::get('article/search/{any}','Api\ArticleController@articleSearch');
+Route::get('faq/search/{any}','Api\FaqController@faqSearch');
 
 Route::get('faq-list','Api\FaqController@faqList');
 

@@ -134,4 +134,11 @@ class FaqController extends Controller
         return $this->faqService->faqStatusChange($request);
 
     }
+
+    public function faqSearch(string $searchString = "")
+    {
+
+        return $this->faqService->searchFaq($searchString);
+
+    }
 }

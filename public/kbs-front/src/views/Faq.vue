@@ -6,8 +6,37 @@
         <main>
             <section class="inner-search-area py-20">
                 <div class="container">
-                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between">
-                        <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>
+                    <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
+                        <div class="input-group order-sm-2">
+                            <input type="text" class="form-control" v-on:keyup.enter="faq_query ? searchData() : ''" v-model="faq_query" placeholder="Search FAQ Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="faq_query ? searchData() : ''">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="breadcrumbs mt-10 mt-sm-0">
+                            <ul class="list-inline list-unstyled mb-0">
+                                <li class="list-inline-item">
+                                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                                        <i class="fa fa-home"></i>
+                                    </router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    faq
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+
+<!--                        <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
                     </div>
                 </div>
             </section>
@@ -46,10 +75,19 @@ export default {
     data(){
         return{
             isLoading: true,
-            all_Faqs:''
+            all_Faqs:'',
+            faq_query : ''
         }
     },
     methods:{
+        searchData(pageUrl){
+            let _that = this;
+            pageUrl = pageUrl == undefined ? 'faq/search/'+_that.faq_query+'?page=1' : pageUrl;
+            axios.get(pageUrl).then((response)=>{
+                _that.all_Faqs = response.data.faq_list.data;
+                _that.pagination  = response.data.faq_list;
+            })
+        },
         allFaqs(){
             let _that = this;
             axios.get('faq-list')

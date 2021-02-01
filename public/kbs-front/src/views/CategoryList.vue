@@ -8,7 +8,7 @@
                 <div class="container">
                     <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
                         <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Here" aria-label="Search Here" aria-describedby="searchBtn">
+                            <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

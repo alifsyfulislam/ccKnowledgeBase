@@ -149,4 +149,15 @@ class FaqRepository implements RepositoryInterface
 
     }
 
+
+    public function search(string $query = "")
+    {
+        return Faq::with('category')
+            ->where('en_title', 'like', "%{$query}%")
+            ->where('status', 'public')
+            ->orWhere('tag', 'like', "%{$query}%")
+            ->orWhere('en_body', 'like', "%{$query}%")
+            ->orderBy('id', 'DESC')->paginate(5);
+    }
+
 }
