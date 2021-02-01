@@ -7,16 +7,20 @@
             <section class="inner-search-area py-20">
                 <div class="container">
                     <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
-                        <div class="input-group order-sm-2">
-                            <input type="text" class="form-control" v-on:keyup.enter="faq_query ? searchData() : ''" v-model="faq_query" placeholder="Search FAQ Here" aria-label="Search Here" aria-describedby="searchBtn">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="faq_query ? searchData() : ''">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                                    </svg>
-                                </button>
+                        <div class="d-flex align-items-center justify-content-end order-sm-2">
+                            <div class="input-group w-100 d-flex align-items-center bg-white">
+                                <input type="text" class="form-control pr-2" v-on:keyup.enter="faq_query ? searchData() : ''" v-model="faq_query" placeholder="Search FAQ Here" aria-label="Search Here" aria-describedby="searchBtn">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="faq_query ? searchData() : ''">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                                            <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
+
+                            <button class="btn btn-outline-primary py-15 px-15 px-sm-25 rounded-pill d-flex align-items-center ml-2 bg-white"><i class="fa fa-refresh"></i> <span class="pl-2">Reload</span></button>
                         </div>
 
 
@@ -104,5 +108,13 @@ export default {
 </script>
 
 <style scoped>
+    .inner-search-area .search-input-wrapper .input-group,
+    .inner-search-area .search-input-wrapper .input-group.focused, 
+    .inner-search-area .search-input-wrapper .input-group.filled {
+        max-width: 100%;
+    }
 
+    .inner-search-area .search-input-wrapper .btn.btn-outline-primary:hover {
+        background: #3fc6d4 !important;
+    }
 </style>
