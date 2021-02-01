@@ -93,6 +93,7 @@ export default {
             localStorage.clear('faq_query');
 
             let _that = this;
+            _that.faq_query = '';
             axios.get('faq-list')
                 .then(function (response) {
                     _that.isLoading= false;
