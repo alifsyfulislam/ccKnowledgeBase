@@ -35,7 +35,7 @@ class ArticleRepository implements RepositoryInterface
             return Article::with('user','category')
                 ->where('status', 'public')
                 ->orderBy('created_at', 'DESC')
-                ->take(5)
+                ->take(6)
                 ->get();
         }
     }
