@@ -32,7 +32,7 @@ class UserTableSeeder extends Seeder
 
             $userId = time().rand(1000,9000);
 
-            User::create([
+            $user = User::create([
                 'id' => $userId,
                 'username' => 'admin',
                 'first_name' => 'Md Ziaur',
@@ -40,6 +40,7 @@ class UserTableSeeder extends Seeder
                 'slug' => 'zia-rahman',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('123456'),
+                'status' => 1,
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10)
             ]);

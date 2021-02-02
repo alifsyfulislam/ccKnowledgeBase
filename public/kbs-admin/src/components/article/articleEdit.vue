@@ -207,7 +207,8 @@ export default {
 
             filter      : {
                 isAdmin             : 1
-            }
+            },
+            previous_media_list : [],
         }
     },
 
@@ -437,7 +438,7 @@ export default {
                 .then(function (response) {
                     if (response.data.status_code === 200) {
                         console.log(response.data);
-                        _that.articleDetails       = response.data.article_info;
+                        _that.articleDetails          = response.data.article_info;
 
                         _that.articleData.category_id =  _that.articleDetails.category_id;
 
@@ -453,6 +454,24 @@ export default {
                         _that.enBodyData  = _that.articleData.en_body;
                         _that.bnBodyData  = _that.articleData.bn_body;
                         _that.isMounted   = true;
+
+                        if ((_that.articleDetails.media).length >=0){
+                            (_that.articleDetails.media).forEach( aMedia => {
+                                var previousMediaTemp = {};
+
+                                var mediaName = (aMedia.url).slice( (aMedia.url).indexOf('_') + 1);
+
+                                previousMediaTemp = {
+                                    url : aMedia.url,
+                                    name :mediaName
+                                };
+
+                                _that.previous_media_list.push(previousMediaTemp);
+
+                            });
+
+                        }
+                        console.log( _that.previous_media_list);
 
                     } else {
                         _that.success_message = "";
