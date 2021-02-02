@@ -43,27 +43,34 @@
                         <div class="col-lg-4 col-md-5 text-left" v-if="categoryHasArticle">
                             <div class="menu-wrapper bg-white mb-50">
                                 <h3 class="menu-title mb-20 p-15">Categories</h3>
-                                <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">
-                                    <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">
-                                        <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">
-                                            {{a_cat_art.name}}
-<!--                                            <span v-if="(a_cat_art.children_recursive).length > 0">-->
-<!--                                                <i class="fa fa-2x fa-plus"></i>-->
-<!--                                            </span>-->
-                                        </a>
-                                    </li>
-                                </ul>
+                                <!--                                <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">-->
+                                <!--                                    <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">-->
+                                <!--                                        <a class="nav-link" :class = "(categoryID==a_cat_art.slug) ? 'active':''" href="#" @click.prevent="categorySearch(a_cat_art.slug), routePath = a_cat_art.slug">-->
+                                <!--                                            {{a_cat_art.name}}-->
+                                <!--                                            <span v-if="(a_cat_art.children_recursive).length > 0">-->
+                                <!--                                                <i class="fa fa-2x fa-plus"></i>-->
+                                <!--                                            </span>-->
+                                <!--                                        </a>-->
+                                <!--                                    </li>-->
+                                <!--                                </ul>-->
+                                <div class="nav nav-pills flex-column d-block px-15" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
+
+                                    <ul class="list-unstyled list-inline mb-0">
+                                        <tree-view class="item" :item="a_cate_art"></tree-view>
+                                    </ul>
+
+                                </div>
                             </div>
 
-<!--                            <div class="menu-wrapper bg-white mt-30">
-                                <h3 class="menu-title mb-20 p-15">Tags</h3>
-                                <ul class="list-inline list-unstyled px-15 pb-15 tag-list-wrapper">
-                                    <li class="d-inline-block"><a href="#">Sports</a></li>
-                                    <li class="d-inline-block"><a href="#">Reactjs</a></li>
-                                    <li class="d-inline-block"><a href="#">covid 19</a></li>
-                                    <li class="d-inline-block"><a href="#">Sci-fi</a></li>
-                                </ul>
-                            </div>-->
+                            <!--                            <div class="menu-wrapper bg-white mt-30">
+                                                            <h3 class="menu-title mb-20 p-15">Tags</h3>
+                                                            <ul class="list-inline list-unstyled px-15 pb-15 tag-list-wrapper">
+                                                                <li class="d-inline-block"><a href="#">Sports</a></li>
+                                                                <li class="d-inline-block"><a href="#">Reactjs</a></li>
+                                                                <li class="d-inline-block"><a href="#">covid 19</a></li>
+                                                                <li class="d-inline-block"><a href="#">Sci-fi</a></li>
+                                                            </ul>
+                                                        </div>-->
                         </div>
 
                         <div class="col-lg-8 col-md-7" v-if="selectedCategory">
@@ -128,16 +135,27 @@
 
 <script>
 import Loading from "@/components/Loading";
+import TreeView from "@/components/TreeView";
 import axios from 'axios'
 // import searchform from "@/components/Search";
 export default {
     name: "CategoryList",
     components:{
         Loading,
+        TreeView
         // searchform
+    },
+    watch: {
+        $route(to, from) {
+            console.log(to+" "+from);
+            this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
+            this.changeCategoryArticlePage(this.categoryArticleList.slug);
+            this.categoryID = this.categoryArticleList.slug;
+        }
     },
     data(){
         return{
+            categoryArticleList : '',
             routePath : '',
             isLoading: true,
             allCategoryArticle:'',
@@ -260,7 +278,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>
