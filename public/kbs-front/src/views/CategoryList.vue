@@ -41,7 +41,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4 col-md-5 text-left" v-if="categoryHasArticle">
-                            <div class="menu-wrapper bg-white mb-50">
+                            <div class="menu-wrapper cat-menu-wrapper bg-white mb-50">
                                 <h3 class="menu-title mb-20 p-15">Categories</h3>
                                 <!-- <ul class="nav nav-pills flex-column d-block px-15 pb-15" style="max-height: 300px;overflow-y: auto">-->
                                 <!-- <li class="nav-item" v-for="(a_cat_art) in categoryHasArticle" :key="a_cat_art.id">-->
