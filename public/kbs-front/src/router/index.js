@@ -69,7 +69,6 @@ let router = createRouter({
 
 router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0);
-
     // More code ...
     next();
 });

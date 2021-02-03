@@ -147,12 +147,6 @@ export default {
     },
     watch: {
         '$route.params': 'functionToRunWhenParamsChange',
-        // $route(to, from) {
-        //     console.log(to+" "+from);
-        //     this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
-        //     this.changeCategoryArticlePage(this.categoryArticleList.slug);
-        //     this.categoryID = this.categoryArticleList.slug;
-        // }
     },
     data(){
         return{
@@ -185,7 +179,6 @@ export default {
     },
     methods:{
         functionToRunWhenParamsChange(){
-            console.log(this.$route.fullPath);
             if ((this.$route.fullPath).includes('/category-list')){
                 this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
                 this.changeCategoryArticlePage(this.categoryArticleList.slug);
@@ -223,7 +216,6 @@ export default {
                                 _that.categoryHasArticle.push(val);
                             }
                         })
-                        console.log(_that.categoryHasArticle);
                     }
                 })
         },
@@ -238,11 +230,11 @@ export default {
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination  = response.data.article_list;
                     _that.$router.push('/category-list/'+_that.categoryID)
-                    // console.log(_that.selectedCategory)
                 })
         },
 
         changeCategoryArticlePage(categoryID,pageUrl){
+            window.scrollTo(0, 0);
             let _that = this;
             pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
             // console.log(pageUrl);
@@ -252,7 +244,6 @@ export default {
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination  = response.data.article_list;
                     _that.$router.push('/category-list/'+_that.categoryID)
-                    console.log(_that.selectedCategory)
                 })
         },
 
@@ -281,10 +272,8 @@ export default {
         this.categoryID = this.$route.params.categoryID;
         console.log(this.categoryID);
         this.getCategoryArticleList();
-
         this.categorySearch(this.categoryID);
         this.getStaticMedia();
-        // localStorage.clear();
     }
 }
 </script>
