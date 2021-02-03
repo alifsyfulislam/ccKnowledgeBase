@@ -17,7 +17,7 @@
               <ul class="navbar-nav ml-auto align-items-center">
 
                   <li class="nav-item">
-                      <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: 'interactive-voice-response-(ivr)' }}">
+                      <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: 'default' }}">
                           <span>CATEGORIES</span>
                       </router-link>
                   </li>

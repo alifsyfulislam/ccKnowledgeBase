@@ -92,6 +92,48 @@
                     </div>
 
                     <div class="col-md-12">
+
+                        <div class="form-group mb-15">
+                            <label class="form-label" >Upload Files</label>
+                            <input type="file"  id="files" class="form-control" ref="files" multiple @change="fileUploadChange"  >
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 mb-15" v-if="article_files.length >0">
+                        <div class="card">
+                            <div class="card-header bg-light-2 px-10 py-1">List of Files</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-10 py-1"
+                                    v-for="(file, index) in article_files"
+                                    :key="index"
+                                >
+                                    <a :href="file.url" class="font-12 text-body d-flex justify-content-between align-items-center">
+                                        {{ file.name }}
+                                        <span class="close-btn" @click="deleteUploadedFile(index)">x</span>
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-15" v-if="previous_media_list.length >0">
+                        <div class="card">
+                            <div class="card-header bg-light-2 px-10 py-1">List of Previous Files</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-10 py-1"
+                                    v-for="(previous_file, prev_index) in previous_media_list" :key="prev_index">
+                                        <a href="#" class="font-12 text-body d-flex justify-content-between align-items-center">
+                                            {{ previous_file.name }}
+                                            <span class="close-btn" @click="deletePreviousUploadedFile(prev_index)">x</span>
+                                        </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Status</label>
                             <select class="form-control" v-model="articleData.status">
@@ -106,7 +148,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="form-group text-right">
                     <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
@@ -172,17 +213,43 @@ export default {
             selected_checkbox    : '',
             bangla_checkbox      : '',
 
+            fileUrl       : [],
+            article_files : [],
+            video_files   : '',
             images                  : [],
             files                   : [],
             url                     : '',
 
             filter      : {
                 isAdmin             : 1
-            }
+            },
+            previous_media_list : [],
         }
     },
 
     methods: {
+
+        deleteUploadedFile(index){
+            document.getElementById('files').value= "";
+            (this.article_files).splice(index, 1);
+        },
+
+        deletePreviousUploadedFile(index){
+            //document.getElementById('files').value= "";
+            (this.previous_media_list).splice(index, 1);
+        },
+
+        fileUploadChange(e) {
+            let _that = this;
+            const selectedFiles = e.target.files;
+
+            for(var j=0; j<selectedFiles.length; j++){
+                // console.log(selectedFiles[j]);
+                _that.article_files.push(selectedFiles[j]);
+            }
+
+        },
+
         collectArticleList(tagList){
             this.articleData.tag = tagList.join();
         },
@@ -294,6 +361,18 @@ export default {
         {
             let _that           = this;
             let formData        = new FormData();
+
+            for( var i = 0; i < this.article_files.length; i++ ){
+                let file = this.article_files[i];
+
+                formData.append('uploaded_file[' + i + ']', file);
+            }
+
+            var json_arr = JSON.stringify(this.previous_media_list);
+            console.log(json_arr)
+
+
+
             let enBody          = document.getElementById('en_Body').value;
 
             if (!(document.getElementById('bn_Body'))) {
@@ -311,6 +390,7 @@ export default {
             formData.append('en_body', enBody);
             formData.append('bn_body', bnBody);
             formData.append('status', this.articleData.status);
+            formData.append('previous_file_list', json_arr);
 
             axios.post('admin/article/update-data', formData,
                 {
@@ -319,7 +399,7 @@ export default {
                         'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                if (response.data.status_code == 200){
+                if (response.data.status_code === 200){
                     _that.articleData           = '';
                     _that.error_message         = '';
                     _that.success_message       = "Article Updated Successfully";
@@ -384,7 +464,7 @@ export default {
                 .then(function (response) {
                     if (response.data.status_code === 200) {
                         console.log(response.data);
-                        _that.articleDetails       = response.data.article_info;
+                        _that.articleDetails          = response.data.article_info;
 
                         _that.articleData.category_id =  _that.articleDetails.category_id;
 
@@ -401,7 +481,24 @@ export default {
                         _that.bnBodyData  = _that.articleData.bn_body;
                         _that.isMounted   = true;
 
-                        console.log('enBody',  + _that.enBodyData);
+                        if ((_that.articleDetails.media).length >=0){
+                            (_that.articleDetails.media).forEach( aMedia => {
+                                var previousMediaTemp = {};
+
+                                var mediaName = (aMedia.url).slice( (aMedia.url).indexOf('_') + 1);
+
+                                previousMediaTemp = {
+                                    id   : aMedia.id,
+                                    url  : aMedia.url,
+                                    name : mediaName
+                                };
+
+                                _that.previous_media_list.push(previousMediaTemp);
+
+                            });
+
+                        }
+                        console.log( _that.previous_media_list);
 
                     } else {
                         _that.success_message = "";
@@ -421,5 +518,19 @@ export default {
 </script>
 
 <style scoped>
+.font-12 {
+    font-size: 12px;
+}
 
+.close-btn {
+    cursor: pointer;
+    background: #ff7b88;
+    color: #ffffff;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 50%;
+    text-indent: 1px;
+}
 </style>

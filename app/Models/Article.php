@@ -22,10 +22,10 @@ class Article extends Model
         'publish_date'
     ];
 
-    /*public function media()
+    public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
-    }*/
+    }
 
 
     public function user()

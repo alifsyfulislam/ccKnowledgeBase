@@ -58,7 +58,6 @@ class ArticleService
      */
     public function createItem(Request $request)
     {
-
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
@@ -82,11 +81,40 @@ class ArticleService
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
 
+        $thumbImageList = $request->uploaded_file;
+
         DB::beginTransaction();
 
         try {
 
             $this->articleRepository->create($input);
+
+            $article = $this->getItemById($input['id']);
+
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                if (isset($request->uploaded_file)) {
+
+                    $fileLength = count($thumbImageList);
+
+                    if (count($thumbImageList) > 0) {
+                        for ($i = 1; $i <= $fileLength; $i++) {
+                          //  dd($thumbImageList[count($thumbImageList) - $i]);
+                            $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
+                        }
+                    }
+                }
+
+                foreach ($thumbFile as $file):
+
+                    $article->media()->create([
+
+                        'url' => $file
+
+                    ]);
+
+                endforeach;
+            }
 
         } catch (Exception $e) {
 
@@ -195,6 +223,70 @@ class ArticleService
 
             $this->articleRepository->update($input, $input['id']);
 
+            $uploaded_previous_file = json_decode($request->previous_file_list);
+
+            if (empty($uploaded_previous_file) ){
+                $mediaList = Media::where('mediable_id', $request->id)->get();
+
+                if (count($mediaList) > 0)
+                {
+                    foreach($mediaList as $media)
+                    {
+                        $mediaName =  substr($media->url, strpos($media->url, "media") );
+                        unlink(public_path().'/'.$mediaName );
+                        Media::find($media->id)->delete();
+
+                    }
+                }
+            }
+
+            if(isset($uploaded_previous_file) && count($uploaded_previous_file)>0) {
+                $previousFileIds = array_column($uploaded_previous_file, 'id');
+                $previousMediaList = Media::where('mediable_id', $request->id)->get();
+                $previousMediaListIdArray = $previousMediaList->pluck('id')->toArray();
+
+                $previousFileDiff = array_diff($previousMediaListIdArray,$previousFileIds);
+
+                if ($previousFileDiff){
+                    foreach($previousFileDiff as $aPreviousMedia)
+                    {
+                        $media = Media::where('id', $aPreviousMedia)->first();
+                        $mediaName =  substr($media->url, strpos($media->url, "media") );
+                        unlink(public_path().'/'.$mediaName );
+                        Media::find($aPreviousMedia)->delete();
+
+                    }
+                }
+
+            }
+
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                $article = $this->getItemById($request->id);
+
+                $thumbImageList = $request->uploaded_file;
+
+                $fileLength = count($thumbImageList);
+
+                if(count($thumbImageList) > 0) {
+                    for ($i = 1; $i <= $fileLength; $i++) {
+
+                        $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
+
+                    }
+                }
+
+                foreach ($thumbFile as $file):
+
+                    $article->media()->create([
+
+                        'url' => $file
+
+                    ]);
+
+                endforeach;
+            }
+
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -226,7 +318,25 @@ class ArticleService
 
         try {
 
+            $article = $this->getItemById($id);
+            $mediaList = Media::where('mediable_id', $id)->get();
+
+            if (count($mediaList) > 0)
+            {
+
+                foreach($mediaList as $media)
+                {
+
+                    $mediaName =  substr($media->url, strpos($media->url, "media") );
+                    unlink(public_path().'/'.$mediaName );
+                    Media::find($media->id)->delete();
+
+                }
+
+            }
             $this->articleRepository->delete($id);
+
+
 
         } catch (Exception $e) {
 

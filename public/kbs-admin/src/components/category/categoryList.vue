@@ -347,10 +347,11 @@ export default {
                 console.log(error);
             });
         },
+
         //alert message remove
+
         setTimeoutElements()
         {
-            // setTimeout(() => this.isLoading = false, 3e3);
             setTimeout(() => this.success_message = "", 3e3);
             setTimeout(() => this.error_message = "", 3e3);
         },

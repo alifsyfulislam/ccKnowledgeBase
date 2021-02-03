@@ -26,13 +26,13 @@ class ArticleRepository implements RepositoryInterface
     {
         if ($request->isAdmin){
 
-            return Article::with('user','category')->orderBy('created_at', 'DESC')
+            return Article::with('user','category', 'media')->orderBy('created_at', 'DESC')
                 ->take(5)
                 ->get();
 
         } else{
 
-            return Article::with('user','category')
+            return Article::with('user', 'category', 'media')
                 ->where('status', 'public')
                 ->orderBy('created_at', 'DESC')
                 ->take(6)
@@ -46,12 +46,12 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('user','category')->find($id);
+        return Article::with('user','category', 'media')->find($id);
     }
 
     public function getBySlug($slug)
     {
-        return Article::with('user','category')
+        return Article::with('user','category', 'media')
             ->where('slug', $slug)
             ->first();
     }
@@ -113,7 +113,7 @@ class ArticleRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
 
-        $query = Article::with('user', 'category');
+        $query = Article::with('user', 'category', 'media');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList = ['en_title', 'tag'];
         $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
