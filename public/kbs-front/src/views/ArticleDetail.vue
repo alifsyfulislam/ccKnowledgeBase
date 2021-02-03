@@ -39,33 +39,75 @@
                 </div>
             </section>
 
-            <section class="category-details-area py-50 py-md-60 text-left" v-if="aArticle">
+
+            <section class="category-details-area py-50 py-md-60 text-left">
                 <div class="container">
-                    <div class="row pb-20">
-                        <div class="col-lg-9 col-md-8">
-                            <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
-                            <div>
-                                <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
-                            </div>
-                            <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-                            <div class="ta-wrapper d-flex align-items-center py-10 my-40">
-                                <div class="avatar mr-10">
-                                    <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                                </div>
-                                <div class="tc-wrapper">
-                                    <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                                    <p class="mb-0">Post on: {{aArticle.created_at}}</p>
-                                </div>
-                            </div>
-
-                            <div class="ta-content-wrapper">
-                                <h3 class="">{{aArticle.en_title}}</h3>
-                            </div>
-                            <div class="ta-content-wrapper">
-                                <div v-html="aArticle.en_body"></div>
-                            </div>
-
+                    <div class="row" v-if="aArticle">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabOne">English</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabTwo">Bangla</a>
+                                </li>
+                            </ul>
                         </div>
+
+                        <div class="col-md-9 col-md-8">
+                            <div class="tab-content pt-3" id="myTabContent">
+                                <div class="tab-pane fade active show" id="tabOne">
+                                    <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
+                                    <div>
+                                        <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
+                                    </div>
+                                    <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+                                    <div class="ta-wrapper d-flex align-items-center py-10 my-40">
+                                        <div class="avatar mr-10">
+                                            <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                                        </div>
+                                        <div class="tc-wrapper">
+                                            <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                                            <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="ta-content-wrapper">
+                                        <h3 class="">{{aArticle.en_title}}</h3>
+                                    </div>
+                                    <div class="ta-content-wrapper">
+                                        <div v-html="aArticle.en_body"></div>
+                                    </div>
+                                </div>
+
+
+<!--                                bangla-->
+                                <div class="tab-pane fade" id="tabTwo" v-if="aArticle.bn_title">
+                                    <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
+                                    <div>
+                                        <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
+                                    </div>
+                                    <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+                                    <div class="ta-wrapper d-flex align-items-center py-10 my-40">
+                                        <div class="avatar mr-10">
+                                            <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                                        </div>
+                                        <div class="tc-wrapper">
+                                            <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                                            <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="ta-content-wrapper">
+                                        <h3 class="">{{aArticle.bn_title}}</h3>
+                                    </div>
+                                    <div class="ta-content-wrapper">
+                                        <div v-html="aArticle.bn_body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-3 col-md-4">
                             <div class="article-sidebar">
                                 <div class="menu-wrapper bg-white mb-30">
