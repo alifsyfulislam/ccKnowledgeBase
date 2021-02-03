@@ -118,6 +118,21 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12 mb-15" v-if="previous_media_list.length >0">
+                        <div class="card">
+                            <div class="card-header bg-light-2 px-10 py-1">List of Previous Files</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-10 py-1"
+                                    v-for="(previous_file, prev_index) in previous_media_list" :key="prev_index">
+                                        <a href="#" class="font-12 text-body d-flex justify-content-between align-items-center">
+                                            {{ previous_file.name }}
+                                            <span class="close-btn" @click="deletePreviousUploadedFile(prev_index)">x</span>
+                                        </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Status</label>
@@ -217,6 +232,11 @@ export default {
         deleteUploadedFile(index){
             document.getElementById('files').value= "";
             (this.article_files).splice(index, 1);
+        },
+
+        deletePreviousUploadedFile(index){
+            //document.getElementById('files').value= "";
+            (this.previous_media_list).splice(index, 1);
         },
 
         fileUploadChange(e) {
@@ -348,6 +368,11 @@ export default {
                 formData.append('uploaded_file[' + i + ']', file);
             }
 
+            var json_arr = JSON.stringify(this.previous_media_list);
+            console.log(json_arr)
+
+
+
             let enBody          = document.getElementById('en_Body').value;
 
             if (!(document.getElementById('bn_Body'))) {
@@ -365,6 +390,7 @@ export default {
             formData.append('en_body', enBody);
             formData.append('bn_body', bnBody);
             formData.append('status', this.articleData.status);
+            formData.append('previous_file_list', json_arr);
 
             axios.post('admin/article/update-data', formData,
                 {
@@ -373,7 +399,7 @@ export default {
                         'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
-                if (response.data.status_code == 200){
+                if (response.data.status_code === 200){
                     _that.articleData           = '';
                     _that.error_message         = '';
                     _that.success_message       = "Article Updated Successfully";
@@ -462,8 +488,9 @@ export default {
                                 var mediaName = (aMedia.url).slice( (aMedia.url).indexOf('_') + 1);
 
                                 previousMediaTemp = {
-                                    url : aMedia.url,
-                                    name :mediaName
+                                    id   : aMedia.id,
+                                    url  : aMedia.url,
+                                    name : mediaName
                                 };
 
                                 _that.previous_media_list.push(previousMediaTemp);
