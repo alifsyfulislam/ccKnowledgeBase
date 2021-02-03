@@ -185,9 +185,13 @@ export default {
     },
     methods:{
         functionToRunWhenParamsChange(){
-          this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
-          this.changeCategoryArticlePage(this.categoryArticleList.slug);
-          this.categoryID = this.categoryArticleList.slug;
+            console.log(this.$route.fullPath);
+            if ((this.$route.fullPath).includes('/category-list')){
+                this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
+                this.changeCategoryArticlePage(this.categoryArticleList.slug);
+                this.categoryID = this.categoryArticleList.slug;
+            }
+
         },
         getStaticMedia()
         {
