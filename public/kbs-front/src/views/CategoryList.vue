@@ -146,12 +146,13 @@ export default {
         // searchform
     },
     watch: {
-        $route(to, from) {
-            console.log(to+" "+from);
-            this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
-            this.changeCategoryArticlePage(this.categoryArticleList.slug);
-            this.categoryID = this.categoryArticleList.slug;
-        }
+        '$route.params': 'functionToRunWhenParamsChange',
+        // $route(to, from) {
+        //     console.log(to+" "+from);
+        //     this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
+        //     this.changeCategoryArticlePage(this.categoryArticleList.slug);
+        //     this.categoryID = this.categoryArticleList.slug;
+        // }
     },
     data(){
         return{
@@ -183,6 +184,11 @@ export default {
         }
     },
     methods:{
+        functionToRunWhenParamsChange(){
+          this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
+          this.changeCategoryArticlePage(this.categoryArticleList.slug);
+          this.categoryID = this.categoryArticleList.slug;
+        },
         getStaticMedia()
         {
             this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
