@@ -201,12 +201,32 @@ header.fixed-header .navbar .logo img {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: 300;
     transition: all 0.4s;
 }
 
 .menu-wrapper.cat-menu-wrapper .nav-pills:last-of-type {
     padding-bottom: 10px;
+}
+
+.category-details-area .nav-tabs {
+    border-bottom: 0;
+}
+
+.nav-tabs .nav-link {
+    padding: 10px 20px;
+    border-radius: 25rem;
+    border: 1px solid #3fc6d4;
+    margin-right: 10px;
+}
+
+.nav-tabs .nav-link.active, 
+.nav-tabs .nav-item.show .nav-link {
+    background: #3fc6d4;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 25rem;
 }
 
 /* Category end */

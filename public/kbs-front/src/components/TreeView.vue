@@ -3,7 +3,7 @@
         <!--            :id="'treeLevel'+item.id"-->
         <div :class="{bold: isFolder}" class="d-flex justify-content-between cat-expand-menu-item">
             <a class="nav-link d-block w-100" href="#" @click.prevent="getSelectedArticleList(item)">{{ item.name }}</a>
-            <span class="cat-expand" v-if="isFolder" @click="toggle">{{ isOpen ? '-' : '+' }}</span>
+            <span class="cat-expand" v-if="isFolder" @click="toggle">{{ isOpen ? '−' : '+' }}</span>
         </div>
         <ul class="list-unstyled list-inline mb-0 pl-10" v-show="isOpen" v-if="isFolder">
         <span v-for="(child, index) in item.children_recursive" :key="index">

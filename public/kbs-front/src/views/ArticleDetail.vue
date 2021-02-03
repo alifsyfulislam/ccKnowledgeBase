@@ -46,17 +46,17 @@
                         <div class="col-md-12">
                             <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabOne">English</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabTwo">Bangla</a>
+                                    <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="col-md-9 col-md-8">
                             <div class="tab-content pt-3" id="myTabContent">
-                                <div class="tab-pane fade active show" id="tabOne">
+                                <div class="tab-pane fade active show" id="tabEnglish">
                                     <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
                                     <div>
                                         <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
@@ -82,7 +82,7 @@
 
 
 <!--                                bangla-->
-                                <div class="tab-pane fade" id="tabTwo" v-if="aArticle.bn_title">
+                                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title">
                                     <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
                                     <div>
                                         <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
