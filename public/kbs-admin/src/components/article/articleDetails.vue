@@ -21,25 +21,69 @@
 
 
         <div class="content-wrapper bg-white" v-if="aArticle">
-          <div class="data-content-area px-15 py-10">
-            <h3 class="">{{aArticle.en_title}}</h3>
-
-
-
-              <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-              <div class="ta-wrapper d-flex align-items-center py-10 my-25">
-                <div class="avatar mr-10">
-                  <img class="img-fluid" src="@/assets/image.png" style="height: 50px; width: 50px" alt="avatar">
+          <div class="col-md-12 article-lang-switcher">
+              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title">
+                  <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
+                  </li>
+              </ul>
+          </div>
+          
+          <div class="col-md-9 col-md-8">
+            <div class="tab-content pt-3" id="myTabContent">
+              <div class="tab-pane fade active show" id="tabEnglish">
+                <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
+                <div>
+                    <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
                 </div>
-                <div class="tc-wrapper">
-                  <h5 v-cloak class="my-0 pb-1" v-if="aArticle.user">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                  <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+                <div class="ta-wrapper d-flex align-items-center py-10 my-40">
+                    <div class="avatar mr-10">
+                        <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="tc-wrapper">
+                        <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                        <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                    </div>
+                </div>
+
+                <div class="ta-content-wrapper">
+                    <h3 class="">{{aArticle.en_title}}</h3>
+                </div>
+                <div class="ta-content-wrapper">
+                    <div v-html="aArticle.en_body"></div>
                 </div>
               </div>
 
-              <div class="ta-content-wrapper">
-                <p class="text-justify" v-html="aArticle.en_body"></p>
+
+                  <!--bangla-->
+              <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title">
+                <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
+                <div>
+                    <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
+                </div>
+                <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+                <div class="ta-wrapper d-flex align-items-center py-10 my-40">
+                    <div class="avatar mr-10">
+                        <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="tc-wrapper">
+                        <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                        <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                    </div>
+                </div>
+
+                <div class="ta-content-wrapper">
+                      <h3 class="">{{aArticle.bn_title}}</h3>
+                </div>
+                <div class="ta-content-wrapper">
+                    <div v-html="aArticle.bn_body"></div>
+                </div>
               </div>
+            </div>
           </div>
 
           <!-- Content Area End -->
