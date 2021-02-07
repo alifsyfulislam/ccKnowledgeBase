@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import Loader from "../components/Loader";
-import SearchForm from "../components/Search";
+import Loader from "@/components/Loader";
+import SearchForm from "@/components/Search";
 
 import $ from 'jquery'
 import axios from "axios";
