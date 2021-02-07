@@ -1,0 +1,55 @@
+<template>
+    <li class="nav-item">
+      <!--            :id="'treeLevel'+item.id"-->
+      <div :class="{bold: isFolder}" class="d-flex justify-content-between ">
+        <a class="nav-link" href="#" @click.prevent="getSelectedArticleList(item)">{{ item.name }}</a>
+        <span class="cat-expand" v-if="isFolder" @click="toggle">[{{ isOpen ? '-' : '+' }}]</span>
+      </div>
+      <ul class="list-unstyled list-inline mb-0 pl-10" v-show="isOpen" v-if="isFolder">
+        <span v-for="(child, index) in item.children_recursive" :key="index">
+          <tree-view class="item" :item="child"></tree-view>
+        </span>
+      </ul>
+    </li>
+</template>
+
+<script>
+export default {
+  name: "TreeView",
+  props: {
+    item: Object,
+    router_path : String
+  },
+  data: function() {
+    return {
+      isOpen: false,
+      pressedCategoryIdHistory : [],
+    };
+  },
+  computed: {
+    isFolder: function() {
+      return this.item.children_recursive && this.item.children_recursive.length;
+    }
+  },
+  methods: {
+    toggle: function() {
+      if (this.isFolder) {
+        this.isOpen = !this.isOpen;
+      }
+    },
+    getSelectedArticleList(item){
+      this.$router.push({ path: `/category-list/${item.slug}` })
+      localStorage.setItem('category-article-list', JSON.stringify(item));
+    }
+  },
+  created() {
+    // $('#treeLevel404').trigger('click');
+    // console.log(this.categorySlug);
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
+
