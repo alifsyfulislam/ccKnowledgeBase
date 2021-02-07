@@ -1,7 +1,19 @@
 <?php
 
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QuizFormController;
+use App\Http\Controllers\QuizFormFieldController;
+use App\Http\Controllers\TotalCountController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,75 +32,71 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('users/export/', 'ExportController@exportUsers')->name('users.export_mapping');
+/* Route::get('users/export/', 'ExprotController@exportUsers')->name('users.export_mapping');
 Route::get('categories/export/', 'ExportController@exportCategories')->name('categories.export_mapping');
-Route::get('articles/export/', 'ExportController@exportArticles')->name('articles.export_mapping');
+Route::get('articles/export/', 'ExportController@exportArticles')->name('articles.export_mapping'); */
 
 
-Route::post('login', 'AuthController');
-Route::get('category-list','CategoryController@categoryList');
-Route::get('category-article-list', 'CategoryController@categoryArticleList');
-Route::get('article/category/{slug}','ArticleController@articleCategory');
-Route::get('article-details/{slug}', 'ArticleController@articleDetails');
+Route::post('login', [AuthController::class]);
 
-Route::get('article-list', 'ArticleController@articleList');
+Route::get('category-list', [CategoryController::class, 'categoryList']);
+Route::get('category-article-list', [CategoryController::class, 'categoryArticleList']);
 
-Route::get('article/search/{any}','ArticleController@articleSearch');
+Route::get('article/category/{slug}', [ArticleController::class, 'articleCategory']);
+Route::get('article-details/{slug}', [ArticleController::class, 'articleDetails']);
+Route::get('article-list', [ArticleController::class, 'articleList']);
+Route::get('article/search/{any}',[ArticleController::class, 'articleSearch']);
 
-Route::get('faq-list','FaqController@faqList');
-
-Route::get('faqs/{any}','FaqController@show');
-
-
-Route::get('quiz-list','QuizController@getQuizList');
-
-Route::get('front-page-config', 'PageController@index');
-
-Route::get('quiz-form/field-list/{id}','QuizFormFieldController@getQuizFieldListFromQuizForm');
+Route::get('faq-list',[FaqController::class, 'faqList']);
+Route::get('faqs/{any}',[FaqController::class, 'show']);
 
 
+Route::get('quiz-list',[QuizController::class, 'getQuizList']);
+Route::get('quiz-form/field-list/{id}',[QuizFormFieldController::class, 'getQuizFieldListFromQuizForm']);
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
+Route::get('front-page-config', [PageController::class, 'index']);
 
-    Route::post('save-file', 'ArticleController@saveFiles');
-    Route::post('delete-file', 'ArticleController@deleteFiles');
-    Route::post('user/update-password', 'UserController@changePassword');
+/* Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
 
-    Route::post('user/username', 'UserController@checkUserNameExist');
-    Route::post('user/email', 'UserController@checkUserEmailExist');
+    Route::post('save-file', [ArticleController::class, 'saveFiles']);
+    Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
+    Route::get('latest-article-list', [ArticleController::class, 'articleList']);
+    Route::post('article/update-data', [ArticleController::class, 'update']);
 
+    Route::apiResource('users',[UserController::class]);
+    Route::post('user/update-password', [UserController::class,'changePassword']);
+    Route::post('user/username', [UserController::class, 'checkUserNameExist']);
 
-    Route::post('category/name', 'CategoryController@checkCategoryNameExist');
-    Route::post('role/name', 'RoleController@checkRoleNameExist');
+    Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
+    Route::post('category/update-data', [CategoryController::class, 'update']);
+    Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
 
+    Route::apiResource('roles',[RoleController::class]);
+    Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
 
-    Route::get('latest-article-list', 'ArticleController@articleList');
+    Route::apiResource('permissions', [PermissionController::class]);
 
-    Route::post('logout', 'AuthController@logout');
+    // Route::apiResource('categories',[CategoryController::class], ['except' => ['update']]);
 
-    Route::apiResource('users','UserController');
-    Route::apiResource('roles','RoleController');
-    Route::apiResource('permissions', 'PermissionController');
+   
 
-    Route::apiResource('categories','CategoryController', ['except' => ['update']]);
+    // Route::apiResource('articles',[ArticleController::class], ['except' => ['update']]);
 
-    Route::post('category/update-data', 'CategoryController@update');
+    
 
-    Route::post('category-list-for-update', 'CategoryController@getCategoryForEdit');
+    // Route::apiResource('pages',[PageController::class], ['except' => ['update']]);
 
-    Route::apiResource('articles','ArticleController', ['except' => ['update']]);
+    Route::post('pages/update-data', [PageController::class, 'update']);
 
-    Route::post('article/update-data', 'ArticleController@update');
+    Route::apiResource('faqs', [FaqController::class]);
 
-    Route::apiResource('pages','PageController', ['except' => ['update']]);
+    Route::apiResource('quiz-forms', [QuizFormController::class]);
+    Route::apiResource('quiz-form-fields',[QuizFormFieldController::class]);
+    Route::apiResource('quizzes',[QuizController::class]);
 
-    Route::post('pages/update-data', 'PageController@update');
+    Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 
-    Route::apiResource('faqs','FaqController');
-    Route::apiResource('quiz-forms','QuizFormController');
-    Route::apiResource('quiz-form-fields','QuizFormFieldController');
-    Route::apiResource('quizzes','QuizController');
-
-    Route::post('total-count-data', 'TotalCountController@totalCount');
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
+ */
