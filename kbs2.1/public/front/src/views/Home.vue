@@ -202,6 +202,7 @@ export default {
     this.getLatestArticleList();
     this.allFaqs();
     localStorage.removeItem('category-article-list');
+    console.log(axios.defaults.baseURL)
   },
   mounted () {
     document.body.classList.add('home')
