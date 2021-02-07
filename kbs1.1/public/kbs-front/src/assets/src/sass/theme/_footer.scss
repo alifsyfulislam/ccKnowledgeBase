@@ -1,0 +1,10 @@
+.footer-area {
+    color: #909090;
+    a {
+        color: #909090;
+
+        &:hover {
+            color: $tmpcolor;
+        }
+    }
+}
