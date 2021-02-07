@@ -32,9 +32,9 @@
 /kbs2.1/Homestead.yaml
 /kbs2.1/npm-debug.log
 /kbs2.1/yarn-error.log
-/kbs2.1/public/kbs-admin/node_modules
-/kbs2.1/public/kbs-front/node_modules
-/kbs2.1/public/kbs-admin/dist
-/kbs2.1/public/kbs-front/dist
-/kbs2.1/public/kbs-admin/src/main.js
-/kbs2.1/public/kbs-front/src/main.js
+/kbs2.1/public/back/node_modules
+/kbs2.1/public/front/node_modules
+/kbs2.1/public/back/dist
+/kbs2.1/public/front/dist
+/kbs2.1/public/back/src/main.js
+/kbs2.1/public/front/src/main.js
