@@ -18,3 +18,5 @@ yarn-error.log
 /public/front/dist
 /public/kbs-admin/src/main.js
 /public/front/src/main.js
+composer.json
+composer.lock
