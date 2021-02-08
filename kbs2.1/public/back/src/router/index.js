@@ -186,7 +186,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!localStorage.getItem('authToken')) {
       next({
-        path: '/',
+        // path: '/',
         params: {nextUrl: to.fullPath}
       })
     } else {

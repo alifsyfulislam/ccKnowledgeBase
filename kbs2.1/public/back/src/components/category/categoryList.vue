@@ -252,7 +252,7 @@ export default {
         getCategoryList(pageUrl)
         {
             let _that = this;
-            pageUrl = pageUrl == undefined ? 'admin/categories' : pageUrl;
+            pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
 
             axios.get(pageUrl,
                 {
@@ -288,7 +288,7 @@ export default {
         {
             let _that = this;
 
-            axios.put('admin/categories/update', {
+            axios.put('categories/update', {
                     id              : categoryId,
                     name            : this.category_name,
                     parent_id       : this.category_parent_id,
@@ -318,7 +318,7 @@ export default {
         deleteCategory()
         {
             let _that = this;
-            axios.delete('admin/categories/delete',
+            axios.delete('categories/delete',
                 {
                     data:
                         {
