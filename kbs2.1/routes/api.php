@@ -59,6 +59,7 @@ Route::get('front-page-config', [PageController::class, 'index']);
 // Route::prefix('admin')->middleware('auth:api')->group(function() {
 Route::group(['middleware' => 'auth:api'], function () {
     
+    Route::apiResource('articles', ArticleController::class, ['except' => ['update']]);
     Route::post('save-file', [ArticleController::class, 'saveFiles']);
     Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
     Route::get('latest-article-list', [ArticleController::class, 'articleList']);
@@ -68,6 +69,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('user/update-password', [UserController::class,'changePassword']);
     Route::post('user/username', [UserController::class, 'checkUserNameExist']);
 
+    Route::apiResource('categories', CategoryController::class, ['except' => ['update']]);
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
@@ -77,12 +79,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::apiResource('permissions', PermissionController::class);
 
-    Route::apiResource('categories', CategoryController::class, ['except' => ['update']]);
-
-    Route::apiResource('articles', ArticleController::class, ['except' => ['update']]);
-
+    
     Route::apiResource('pages', PageController::class, ['except' => ['update']]);
-
     Route::post('pages/update-data', [PageController::class, 'update']);
 
     Route::apiResource('faqs', FaqController::class);
