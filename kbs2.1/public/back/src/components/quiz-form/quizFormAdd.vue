@@ -140,7 +140,7 @@
             quizFormAdd()
             {
                 let _that       = this;
-                axios.post('admin/quiz-forms',
+                axios.post('quiz-forms',
                     {
                         name    : this.quizFormData.name,
                     },

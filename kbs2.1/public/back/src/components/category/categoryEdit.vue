@@ -106,7 +106,7 @@ export default {
                 $('#categoryNameError').html("*name field is required");
             }
             else if (category_info.length > 2 || category_info.length < 100){
-                axios.post('admin/category/name',
+                axios.post('category/name',
                     {
                         id              : this.categoryDetails.id,
                         name            : this.category_name,
@@ -206,7 +206,7 @@ export default {
             formData.append('name', _that.category_name);
             formData.append('parent_id', _that.category_parent_id);
 
-            axios.post('admin/category/update-data', formData,
+            axios.post('category/update-data', formData,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -250,7 +250,7 @@ export default {
         {
             let _that = this;
 
-            axios.post('admin/category-list-for-update',
+            axios.post('category-list-for-update',
                 {
                     id : _that.category_id
                 },
@@ -275,7 +275,7 @@ export default {
         getCategoryDetails()
         {
             let _that   = this;
-            let apiUrl  = "admin/categories/";
+            let apiUrl  = "categories/";
             axios.get(apiUrl+_that.category_id,
                 {
                     headers: {

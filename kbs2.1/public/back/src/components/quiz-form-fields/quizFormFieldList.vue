@@ -86,7 +86,7 @@
                                         <a @click.prevent="getQuizFormFieldList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                     </li>
                                     <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getQuizFormFieldList('admin/quiz-form-fields?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
+                                        <a @click.prevent="getQuizFormFieldList('quiz-form-fields?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
                                     </li>
                                     <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
                                         <a @click.prevent="getQuizFormFieldList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
@@ -251,7 +251,7 @@
             {
                 let _that = this;
 
-                axios.delete('admin/quiz-form-fields/delete',
+                axios.delete('quiz-form-fields/delete',
                     {
                         data: {
                                 id      : _that.quiz_form_field_id
@@ -283,7 +283,7 @@
             getQuizFormFieldList(pageUrl)
             {
                 let _that   = this;
-                pageUrl     = pageUrl == undefined ? 'admin/quiz-form-fields' : pageUrl;
+                pageUrl     = pageUrl == undefined ? 'quiz-form-fields' : pageUrl;
                 axios.get(pageUrl,
                     {
                         headers: {

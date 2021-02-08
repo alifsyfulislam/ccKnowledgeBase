@@ -280,7 +280,7 @@ export default {
                 bnBody          = document.getElementById('bn_Body').value;
             }
 
-            axios.put('admin/faqs/update',
+            axios.put('faqs/update',
                 {
                     id              : faqID,
                     category_id     : this.selectedCategory,
@@ -321,7 +321,7 @@ export default {
         getFaqDetails(faq_id) {
             let _that = this;
 
-            let apiUrl = "admin/faqs/";
+            let apiUrl = "faqs/";
 
             axios.get(apiUrl+faq_id,
                 {
@@ -358,7 +358,7 @@ export default {
 
             let _that =this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

@@ -115,15 +115,6 @@ let router =  new Router({
             requiresAuth: true
         }
     },
-
-  // {
-  //     path: '/role-add',
-  //     name: 'roleAdd',
-  //     component: roleAdd,
-  //     meta: {
-  //         requiresAuth: true
-  //     }
-  // },
     {
         path: '/role-list',
         name: 'roleList',
@@ -132,14 +123,6 @@ let router =  new Router({
             requiresAuth: true
         }
     },
-    // {
-    //     path: '/role-edit/:id',
-    //     name: 'roleEdit',
-    //     component: roleEdit,
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
     {
       path: '/faq-list',
       name: 'faqList',

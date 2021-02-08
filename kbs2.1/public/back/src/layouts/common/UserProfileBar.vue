@@ -124,7 +124,7 @@ export default {
         userChangePassword(){
             console.log("okay");
             let _that = this;
-            axios.post('admin/user/update-password',
+            axios.post('user/update-password',
                 {
                     id                  : this.user_info.id,
                     password            : this.userData.password,
@@ -162,7 +162,7 @@ export default {
         logout()
         {
             let _that = this;
-            axios.post('admin/logout',
+            axios.post('logout',
                 {
                     id          : this.user_info.id,
                     tokenId     : localStorage.getItem('authToken')

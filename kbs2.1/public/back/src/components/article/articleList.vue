@@ -110,7 +110,7 @@
                                         <a @click.prevent="getArticleList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                     </li>
                                     <li v-for="n in pagination.last_page" class="page-item mx-1 px-0"  :key="n">
-                                        <a @click.prevent="getArticleList('admin/articles?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
+                                        <a @click.prevent="getArticleList('articles?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
                                     </li>
 
                                     <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1 px-0">
@@ -312,7 +312,7 @@ export default {
         changeArticleStatus(){
             this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
             $('#alertModal').modal('toggle');
-            axios.post('admin/change-article-status',
+            axios.post('change-article-status',
                 {
                     id          : this.isArticleStatus.id,
                     status      : this.isArticleStatus.status,
@@ -390,7 +390,7 @@ export default {
         getCategoryList()
         {
             let _that =this;
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -416,7 +416,7 @@ export default {
         {
             let _that = this;
 
-            pageUrl = pageUrl == undefined ? 'admin/articles' : pageUrl;
+            pageUrl = pageUrl == undefined ? 'articles' : pageUrl;
 
             axios.get(pageUrl,
                 {
@@ -457,7 +457,7 @@ export default {
         {
             let _that = this;
 
-            axios.delete('admin/articles/delete',
+            axios.delete('articles/delete',
                 {
                     data    : {
                             id              : _that.article_id

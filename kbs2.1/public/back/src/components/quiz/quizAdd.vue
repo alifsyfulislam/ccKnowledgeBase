@@ -285,7 +285,7 @@ export default {
         quizAdd() {
             let _that = this;
 
-            axios.post('admin/quizzes',
+            axios.post('quizzes',
                 {
                     name          : this.quizData.name,
                     quiz_form_id  : this.quizData.quiz_form_id,
@@ -327,7 +327,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/articles',
+            axios.get('articles',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -352,7 +352,7 @@ export default {
         getQuizFormList(){
             let _that =this;
 
-            axios.get('admin/quiz-forms',
+            axios.get('quiz-forms',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

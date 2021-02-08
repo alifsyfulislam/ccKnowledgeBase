@@ -130,7 +130,7 @@ export default {
                 $('#userEmailError').html("*email field is required");
             }
             else if (user_info.length > 2 || user_info.length < 100){
-                axios.post('admin/user/email',
+                axios.post('user/email',
                     {
                         email            : this.userData.email,
                     },
@@ -160,7 +160,7 @@ export default {
                 $('#userNameError').html("*username field is required");
             }
             else if (user_info.length > 2 || user_info.length < 100){
-                axios.post('admin/user/username',
+                axios.post('user/username',
                     {
                         username            : this.userData.username,
                     },
@@ -457,7 +457,7 @@ export default {
         userAdd()
         {
             let _that = this;
-            axios.post('admin/users',
+            axios.post('users',
                 {
                     username            : this.userData.username,
                     first_name          : this.userData.first_name,
@@ -499,7 +499,7 @@ export default {
         getUserRoles()
         {
             let _that =this;
-            axios.get('admin/roles',
+            axios.get('roles',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

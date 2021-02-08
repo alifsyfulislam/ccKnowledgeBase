@@ -392,7 +392,7 @@ export default {
             formData.append('status', this.articleData.status);
             formData.append('previous_file_list', json_arr);
 
-            axios.post('admin/article/update-data', formData,
+            axios.post('article/update-data', formData,
                 {
                     headers : {
                         'Content-Type'      : 'multipart/form-data',
@@ -425,7 +425,7 @@ export default {
         getCategoryList() {
             let _that =this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -453,7 +453,7 @@ export default {
 
             let _that = this;
             let articleID = this.articleData.id;
-            let apiUrl = "admin/articles/";
+            let apiUrl = "articles/";
 
             axios.get(apiUrl+articleID,
                 {
