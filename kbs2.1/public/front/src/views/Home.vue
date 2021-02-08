@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import Loader from "../components/Loader";
-import SearchForm from "../components/Search";
+import Loader from "@/components/Loader";
+import SearchForm from "@/components/Search";
 
 import $ from 'jquery'
 import axios from "axios";
@@ -202,7 +202,6 @@ export default {
     this.getLatestArticleList();
     this.allFaqs();
     localStorage.removeItem('category-article-list');
-    console.log(axios.defaults.baseURL)
   },
   mounted () {
     document.body.classList.add('home')
