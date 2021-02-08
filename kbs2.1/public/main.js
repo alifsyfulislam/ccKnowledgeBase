@@ -12,14 +12,12 @@ import $ from 'jquery'
 //bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-
 //custom css
 import '@/assets/fonts/nunito/font.css'
 import '@/assets/css/bundle.css'
 import '@/assets/css/style.css'
 import '@/assets/css/custom.css'
 import '@/assets/fonts/nunito/Nunito-Regular.ttf'
-
 
 Vue.config.productionTip = false
 
