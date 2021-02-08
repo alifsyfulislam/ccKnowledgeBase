@@ -56,47 +56,41 @@ Route::get('quiz-form/field-list/{id}',[QuizFormFieldController::class, 'getQuiz
 
 Route::get('front-page-config', [PageController::class, 'index']);
 
-/* Route::group(['prefix' => 'admin', 'middleware' => 'auth:api'], function () {
-
+// Route::prefix('admin')->middleware('auth:api')->group(function() {
+Route::group(['middleware' => 'auth:api'], function () {
+    
+    Route::apiResource('articles', ArticleController::class, ['except' => ['update']]);
     Route::post('save-file', [ArticleController::class, 'saveFiles']);
     Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
     Route::get('latest-article-list', [ArticleController::class, 'articleList']);
     Route::post('article/update-data', [ArticleController::class, 'update']);
 
-    Route::apiResource('users',[UserController::class]);
+    Route::apiResource('users', UserController::class);
     Route::post('user/update-password', [UserController::class,'changePassword']);
     Route::post('user/username', [UserController::class, 'checkUserNameExist']);
 
+    Route::apiResource('categories', CategoryController::class, ['except' => ['update']]);
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
 
-    Route::apiResource('roles',[RoleController::class]);
+    Route::apiResource('roles',RoleController::class);
     Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
 
-    Route::apiResource('permissions', [PermissionController::class]);
-
-    // Route::apiResource('categories',[CategoryController::class], ['except' => ['update']]);
-
-   
-
-    // Route::apiResource('articles',[ArticleController::class], ['except' => ['update']]);
+    Route::apiResource('permissions', PermissionController::class);
 
     
-
-    // Route::apiResource('pages',[PageController::class], ['except' => ['update']]);
-
+    Route::apiResource('pages', PageController::class, ['except' => ['update']]);
     Route::post('pages/update-data', [PageController::class, 'update']);
 
-    Route::apiResource('faqs', [FaqController::class]);
+    Route::apiResource('faqs', FaqController::class);
 
-    Route::apiResource('quiz-forms', [QuizFormController::class]);
-    Route::apiResource('quiz-form-fields',[QuizFormFieldController::class]);
-    Route::apiResource('quizzes',[QuizController::class]);
+    Route::apiResource('quiz-forms', QuizFormController::class);
+    Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
+    Route::apiResource('quizzes', QuizController::class);
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
- */
