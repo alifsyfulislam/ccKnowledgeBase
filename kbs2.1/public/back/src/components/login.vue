@@ -216,9 +216,7 @@ export default {
 
         customerLogin() {
             let _that = this;
-
             ++_that.checkedCounter;
-
             axios.post('login', {
                 username          : this.formData.username,
                 password          : this.formData.password,
@@ -226,7 +224,7 @@ export default {
 
                 if (response.data.status_code === 200){
 
-                    console.log(response.data.user_info.roles[0].permissions)
+                    console.log(response.data.user_info.roles[0].permissions);
                     _that.checkedCounter  = 0;
                     _that.userInfo        = response.data.user_info;
                     _that.token           = response.data.token;
