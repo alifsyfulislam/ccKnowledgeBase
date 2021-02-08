@@ -1,3 +1,6 @@
 module.exports = {
-    publicPath : '/back'
+  devServer: {
+    disableHostCheck: true
+  },
+  publicPath : '/kbs'
 }

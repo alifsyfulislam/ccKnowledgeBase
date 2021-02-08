@@ -44,7 +44,7 @@
         <div class="container">
           <div class="row" v-if="aArticle">
             <div class="col-md-12">
-              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'null' || aArticle.bn_title">
+              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title && aArticle.bn_title != ''">
                 <li class="nav-item">
                   <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
                 </li>

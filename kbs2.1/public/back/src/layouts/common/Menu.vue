@@ -1,14 +1,15 @@
 <template>
 
-    <div class="sidebar-wrapper bg-white">
+    <div>
+      <div class="sidebar-wrapper bg-white">
         <div class="logo-wrapper text-center py-25 px-10">
-            <img class="big-image" :src="static_image['dashboard_logo']" alt="gplex">
-            <img class="small-image" :src="static_image['dashboard_sm_logo']" height="50" alt="gplex">
+          <img class="big-image" :src="static_image['dashboard_logo']" alt="gplex">
+          <img class="small-image" :src="static_image['dashboard_sm_logo']" height="50" alt="gplex">
         </div>
         <nav class="sidebar-menu-wrapper text-left">
-            <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
-                <li>
-                    <router-link :to="{ name: 'dashboard'}">
+          <ul class="main-items mb-0 pl-10 py-30 list-unstyled">
+            <li>
+              <router-link :to="{ name: 'dashboard'}">
                <span class="anim">
                   <span class="anim">
                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -19,30 +20,30 @@
                      </svg>
                   </span>
                </span>
-                        <span class="menu-title">
+                <span class="menu-title">
                Dashboard
                </span>
-                    </router-link>
-                </li>
-<!--                <li v-if="checkPermission('user-list')">
-                    <router-link :to="{ name: 'customerList'}">
-               <span class="anim">
-                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
-                     <g>
-                        <path id="Icon_awesome-user-tie_1_" class="st0" d="M8.8,10c2.5,0,4.5-2,4.5-4.5s-2-4.5-4.5-4.5S4.2,3,4.2,5.5S6.2,10,8.8,10z
-                           M12.1,11.2l-1.7,6.8l-1.1-4.8l1.1-2H7.1l1.1,2l-1.1,4.8l-1.7-6.8c-2.5,0.1-4.5,2.2-4.5,4.7v1.5c0,0.9,0.8,1.7,1.7,1.7l0,0H15
-                           c0.9,0,1.7-0.8,1.7-1.7l0,0v-1.5C16.7,13.4,14.7,11.3,12.1,11.2z"/>
-                     </g>
-                  </svg>
-               </span>
-                        <span class="menu-title">
-               User
-               </span>
-                    </router-link>
-                </li>-->
+              </router-link>
+            </li>
+            <!--                <li v-if="checkPermission('user-list')">
+                                <router-link :to="{ name: 'customerList'}">
+                           <span class="anim">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
+                                 <g>
+                                    <path id="Icon_awesome-user-tie_1_" class="st0" d="M8.8,10c2.5,0,4.5-2,4.5-4.5s-2-4.5-4.5-4.5S4.2,3,4.2,5.5S6.2,10,8.8,10z
+                                       M12.1,11.2l-1.7,6.8l-1.1-4.8l1.1-2H7.1l1.1,2l-1.1,4.8l-1.7-6.8c-2.5,0.1-4.5,2.2-4.5,4.7v1.5c0,0.9,0.8,1.7,1.7,1.7l0,0H15
+                                       c0.9,0,1.7-0.8,1.7-1.7l0,0v-1.5C16.7,13.4,14.7,11.3,12.1,11.2z"/>
+                                 </g>
+                              </svg>
+                           </span>
+                                    <span class="menu-title">
+                           User
+                           </span>
+                                </router-link>
+                            </li>-->
 
-                <li  v-if="checkPermission('category-list')">
-                    <router-link :to="{ name: 'categoryList'}">
+            <li  v-if="checkPermission('category-list')">
+              <router-link :to="{ name: 'categoryList'}">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                      <g>
@@ -53,11 +54,11 @@
                      </g>
                   </svg>
                </span>
-                        <span class="menu-title">Category</span>
-                    </router-link>
-                </li>
-                <li  v-if="checkPermission('article-list')">
-                    <router-link :to="{ name: 'articleList'}">
+                <span class="menu-title">Category</span>
+              </router-link>
+            </li>
+            <li  v-if="checkPermission('article-list')">
+              <router-link :to="{ name: 'articleList'}">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                      <g>
@@ -70,11 +71,11 @@
                      </g>
                   </svg>
                </span>
-                        <span class="menu-title">Article</span>
-                    </router-link>
-                </li>
-                <li v-if="checkPermission('faq-list')">
-                    <router-link :to="{ name: 'faqList'}">
+                <span class="menu-title">Article</span>
+              </router-link>
+            </li>
+            <li v-if="checkPermission('faq-list')">
+              <router-link :to="{ name: 'faqList'}">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                      <g>
@@ -90,30 +91,12 @@
                      </g>
                   </svg>
                </span>
-                        <span class="menu-title">FAQ</span>
-                    </router-link>
-                </li>
+                <span class="menu-title">FAQ</span>
+              </router-link>
+            </li>
 
-<!--                <li v-if="checkPermission('role-list')">
-                    <router-link :to="{ name: 'roleList'}">
-               <span class="anim">
-                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20"
-                       style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
-                     <g>
-                        <path id="Icon_simple-crunchyroll_1_" class="st0" d="M3.2,10.8C3,7.3,5.6,4.2,9.2,3.9s6.7,2.4,7,5.9c0,0.2,0,0.4,0,0.5V9.9
-                           c0-4.1-3.3-7.4-7.4-7.4S1.4,5.9,1.4,9.9s3.3,7.4,7.4,7.4h0.5C5.9,17.1,3.3,14.2,3.2,10.8L3.2,10.8z M12.8,11.2
-                           c-1.1,0-2.1-0.9-2.1-2c0-0.9,0.5-1.6,1.4-1.9c-0.6-0.3-1.3-0.5-2.1-0.5c-2.5,0-4.5,2-4.5,4.5s2,4.5,4.5,4.5s4.5-2,4.5-4.5
-                           c0-0.3,0-0.6-0.1-0.9C14.1,10.9,13.5,11.2,12.8,11.2z"/>
-                     </g>
-                  </svg>
-               </span>
-                        <span class="menu-title">Roles</span>
-                    </router-link>
-                </li>-->
-
-                <li v-if="checkPermission('quiz-list') || checkPermission('quiz-form-list') || checkPermission('quiz-form-field-list')">
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
+            <li v-if="checkPermission('quiz-list') || checkPermission('quiz-form-list') || checkPermission('quiz-form-field-list')">
+              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
                    <span class="anim">
                       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                          <g>
@@ -127,28 +110,28 @@
                          </g>
                       </svg>
                    </span>
-                    <span class="menu-title">Quiz</span>
-                    </a>
-                    <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
-                        <li v-if="checkPermission('quiz-form-list')">
-                            <router-link :to="{ name: 'quizFormList'}">
-                                <span class="menu-sub-title">Quiz Forms</span>
-                            </router-link>
-                        </li>
-                        <li  v-if="checkPermission('quiz-form-field-list')">
-                            <router-link :to="{ name: 'quizFormFieldList'}">
-                                <span class="menu-sub-title">Quiz Form Field</span>
-                            </router-link>
-                        </li>
-                        <li v-if="checkPermission('quiz-list')">
-                            <router-link :to="{ name: 'quizList'}">
-                                <span class="menu-sub-title">Quizzes</span>
-                            </router-link>
-                        </li>
-                    </ul>
+                <span class="menu-title">Quiz</span>
+              </a>
+              <ul class="collapse list-unstyled sub-items" id="pageSubmenu">
+                <li v-if="checkPermission('quiz-form-list')">
+                  <router-link :to="{ name: 'quizFormList'}">
+                    <span class="menu-sub-title">Quiz Forms</span>
+                  </router-link>
                 </li>
-                <li>
-                    <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
+                <li  v-if="checkPermission('quiz-form-field-list')">
+                  <router-link :to="{ name: 'quizFormFieldList'}">
+                    <span class="menu-sub-title">Quiz Form Field</span>
+                  </router-link>
+                </li>
+                <li v-if="checkPermission('quiz-list')">
+                  <router-link :to="{ name: 'quizList'}">
+                    <span class="menu-sub-title">Quizzes</span>
+                  </router-link>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
                      <g>
@@ -162,42 +145,43 @@
                      </g>
                   </svg>
                </span>
-                        <span class="menu-title">Settings</span>
-                    </a>
-                    <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
-                        <li v-if="checkPermission('user-list')">
-                            <router-link :to="{ name: 'customerList'}">
-                                <span class="menu-sub-title">Users</span>
-                            </router-link>
-                        </li>
-                        <li v-if="checkPermission('role-list')">
-                            <router-link :to="{ name: 'roleList'}">
-                                <span class="menu-sub-title">Roles</span>
-                            </router-link>
-                        </li>
-                        <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
-                            <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
-                                <span class="menu-sub-title">Front Page Configuration</span>
-                            </a>
-                        </li>
-                    </ul>
+                <span class="menu-title">Settings</span>
+              </a>
+              <ul class="collapse list-unstyled sub-items" id="settingSubmenu">
+                <li v-if="checkPermission('user-list')">
+                  <router-link :to="{ name: 'customerList'}">
+                    <span class="menu-sub-title">Users</span>
+                  </router-link>
                 </li>
-            </ul>
+                <li v-if="checkPermission('role-list')">
+                  <router-link :to="{ name: 'roleList'}">
+                    <span class="menu-sub-title">Roles</span>
+                  </router-link>
+                </li>
+                <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
+                  <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
+                    <span class="menu-sub-title">Front Page Configuration</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </nav>
-    </div>
-    <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" >
+      </div>
+      <div class="right-sidebar-wrapper right-side-config-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70" >
         <div class="close-bar d-flex align-items-center justify-content-end">
-            <button class="right-side-config-close-btn ripple-btn-danger" @click="clearAllChecker">
-                <img src="../../assets/img/cancel.svg" alt="cancel">
-            </button>
+          <button class="right-side-config-close-btn ripple-btn-danger" @click="clearAllChecker">
+            <img src="../../assets/img/cancel.svg" alt="cancel">
+          </button>
         </div>
         <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck="isConfigurationCheck" @page-config-close="getDataFromChild"></pageConfiguration>
-    </div>
-    <div class="action-modal-wraper" v-if="success_message">
+      </div>
+      <div class="action-modal-wraper" v-if="success_message">
         <span>{{ success_message }}</span>
-    </div>
-    <div class="action-modal-wraper-error" v-if="error_message">
+      </div>
+      <div class="action-modal-wraper-error" v-if="error_message">
         <span>{{ error_message }}</span>
+      </div>
     </div>
 
 
