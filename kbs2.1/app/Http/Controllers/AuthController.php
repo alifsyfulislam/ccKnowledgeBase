@@ -33,7 +33,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
 
 
