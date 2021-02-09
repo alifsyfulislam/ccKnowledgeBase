@@ -48,7 +48,7 @@
 
                             <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">
                                 <option value="" disabled>Select A Category</option>
-                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
+                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
                                     {{a_category.name}}
                                 </option>
                             </select>

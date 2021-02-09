@@ -16,7 +16,8 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
-        "nesbot/carbon": "^2.44"
+        "nesbot/carbon": "^2.44",
+        "intervention/image": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
