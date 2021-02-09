@@ -13,7 +13,8 @@ class Helper
     public static function slugify($value)
     {
 
-        return strtolower(str_replace(' ','-',$value));
+        // return strtolower(str_replace(' ','-',$value));
+        return strtolower(preg_replace("/[^a-zA-Z0-9]+/", "-", $value));
 
     }
 
