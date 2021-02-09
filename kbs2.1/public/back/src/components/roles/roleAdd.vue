@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label> Add Permissions</label><span id="permissionError" class="small"> </span>
                             <ul class="list-unstyled permission-list m-0 p-0">
-                                <li v-for="permission in allPermissions" :key="permission" class="text-left pb-2">
+                                <li v-for="permission in allPermissions" :key="permission.id" class="text-left pb-2">
                                     <input type="checkbox" v-model="selectedCheckboxes" :value="permission.id" v-bind:id="permission.id" > <label class="pl-2 mb-0"> {{ permission.name }} </label>
                                 </li>
                             </ul>

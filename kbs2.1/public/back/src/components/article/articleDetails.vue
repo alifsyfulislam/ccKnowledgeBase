@@ -32,7 +32,7 @@
             </ul>
           </div>
 
-          <div class="col-md-9 col-md-8">
+          <div class="col-md-12">
             <div class="tab-content pt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="tabEnglish">
                 <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>

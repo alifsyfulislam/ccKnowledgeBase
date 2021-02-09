@@ -63,7 +63,7 @@
                                 </thead>
                                 <tbody>
 
-                                <tr v-for="a_role in userRoles" :key="a_role">
+                                <tr v-for="a_role in userRoles" :key="a_role.id">
 
                                     <td class="text-center">{{ a_role.id }}</td>
                                     <td class="text-center">{{ a_role.name }}</td>
