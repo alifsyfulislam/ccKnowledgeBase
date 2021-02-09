@@ -114,6 +114,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request)
     {
+//        dd($request->all());
         return $this->articleService->updateItem($request);
 
 //        if(Auth::user()->can('article-edit')) {

@@ -237,6 +237,7 @@ export default {
         deletePreviousUploadedFile(index){
             //document.getElementById('files').value= "";
             (this.previous_media_list).splice(index, 1);
+            console.log(this.previous_media_list);
         },
 
         fileUploadChange(e) {
