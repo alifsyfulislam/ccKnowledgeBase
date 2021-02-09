@@ -22,7 +22,7 @@
             <div class="breadcrumbs mt-10 mt-sm-0">
               <ul class="list-inline list-unstyled mb-0">
                 <li class="list-inline-item">
-                  <router-link class="nav-item" :to="{ name: 'HOME'}">
+                  <router-link class="nav-item" :to="{ name: 'Home'}">
                     <i class="fa fa-home"></i>
                   </router-link>
                 </li>

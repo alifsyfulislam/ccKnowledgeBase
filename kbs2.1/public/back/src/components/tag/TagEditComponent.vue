@@ -84,7 +84,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.faqInfo);
         if (this.faqInfo.tag){
             this.tagList = this.faqInfo.tag;
             this.tagList = this.tagList.split(',');

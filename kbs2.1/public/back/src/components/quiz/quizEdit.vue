@@ -290,7 +290,7 @@ export default {
             let _that = this;
             let quizID = this.quiz_id;
 
-            axios.put('admin/quizzes/update',
+            axios.put('quizzes/update',
                 {
                     id            : quizID,
                     name          : this.quizData.name,
@@ -335,7 +335,7 @@ export default {
             let _that = this;
             let quizID = this.quiz_id;
 
-            let apiUrl = "admin/quizzes/";
+            let apiUrl = "quizzes/";
 
             axios.get(apiUrl+quizID,
                 {
@@ -366,7 +366,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/articles',
+            axios.get('articles',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -390,7 +390,7 @@ export default {
         getQuizFormList(){
             let _that =this;
 
-            axios.get('admin/quiz-forms',
+            axios.get('quiz-forms',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

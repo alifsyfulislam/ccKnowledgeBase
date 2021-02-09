@@ -87,7 +87,7 @@ export default {
                 $('#categoryNameError').html("*name field is required");
             }
             else if (category_info.length > 2 || category_info.length < 100){
-                axios.post('admin/category/name',
+                axios.post('category/name',
                     {
                         name            : this.categoryData.name,
                     },
@@ -162,7 +162,7 @@ export default {
             formData.append('name', this.categoryData.name);
             formData.append('parent_id', this.selectedCategory);
 
-            axios.post('admin/categories', formData,
+            axios.post('categories', formData,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -197,7 +197,7 @@ export default {
 
             let _that =this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

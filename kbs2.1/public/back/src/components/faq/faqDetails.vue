@@ -86,7 +86,7 @@ name: "faqDetails.vue",
       let _that = this;
       let faqID = this.faq_id;
 
-      let apiUrl = "admin/faqs/";
+      let apiUrl = "faqs/";
 
       axios.get(apiUrl+faqID,
           {

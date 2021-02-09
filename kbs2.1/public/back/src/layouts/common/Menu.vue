@@ -254,13 +254,10 @@ export default {
             this.isConfigurationCheck = false;
         },
     },
-
     created() {
-
         this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
         this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
         this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
-
         //console.log( localStorage.getItem("userPermissions"));
         this.static_image['dashboard_logo']     = axios.defaults.baseURL.replace('api','')+'media/new-logo.png';
         this.static_image['dashboard_sm_logo'] = axios.defaults.baseURL.replace('api','')+'media/small-logo.png';

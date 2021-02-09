@@ -190,7 +190,7 @@ export default {
 
             let _that =this;
 
-            pageUrl = pageUrl == undefined ? 'admin/pages' : pageUrl;
+            pageUrl = pageUrl == undefined ? 'pages' : pageUrl;
 
             axios.get(pageUrl,
                 {
@@ -250,7 +250,7 @@ export default {
                 formData.append('position', this.configure_data.position);
                 formData.append('description', this.configure_data.description);
 
-                axios.post('admin/pages', formData,
+                axios.post('pages', formData,
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -285,7 +285,7 @@ export default {
                 formData.append('position', this.configure_data.position);
                 formData.append('description', this.configure_data.description);
 
-                axios.post('admin/pages/update-data', formData,
+                axios.post('pages/update-data', formData,
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')

@@ -356,7 +356,7 @@ export default {
         quizformfieldStore()
         {
             let _that = this;
-            axios.post('admin/quiz-form-fields',
+            axios.post('quiz-form-fields',
                 {
                     quiz_form_id            : _that.selectedFormID,
                     f_label                 : _that.quizFormFieldData.quizlabelName,
@@ -405,7 +405,7 @@ export default {
             let _that       = this;
             let quizformID  = _that.selectedFormID;
 
-            axios.get("admin/quiz-forms/"+quizformID,
+            axios.get("quiz-forms/"+quizformID,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('authToken')

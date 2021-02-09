@@ -134,7 +134,7 @@
                 let _that = this;
                 let quizFormID = _that.selectedId;
 
-                axios.put('admin/quiz-forms/update',
+                axios.put('quiz-forms/update',
                     {
                         id        : quizFormID,
                         name      : _that.quizFormDetails.name,
@@ -169,7 +169,7 @@
                 let _that = this;
                 let quizFormID = this.selectedId;
 
-                axios.get("admin/quiz-forms/"+quizFormID,
+                axios.get("quiz-forms/"+quizFormID,
                     {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('authToken')

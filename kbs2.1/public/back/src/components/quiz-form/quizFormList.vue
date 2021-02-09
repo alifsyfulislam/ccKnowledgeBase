@@ -91,7 +91,7 @@
                                         <a @click.prevent="getQuizFormList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                     </li>
                                     <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getQuizFormList('admin/quiz-forms?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
+                                        <a @click.prevent="getQuizFormList('quiz-forms?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
                                     </li>
                                     <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
                                         <a @click.prevent="getQuizFormList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
@@ -250,7 +250,7 @@ export default {
             this.removingRightSideWrapper();
             this.setTimeoutElements();
             if(status){
-                // this.$router.push({path: '/admin/quiz-form-field-list', params:{ message : status}});
+                // this.$router.push({path: '/quiz-form-field-list', params:{ message : status}});
 
                 this.$router.push({
                     name: 'quizFormFieldList',
@@ -263,7 +263,7 @@ export default {
         {
 
             let _that       = this;
-            pageUrl         = pageUrl == undefined ? 'admin/quiz-forms' : pageUrl;
+            pageUrl         = pageUrl == undefined ? 'quiz-forms' : pageUrl;
             axios.get(pageUrl,
                 {
                     headers: {
@@ -289,7 +289,7 @@ export default {
         {
             let _that       = this;
 
-            axios.delete('admin/quiz-forms/delete',
+            axios.delete('quiz-forms/delete',
                 {
                     data : {
                             id      : _that.quiz_form_id

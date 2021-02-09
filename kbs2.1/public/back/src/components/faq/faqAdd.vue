@@ -271,7 +271,7 @@ export default {
                 bnBody          = document.getElementById('bn_Body').value;
             }
 
-            axios.post('admin/faqs', {
+            axios.post('faqs', {
                     category_id     : this.selectedCategory,
                     en_title        : this.faqData.en_title,
                     tag             : this.faqData.tag,
@@ -304,7 +304,7 @@ export default {
 
             let _that   = this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers     : {
                         'Authorization'         : 'Bearer '+localStorage.getItem('authToken')

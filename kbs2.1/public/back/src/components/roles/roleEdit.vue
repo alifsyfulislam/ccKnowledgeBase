@@ -94,7 +94,7 @@ export default {
                 $('#roleNameError').html("*name field is required");
             }
             else if (role_info.length > 2 || role_info.length < 100){
-                axios.post('admin/role/name',
+                axios.post('role/name',
                     {
                         id              : this.role_id,
                         name            : this.storeName,
@@ -195,7 +195,7 @@ export default {
 
             // console.log(rolesID+" "+ _that.storeName+" "+_that.selectedCheckboxes);
 
-            axios.put('admin/roles/update',
+            axios.put('roles/update',
                 {
                     id          : rolesID,
                     name        : this.storeName,
@@ -232,7 +232,7 @@ export default {
         {
             let _that       = this;
             let rolesID     = this.role_id;
-            axios.get("admin/roles/"+rolesID,
+            axios.get("roles/"+rolesID,
                 {
                     headers: {
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
@@ -259,7 +259,7 @@ export default {
         getAllPermission()
         {
             let _that   = this;
-            axios.get('admin/permissions',
+            axios.get('permissions',
                 {
                     headers: {
                         'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
@@ -299,7 +299,7 @@ export default {
         getRolesList()
         {
             let _that       = this;
-            axios.get('admin/roles',
+            axios.get('roles',
                 {
                     headers: {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')

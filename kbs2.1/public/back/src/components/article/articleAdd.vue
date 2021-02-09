@@ -350,7 +350,7 @@ export default {
             formData.append('bn_body', bnBody);
             formData.append('status', this.articleData.status);
 
-            axios.post('admin/articles', formData,
+            axios.post('articles', formData,
                 {
                     headers: {
                         'Content-Type'  : 'multipart/form-data',
@@ -382,7 +382,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')

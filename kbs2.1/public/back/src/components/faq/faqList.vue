@@ -112,7 +112,7 @@
                                         <a @click.prevent="getFaqList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                     </li>
                                     <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getFaqList('admin/faqs?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
+                                        <a @click.prevent="getFaqList('faqs?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
                                     </li>
 
                                     <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
@@ -315,7 +315,7 @@ export default {
         changeFaqStatus(){
             this.isFaqStatus = JSON.parse(localStorage.getItem("faq_status"));
             $('#alertModal').modal('toggle');
-            axios.post('admin/change-faq-status',
+            axios.post('change-faq-status',
                 {
                     id          : this.isFaqStatus.id,
                     status      : this.isFaqStatus.status,
@@ -391,7 +391,7 @@ export default {
         getCategoryList()
         {
             let _that   = this;
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers : {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
@@ -417,7 +417,7 @@ export default {
         getFaqList(pageUrl)
         {
             let _that =this;
-            pageUrl = pageUrl == undefined ? 'admin/faqs' : pageUrl;
+            pageUrl = pageUrl == undefined ? 'faqs' : pageUrl;
 
             axios.get(pageUrl,
                 {
@@ -450,7 +450,7 @@ export default {
         deleteFaq()
         {
             let _that = this;
-            axios.delete('admin/faqs/delete',
+            axios.delete('faqs/delete',
                 {
                     data        : {
                         id      : this.faq_id

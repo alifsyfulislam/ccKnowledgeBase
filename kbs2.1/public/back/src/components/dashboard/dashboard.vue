@@ -225,7 +225,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/categories',
+            axios.get('categories',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -251,7 +251,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/latest-article-list',
+            axios.get('latest-article-list',
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -279,7 +279,7 @@ export default {
         {
             let _that =this;
 
-            axios.post('admin/total-count-data',{
+            axios.post('total-count-data',{
                     isAdmin : 1
                 },
                 {
@@ -290,8 +290,6 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-
-                       // console.log(response.data)
                         _that.totalCountList = response.data.total_count;
                     }
                     else{

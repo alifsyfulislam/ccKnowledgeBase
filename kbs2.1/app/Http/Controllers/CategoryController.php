@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -32,9 +32,9 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-
+return $request;
         if(Auth::user()->can('category-list')) {
-
+            return Auth::user()->can('category-list');
             if ($request->filled('isAdmin'))
                 return $this->categoryService->paginateData($request);
             else
@@ -90,7 +90,15 @@ class CategoryController extends Controller
     public function edit($id)
     {
 
-       //
+        /*$categorys = $this->categoryService->getById($id);
+
+        $permissions = $this->permissionService->getAll();
+        $categoryPermissions = DB::table("category_has_permissions")->where("category_has_permissions.category_id",$id)
+            ->pluck('category_has_permissions.permission_id','category_has_permissions.permission_id')
+            ->all();
+
+
+        return view('categorys.edit',compact('categorys','permissions','categoryPermissions'));*/
 
     }
 

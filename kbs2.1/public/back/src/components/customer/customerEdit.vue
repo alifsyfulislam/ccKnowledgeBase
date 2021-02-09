@@ -124,7 +124,7 @@ export default {
                 $('#userEmailError').html("*email field is required");
             }
             else if (user_info.length > 2 || user_info.length < 100){
-                axios.post('admin/user/email',
+                axios.post('user/email',
                     {
                         email            : this.userData.email,
                     },
@@ -154,7 +154,7 @@ export default {
                 $('#userNameError').html("*username field is required");
             }
             else if (user_info.length > 2 || user_info.length < 100){
-                axios.post('admin/user/username',
+                axios.post('user/username',
                     {
                         id                  : this.userData.id,
                         username            : this.userData.username,
@@ -364,7 +364,7 @@ export default {
         userUpdate() {
             let _that       = this;
             let userID      = _that.selectedId;
-            axios.put('admin/users/update',
+            axios.put('users/update',
                 {
                     id                      : userID,
                     username                : _that.userData.username,
@@ -403,7 +403,7 @@ export default {
         {
             let _that       = this;
             let userID      = this.selectedId;
-            axios.get("admin/users/"+userID,
+            axios.get("users/"+userID,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('authToken')
@@ -423,7 +423,7 @@ export default {
         getUserRoles()
         {
             let _that   = this;
-            axios.get('admin/roles',
+            axios.get('roles',
                 {
                     headers: {
                         'Authorization'     : 'Bearer '+localStorage.getItem('authToken')

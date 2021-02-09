@@ -94,7 +94,7 @@
                                         <a @click.prevent="getUsersList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                     </li>
                                     <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getUsersList('admin/users?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
+                                        <a @click.prevent="getUsersList('users?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
                                     </li>
 
                                     <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
@@ -293,7 +293,7 @@ export default {
         {
             let _that =this;
 
-            pageUrl = pageUrl == undefined ? 'admin/users' : pageUrl;
+            pageUrl = pageUrl == undefined ? 'users' : pageUrl;
 
             axios.get(pageUrl,
                 {
@@ -326,7 +326,7 @@ export default {
         {
             let _that = this;
 
-            axios.delete('admin/users/delete',
+            axios.delete('users/delete',
                 {
                     data:
                         {
@@ -357,7 +357,7 @@ export default {
         {
             let _that =this;
 
-            axios.get('admin/roles',
+            axios.get('roles',
                 {
                     headers: {
                         'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
@@ -382,7 +382,7 @@ export default {
 
             let _that = this;
 
-            axios.delete('admin/users/delete',
+            axios.delete('users/delete',
                 {
                     data:
                         {
