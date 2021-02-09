@@ -128,7 +128,7 @@ export default {
             userInfo            : '',
             isSummerNoteError   : false,
 
-            selected_checkbox    : '',
+            selected_checkbox    : 1,
             bangla_checkbox      : '',
 
             faqData      : {
