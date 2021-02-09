@@ -131,7 +131,7 @@ export default {
             isSummerNoteError   : false,
             selectedCategory    : '',
 
-            selected_checkbox    : '',
+            selected_checkbox    : 1,
             bangla_checkbox      : '',
 
             faqData      : {

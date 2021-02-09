@@ -186,7 +186,7 @@ export default {
                 isCategoryStatus    : false,
             },
 
-            selected_checkbox    : '',
+            selected_checkbox    : 1,
             bangla_checkbox      : '',
 
             fileUrl       : [],
