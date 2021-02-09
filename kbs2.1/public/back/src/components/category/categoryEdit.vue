@@ -32,7 +32,7 @@
                             <label>Select A Parent</label>
                             <select class="form-control" v-model="category_parent_id" id="categoryParent">
                                 <option value="0">Select A Category</option>
-                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category">
+                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
                                     {{a_category.name}}
                                 </option>
                             </select>

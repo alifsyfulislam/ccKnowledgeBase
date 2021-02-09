@@ -207,7 +207,7 @@ export default {
             const selectedFiles = e.target.files;
 
             for(var j=0; j<selectedFiles.length; j++){
-               // console.log(selectedFiles[j]);
+               console.log(selectedFiles[j]);
                 _that.article_files.push(selectedFiles[j]);
             }
 
@@ -357,6 +357,7 @@ export default {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     }
                 }).then(function (response) {
+                  console.log(response);
 
                 if (response.data.status_code === 201) {
                     _that.articleData           = '';

@@ -58,7 +58,6 @@ class ArticleService
      */
     public function createItem(Request $request)
     {
-
         $thumbFile = [];
 
         $validator = Validator::make($request->all(),[
@@ -82,11 +81,41 @@ class ArticleService
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
 
+        $thumbImageList = $request->uploaded_file;
+
         DB::beginTransaction();
 
         try {
 
             $this->articleRepository->create($input);
+
+            $article = $this->getItemById($input['id']);
+
+            if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
+
+                if (isset($request->uploaded_file)) {
+
+                    $fileLength = count($thumbImageList);
+
+                    if (count($thumbImageList) > 0) {
+                        for ($i = 1; $i <= $fileLength; $i++) {
+//                              dd($thumbImageList[count($thumbImageList) - $i]);
+                            $thumbFile[] = Helper::fileUpload("article/files", $thumbImageList[count($thumbImageList) - $i]);
+                        }
+                    }
+                }
+
+                foreach ($thumbFile as $file):
+//                    dd($thumbFile);
+
+                    $article->media()->create([
+
+                        'url' => $file
+
+                    ]);
+
+                endforeach;
+            }
 
         } catch (Exception $e) {
 
@@ -108,6 +137,7 @@ class ArticleService
         ]);
 
     }
+
 
 
     public function getItemById($id)

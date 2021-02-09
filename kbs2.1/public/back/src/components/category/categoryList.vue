@@ -60,7 +60,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(a_category) in categoryList" :key="a_category">
+                                <tr v-for="(a_category) in categoryList" :key="a_category.id">
                                     <td class="text-center">{{ a_category.id }}</td>
                                     <td class="text-left">{{ a_category.name }}</td>
                                     <td class="text-left">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
