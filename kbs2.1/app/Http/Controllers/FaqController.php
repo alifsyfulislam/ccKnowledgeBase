@@ -20,15 +20,16 @@ class FaqController extends Controller
 
     public function index(Request $request)
     {
-        if(Auth::user()->can('faq-list')) {
-
-            return $this->faqService->paginateData($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->faqService->paginateData($request);
+//        if(Auth::user()->can('faq-list')) {
+//
+//            return $this->faqService->paginateData($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
         // return $this->faqService->paginateData($request);
 
@@ -59,15 +60,16 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
+        return $this->faqService->createItem($request);
 
-        if(Auth::user()->can('faq-create')) {
-
-            return $this->faqService->createItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-        }
+//        if(Auth::user()->can('faq-create')) {
+//
+//            return $this->faqService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//        }
 
     }
 
@@ -99,31 +101,32 @@ class FaqController extends Controller
 
     public function update(Request $request)
     {
-
-        if(Auth::user()->can('faq-edit')) {
-
-            return $this->faqService->updateItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->faqService->updateItem($request);
+//        if(Auth::user()->can('faq-edit')) {
+//
+//            return $this->faqService->updateItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
     }
 
 
     public function destroy(Request $request)
     {
-        if(Auth::user()->can('faq-delete')) {
-
-            return  $this->faqService->deleteItem($request->id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return  $this->faqService->deleteItem($request->id);
+//        if(Auth::user()->can('faq-delete')) {
+//
+//            return  $this->faqService->deleteItem($request->id);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
     }
 }

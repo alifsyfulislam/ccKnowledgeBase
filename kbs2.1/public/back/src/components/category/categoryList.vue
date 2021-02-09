@@ -263,8 +263,7 @@ export default {
                         {
                             isAdmin : 1
                         },
-                })
-                .then(function (response)
+                }).then(function (response)
                 {
                     if(response.data.status_code === 200)
                     {

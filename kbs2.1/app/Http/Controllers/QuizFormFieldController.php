@@ -36,15 +36,16 @@ class QuizFormFieldController extends Controller
      */
     public function index(Request $request)
     {
-        if(Auth::user()->can('quiz-form-field-list')) {
-
-            return $this->quizFormFieldService->paginateData($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->quizFormFieldService->paginateData($request);
+//        if(Auth::user()->can('quiz-form-field-list')) {
+//
+//            return $this->quizFormFieldService->paginateData($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
     }
 
     /**
@@ -65,14 +66,15 @@ class QuizFormFieldController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->can('quiz-form-field-create')) {
-
-            return $this->quizFormFieldService->createItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-        }
+        return $this->quizFormFieldService->createItem($request);
+//        if(Auth::user()->can('quiz-form-field-create')) {
+//
+//            return $this->quizFormFieldService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//        }
     }
 
     /**
@@ -83,15 +85,16 @@ class QuizFormFieldController extends Controller
      */
     public function show($id)
     {
-        if(Auth::user()->can('quiz-form-field-list')) {
-
-            return $this->quizFormFieldService->getById($id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->quizFormFieldService->getById($id);
+//        if(Auth::user()->can('quiz-form-field-list')) {
+//
+//            return $this->quizFormFieldService->getById($id);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
     }
 
     /**
@@ -114,15 +117,16 @@ class QuizFormFieldController extends Controller
      */
     public function update(Request $request)
     {
-        if(Auth::user()->can('quiz-form-field-edit')) {
-
-            return $this->quizFormFieldService->updateItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->quizFormFieldService->updateItem($request);
+//        if(Auth::user()->can('quiz-form-field-edit')) {
+//
+//            return $this->quizFormFieldService->updateItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
     }
 
     /**
@@ -133,15 +137,16 @@ class QuizFormFieldController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(Auth::user()->can('quiz-form-field-delete')) {
-
-            return $this->quizFormFieldService->deleteItem($request->id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->quizFormFieldService->deleteItem($request->id);
+//        if(Auth::user()->can('quiz-form-field-delete')) {
+//
+//            return $this->quizFormFieldService->deleteItem($request->id);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
     }
 
     public function getQuizFieldListFromQuizForm($id)

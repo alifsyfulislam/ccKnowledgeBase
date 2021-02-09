@@ -32,22 +32,24 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-return $request;
-        if(Auth::user()->can('category-list')) {
-            return Auth::user()->can('category-list');
-            if ($request->filled('isAdmin'))
-                return $this->categoryService->paginateData($request);
-            else
-                return $this->categoryService->getAll();
 
-        } else {
-
-            return response()->json([
-                'status_code' => 424,
-                'messages'=>'User does not have the right permissions'
-            ]);
-
-        }
+        if ($request->filled('isAdmin'))
+            return $this->categoryService->paginateData($request);
+        else
+            return $this->categoryService->getAll();
+//
+//        if(Auth::user()->can('category-list')) {
+//            return Auth::user()->can('category-list');
+//
+//
+//        } else {
+//
+//            return response()->json([
+//                'status_code' => 424,
+//                'messages'=>'User does not have the right permissions'
+//            ]);
+//
+//        }
 
     }
 
@@ -66,19 +68,20 @@ return $request;
      */
     public function store(Request $request)
     {
+        return $this->categoryService->createItem($request);
 
-        if(Auth::user()->can('category-create')) {
-
-            return $this->categoryService->createItem($request);
-
-        } else {
-
-            return response()->json([
-                'status_code' => 424,
-                'messages'=>'User does not have the right permissions'
-            ]);
-
-        }
+//        if(Auth::user()->can('category-create')) {
+//
+//            return $this->categoryService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json([
+//                'status_code' => 424,
+//                'messages'=>'User does not have the right permissions'
+//            ]);
+//
+//        }
 
     }
 
@@ -109,18 +112,19 @@ return $request;
      */
     public function show($id)
     {
-        if(Auth::user()->can('category-list')) {
-
-            return $this->categoryService->getById($id);
-
-        } else {
-
-            return response()->json([
-                'status_code' => 424,
-                'messages'=>'User does not have the right permissions'
-            ]);
-
-        }
+        return $this->categoryService->getById($id);
+//        if(Auth::user()->can('category-list')) {
+//
+//            return $this->categoryService->getById($id);
+//
+//        } else {
+//
+//            return response()->json([
+//                'status_code' => 424,
+//                'messages'=>'User does not have the right permissions'
+//            ]);
+//
+//        }
 
     }
 
@@ -133,19 +137,20 @@ return $request;
     public function update(Request $request)
     {
         //dd($request->all());
+        return $this->categoryService->updateItem($request);
 
-        if(Auth::user()->can('category-edit')) {
-
-            return $this->categoryService->updateItem($request);
-
-        } else {
-
-            return response()->json([
-                'status_code' => 424,
-                'messages'=>'User does not have the right permissions'
-            ]);
-
-        }
+//        if(Auth::user()->can('category-edit')) {
+//
+//            return $this->categoryService->updateItem($request);
+//
+//        } else {
+//
+//            return response()->json([
+//                'status_code' => 424,
+//                'messages'=>'User does not have the right permissions'
+//            ]);
+//
+//        }
     }
 
 
@@ -155,17 +160,18 @@ return $request;
      */
     public function destroy(Request $request)
     {
-        if(Auth::user()->can('category-delete')) {
-
-            return  $this->categoryService->deleteItem($request->id);
-
-        } else {
-
-            return response()->json([
-                'status_code' => 424,
-                'messages'=>'User does not have the right permissions'
-            ]);
-        }
+        return  $this->categoryService->deleteItem($request->id);
+//        if(Auth::user()->can('category-delete')) {
+//
+//            return  $this->categoryService->deleteItem($request->id);
+//
+//        } else {
+//
+//            return response()->json([
+//                'status_code' => 424,
+//                'messages'=>'User does not have the right permissions'
+//            ]);
+//        }
 
     }
 
