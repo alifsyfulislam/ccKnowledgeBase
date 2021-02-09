@@ -13,6 +13,7 @@ use App\Http\Controllers\TotalCountController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuizFormFieldController;
+use App\Http\Controllers\ExportController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,10 +30,10 @@ use App\Http\Controllers\QuizFormFieldController;
 });*/
 
 
+Route::get('users/export/', [ExportController::class, 'exportUsers'])->name('users.export_mapping');
+Route::get('categories/export/', [ExportController::class, 'exportCategories'])->name('categories.export_mapping');
+Route::get('articles/export/', [ExportController::class, 'exportArticles'])->name('articles.export_mapping');
 
-/* Route::get('users/export/', 'ExprotController@exportUsers')->name('users.export_mapping');
-Route::get('categories/export/', 'ExportController@exportCategories')->name('categories.export_mapping');
-Route::get('articles/export/', 'ExportController@exportArticles')->name('articles.export_mapping'); */
 
 
 Route::post('login', [AuthController::class, 'index']);
@@ -55,7 +56,7 @@ Route::get('quiz-form/field-list/{id}',[QuizFormFieldController::class, 'getQuiz
 Route::get('front-page-config', [PageController::class, 'index']);
 
 Route::group(['middleware' => 'auth:api'], function () {
-    
+
     Route::get('articles', [ArticleController::class, 'index']);
     Route::post('articles', [ArticleController::class, 'store']);
     Route::get('articles/{article}', [ArticleController::class, 'show']);
@@ -105,7 +106,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('faqs/{faqs}', [FaqController::class, 'destroy']);
 
     Route::apiResource('quiz-forms', QuizFormController::class);
-    
+
     Route::get('quizzes', [QuizController::class, 'index']);
     Route::post('quizzes', [QuizController::class, 'store']);
     Route::get('quizzes/{quizzes}', [QuizController::class, 'show']);
