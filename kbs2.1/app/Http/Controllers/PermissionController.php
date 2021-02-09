@@ -33,16 +33,17 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        return $this->permissionService->paginateData();
 
-        if(Auth::user()->can('quiz-form-list')) {
-
-            return $this->permissionService->paginateData();
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+//        if(Auth::user()->can('quiz-form-list')) {
+//
+//            return $this->permissionService->paginateData();
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
     }
 
@@ -65,16 +66,17 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        return $this->permissionService->createItem($request);
 
-        if(Auth::user()->can('quiz-form-create')) {
-
-            return $this->permissionService->createItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+//        if(Auth::user()->can('quiz-form-create')) {
+//
+//            return $this->permissionService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
     }
 
