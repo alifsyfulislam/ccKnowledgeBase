@@ -46,12 +46,12 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('user','category')->find($id);
+        return Article::with('user','category','media')->find($id);
     }
 
     public function getBySlug($slug)
     {
-        return Article::with('user','category')
+        return Article::with('user','category','media')
             ->where('slug', $slug)
             ->first();
     }

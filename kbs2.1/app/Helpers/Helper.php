@@ -91,6 +91,25 @@ class Helper
         return url('/').'/'.$dir.$fileName;
     }
 
+    public static function fileUpload($url, $file)
+    {
+        //$fileName = $file->getClientOriginalName().'_'.time(). '.' . $file->getClientOriginalExtension();
+        $fileName = time().'_'.$file->getClientOriginalName();
+
+        $dir = "media/" . $url . "/";
+
+        if (!file_exists(public_path($dir))) {
+
+            mkdir(public_path($dir), 0755, true);
+
+        }
+
+        $file->move(public_path($dir), $fileName);
+
+        return url('/') . '/' . $dir . $fileName;
+
+    }
+
     public static function base64PageLogoUpload($url, $image)
     {
         $file = $image;

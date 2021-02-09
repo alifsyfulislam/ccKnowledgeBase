@@ -439,7 +439,6 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data);
                         _that.categoryList = response.data.category_list;
                     }
                     else{
@@ -463,7 +462,6 @@ export default {
                 })
                 .then(function (response) {
                     if (response.data.status_code === 200) {
-                        console.log(response.data);
                         _that.articleDetails          = response.data.article_info;
 
                         _that.articleData.category_id =  _that.articleDetails.category_id;
@@ -480,6 +478,8 @@ export default {
                         _that.enBodyData  = _that.articleData.en_body;
                         _that.bnBodyData  = _that.articleData.bn_body;
                         _that.isMounted   = true;
+
+                        console.log(_that.articleDetails);
 
                         if ((_that.articleDetails.media).length >=0){
                             (_that.articleDetails.media).forEach( aMedia => {

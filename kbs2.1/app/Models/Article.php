@@ -60,4 +60,8 @@ class Article extends Model
         return date('j M, Y', strtotime($date));
 
     }
+
+    public function media(){
+        return $this->morphMany(Media::class, 'mediable');
+    }
 }
