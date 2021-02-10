@@ -250,12 +250,13 @@
             deleteQuizFormField()
             {
                 let _that = this;
+              console.log(_that.quiz_form_field_id);
 
                 axios.delete('quiz-form-fields/delete',
                     {
                         data: {
                                 id      : _that.quiz_form_field_id
-                         },
+                        },
                         headers: {
                             'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                         },
@@ -321,7 +322,6 @@
         },
         created()
         {
-            console.log('Params: ', this.$route.params);
             if (this.$route.params){
                 this.success_message = this.$route.params.success_message;
                 this.setTimeoutElements();

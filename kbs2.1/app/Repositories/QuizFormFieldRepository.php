@@ -79,7 +79,7 @@ class QuizFormFieldRepository
     /**
      * @return LengthAwarePaginator
      */
-    public function getWithPagination($request)
+    public function getWithPagination()
     {
         return QuizFormField::orderBy('id', 'DESC')->paginate(20);
     }

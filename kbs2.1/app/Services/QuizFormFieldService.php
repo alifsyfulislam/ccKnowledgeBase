@@ -4,7 +4,6 @@
 namespace App\Services;
 
 
-use App\Helpers\Helper;
 use App\Repositories\QuizFormFieldRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -181,7 +180,6 @@ class QuizFormFieldService
      */
     public function deleteItem($id)
     {
-
         DB::beginTransaction();
 
         try {
@@ -214,12 +212,12 @@ class QuizFormFieldService
     /**
      * @return JsonResponse
      */
-    public function paginateData($request)
+    public function paginateData()
     {
         return response()->json([
             'status_code' => 200,
             'messages'    => config('status.status_code.200'),
-            'quiz_form_field_list' => $this->quizFormFieldRepository->getWithPagination($request)
+            'quiz_form_field_list' => $this->quizFormFieldRepository->getWithPagination()
         ]);
 
     }

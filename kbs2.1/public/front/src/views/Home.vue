@@ -10,8 +10,8 @@
         <section class="banner-area d-flex align-items-center py-70 py-md-150" :style="{ backgroundImage: 'url(' + (frontPageData.banner ? frontPageData.banner : static_image['banner']) + ')' }">
           <div class="container d-flex justify-content-center justify-content-md-start">
             <div class="search-wrapper position-relative">
-              <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData.title }}</h1>
-              <p class="text-center">{{ frontPageData.description }}</p>
+              <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData ? frontPageData.title : 'n/a' }}</h1>
+              <p class="text-center">{{ frontPageData ? frontPageData.description : 'n/a' }}</p>
 <!--              display search form-->
               <search-form/>
             </div>
@@ -179,7 +179,9 @@ export default {
     {
       this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
       this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.png';
+      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api','')+'static_media/new-logo.png';
+      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api','')+'static_media/small-logo.png';
     },
 
     allFaqs(){

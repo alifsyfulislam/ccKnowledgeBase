@@ -47,14 +47,15 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->can('page-create')) {
-
-            return $this->pageService->createItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-        }
+        return $this->pageService->createItem($request);
+//        if(Auth::user()->can('page-create')) {
+//
+//            return $this->pageService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//        }
     }
 
     /**
@@ -65,15 +66,16 @@ class PageController extends Controller
      */
     public function show($id)
     {
-        if(Auth::user()->can('page-list')) {
-
-            return $this->pageService->getById($id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+        return $this->pageService->getById($id);
+//        if(Auth::user()->can('page-list')) {
+//
+//            return $this->pageService->getById($id);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
     }
 
@@ -98,15 +100,17 @@ class PageController extends Controller
     public function update(Request $request)
     {
 
-        if(Auth::user()->can('page-edit')) {
+        return $this->pageService->updateItem($request);
 
-            return $this->pageService->updateItem($request);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
+//        if(Auth::user()->can('page-edit')) {
+//
+//            return $this->pageService->updateItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
     }
 
     /**

@@ -12,8 +12,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TotalCountController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\QuizController;
-use App\Http\Controllers\QuizFormFieldController;
+//use App\Http\Controllers\QuizFormFieldController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\QuizTakeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,7 +52,7 @@ Route::get('faqs/{any}',[FaqController::class, 'show']);
 
 
 Route::get('quiz-list',[QuizController::class, 'getQuizList']);
-Route::get('quiz-form/field-list/{id}',[QuizFormFieldController::class, 'getQuizFieldListFromQuizForm']);
+Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'getQuizFieldListFromQuizForm']);
 
 Route::get('front-page-config', [PageController::class, 'index']);
 
@@ -113,11 +114,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('quizzes/{quizzes}', [QuizController::class, 'update']);
     Route::delete('quizzes/{quizzes}', [QuizController::class, 'destroy']);
 
-    Route::get('quiz-form-fields', [QuizFormFieldController::class, 'index']);
-    Route::post('quiz-form-fields', [QuizFormFieldController::class, 'store']);
-    Route::get('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'show']);
-    Route::put('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'update']);
-    Route::delete('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'destroy']);
+    Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
+
+//    Route::get('quiz-form-fields', [QuizFormFieldController::class, 'index']);
+//    Route::post('quiz-form-fields', [QuizFormFieldController::class, 'store']);
+//    Route::get('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'show']);
+//    Route::put('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'update']);
+//    Route::delete('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'destroy']);
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 

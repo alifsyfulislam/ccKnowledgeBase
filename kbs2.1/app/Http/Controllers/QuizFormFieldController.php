@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\QuizFormField;
 use App\Services\QuizFormFieldService;
 use Illuminate\Http\JsonResponse;
@@ -34,9 +35,9 @@ class QuizFormFieldController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $this->quizFormFieldService->paginateData($request);
+        return $this->quizFormFieldService->paginateData();
 //        if(Auth::user()->can('quiz-form-field-list')) {
 //
 //            return $this->quizFormFieldService->paginateData($request);
@@ -85,6 +86,7 @@ class QuizFormFieldController extends Controller
      */
     public function show($id)
     {
+//        dd($id);
         return $this->quizFormFieldService->getById($id);
 //        if(Auth::user()->can('quiz-form-field-list')) {
 //
@@ -147,12 +149,5 @@ class QuizFormFieldController extends Controller
 //            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 //
 //        }
-    }
-
-    public function getQuizFieldListFromQuizForm($id)
-    {
-
-        return $this->quizFormFieldService->getFieldUsingForm($id);
-
     }
 }

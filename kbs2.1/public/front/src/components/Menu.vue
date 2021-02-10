@@ -5,7 +5,7 @@
         <div class="container">
           <div class="logo">
             <router-link class="nav-item" :to="{ name: 'Home'}">
-              <img :src="frontPageData.logo">
+              <img :src="frontPageData.logo ? frontPageData.logo : static_image['newlogo']">
             </router-link>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,6 +80,7 @@ export default {
 
   data(){
     return{
+      static_image : '',
       frontPageData : '',
     }
   },
@@ -94,9 +95,14 @@ export default {
             _that.frontPageData = response.data.page_config_info;
           }
         })
+    },
+    getStaticMedia(){
+      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api','')+'static_media/new-logo.png';
+      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api','')+'static_media/small-logo.png';
     }
   },
   created() {
+    this.getStaticMedia();
     this.getPageDecorationData();
   }
 }
