@@ -7,6 +7,8 @@ import Faq from "@/views/Faq";
 import Contact from "@/views/Contact";
 import NotFound from "@/views/NotFound";
 import Search from "../views/Search";
+import Quiz from "../views/Quiz";
+// import StartExam from "../views/StartExam";
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -23,6 +25,16 @@ let router =  new Router({
       name: 'Home',
       component: Home
     },
+    {
+      path: '/quiz',
+      name: 'Quiz',
+      component: Quiz
+    },
+    // {
+    //   path: '/start-exam',
+    //   name: 'StartExam',
+    //   component: StartExam
+    // },
     {
       path: '/category-list/:categoryID',
       name: 'CategoryList',

@@ -9,6 +9,10 @@ class QuizTakeController extends Controller
 {
     private $quizFormFieldService;
 
+    public function index(){
+        return "hi";
+    }
+
     public function __construct(QuizFormFieldService $quizFormFieldService)
     {
         // $this->middleware('auth');
@@ -18,7 +22,6 @@ class QuizTakeController extends Controller
 
     public function getQuizFieldListFromQuizForm($id)
     {
-
         return $this->quizFormFieldService->getFieldUsingForm($id);
 
     }

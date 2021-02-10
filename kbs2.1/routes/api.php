@@ -52,7 +52,7 @@ Route::get('faqs/{any}',[FaqController::class, 'show']);
 
 
 Route::get('quiz-list',[QuizController::class, 'getQuizList']);
-Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'getQuizFieldListFromQuizForm']);
+Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 
 Route::get('front-page-config', [PageController::class, 'index']);
 
