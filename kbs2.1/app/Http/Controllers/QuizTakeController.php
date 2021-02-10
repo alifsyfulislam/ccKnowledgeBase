@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\QuizFormFieldService;
-use Illuminate\Http\Request;
+use App\Models\QuizFormField;
 
 class QuizTakeController extends Controller
 {
-    private $quizFormFieldService;
-
-    public function index(){
-        return "hi";
+    public function index($id){
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'quiz_form_field_list' => $this->getFormListUsingForm($id)
+        ]);
     }
 
-    public function __construct(QuizFormFieldService $quizFormFieldService)
+
+    public function getFormListUsingForm($id)
     {
-        // $this->middleware('auth');
-        $this->quizFormFieldService = $quizFormFieldService;
-
+        return QuizFormField::where('quiz_form_id', $id)->paginate(1);
     }
 
-    public function getQuizFieldListFromQuizForm($id)
-    {
-        return $this->quizFormFieldService->getFieldUsingForm($id);
 
-    }
+
 }

@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoading">
-        <Loading></Loading>
+        <Loader></Loader>
     </div>
     <div v-else v-cloak class="py-30 py-md-60 min-height-wrapper">
         <div class="container">
@@ -91,13 +91,13 @@
 
 <script>
 import axios from 'axios'
-import Loading from "@/components/Loading"
+import Loader from "../components/Loader";
 import $ from 'jquery'
 export default {
     name: "StartExam",
 
     components:{
-        Loading,
+        Loader,
     },
 
     data(){

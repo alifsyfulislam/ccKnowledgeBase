@@ -66,16 +66,16 @@ class QuizFormFieldService
 
     }
 
-    public function getFieldUsingForm($id)
-    {
-
-        return response()->json([
-            'status_code' => 200,
-            'messages'    => config('status.status_code.200'),
-            'quiz_form_field_list' => $this->quizFormFieldRepository->getFormListUsingForm($id)
-        ]);
-
-    }
+//    public function getFieldUsingForm($id)
+//    {
+//
+//        return response()->json([
+//            'status_code' => 200,
+//            'messages'    => config('status.status_code.200'),
+//            'quiz_form_field_list' => $this->quizFormFieldRepository->getFormListUsingForm($id)
+//        ]);
+//
+//    }
 
 
     /**
