@@ -87,7 +87,7 @@
 
           </div>
 
-          <div class="col-md-12">
+          <div class="col-md-12" v-if="aArticle.media.length > 0">
             <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
             <ul class="pl-15">
               <li v-for="a_file in aArticle.media" :key="a_file.id">

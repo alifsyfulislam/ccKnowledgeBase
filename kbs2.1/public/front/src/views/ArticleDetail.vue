@@ -173,6 +173,15 @@
                 </div> -->
               </div>
             </div>
+
+            <div class="col-md-12" v-if="aArticle.media.length > 0">
+              <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
+              <ul class="pl-15">
+                <li v-for="a_file in aArticle.media" :key="a_file.id">
+                  <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -187,6 +196,13 @@ export default {
   name: "ArticleDetail",
   components:{
     Loader,
+  },
+  filters:{
+    formatFileName(fileName){
+      let res;
+      res = fileName.split('/')
+      return res[res.length - 1];;
+    }
   },
   data(){
     return{
