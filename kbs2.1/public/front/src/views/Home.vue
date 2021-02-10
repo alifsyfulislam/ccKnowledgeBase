@@ -177,9 +177,9 @@ export default {
 
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
     },
 
     allFaqs(){

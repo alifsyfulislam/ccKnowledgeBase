@@ -174,7 +174,7 @@
               </div>
             </div>
 
-            <div class="col-md-12" v-if="aArticle.media.length > 0">
+            <div class="col-md-9" v-if="aArticle.media.length > 0">
               <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
               <ul class="pl-15">
                 <li v-for="a_file in aArticle.media" :key="a_file.id">
@@ -311,9 +311,9 @@ export default {
 
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
     }
   },
   created() {

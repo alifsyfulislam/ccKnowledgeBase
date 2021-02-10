@@ -67,8 +67,8 @@
               <div class="mb-30 mt-0">
                 <h1 class="mb-3">ARTICLE LIST</h1>
                 <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
-                <div class="row article-list-items">
-                  <div class="col-lg-12 mb-15" v-for="(has_article) in selectedCategory" :key="has_article.id">
+                <div class="row article-list-items" v-for="(has_article) in selectedCategory" :key="has_article.id">
+                  <div class="col-lg-12 mb-15">
                     <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.slug }}">
                       <div class="article-list-image mb-20 mb-sm-0">
                         <img :src="((has_article.en_body).match(regexImg) ? (has_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
@@ -84,6 +84,10 @@
                       </div>
                     </router-link>
                   </div>
+
+<!--                  <div v-else>-->
+<!--                    <h3>No article found!!</h3>-->
+<!--                  </div>-->
                 </div>
 
                 <div class="item-list text-left">
@@ -116,6 +120,8 @@
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </section>
@@ -178,9 +184,9 @@ export default {
     },
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'media/banner.jpg';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
     },
 
     searchData(){
@@ -260,7 +266,6 @@ export default {
   },
   created() {
     this.categoryID = this.$route.params.categoryID;
-    console.log(this.categoryID);
     this.getCategoryArticleList();
     this.categorySearch(this.categoryID);
     this.getStaticMedia();
