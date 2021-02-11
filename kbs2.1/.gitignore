@@ -1,4 +1,3 @@
-/.idea
 /node_modules
 /public/hot
 /public/storage
@@ -12,11 +11,3 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/public/kbs-admin/node_modules
-/public/front/node_modules
-/public/kbs-admin/dist
-/public/front/dist
-/public/kbs-admin/src/main.js
-/public/front/src/main.js
-composer.json
-composer.lock

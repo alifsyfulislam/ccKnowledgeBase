@@ -9,7 +9,7 @@ class Category extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['title','parent_id', 'slug'];
+    protected $fillable = ['title', 'parent_id', 'slug'];
 
 
     /**
@@ -26,7 +26,6 @@ class Category extends Model
     public function childrenRecursive()
     {
         return $this->children()->with('childrenRecursive');
-
     }
 
     /**
@@ -51,31 +50,25 @@ class Category extends Model
      */
     public function article()
     {
-
         return $this->hasMany(Article::class);
-
     }
 
     /**
      * @param $date
-     * @return string
+     * @return false|string
      */
     public function getCreatedAtAttribute($date)
     {
-
         return date('j M, Y', strtotime($date));
-
     }
 
     /**
      * @param $date
-     * @return string
+     * @return false|string
      */
     public function getUpdatedAtAttribute($date)
     {
-
         return date('j M, Y', strtotime($date));
-
     }
 
     /**
