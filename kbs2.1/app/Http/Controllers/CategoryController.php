@@ -32,6 +32,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+//        print_r($request->all());
 
         if ($request->filled('isAdmin'))
             return $this->categoryService->paginateData($request);

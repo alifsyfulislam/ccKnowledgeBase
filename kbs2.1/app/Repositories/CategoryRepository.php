@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Object_;
 
 class CategoryRepository implements RepositoryInterface
 {
@@ -110,7 +111,7 @@ class CategoryRepository implements RepositoryInterface
 
         }
         else{
-            return Category::with('parentRecursive', 'media')
+            return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media'])
                 ->orderBy('id','DESC')
                 ->paginate(20);
         }

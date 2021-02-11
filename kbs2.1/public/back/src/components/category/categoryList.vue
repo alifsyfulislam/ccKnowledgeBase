@@ -49,6 +49,7 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
+                          <data-table :posts="categoryList"></data-table>
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
@@ -166,6 +167,7 @@ import Header from '@/layouts/common/Header'
 import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
+import dataTable from "../datatable/dataTable";
 import $ from "jquery";
 
 export default {
@@ -175,7 +177,8 @@ export default {
         Menu,
         CategoryAdd,
         CategoryEdit,
-        Loading
+        Loading,
+        dataTable
     },
 
     data() {
