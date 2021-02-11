@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class ArticlesExport implements FromCollection, WithHeadings,WithMapping
 {
     /**
-<<<<<<< HEAD
+
     * @return \Illuminate\Support\Collection
     */
 //    public function collection()
