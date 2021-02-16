@@ -3,13 +3,13 @@
         <Loader></Loader>
     </div>
     <div v-else v-cloak class="min-height-wrapper">
-<!--        <section class="inner-search-area py-20">-->
-<!--            <div class="container">-->
-<!--                <div class="search-input-wrapper d-block d-sm-flex justify-content-between">-->
-<!--                    <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
+        <!--        <section class="inner-search-area py-20">-->
+        <!--            <div class="container">-->
+        <!--                <div class="search-input-wrapper d-block d-sm-flex justify-content-between">-->
+        <!--                    <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </section>-->
         <section class="py-50 py-md-60">
             <div class="container">
                 <div class="row">
@@ -73,48 +73,48 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Loader from "../components/Loader";
-export default {
-    name: "Quiz",
-    data(){
-        return{
-            isLoading: true,
-            itemA: '0' ,
-            allQuizzes : ''
-        }
-    },
-    components:{
-      Loader,
-    },
-    methods:{
-        getQuizList()
-        {
-            let _that =this;
-            axios.get('quiz-list', { cache: false })
-                .then(function (response) {
-                    _that.isLoading= false;
-                    if(response.data.status_code === 200){
-                        _that.allQuizzes = response.data.quiz_form_list;
-                    }
-                })
+    import axios from 'axios'
+    import Loader from "../components/Loader";
+    export default {
+        name: "Quiz",
+        data(){
+            return{
+                isLoading: true,
+                itemA: '0' ,
+                allQuizzes : ''
+            }
         },
+        components:{
+            Loader,
+        },
+        methods:{
+            getQuizList()
+            {
+                let _that =this;
+                axios.get('quiz-list', { cache: false })
+                    .then(function (response) {
+                        _that.isLoading= false;
+                        if(response.data.status_code === 200){
+                            _that.allQuizzes = response.data.quiz_form_list;
+                        }
+                    })
+            },
 
-        quizStart(quizInfo){
-            // if (localStorage.quiz_info){
-            //     console.log(localStorage.quiz_info);
-            //     localStorage.setItem('quiz_info','');
-            //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-            // }else{
-            //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
-            // }
-            this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
+            quizStart(quizInfo){
+                // if (localStorage.quiz_info){
+                //     console.log(localStorage.quiz_info);
+                //     localStorage.setItem('quiz_info','');
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }else{
+                //     localStorage.setItem('quiz_info', JSON.stringify(quizInfo));
+                // }
+                this.$router.push({name: 'StartExam', params: { quiz_info: JSON.stringify(quizInfo) }});
+            }
+        },
+        created(){
+            this.getQuizList();
         }
-    },
-    created(){
-        this.getQuizList();
     }
-}
 </script>
 
 <style scoped>

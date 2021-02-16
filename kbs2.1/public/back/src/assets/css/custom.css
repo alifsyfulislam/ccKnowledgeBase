@@ -210,12 +210,14 @@
     margin-bottom: 15px;
 }
 
+.custom-accordion img.note-float-left,
 .ta-content-wrapper img.note-float-left {
     display: inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
 }
 
+.custom-accordion img.note-float-right,
 .ta-content-wrapper img.note-float-right {
     display: inline-block;
     margin-left: 15px;

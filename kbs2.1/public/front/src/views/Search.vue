@@ -32,7 +32,8 @@
                   </li>
 
                   <li class="list-inline-item">
-                    {{query_string}}
+<!--                    {{query_string}}-->
+                    {{query_string < 50 ? query_string : (query_string).substring(0,50)+"..."}}
                   </li>
                 </ul>
               </div>
