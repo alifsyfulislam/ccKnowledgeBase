@@ -153,4 +153,11 @@ class ArticleController extends Controller
 
     }
 
+    public function articleDetails($slug)
+    {
+
+        return $this->articleService->getArticleDetailsBySlug($slug);
+
+    }
+
 }

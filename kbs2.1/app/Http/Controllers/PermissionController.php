@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\PermissionService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Auth;
 
 class PermissionController extends Controller
 {
+
     /**
      * @var PermissionService
      */
@@ -20,7 +22,7 @@ class PermissionController extends Controller
      */
     public function __construct(PermissionService $permissionService)
     {
-        
+        $this->middleware('auth');
         $this->permissionService = $permissionService;
 
     }
@@ -31,16 +33,29 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        
-        if(Auth::user()->can('permission-list')) {
+        return $this->permissionService->paginateData();
 
-            return $this->permissionService->paginateData();
+//        if(Auth::user()->can('quiz-form-list')) {
+//
+//            return $this->permissionService->paginateData();
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
-        } else {
+    }
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        }
+    /**
+     *
+     */
+    public function create()
+    {
+
+        /*$permissions = $this->permissionService->getAll();
+        return view('permissions.create',compact('permissions'));*/
 
     }
 
@@ -51,16 +66,31 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        
-        if(Auth::user()->can('permission-create')) {
+        return $this->permissionService->createItem($request);
 
-            return $this->permissionService->createItem($request);
+//        if(Auth::user()->can('quiz-form-create')) {
+//
+//            return $this->permissionService->createItem($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
-        } else {
+    }
 
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
 
-        }
+    /**
+     * @param $id
+     * @return void
+     */
+    public function edit($id)
+    {
+
+        /*$permissions = $this->permissionService->getById($id);
+
+        return view('permissions.edit',compact('permissions'));*/
 
     }
 
@@ -72,7 +102,7 @@ class PermissionController extends Controller
     public function show($id)
     {
 
-        if(Auth::user()->can('permission-list')) {
+        if(Auth::user()->can('quiz-form-list')) {
 
             return $this->permissionService->getById($id);
 
@@ -92,7 +122,7 @@ class PermissionController extends Controller
     public function update(Request $request)
     {
 
-        if(Auth::user()->can('permission-edit')) {
+        if(Auth::user()->can('quiz-form-edit')) {
 
             return $this->permissionService->updateItem($request);
 
@@ -112,7 +142,7 @@ class PermissionController extends Controller
     public function destroy(Request $request)
     {
 
-        if(Auth::user()->can('permission-delete')) {
+        if(Auth::user()->can('quiz-form-delete')) {
 
             return $this->permissionService->deleteItem($request->id);
 
