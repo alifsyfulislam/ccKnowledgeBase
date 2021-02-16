@@ -25,12 +25,22 @@ use App\Http\Controllers\PermissionController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('front-page-config', [PageController::class, 'index']);
+
+Route::get('category-list', [CategoryController::class, 'categoryList']);
 Route::get('category-article-list', [CategoryController::class, 'categoryArticleList']);
 
-Route::get('article-details/{slug}', [ArticleController::class, 'articleDetails']);
+
 Route::get('article-list', [ArticleController::class, 'articleList']);
+Route::get('article-details/{slug}', [ArticleController::class, 'articleDetails']);
+Route::get('article/category/{slug}', [ArticleController::class, 'articleCategory']);
+Route::get('article/search/{any}',[ArticleController::class, 'articleSearch']);
 
+Route::get('faq-list',[FaqController::class, 'faqList']);
+Route::get('faqs/{any}',[FaqController::class, 'show']);
 
+//Route::get('quiz-list',[QuizController::class, 'getQuizList']);
+//Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 
 Route::middleware('auth:api')->group(function(){
 
@@ -39,8 +49,9 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('faqs', FaqController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
-    Route::apiResource('quizzes', QuizController::class);
-    Route::apiResource('quiz-forms', QuizFormController::class);
+
+//    Route::apiResource('quizzes', QuizController::class);
+//    Route::apiResource('quiz-forms', QuizFormController::class);
     Route::apiResource('quizzes', QuizFormFieldController::class);
     Route::apiResource('pages', PageController::class);
     Route::apiResource('permissions', PermissionController::class);
@@ -66,5 +77,5 @@ Route::middleware('auth:api')->group(function(){
 
 });
 
-Route::post('/login', AuthController::class);
+Route::post('login', AuthController::class);
 
