@@ -1,5 +1,5 @@
 <template>
-    <div>
+
         <div v-if="isLoading">
             <Loader></Loader>
         </div>
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 </template>
 
 <script>
@@ -239,7 +239,7 @@
                 $(window).on("blur",function () {
                     //do something
                     console.log("You left this tab");
-                    window.location.reload();
+                    // window.location.reload();
                 })
             },
         },

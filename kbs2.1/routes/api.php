@@ -14,6 +14,7 @@ use App\Http\Controllers\QuizFormController;
 use App\Http\Controllers\QuizFormFieldController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QuizTakeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,8 @@ Route::get('article/search/{any}',[ArticleController::class, 'articleSearch']);
 Route::get('faq-list',[FaqController::class, 'faqList']);
 Route::get('faqs/{any}',[FaqController::class, 'show']);
 
-//Route::get('quiz-list',[QuizController::class, 'getQuizList']);
-//Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
+Route::get('quiz-list',[QuizController::class, 'getQuizList']);
+Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 
 Route::middleware('auth:api')->group(function(){
 
@@ -50,9 +51,10 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
 
-//    Route::apiResource('quizzes', QuizController::class);
-//    Route::apiResource('quiz-forms', QuizFormController::class);
-    Route::apiResource('quizzes', QuizFormFieldController::class);
+    Route::apiResource('quizzes', QuizController::class);
+    Route::apiResource('quiz-forms', QuizFormController::class);
+    Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
+
     Route::apiResource('pages', PageController::class);
     Route::apiResource('permissions', PermissionController::class);
 
