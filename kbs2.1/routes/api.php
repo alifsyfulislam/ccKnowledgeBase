@@ -17,7 +17,7 @@ use App\Http\Controllers\FaqController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/login', AuthController::class);
+
 
 Route::middleware('auth:api')->group(function(){
 
@@ -26,4 +26,6 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('faqs', FaqController::class);
 
 });
+
+Route::post('/login', AuthController::class);
 
