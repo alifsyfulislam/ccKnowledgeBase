@@ -7,6 +7,7 @@ use App\Exports\CategoriesExport;
 use App\Exports\FaqsExport;
 use App\Exports\UsersExport;
 use App\Models\Article;
+use App\Models\Faq;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -48,12 +49,23 @@ class ExportController extends Controller
                 'publish_date' => $articleData->created_at,
             ];
         });
-//        dd($articleData);
         return Excel::download(new ArticlesExport($articleData), 'articles-' . date("d-m-y-H-i-s") . '.csv');
     }
 
     public function exportFaqs()
     {
-        return Excel::download(new FaqsExport(), 'faqs-' . date("d-m-y-H-i-s") . '.csv');
+        $faqData = Faq::with(['user' => function ($q) {$q->select('id', 'first_name', 'last_name');}, 'category' => function ($q) {$q->select('id', 'name');}])->get()->map(function ($faqData) {
+            return [
+                'id' => $faqData->id,
+                'en_title' => $faqData->en_title,
+                'en_body' => strip_tags($faqData->en_body),
+                'category_name' => $faqData->category->name,
+                'author_name' => $faqData->user->first_name . ' ' . $faqData->user->last_name,
+                'status' => $faqData->status,
+                'tag' => $faqData->tag ? $faqData->tag : "N/A",
+                'publish_date' => $faqData->created_at,
+            ];
+        });
+        return Excel::download(new FaqsExport($faqData), 'faqs-' . date("d-m-y-H-i-s") . '.csv');
     }
 }
