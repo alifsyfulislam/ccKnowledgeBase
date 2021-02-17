@@ -239,7 +239,7 @@
                 $(window).on("blur",function () {
                     //do something
                     console.log("You left this tab");
-                    // window.location.reload();
+                    window.location.reload();
                 })
             },
         },
