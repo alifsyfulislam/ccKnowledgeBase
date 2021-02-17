@@ -17,21 +17,21 @@ class Permission extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
+    public function roles() 
     {
 
         return $this->belongsToMany(Role::class,'roles_permissions');
-
+            
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function users() 
     {
 
-        return $this->belongsToMany(User::class,'users_permissions', 'user_id');
-
+        return $this->belongsToMany(User::class,'users_permissions');
+            
     }
 
     /**

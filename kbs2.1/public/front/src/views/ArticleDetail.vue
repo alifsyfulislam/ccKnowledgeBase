@@ -44,7 +44,7 @@
         <div class="container">
           <div class="row" v-if="aArticle">
             <div class="col-md-12">
-              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title && aArticle.bn_title != ''">
+              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'n/a'">
                 <li class="nav-item">
                   <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
                 </li>
@@ -82,7 +82,7 @@
 
 
                 <!--                                bangla-->
-                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'null' || aArticle.bn_title">
+                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
                   <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
                   <div>
                     <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
@@ -311,9 +311,9 @@ export default {
 
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
     }
   },
   created() {

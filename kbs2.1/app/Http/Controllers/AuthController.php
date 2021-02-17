@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 
@@ -28,15 +27,14 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
 
     }
-
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
-
-
         $input = $request->all();
 
         $validator = Validator::make($request->all(), [
@@ -79,23 +77,5 @@ class AuthController extends Controller
 
         }
 
-    }
-
-    public function logout(Request $request) {
-
-        if ($request->user()->token()->revoke()){
-            return response()->json([
-                'status_code'   => 200,
-                'status'        => config('status.status_code.200'),
-                'message'       => 'Logged out successfully!'
-            ]);
-
-        } else{
-            return response()->json([
-                'status_code'   => 200,
-                'status'        => config('status.status_code.200'),
-                'message'       => "Could not logout!"
-            ]);
-        }
     }
 }

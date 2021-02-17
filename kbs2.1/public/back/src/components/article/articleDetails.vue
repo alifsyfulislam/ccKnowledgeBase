@@ -22,7 +22,7 @@
 
         <div class="content-wrapper bg-white" v-if="aArticle">
           <div class="col-md-12 article-lang-switcher">
-            <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title">
+            <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'n/a'">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
               </li>
@@ -60,7 +60,7 @@
 
 
               <!--bangla-->
-              <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title">
+              <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
                 <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
                 <div>
                   <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
@@ -87,8 +87,10 @@
 
           </div>
 
+          <br/>
+
           <div class="col-md-12" v-if="aArticle.media.length > 0">
-            <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
+            <h5 class="mb-0 font-weight-bold pb-2">Refferences</h5>
             <ul class="pl-15">
               <li v-for="a_file in aArticle.media" :key="a_file.id">
                 <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
@@ -187,6 +189,7 @@ export default {
 
   created() {
     this.articleID = this.$route.params.id;
+    console.log(this.articleID);
     this.articleSearch(this.articleID);
     this.getCategoryArticleList();
     this.getRecentArticleList();

@@ -1,20 +1,21 @@
 <?php
 
-
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TotalCountController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\QuizController;
-//use App\Http\Controllers\QuizFormFieldController;
-use App\Http\Controllers\ExportController;
+use App\Http\Controllers\QuizFormController;
+use App\Http\Controllers\QuizFormFieldController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizTakeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,105 +26,58 @@ use App\Http\Controllers\QuizTakeController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
-
-Route::get('users/export/', [ExportController::class, 'exportUsers'])->name('users.export_mapping');
-Route::get('categories/export/', [ExportController::class, 'exportCategories'])->name('categories.export_mapping');
-Route::get('articles/export/', [ExportController::class, 'exportArticles'])->name('articles.export_mapping');
-
-
-
-Route::post('login', [AuthController::class, 'index']);
+Route::get('front-page-config', [PageController::class, 'index']);
 
 Route::get('category-list', [CategoryController::class, 'categoryList']);
 Route::get('category-article-list', [CategoryController::class, 'categoryArticleList']);
 
-Route::get('article/category/{slug}', [ArticleController::class, 'articleCategory']);
-Route::get('article-details/{slug}', [ArticleController::class, 'articleDetails']);
+
 Route::get('article-list', [ArticleController::class, 'articleList']);
+Route::get('article-details/{slug}', [ArticleController::class, 'articleDetails']);
+Route::get('article/category/{slug}', [ArticleController::class, 'articleCategory']);
 Route::get('article/search/{any}',[ArticleController::class, 'articleSearch']);
 
 Route::get('faq-list',[FaqController::class, 'faqList']);
 Route::get('faqs/{any}',[FaqController::class, 'show']);
 
-
 Route::get('quiz-list',[QuizController::class, 'getQuizList']);
 Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 
-Route::get('front-page-config', [PageController::class, 'index']);
+Route::middleware('auth:api')->group(function(){
 
-Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('articles', ArticleController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('faqs', FaqController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('roles', RoleController::class);
 
-    Route::get('articles', [ArticleController::class, 'index']);
-    Route::post('articles', [ArticleController::class, 'store']);
-    Route::get('articles/{article}', [ArticleController::class, 'show']);
-    Route::delete('articles/{article}', [ArticleController::class, 'destroy']);
-    Route::post('save-file', [ArticleController::class, 'saveFiles']);
-    Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
-    Route::get('latest-article-list', [ArticleController::class, 'articleList']);
-    Route::post('article/update-data', [ArticleController::class, 'update']);
+    Route::apiResource('quizzes', QuizController::class);
+    Route::apiResource('quiz-forms', QuizFormController::class);
+    Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
 
-    Route::get('users', [UserController::class, 'index']);
-    Route::post('users', [UserController::class, 'store']);
-    Route::get('users/{users}', [UserController::class, 'show']);
-    Route::put('users/{users}', [UserController::class, 'update']);
-    Route::delete('users/{users}', [UserController::class, 'destroy']);
-    Route::post('user/update-password', [UserController::class,'changePassword']);
-    Route::post('user/username', [UserController::class, 'checkUserNameExist']);
+    Route::apiResource('pages', PageController::class);
+    Route::apiResource('permissions', PermissionController::class);
 
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::post('categories', [CategoryController::class, 'store']);
-    Route::get('categories/{categories}', [CategoryController::class, 'show']);
-    Route::put('categories/{categories}', [CategoryController::class, 'update']);
-    Route::delete('categories/{categories}', [CategoryController::class, 'destroy']);
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
 
-    Route::get('pages', [PageController::class, 'index']);
-    Route::post('pages', [PageController::class, 'store']);
-    Route::get('pages/{pages}', [PageController::class, 'show']);
-    Route::put('pages/{pages}', [PageController::class, 'update']);
-    Route::delete('pages/{pages}', [PageController::class, 'destroy']);
+    Route::post('article/update-data', [ArticleController::class, 'update']);
+    Route::post('save-file', [ArticleController::class, 'saveFiles']);
+    Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
+    Route::get('latest-article-list', [ArticleController::class, 'articleList']);
+
     Route::post('pages/update-data', [PageController::class, 'update']);
 
-    Route::get('roles', [RoleController::class, 'index']);
-    Route::post('roles', [RoleController::class, 'store']);
-    Route::get('roles/{roles}', [RoleController::class, 'show']);
-    Route::put('roles/{roles}', [RoleController::class, 'update']);
-    Route::delete('roles/{roles}', [RoleController::class, 'destroy']);
     Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
 
-    Route::apiResource('permissions', PermissionController::class);
-
-    Route::get('faqs', [FaqController::class, 'index']);
-    Route::post('faqs', [FaqController::class, 'store']);
-    Route::get('faqs/{faqs}', [FaqController::class, 'show']);
-    Route::put('faqs/{faqs}', [FaqController::class, 'update']);
-    Route::delete('faqs/{faqs}', [FaqController::class, 'destroy']);
-
-    Route::apiResource('quiz-forms', QuizFormController::class);
-
-    Route::get('quizzes', [QuizController::class, 'index']);
-    Route::post('quizzes', [QuizController::class, 'store']);
-    Route::get('quizzes/{quizzes}', [QuizController::class, 'show']);
-    Route::put('quizzes/{quizzes}', [QuizController::class, 'update']);
-    Route::delete('quizzes/{quizzes}', [QuizController::class, 'destroy']);
-
-    Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
-
-//    Route::get('quiz-form-fields', [QuizFormFieldController::class, 'index']);
-//    Route::post('quiz-form-fields', [QuizFormFieldController::class, 'store']);
-//    Route::get('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'show']);
-//    Route::put('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'update']);
-//    Route::delete('quiz-form-fields/{quiz-form-fields}', [QuizFormFieldController::class, 'destroy']);
+    Route::post('user/update-password', [UserController::class,'changePassword']);
+    Route::post('user/username', [UserController::class, 'checkUserNameExist']);
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
+    Route::post('logout', [UserController::class, 'logout']);
 
-    Route::post('logout', [AuthController::class, 'logout']);
 });
+
+Route::post('login', AuthController::class);
 

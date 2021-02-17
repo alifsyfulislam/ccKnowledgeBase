@@ -19,7 +19,7 @@ class QuizController extends Controller
      */
     public function __construct(QuizService $quizService)
     {
-        //$this->middleware('auth');
+//        $this->middleware('auth');
         $this->quizService = $quizService;
 
     }
@@ -29,16 +29,15 @@ class QuizController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->quizService->paginateData($request);
-//        if(Auth::user()->can('quiz-list')) {
-//
-//            return $this->quizService->paginateData($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('quiz-list')) {
+
+            return $this->quizService->paginateData($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
@@ -65,16 +64,15 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->quizService->createItem($request);
 
-//        if(Auth::user()->can('quiz-create')) {
-//
-//            return $this->quizService->createItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//        }
+        if(Auth::user()->can('quiz-create')) {
+
+            return $this->quizService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+        }
 
     }
 
@@ -99,16 +97,15 @@ class QuizController extends Controller
      */
     public function show($id)
     {
-        return $this->quizService->getById($id);
-//        if(Auth::user()->can('quiz-list')) {
-//
-//            return $this->quizService->getById($id);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('quiz-list')) {
+
+            return $this->quizService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
@@ -119,16 +116,15 @@ class QuizController extends Controller
      */
     public function update(Request $request)
     {
-        return $this->quizService->updateItem($request);
-//        if(Auth::user()->can('quiz-edit')) {
-//
-//            return $this->quizService->updateItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('quiz-edit')) {
+
+            return $this->quizService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
@@ -139,17 +135,16 @@ class QuizController extends Controller
      */
     public function destroy(Request $request)
     {
-        return $this->quizService->deleteItem($request->id);
 
-//        if(Auth::user()->can('quiz-delete')) {
-//
-//            return $this->quizService->deleteItem($request->id);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('quiz-delete')) {
+
+            return $this->quizService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 }

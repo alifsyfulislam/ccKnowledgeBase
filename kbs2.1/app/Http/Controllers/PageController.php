@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PageService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use App\Services\PageService;
+use Auth;
 
 class PageController extends Controller
 {
-
     private $pageService;
 
     /**
@@ -29,16 +27,7 @@ class PageController extends Controller
         return $this->pageService->getAll();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -47,15 +36,16 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->pageService->createItem($request);
-//        if(Auth::user()->can('page-create')) {
-//
-//            return $this->pageService->createItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//        }
+        
+        if(Auth::user()->can('page-create')) {
+
+            return $this->pageService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+        }
+        
     }
 
     /**
@@ -66,30 +56,20 @@ class PageController extends Controller
      */
     public function show($id)
     {
-        return $this->pageService->getById($id);
-//        if(Auth::user()->can('page-list')) {
-//
-//            return $this->pageService->getById($id);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        
+        if(Auth::user()->can('page-list')) {
+
+            return $this->pageService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Page $page
-     * @return Response
-     */
-    public function edit(Page $page)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -99,18 +79,17 @@ class PageController extends Controller
      */
     public function update(Request $request)
     {
+        
+        if(Auth::user()->can('page-edit')) {
 
-        return $this->pageService->updateItem($request);
+            return $this->pageService->updateItem($request);
 
-//        if(Auth::user()->can('page-edit')) {
-//
-//            return $this->pageService->updateItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+        
     }
 
     /**

@@ -18,7 +18,11 @@ export default {
   },
   data() {
     return {
+<<<<<<< HEAD
       delay: 1000,
+=======
+      delay: 500,
+>>>>>>> 736ae50711e9a188480c561bfb62d2cf617e40fd
       endVal: 0,
       options: {
         useEasing: true,

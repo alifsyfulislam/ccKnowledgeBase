@@ -2,7 +2,7 @@
   <div>
     <div class="search-input-wrapper mt-40">
       <div class="input-group">
-        <input type="text" class="form-control" v-on:keyup.enter="fromData.search ? searchData() : ''" v-model="fromData.search" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
+        <input type="text" class="form-control" v-on:keyup.enter="fromData.search ? searchData() : ''" v-model="fromData.search" v-on:keyup="autoSuggetion" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="fromData.search ? searchData() : ''">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -13,12 +13,20 @@
         </div>
       </div>
     </div>
+    <div v-if="suggestedArtiles.length" class="search-suggestion">
+      <ul>
+          <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title" @click="fromData.search = a_suggestion.en_title, searchData()">
+              {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
+          </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 
 import $ from 'jquery'
+import axios from 'axios'
 
 $(document).on('focus','.search-input-wrapper input', function(){
   $(this).parent().addClass('focused');
@@ -40,7 +48,8 @@ export default {
     return{
       fromData: {
         search:''
-      }
+      },
+      suggestedArtiles:[]
     }
   },
 
@@ -56,6 +65,20 @@ export default {
       }
       _that.$router.push({ name: 'Search'});
     },
+
+    autoSuggetion(e) {
+      let _that = this;
+      _that.suggestedArtiles = [];
+      if(e.target.value.length>3){
+          setTimeout(()=>{
+            axios.get('article/search/'+e.target.value)
+                    .then(function (res) {
+                      _that.suggestedArtiles = res.data.article_list.data;
+                    })
+          },500);
+      }
+      
+    }
   }
 }
 </script>

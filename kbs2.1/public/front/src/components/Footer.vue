@@ -18,7 +18,7 @@
             </ul>
           </div>
           <div class="col-sm-6 order-sm-1 text-sm-left text-center">
-            ©{{ new Date().getFullYear() }} Genuity Systems Ltd, All Rights Reserved
+            ©{{ new Date().getFullYear() }} Genuity Systems Ltd, All Rights Reserved.
           </div>
         </div>
       </div>

@@ -177,11 +177,11 @@ export default {
 
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.png';
-      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api','')+'static_media/new-logo.png';
-      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api','')+'static_media/small-logo.png';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.png';
+      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
+      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
     },
 
     allFaqs(){

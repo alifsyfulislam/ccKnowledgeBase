@@ -32,7 +32,8 @@
                   </li>
 
                   <li class="list-inline-item">
-                    {{query_string}}
+<!--                    {{query_string}}-->
+                    {{query_string < 50 ? query_string : (query_string).substring(0,50)+"..."}}
                   </li>
                 </ul>
               </div>
@@ -198,9 +199,9 @@ export default {
     // },
     getStaticMedia()
     {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api','')+'static_media/banner.jpg';
+      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
     },
   },
   created()
