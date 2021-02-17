@@ -51,9 +51,20 @@ Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 
 Route::middleware('auth:api')->group(function(){
 
-    Route::apiResource('articles', ArticleController::class);
+    Route::get('articles', [ArticleController::class, 'index']);
+    Route::post('articles', [ArticleController::class, 'store']);
+    Route::get('articles/{article}', [ArticleController::class, 'show']);
+    Route::delete('articles/{article}', [ArticleController::class, 'destroy']);
+
+//    Route::apiResource('articles', ArticleController::class, []);
     Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('faqs', FaqController::class);
+//    Route::apiResource('faqs', FaqController::class);
+    Route::get('faqs', [FaqController::class, 'index']);
+    Route::post('faqs', [FaqController::class, 'store']);
+    Route::get('faqs/{faqs}', [FaqController::class, 'show']);
+    Route::put('faqs/{faqs}', [FaqController::class, 'update']);
+    Route::delete('faqs/{faqs}', [FaqController::class, 'destroy']);
+
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
 
