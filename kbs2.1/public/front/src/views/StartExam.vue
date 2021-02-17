@@ -104,6 +104,7 @@
 
         data(){
             return{
+                questionArray : [],
                 isLoading: true,
                 isFinish: false,
                 isRepeat: true,
@@ -171,12 +172,7 @@
                     _that.showResult = score;
                 }
             },
-            // checkPrevData(){
-            //     let _that = this;
-            //     _that.fromData = _that.allFromData[_that.allFromData.length - 1];
-            //     _that.allFromData = _that.allFromData.slice(0, -1);
-            //     console.log(_that.allFromData);
-            // },
+
             getQuizFormField(pageUrl) {
                 let _that = this;
                 if (_that.pagination.current_page == _that.quizInfo.number_of_questions){
@@ -189,23 +185,32 @@
                     pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
                     axios.get(pageUrl)
                         .then(function (response) {
+
                             _that.isLoading= false;
                             _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
-                            _that.pagination  = response.data.quiz_form_field_list;
-                            _that.quizFormFieldInfo.forEach(val =>{
-                                _that.resultArray.push(val.f_default_value);
-                                if (val.f_option_value !=null && val.f_option_value.search(',')){
-                                    let str = val.f_option_value;
-                                    str = str.split(",");
-                                    _that.selectBoxOption = Object.assign({}, str);
-                                }
-                                if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
-                                    _that.itemA = 1;
-                                    _that.isRepeat = false;
-                                }else {
-                                    _that.itemA = 0
-                                }
-                            })
+                            if (_that.questionArray.includes(_that.quizFormFieldInfo)){
+                                _that.getQuizFormField(pageUrl);
+                                console.log('skip');
+                            }
+                            else{
+                                _that.questionArray.push(_that.quizFormFieldInfo);
+
+                                _that.pagination  = response.data.quiz_form_field_list;
+                                _that.quizFormFieldInfo.forEach(val =>{
+                                    _that.resultArray.push(val.f_default_value);
+                                    if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                        let str = val.f_option_value;
+                                        str = str.split(",");
+                                        _that.selectBoxOption = Object.assign({}, str);
+                                    }
+                                    if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
+                                        _that.itemA = 1;
+                                        _that.isRepeat = false;
+                                    }else {
+                                        _that.itemA = 0
+                                    }
+                                })
+                            }
                         })
                 }
 
@@ -239,7 +244,7 @@
                 $(window).on("blur",function () {
                     //do something
                     console.log("You left this tab");
-                    window.location.reload();
+                    // window.location.reload();
                 })
             },
         },
