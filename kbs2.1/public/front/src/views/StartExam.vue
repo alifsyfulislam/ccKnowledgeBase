@@ -170,6 +170,8 @@
                         }
                     }
                     _that.showResult = score;
+                    _that.questionArray = [];
+                    console.log(_that.questionArray);
                 }
             },
 
