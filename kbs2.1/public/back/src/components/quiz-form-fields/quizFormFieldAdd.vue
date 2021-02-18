@@ -6,14 +6,6 @@
                 <h2 class="section-title text-uppercase mb-20">Add New Quiz Field in <span class="text-info">{{quizform_details.name}}</span></h2>
 
                 <div class="add-quiz-item-wrapper" style="background: #f1f1f1; padding: 10px;border-radius: 6px;margin-bottom: 10px;">
-<!--                    <div class="row">-->
-<!--                        <div class="col-md-12">-->
-<!--                            <div class="form-group text-left">-->
-<!--                                &lt;!&ndash;                                <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add More</button>&ndash;&gt;-->
-<!--                                <button class="btn btn-danger ripple-btn px-50">Remove</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
 
                     <div class="row">
                         <div class="col-md-6">
@@ -127,15 +119,21 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-<!--                                common-gradient-btn-->
-<!--                                <button class="btn btn-secondary ripple-btn px-50" @click="validateAndNext()">Add More</button>-->
-                                <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Save</button>
+                                <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext= true, validateAndNext()">Add More</button>
+                               <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext=false ,validateAndSubmit()">Save</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+        </div>
+
+        <div class="action-modal-wraper" v-if="success_message">
+            <span>{{ success_message }}</span>
+        </div>
+        <div class="action-modal-wraper-error" v-if="error_message">
+            <span>{{ error_message }}</span>
         </div>
     </div>
 </template>
@@ -156,6 +154,7 @@
             return {
                 isSearch                : false,
                 isAddMore               : false,
+                isNext                  : false,
 
                 success_message         : '',
                 error_message           : '',
@@ -191,52 +190,58 @@
         },
 
         methods: {
-            // validateAndNext (){
-            //     if (!this.quizFormFieldData.quizlabelName){
-            //         $('#quizFormFieldLabel').css({
-            //             'border-color': '#FF7B88',
-            //         });
-            //         $('#fieldLabelError').html("*field label is required");
-            //     }
-            //     if (!this.quizFormFieldData.quizfieldName){
-            //
-            //         $('#quizFormFieldName').css({
-            //             'border-color': '#FF7B88',
-            //         });
-            //         $('#fieldNameError').html("*field name is required");
-            //     }
-            //
-            //     if (!this.quizFormFieldData.quizfieldID){
-            //
-            //         $('#quizFormFieldID').css({
-            //             'border-color': '#FF7B88',
-            //         });
-            //         $('#fieldIDError').html("*field ID is required");
-            //     }
-            //
-            //     if (!this.quizFormFieldData.quizfieldClass){
-            //
-            //         $('#quizFormFieldClass').css({
-            //             'border-color': '#FF7B88',
-            //         });
-            //         $('#fieldClassError').html("*field class is required");
-            //     }
-            //     if (!this.quizFormFieldData.quizfieldType){
-            //
-            //         $('#quizFormFieldType').css({
-            //             'border-color': '#FF7B88',
-            //         });
-            //         $('#fieldTypeError').html("*field type is required");
-            //     }
-            //     if (this.validation_error.isFieldLabelStatus === true &&
-            //         this.validation_error.isFieldNameStatus === true &&
-            //         this.validation_error.isFieldIDStatus === true &&
-            //         this.validation_error.isFieldClassStatus === true &&
-            //         this.validation_error.isFieldTypeStatus === true){
-            //         // this.quizformfieldStore();
-            //         // store to an array
-            //     }
-            // },
+            setTimeoutElements()
+            {
+                // setTimeout(() => this.isLoading = false, 3e3);
+                setTimeout(() => this.success_message = "", 2e3);
+                setTimeout(() => this.error_message = "", 2e3);
+            },
+            validateAndNext (){
+                if (!this.quizFormFieldData.quizlabelName){
+                    $('#quizFormFieldLabel').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldLabelError').html("*field label is required");
+                }
+                if (!this.quizFormFieldData.quizfieldName){
+
+                    $('#quizFormFieldName').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldNameError').html("*field name is required");
+                }
+
+                if (!this.quizFormFieldData.quizfieldID){
+
+                    $('#quizFormFieldID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldIDError').html("*field ID is required");
+                }
+
+                if (!this.quizFormFieldData.quizfieldClass){
+
+                    $('#quizFormFieldClass').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldClassError').html("*field class is required");
+                }
+                if (!this.quizFormFieldData.quizfieldType){
+
+                    $('#quizFormFieldType').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldTypeError').html("*field type is required");
+                }
+                if (this.validation_error.isFieldLabelStatus === true &&
+                    this.validation_error.isFieldNameStatus === true &&
+                    this.validation_error.isFieldIDStatus === true &&
+                    this.validation_error.isFieldClassStatus === true &&
+                    this.validation_error.isFieldTypeStatus === true){
+                    this.quizformfieldStore();
+                    // store to an array
+                }
+            },
             validateAndSubmit()
             {
                 if (!this.quizFormFieldData.quizlabelName){
@@ -442,7 +447,13 @@
                         _that.success_message       = "Quiz form field added successfully";
                         _that.quizFormFieldData     = ''
 
-                        _that.$emit('quiz-form-field-slide-close', _that.success_message);
+                        if (_that.isNext == true){
+                            _that.setTimeoutElements();
+                        }else{
+                            _that.$emit('quiz-form-field-slide-close', _that.success_message);
+                        }
+
+                        // _that.$emit('quiz-form-field-slide-close', _that.success_message);
 
                     }else if(response.data.status_code === 400){
 
