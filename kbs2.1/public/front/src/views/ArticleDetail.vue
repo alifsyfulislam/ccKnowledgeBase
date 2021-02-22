@@ -249,7 +249,10 @@ export default {
             _that.aArticle = response.data.article_info;
             _that.$router.push('/article-detail/'+_that.articleID)
             // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
-            document.getElementById("search-suggestion").style.visibility = "hidden";
+            // document.getElementById("search-suggestion").style.visibility = "hidden";
+            if (! _that.suggestedArtiles){
+              document.getElementById("search-suggestion").style.visibility = "hidden";
+            }
           })
       }else{
         console.log(last_history_article);
