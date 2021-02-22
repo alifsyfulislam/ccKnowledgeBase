@@ -51,8 +51,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="tag" class="d-block">Tag</label>
-                            <tag-input-edit class="tag-input-wrapper" v-if="faqData.tag" id="tag" :faqInfo="faqData" @tag-list="collectTagList"/>
-                            <tag-input-edit class="tag-input-wrapper" v-else  :faqInfo="faqData" @tag-list="collectTagList"/>
+                            <tag-input-edit class="tag-input-wrapper" v-if="isLoading == true" id="tag" :faqInfo="faqData" @tag-list="collectTagList"/>
+<!--                            <tag-input-edit class="tag-input-wrapper" v-else  :faqInfo="faqData" @tag-list="collectTagList"/>-->
                         </div>
                     </div>
 
@@ -116,6 +116,7 @@ export default {
 
     data() {
         return {
+            isLoading           : false,
             isMounted           : false,
             enBody              : "en_Body",
             bnBody              : "bn_Body",
@@ -332,6 +333,8 @@ export default {
                 .then(function (response) {
                     if (response.data.status_code === 200) {
                         //console.log(response.data);
+
+                        _that.isLoading = true;
 
                         _that.faqDetails            = response.data.faq_info;
                         _that.selectedCategory      = _that.faqDetails.category_id;
