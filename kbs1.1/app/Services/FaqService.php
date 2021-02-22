@@ -240,12 +240,12 @@ class FaqService
 
     public function searchFaq($searchString)
     {
-
         return response()->json([
 
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'faq_list' => $this->faqRepository->search($searchString)
+//            'faq_list' => $this->faqRepository->search($searchString)
+            'faq_list' => $searchString
 
         ]);
 

@@ -45,6 +45,7 @@ Route::get('article/search/{any}',[ArticleController::class, 'articleSearch']);
 
 Route::get('faq-list',[FaqController::class, 'faqList']);
 Route::get('faqs/{any}',[FaqController::class, 'show']);
+Route::get('faq/search/{any}',[FaqController::class, 'faqSearch']);
 
 Route::get('quiz-list',[QuizController::class, 'getQuizList']);
 Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
