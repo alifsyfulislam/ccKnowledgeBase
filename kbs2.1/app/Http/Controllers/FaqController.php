@@ -84,17 +84,17 @@ class FaqController extends Controller
 
     public function show($id)
     {
-        if(Auth::user()->can('faq-list')) {
+//        if(Auth::user()->can('faq-list')) {
+//
+//            return $this->faqService->getById($id);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
 
-            return $this->faqService->getById($id);
-
-        } else {
-
-            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-
-        }
-
-//        return $this->faqService->getById($id);
+        return $this->faqService->getById($id);
 
     }
 
