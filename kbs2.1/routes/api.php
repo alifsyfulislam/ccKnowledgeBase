@@ -15,6 +15,7 @@ use App\Http\Controllers\QuizFormFieldController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizTakeController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,11 @@ use App\Http\Controllers\QuizTakeController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('users/export/', [ExportController::class, 'exportUsers'])->name('users.export_mapping');
+Route::get('categories/export/', [ExportController::class, 'exportCategories'])->name('categories.export_mapping');
+Route::get('articles/export/', [ExportController::class, 'exportArticles'])->name('articles.export_mapping');
+Route::get('faqs/export/', [ExportController::class, 'exportFaqs'])->name('faqs.export_mapping');
+
 Route::get('front-page-config', [PageController::class, 'index']);
 
 Route::get('category-list', [CategoryController::class, 'categoryList']);
@@ -48,6 +54,7 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('faqs', FaqController::class);
+
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);
 
@@ -75,6 +82,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('user/username', [UserController::class, 'checkUserNameExist']);
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
+
     Route::post('logout', [UserController::class, 'logout']);
 
 });
