@@ -4,7 +4,9 @@ namespace Database\Seeders;
 use App\Helpers\Helper;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
+// use Illuminate\Support\Facades\Schema;
+use Jenssegers\Mongodb\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class PermissionTableSeeder extends Seeder
 {
@@ -16,7 +18,7 @@ class PermissionTableSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        Permission::truncate();
+        DB::collection('permission')->delete();//Permission::truncate();
 
         $Permissions = [
             'User List',
@@ -78,7 +80,7 @@ class PermissionTableSeeder extends Seeder
         foreach ($Permissions as $Permission) {
 
             // Permission::Create(['name' => $Permission, 'slug' => Helper::slugify($Permission)]);
-            Permission::create(['name' => $Permission, 'slug' => Helper::slugify($Permission)]);
+            DB::collection('permission')->create(['name' => $Permission, 'slug' => Helper::slugify($Permission)]);
 
         }
 
