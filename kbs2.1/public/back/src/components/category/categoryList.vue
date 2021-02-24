@@ -167,11 +167,7 @@ import Header from '@/layouts/common/Header'
 import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
-<<<<<<< HEAD
-import dataTable from "../datatable/dataTable";
-=======
-// import dataTable from "../datatable/dataTable";
->>>>>>> 736ae50711e9a188480c561bfb62d2cf617e40fd
+
 import $ from "jquery";
 
 export default {
@@ -182,11 +178,6 @@ export default {
         CategoryAdd,
         CategoryEdit,
         Loading,
-<<<<<<< HEAD
-        dataTable
-=======
-        // dataTable
->>>>>>> 736ae50711e9a188480c561bfb62d2cf617e40fd
     },
 
     data() {
