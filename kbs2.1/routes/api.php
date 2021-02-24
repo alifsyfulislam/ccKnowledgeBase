@@ -27,6 +27,9 @@ use App\Http\Controllers\ExportController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('login', AuthController::class);
+
+
 Route::get('users/export/', [ExportController::class, 'exportUsers'])->name('users.export_mapping');
 Route::get('categories/export/', [ExportController::class, 'exportCategories'])->name('categories.export_mapping');
 Route::get('articles/export/', [ExportController::class, 'exportArticles'])->name('articles.export_mapping');
@@ -75,6 +78,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
     Route::get('latest-article-list', [ArticleController::class, 'articleList']);
 
+    Route::post('change-article-status', 'ArticleController@changeArticleStatus');
+    Route::post('change-faq-status', 'FaqController@changeFAQStatus');
+
     Route::post('pages/update-data', [PageController::class, 'update']);
 
     Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
@@ -88,5 +94,5 @@ Route::middleware('auth:api')->group(function(){
 
 });
 
-Route::post('login', AuthController::class);
+
 

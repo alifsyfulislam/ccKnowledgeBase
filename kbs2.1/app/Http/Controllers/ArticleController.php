@@ -160,4 +160,10 @@ class ArticleController extends Controller
 
     }
 
+    public function changeArticleStatus(Request $request){
+
+        return $this->articleService->articleStatusChange($request);
+
+    }
+
 }

@@ -147,7 +147,7 @@ class ArticleController extends Controller
      * @param Article $article
      * @return JsonResponse
      */
-    public function articleSearch(string $searchString = "")
+    public function articleSearch(string $searchString)
     {
 
         return $this->articleService->searchArticle($searchString);
