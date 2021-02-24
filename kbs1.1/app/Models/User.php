@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable

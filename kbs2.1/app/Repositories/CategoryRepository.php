@@ -122,12 +122,13 @@ class CategoryRepository implements RepositoryInterface
     public function categoryArticles()
     {
 
-        return Category::with(['article','media', 'childrenRecursive'])->orderBy('id','DESC')->get()->map(function ($query) {
-
-                $query->setRelation('article', $query->article->take(-3));
-                return $query;
-
-        });
+        return Category::with(['article','media', 'childrenRecursive'])->where('parent_id', 0)->orderBy('id','DESC')->get();
+//        ->map(function ($query) {
+//
+//                $query->setRelation('article', $query->article->take(-3));
+//                return $query;
+//
+//        });
 //        return Category::with(['article','media'])->latest()->take(5)->get();
 
     }

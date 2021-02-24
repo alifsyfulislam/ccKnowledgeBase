@@ -7,17 +7,29 @@
       <section class="inner-search-area py-20">
         <div class="container">
           <div class="search-input-wrapper d-block d-sm-flex justify-content-between align-items-center">
-            <div class="input-group order-sm-2">
-              <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
-                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                  </svg>
-                </button>
+            <div class="search-input-box position-relative order-sm-2">
+              <div class="input-group" style="max-width: 100%;width: 100%;">
+                <input type="text" class="form-control" v-on:keyup.enter="query_string ? searchData() : ''" v-model="query_string"  placeholder="Search Article Here"  v-on:keyup="autoSuggetion" aria-label="Search Here" aria-describedby="searchBtn">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" id="searchBtn" type="button" @click="query_string ? searchData() : ''">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                      <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div v-if="suggestedArtiles.length" class="search-suggestion" style="left:0; width: 100%">
+                <ul>
+                    <!-- <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title"  @click.prevent="articleSearch(a_suggestion.slug)">
+                        {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
+                    </li> -->
+                  <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
+                    
+                </ul>
               </div>
             </div>
+
             <!-- <button @click="dynamicBackFunc()" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button> -->
             <div class="breadcrumbs mt-10 mt-sm-0">
               <ul class="list-inline list-unstyled mb-0">
@@ -152,6 +164,7 @@ export default {
       allCategoryArticle:'',
       categoryHasArticle:[],
       categoryID:'',
+      suggestedArtiles:[],
       categoryIDArr:[],
       selectedCategory:'',
       selectedCategoryArr : [],
@@ -227,6 +240,21 @@ export default {
           _that.pagination = response.data.article_list;
           _that.$router.push('/category-list/'+_that.categoryID)
         })
+    },
+
+    autoSuggetion(e) {
+      let _that = this;
+      _that.suggestedArtiles = [];
+      if(e.target.value.length>3){
+          setTimeout(()=>{
+            axios.get('article/search/'+e.target.value)
+                    .then(function (res) {
+                      _that.suggestedArtiles = res.data.article_list.data;
+                      console.log(_that.suggestedArtiles);
+                    })
+          },500);
+      }
+      
     },
 
     changeCategoryArticlePage(categoryID,pageUrl){

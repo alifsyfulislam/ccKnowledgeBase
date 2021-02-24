@@ -17,7 +17,11 @@ class QuizTakeController extends Controller
 
     public function getFormListUsingForm($id)
     {
-        return QuizFormField::where('quiz_form_id', $id)->paginate(1);
+
+//        dd(QuizFormField::where('quiz_form_id', $id)->inRandomOrder()->limit(3)->paginate(1));
+
+        return QuizFormField::where('quiz_form_id', $id)->inRandomOrder()->limit(1)->paginate(1);
+
     }
 
 

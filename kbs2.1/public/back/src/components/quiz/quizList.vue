@@ -68,7 +68,7 @@
                                 </thead>
                                 <tbody>
 
-                                <tr v-for="a_quiz in quizList" :key="a_quiz">
+                                <tr v-for="a_quiz in quizList" :key="a_quiz.id">
 
                                     <td class="text-center"> {{ a_quiz.name  }} </td>
                                     <!--                                    <td class="text-center"> {{ a_quiz.article ? a_quiz.article.en_title : '' }} </td>-->

@@ -3,8 +3,8 @@
 use App\Helpers\Helper;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
-
+// use Illuminate\Support\Facades\Schema;
+// use Je
 class PermissionTableSeeder extends Seeder
 {
     /**
