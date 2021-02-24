@@ -52,77 +52,39 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-left">Title</th>
-                                    <th class="text-center">Author</th>
-                                    <th class="text-center">Category</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Tag</th>
-                                    <th class="text-center">Publish Date</th>
-                                    <th class="text-center" style="width:120px">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="an_article in articleList" :key="an_article.id">
-                                    <td class="text-center">{{ an_article.id }}</td>
-                                    <td class="text-left">
-                                        <span v-if="(an_article.en_title).length<30"> {{ an_article.en_title }}</span>
-                                        <span v-else> {{ (an_article.en_title).substring(0,30)+"...." }}</span>
-                                    </td>
-                                    <td class="text-center">{{ an_article.user ? (an_article.user.first_name +' '+ an_article.user.last_name) : '' }}</td>
-                                    <td class="text-center">{{ an_article.category ? an_article.category.name : ''  }}</td>
-                                    <td class="text-center">
-                                        <select class="form-control" v-model="an_article.status" @change="articleStatusRequest(an_article)">
+                            <b-table striped hover bordered :items="articleList" :fields="fields" :per-page="perPage" :current-page="currentPage">
+                                <template #cell(en_title)="data">
+                                    <span v-if="(data.item.en_title).length<30"> {{ data.item.en_title }}</span>
+                                    <span v-else> {{ (data.item.en_title).substring(0,30)+"...." }}</span>
+                                </template>
+
+                                <template #cell(author)="data">
+                                    {{ data.item.user ? (data.item.user.first_name +' '+ data.item.user.last_name) : '' }}
+                                </template>
+
+                                <template #cell(status)="data">
+                                    <select class="form-control" v-model="data.item.status" @change="articleStatusRequest(data.item)">
                                             <option value="draft">Draft</option>
                                             <option value="hide">Hide</option>
                                             <option value="private">Private</option>
                                             <option value="public">Public</option>
-                                            <!--                                <option value="scheduling">Scheduling</option>-->
-                                            <!--                                <option value="announcement">Announcement</option>-->
                                         </select>
-                                    </td>
-                                    <td class="text-center">{{ an_article.tag  }}</td>
-                                    <td class="text-center">{{ an_article.created_at  }}</td>
-                                    <td class="text-center" style="width:120px">
-                                        <router-link :to="{ name: 'articleDetails', params: { id: an_article.slug }}" class="btn btn-primary btn-xs m-1">
+                                </template>
+
+                                <template #cell(actions)="data">
+                                    <router-link :to="{ name: 'articleDetails', params: { id: data.item.slug }}" class="btn btn-primary btn-xs m-1">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=an_article.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=data.item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
 
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=an_article.id, isDeleteCheck=true" v-if="checkPermission('article-delete')"><i class="fas fa-trash-restore-alt"></i></button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=data.item.id, isDeleteCheck=true" v-if="checkPermission('article-delete')"><i class="fas fa-trash-restore-alt"></i></button>
+                                </template>
+
+                            </b-table>
+                            <b-pagination v-model="currentPage" :total-rows="row" :per-page="perPage"></b-pagination>
                         </div>
                         <!-- Table Data End -->
-                        <!-- Pagination -->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1 px-0">
-                                        <a @click.prevent="getArticleList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1 px-0">
-                                        <a @click.prevent="getArticleList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1 px-0"  :key="n">
-                                        <a @click.prevent="getArticleList('articles?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                                    </li>
-
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1 px-0">
-                                        <a @click.prevent="getArticleList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1 px-0">
-                                        <a @click.prevent="getArticleList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <!-- Pagination End -->
+                        
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -264,7 +226,7 @@ export default {
         Menu,
         ArticleEdit,
         ArticleAdd,
-        Loading
+        Loading,
     },
     data() {
         return {
@@ -278,6 +240,8 @@ export default {
             downloadUrl         : 'articles/export/',
             user_permissions : '',
             mappedPermission : '',
+            perPage             :2,
+            currentPage         :1,
 
             article_id          :'',
             filter      : {
@@ -287,21 +251,71 @@ export default {
                 en_title        : '',
                 tag             : '',
             },
-            pagination  :{
-                from            : '',
-                to              : '',
-                first_page_url  : '',
-                last_page       : '',
-                last_page_url   : '',
-                next_page_url   :'',
-                prev_page_url   : '',
-                path            : '',
-                per_page        : 10,
-                total           : ''
-            },
+            // pagination  :{
+            //     from            : '',
+            //     to              : '',
+            //     first_page_url  : '',
+            //     last_page       : '',
+            //     last_page_url   : '',
+            //     next_page_url   :'',
+            //     prev_page_url   : '',
+            //     path            : '',
+            //     per_page        : 10,
+            //     total           : ''
+                
+            // },
+            fields: [
+                {
+                    key: 'id',
+                    label: 'ID',
+                    sortable: true
+                },
+                {
+                    key: 'en_title',
+                    label: 'Title',
+                    sortable: true
+                },
+                {
+                    key: 'author',
+                    label: 'Author',
+                    sortable: true
+                },
+                {
+                    key: 'category.name',
+                    label: 'Category',
+                    sortable: true
+                },
+                {
+                    key: 'status',
+                    label: 'Status',
+                    sortable: true
+                },
+                {
+                    key: 'tag',
+                    label: 'Tag',
+                    sortable: true
+                },
+                {
+                    key: 'created_at',
+                    label: 'Publish Date',
+                    sortable: true
+                },
+                {
+                    key: 'actions',
+                    label: 'Actions '
+                
+                },
+                
+                
+            ],
 
             success_message : '',
             error_message   : '',
+        }
+    },
+    computed: {
+        row() {
+            return this.articleList.length;
         }
     },
     methods: {
@@ -311,6 +325,7 @@ export default {
         },
         changeArticleStatus(){
             this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
+            alert( this.isArticleStatus.id);
             $('#alertModal').modal('toggle');
             axios.post('change-article-status',
                 {
