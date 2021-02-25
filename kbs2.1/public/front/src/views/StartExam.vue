@@ -177,12 +177,46 @@
 
             getQuizFormField(pageUrl) {
                 let _that = this;
-                if (_that.pagination.current_page == _that.quizInfo.number_of_questions){
+                if (_that.quizInfo.number_of_questions == 1){
+                    console.log("hi");
+                    pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
+                    axios.get(pageUrl)
+                        .then(function (response) {
+                            _that.isLoading= false;
+                            _that.quizFormFieldInfo = response.data.quiz_form_field_list.data;
+                            _that.pagination  = response.data.quiz_form_field_list;
+
+
+                            _that.quizFormFieldInfo.forEach(val =>{
+                                _that.resultArray.push(val.f_default_value);
+                                if (val.f_option_value !=null && val.f_option_value.search(',')){
+                                    let str = val.f_option_value;
+                                    str = str.split(",");
+
+                                    console.log("before"+ str);
+                                    str = str.sort(() => Math.random() - 0.5);
+
+                                    console.log("after" + str);
+
+                                    _that.selectBoxOption = Object.assign({}, str);
+                                }
+                                if (_that.pagination.current_page==_that.quizInfo.number_of_questions){
+                                    _that.itemA = 1;
+                                    _that.isRepeat = false;
+                                }else {
+                                    _that.itemA = 0
+                                }
+                            })
+                        });
+                }
+
+                else if (_that.pagination.current_page == _that.quizInfo.number_of_questions){
                     _that.isFinish = true;
                     _that.isRepeat = false;
                     _that.checkNextData();
                     // _that.finalizeData();
                 }
+
                 else{
                     pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
                     axios.get(pageUrl)
@@ -254,7 +288,12 @@
                 $(window).on("blur",function () {
                     //do something
                     console.log("You left this tab");
-                    // window.location.reload();
+                    if (this.isFinish==true){
+                        window.location.reload();
+                    } else{
+                        console.log("you may proceed");
+                    }
+
                 })
             },
         },

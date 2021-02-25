@@ -303,7 +303,6 @@ export default {
         this.category_id = this.categoryId;
         this.getCategoryList();
         this.getCategoryDetails(this.category_id);
-        console.log(axios);
     }
 }
 </script>

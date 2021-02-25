@@ -22,7 +22,7 @@
 
                             <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType()" >
                                 <option value="" disabled>Select A Quiz Form</option>
-                                <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form">
+                                <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form.id">
                                     {{ a_quiz_form.name }}
                                 </option>
                             </select>
