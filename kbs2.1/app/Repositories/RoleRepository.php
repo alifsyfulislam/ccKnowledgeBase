@@ -5,10 +5,8 @@ namespace App\Repositories;
 
 
 use App\Models\Role;
-//use Illuminate\Database\Eloquent\Builder;
-//use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class RoleRepository implements RepositoryInterface
 {

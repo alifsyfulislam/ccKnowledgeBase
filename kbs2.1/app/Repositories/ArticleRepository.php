@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Article;
+use App\Models\Media;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ArticleRepository implements RepositoryInterface
@@ -150,16 +152,6 @@ class ArticleRepository implements RepositoryInterface
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->orWhere('en_body', 'like', "%{$query}%")
             ->orderBy('id', 'DESC')->paginate(5);
-    }
-
-    public function changeStatus($request){
-
-        return Article::where('id', $request->id)->update([
-
-            'status' => $request->status
-
-        ]);
-
     }
 
 
