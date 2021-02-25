@@ -2,30 +2,31 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
-use Illuminate\Database\Eloquent\Model;
-=======
 //use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
->>>>>>> 87a329c1058e3f6a35fe686d57319004d7190965
 
-class Media extends Model
+class QuizFormField extends Model
 {
-    protected $collection = 'media';
+    protected $collection = 'quiz_form_fields';
     protected $primaryKey = 'id';
+    /**
+     * @var string
+     */
+    protected $table = 'quiz_form_fields';
+
     /**
      * @var string[]
      */
-    protected $fillable = ['url'];
-
+    protected $fillable = ["id", "quiz_form_id", "f_label", "f_name", "f_id", "f_class", "f_type", "f_option_value", "f_default_value",
+        "f_max_value", "f_sort_order", "f_required"];
 
     /**
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function Mediable()
+    public function quizForm()
     {
 
-        return $this->morphTo();
+        return $this->belongsToMany(QuizForm::class);
 
     }
 
@@ -50,5 +51,4 @@ class Media extends Model
         return date('j M, Y', strtotime($date));
 
     }
-
 }

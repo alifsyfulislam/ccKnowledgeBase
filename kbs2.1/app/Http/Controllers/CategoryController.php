@@ -129,6 +129,7 @@ class CategoryController extends Controller
 
     public function categoryArticleList()
     {
+//        return "hi";
 
         return $this->categoryService->categoryArticles();
 

@@ -2,31 +2,25 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
-use Illuminate\Database\Eloquent\Model;
-=======
 //use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
->>>>>>> 87a329c1058e3f6a35fe686d57319004d7190965
 
-class Media extends Model
+class Page extends Model
 {
-    protected $collection = 'media';
+    protected $collection = 'pages';
     protected $primaryKey = 'id';
     /**
-     * @var string[]
+     * @var string
      */
-    protected $fillable = ['url'];
-
+    protected $table   = 'pages';
+    protected $guarded = ['created_at', 'updated_at'];
 
     /**
-     * @return MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function Mediable()
+    public function media()
     {
-
-        return $this->morphTo();
-
+        return $this->morphOne(Media::class, 'mediable');
     }
 
     /**
@@ -35,9 +29,7 @@ class Media extends Model
      */
     public function getCreatedAtAttribute($date)
     {
-
         return date('j M, Y', strtotime($date));
-
     }
 
     /**
@@ -46,9 +38,7 @@ class Media extends Model
      */
     public function getUpdatedAtAttribute($date)
     {
-
         return date('j M, Y', strtotime($date));
-
     }
 
 }

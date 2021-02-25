@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UsersRole extends Model
 {
+    protected $collection = 'users_roles';
+//    protected $primaryKey = 'user_id';
     use HasFactory;
 }

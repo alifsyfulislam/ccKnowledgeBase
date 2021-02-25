@@ -80,6 +80,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
     Route::get('latest-article-list', [ArticleController::class, 'articleList']);
 
+    Route::post('change-article-status', 'ArticleController@changeArticleStatus');
+    Route::post('change-faq-status', 'FaqController@changeFAQStatus');
+
     Route::post('pages/update-data', [PageController::class, 'update']);
 
     Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
@@ -93,4 +96,9 @@ Route::middleware('auth:api')->group(function(){
 
 });
 
+<<<<<<< HEAD
 Route::post('login', AuthController::class);
+=======
+
+
+>>>>>>> 87a329c1058e3f6a35fe686d57319004d7190965

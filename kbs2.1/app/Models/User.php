@@ -4,12 +4,20 @@ namespace App\Models;
 
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+<<<<<<< HEAD
 use Illuminate\Foundation\Auth\User as Authenticatable;
+=======
+//use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
+>>>>>>> 87a329c1058e3f6a35fe686d57319004d7190965
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
+    protected $primaryKey = 'id';
+    protected $collection = 'users';
+
     use HasPermissionsTrait, HasFactory, Notifiable, HasApiTokens;
 
     /**
