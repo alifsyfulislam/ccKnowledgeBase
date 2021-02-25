@@ -38,7 +38,12 @@
                     </div>
                   </button>
                 </li>
-                <li><button class="download-btn" title="Download CSV"><i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span></button></li>
+                <li>
+                  <a v-if="isExportCheck"
+                     :href=downloadUrl class="download-btn" title="Download CSV">
+                    <i class="fas fa-download"></i> <span class="hide-on-responsive">Download CSV</span>
+                  </a>
+                </li>
                 <li><button class="screen-expand-btn"><i class="fas fa-expand-arrows-alt"></i> <span class="hide-on-responsive">Full Screen</span></button></li>
               </ul>
             </div>
@@ -277,6 +282,8 @@ export default {
       isAddCheck          : false,
       isDeleteCheck       : false,
       isSearchCheck       : false,
+      isExportCheck        :false,
+      downloadUrl         : 'faqs/export/',
       success_message     : '',
       error_message       : '',
       token               : '',
@@ -439,6 +446,7 @@ export default {
             _that.faqList           = response.data.faq_list.data;
             _that.pagination        = response.data.faq_list;
             _that.isLoading         = false;
+            _that.isExportCheck      = true;
           }
           else{
             _that.success_message   = "";
@@ -493,6 +501,7 @@ export default {
     this.getCategoryList();
     this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
     this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+    this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
   }
 }
 </script>

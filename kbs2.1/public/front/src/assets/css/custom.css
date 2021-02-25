@@ -629,6 +629,10 @@ header.fixed-header .navbar .logo img {
   color: #ffffff;
 }
 
+.search-suggestion ul li:hover a {
+  color: #ffffff;
+}
+
 .search-input-wrapper .input-group {
   max-width: 70%;
   width: 70%;

@@ -51,7 +51,24 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table" v-if="userList">
+                            <b-row class="justify-content-end">
+                                <b-col md="3" class="mb-3">
+                                    <b-form-input v-model="filter" type="search" placeholder="Search" ></b-form-input>
+                                </b-col>
+                            </b-row>
+                            <b-table striped small bordered :items="userList" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter">
+                                <template #cell(roles)="data">
+                                    {{ ((data.item.roles).length > 0) ? data.item.roles[0].name : '' }}
+                                </template>
+
+                                <template #cell(actions)="data">
+                                    <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = data.item.id, isEditCheck=true" v-if="checkPermission('user-edit') && (data.item.roles).length > 0 && data.item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
+                                    <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = data.item.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (data.item.roles).length > 0 && data.item.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
+                                </template>
+
+                            </b-table>
+                            <b-pagination v-model="currentPage" :total-rows="row" :per-page="perPage"></b-pagination>
+                            <!-- <table class="table table-bordered gsl-table" v-if="userList">
                                 <thead>
                                 <tr>
                                     <th class="text-center">ID</th>
@@ -79,12 +96,12 @@
                                     </td>
                                 </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
                         </div>
                         <!-- Table Data End -->
 
                         <!-- pagination-->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
+                        <!-- <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination mb-0">
                                     <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
@@ -105,7 +122,7 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -217,24 +234,76 @@ export default {
             downloadUrl         : 'users/export/',
             user_permissions    : '',
             mappedPermission    : '',
-            filter      : {
-                isAdmin         : 1,
-                username        : '',
-                email           : '',
-                role            : ''
-            },
-            pagination  :{
-                from            : '',
-                to              : '',
-                first_page_url  : '',
-                last_page       : '',
-                last_page_url   : '',
-                next_page_url   :'',
-                prev_page_url   : '',
-                path            : '',
-                per_page        : 10,
-                total           : ''
-            },
+            perPage             :20,
+            currentPage         :1,
+             filter              :"",
+            // filter      : {
+            //     isAdmin         : 1,
+            //     username        : '',
+            //     email           : '',
+            //     role            : ''
+            // },
+            // pagination  :{
+            //     from            : '',
+            //     to              : '',
+            //     first_page_url  : '',
+            //     last_page       : '',
+            //     last_page_url   : '',
+            //     next_page_url   :'',
+            //     prev_page_url   : '',
+            //     path            : '',
+            //     per_page        : 10,
+            //     total           : ''
+            // },
+            fields: [
+                {
+                    key: 'id',
+                    label: 'ID',
+                    sortable: true
+                },
+                {
+                    key: 'username',
+                    label: 'Username',
+                    sortable: true
+                },
+                {
+                    key: 'roles',
+                    label: 'Roles',
+                    sortable: true
+                },
+                {
+                    key: 'first_name',
+                    label: 'First Name',
+                    sortable: true
+                },
+                {
+                    key: 'last_name',
+                    label: 'last Name',
+                    sortable: true
+                },
+                {
+                    key: 'email',
+                    label: 'Email',
+                    sortable: true
+                },
+                {
+                    key: 'created_at',
+                    label: 'Enroll Date',
+                    sortable: true
+                },
+                {
+                    key: 'actions',
+                    label: 'Actions '
+                
+                },
+                
+                
+            ],
+        }
+    },
+    computed: {
+        row() {
+            return this.userList.length;
         }
     },
     methods: {

@@ -189,6 +189,7 @@ export default {
 
   created() {
     this.articleID = this.$route.params.id;
+    console.log(this.articleID);
     this.articleSearch(this.articleID);
     this.getCategoryArticleList();
     this.getRecentArticleList();
