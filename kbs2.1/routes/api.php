@@ -96,9 +96,4 @@ Route::middleware('auth:api')->group(function(){
 
 });
 
-<<<<<<< HEAD
 Route::post('login', AuthController::class);
-=======
-
-
->>>>>>> 87a329c1058e3f6a35fe686d57319004d7190965

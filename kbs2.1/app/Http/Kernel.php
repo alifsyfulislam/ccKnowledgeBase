@@ -5,8 +5,6 @@ namespace App\Http;
 use App\Http\Middleware\AclMiddleware;
 use App\Http\Middleware\Cors;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use App\Http\Middleware\AclMiddleware;
-use App\Http\Middleware\Cors;
 
 
 class Kernel extends HttpKernel
