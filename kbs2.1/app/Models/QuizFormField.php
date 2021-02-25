@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class QuizFormField extends Model
 {
+    protected $collection = 'quiz_form_fields';
+    protected $primaryKey = 'id';
     /**
      * @var string
      */

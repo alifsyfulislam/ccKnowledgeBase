@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Quiz extends Model
 {
+    protected $collection = 'quizzes';
+    protected $primaryKey = 'id';
     /**
      * @var string
      */

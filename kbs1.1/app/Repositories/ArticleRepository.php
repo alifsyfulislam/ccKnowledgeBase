@@ -143,7 +143,7 @@ class ArticleRepository implements RepositoryInterface
     }
 
 
-    public function search(string $query = "")
+    public function search(string $query)
     {
         return Article::with('category')
             ->where('en_title', 'like', "%{$query}%")

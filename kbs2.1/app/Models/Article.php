@@ -3,10 +3,14 @@
 namespace App\Models;
 
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
+//use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Article extends Model
 {
+    protected $collection = 'articles';
+    protected $primaryKey = 'id';
     /**
      * @var string[]
      */

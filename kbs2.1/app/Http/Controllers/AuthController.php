@@ -35,6 +35,7 @@ class AuthController extends Controller
      */
     public function __invoke(Request $request)
     {
+
         $input = $request->all();
 
         $validator = Validator::make($request->all(), [
@@ -43,6 +44,7 @@ class AuthController extends Controller
             'password' => 'required'
 
         ]);
+
 
         if ($validator->fails()) {
 
@@ -60,7 +62,6 @@ class AuthController extends Controller
             {
                 $user = Auth::user();
 
-//                dd($user);
 
                 $userInfo = $this->userRepository->get($user->id);
 

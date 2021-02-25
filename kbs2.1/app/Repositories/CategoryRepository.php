@@ -17,6 +17,8 @@ class CategoryRepository implements RepositoryInterface
 
     public function all()
     {
+//        return Category::all();
+
         return Category::with('childrenRecursive')
             ->where('parent_id', '=', 0)
             ->orderBy('id','DESC')
