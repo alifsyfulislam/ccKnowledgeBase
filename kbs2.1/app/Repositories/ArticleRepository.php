@@ -169,4 +169,15 @@ class ArticleRepository implements RepositoryInterface
 
         return $query->orderBy('id', 'DESC')->paginate(5);
     }
+
+
+    public function changeStatus($request){
+
+        return Article::where('id', $request->id)->update([
+
+            'status' => $request->status
+
+        ]);
+
+    }
 }
