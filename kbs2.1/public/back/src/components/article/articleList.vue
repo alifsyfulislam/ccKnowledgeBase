@@ -21,9 +21,9 @@
                                     <i class="fas fa-plus"></i>
                                     Add Article
                                 </button>
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
+                                <!-- <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                                </button>
+                                </button> -->
                             </div>
                             <div class="reload-download-expand-area">
                                 <ul class="list-inline d-inline-flex align-items-center justify-content-end mb-0 w-100">
@@ -52,7 +52,12 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <b-table striped hover bordered :items="articleList" :fields="fields" :per-page="perPage" :current-page="currentPage">
+                            <b-row class="justify-content-end">
+                                <b-col md="3" class="mb-3">
+                                    <b-form-input v-model="filter" type="search" placeholder="Search" ></b-form-input>
+                                </b-col>
+                            </b-row>
+                            <b-table striped small bordered :items="articleList" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter">
                                 <template #cell(en_title)="data">
                                     <span v-if="(data.item.en_title).length<30"> {{ data.item.en_title }}</span>
                                     <span v-else> {{ (data.item.en_title).substring(0,30)+"...." }}</span>
@@ -244,13 +249,14 @@ export default {
             currentPage         :1,
 
             article_id          :'',
-            filter      : {
-                isAdmin         : 1,
-                category_id     : '',
-                status          : '',
-                en_title        : '',
-                tag             : '',
-            },
+            filter              :"",
+            // filter      : {
+            //     isAdmin         : 1,
+            //     category_id     : '',
+            //     status          : '',
+            //     en_title        : '',
+            //     tag             : '',
+            // },
             // pagination  :{
             //     from            : '',
             //     to              : '',
