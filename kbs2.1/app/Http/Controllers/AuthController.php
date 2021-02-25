@@ -60,6 +60,8 @@ class AuthController extends Controller
             {
                 $user = Auth::user();
 
+//                dd($user);
+
                 $userInfo = $this->userRepository->get($user->id);
 
                 $success['status_code'] = 200;
