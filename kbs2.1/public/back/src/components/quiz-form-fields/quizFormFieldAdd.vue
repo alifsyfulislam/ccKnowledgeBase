@@ -119,7 +119,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext= true, validateAndNext()">Add More</button>
+<!--                                <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext= true, validateAndNext()">Add More</button>-->
                                <button class="btn common-gradient-btn ripple-btn px-50 text-right" @click=" isNext=false ,validateAndSubmit()">Save</button>
                             </div>
                         </div>

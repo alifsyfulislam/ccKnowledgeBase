@@ -331,7 +331,7 @@ export default {
         },
         changeArticleStatus(){
             this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
-            alert( this.isArticleStatus.id);
+            // alert( this.isArticleStatus.id);
             $('#alertModal').modal('toggle');
             axios.post('change-article-status',
                 {
