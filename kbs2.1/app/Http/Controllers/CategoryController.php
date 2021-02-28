@@ -28,12 +28,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-<<<<<<< HEAD
-//        print_r($request->all());
-=======
-        
         if(Auth::user()->can('category-list')) {
->>>>>>> 736ae50711e9a188480c561bfb62d2cf617e40fd
 
             if ($request->filled('isAdmin'))
                 return $this->categoryService->paginateData($request);

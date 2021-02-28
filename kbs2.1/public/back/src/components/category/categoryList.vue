@@ -49,7 +49,6 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                          <data-table :posts="categoryList"></data-table>
                             <table class="table table-bordered gsl-table">
                                 <thead>
                                 <tr>
