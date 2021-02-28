@@ -166,4 +166,8 @@ class ArticleController extends Controller
 
     }
 
+    public function articleAll(){
+        return $this->articleService->getAllArticleList();
+    }
+
 }

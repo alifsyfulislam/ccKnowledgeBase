@@ -39,6 +39,7 @@ class FaqRepository implements RepositoryInterface
 
         $dataObj =  new Faq;
         $dataObj->id = $data['id'];
+        $dataObj->article_id = $data['article_id'];
         $dataObj->user_id = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
         $dataObj->en_title = $data['en_title'];
@@ -62,6 +63,8 @@ class FaqRepository implements RepositoryInterface
      */
     public function update(array $data, $id)
     {
+
+//        return $data;
 
         return Faq::find($id)->update($data);
 

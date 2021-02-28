@@ -23,7 +23,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="enTitle">Title <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="faqData.en_title" id="enTitle" @keyup="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')" required>
+                            <input placeholder="Enter a title" class="form-control" type="text" v-model="faqData.en_title" id="enTitle" @keyup="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')" required>
                             <span id="enTitleError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -34,6 +34,7 @@
                             <input class="form-control" type="text" v-model="faqData.bn_title" >
                         </div>
                     </div>
+
 
                     <div class="col-md-6">
                         <div class="form-group">
@@ -48,6 +49,16 @@
                             <span id="categoryIDError" class="text-danger small"></span>
                         </div>
                     </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Article <span class="required">*</span></label>
+                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
+                        </div>
+                    </div>
+
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="tag" class="d-block">Tag</label>
@@ -81,8 +92,8 @@
                                 <option value="hide">Hide</option>
                                 <option value="private">Private</option>
                                 <option value="public">Public</option>
-<!--                                <option value="scheduling">Scheduling</option>-->
-<!--                                <option value="announcement">Announcement</option>-->
+                                <!--                                <option value="scheduling">Scheduling</option>-->
+                                <!--                                <option value="announcement">Announcement</option>-->
                             </select>
                         </div>
                     </div>
@@ -100,237 +111,275 @@
 </template>
 
 <script>
-import axios from 'axios'
+    import axios from 'axios'
 
-import Summernote from "@/components/summer-note/summernote";
-import TagInput from "../tag/TagComponent";
-import $ from "jquery";
-export default {
-    name: "faqAdd.vue",
+    import Summernote from "@/components/summer-note/summernote";
+    import TagInput from "../tag/TagComponent";
+    import Select2 from 'v-select2-component';
+    // import select2 from './../select2/select2';
+    import $ from "jquery";
 
-    props: ['isAddCheck'],
-    components: {
-        Summernote,
-        TagInput
-    },
+    export default {
+        name: "faqAdd.vue",
 
-    data() {
-        return {
-            enBody              : "en_Body",
-            bnBody              : "bn_Body",
-            selected_language   : 'english',
-
-            success_message     : '',
-            error_messages      : '',
-            token               : '',
-            categoryList        : '',
-            selectedCategory    : '',
-            userInfo            : '',
-            isSummerNoteError   : false,
-
-            selected_checkbox    : 1,
-            bangla_checkbox      : '',
-
-            faqData      : {
-
-                en_title        : '',
-                bn_title        : '',
-                tag             : '',
-                en_body         : '',
-                bn_body         : '',
-                status          : 'draft'
-            },
-
-            validation_error : {
-                isTitleStatus    : false,
-                isCategoryStatus : false,
-            },
-        }
-    },
-    methods: {
-        collectTagList(tagList){
-            this.faqData.tag = tagList.join();
+        props: ['isAddCheck'],
+        components: {
+            Summernote,
+            TagInput,
+            Select2
         },
 
-        changeCheckBox() {
-            if (this.bangla_checkbox === true)
-                this.selected_language = 'bangla';
-            else
-                this.selected_language = 'english';
-        },
+        data() {
+            return {
+                enBody              : "en_Body",
+                bnBody              : "bn_Body",
+                selected_language   : 'english',
 
-        checkAndValidateSelectType(){
+                article_value: '',
+                article_options: [],
+                article_id:'',
 
-            if (!this.selectedCategory) {
-                $('#categoryID').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#categoryIDError').html("category field is required");
-                this.validation_error.isCategoryStatus = false;
+                success_message     : '',
+                error_messages      : '',
+                token               : '',
+                categoryList        : '',
+                selectedCategory    : '',
+                userInfo            : '',
+                isSummerNoteError   : false,
 
-            } else{
-                $('#categoryID').css({
-                    'border-color': '#ced4da',
-                });
-                $('#categoryIDError').html("");
-                this.validation_error.isCategoryStatus = true;
+                selected_checkbox    : 1,
+                bangla_checkbox      : '',
+
+                faqData      : {
+
+                    en_title        : '',
+                    bn_title        : '',
+                    tag             : '',
+                    en_body         : '',
+                    bn_body         : '',
+                    status          : 'draft'
+                },
+
+                validation_error : {
+                    isTitleStatus    : false,
+                    isCategoryStatus : false,
+                },
             }
         },
+        methods: {
+            getAllArticleList()
+            {
+                let _that = this;
+                axios.get('all-article-list', {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                            isAdmin : 1,
+                    },}).then(function (response) {
+                    response.data.article_list.forEach(val => {
+                        _that.article_options.push({
+                            'id' : val.id,
+                            'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..'
+                        })
+                    })
+                })
+            },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name){
+            myChangeEvent(val){
+                let _that = this;
+                _that.article_id = val;
+            },
+            mySelectEvent({id, text}){
+                console.log({id, text})
+            },
 
-            if (selected_data.length >0){
+            collectTagList(tagList){
+                this.faqData.tag = tagList.join();
+            },
 
-                if (selected_data.length <3){
+            changeCheckBox() {
+                if (this.bangla_checkbox === true)
+                    this.selected_language = 'bangla';
+                else
+                    this.selected_language = 'english';
+            },
+
+            checkAndValidateSelectType(){
+
+                if (!this.selectedCategory) {
+                    $('#categoryID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#categoryIDError').html("category field is required");
+                    this.validation_error.isCategoryStatus = false;
+
+                } else{
+                    $('#categoryID').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#categoryIDError').html("");
+                    this.validation_error.isCategoryStatus = true;
+                }
+            },
+
+            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name){
+
+                if (selected_data.length >0){
+
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+                        if (selected_name === "*title"){
+                            this.validation_error.isTitleStatus = false;
+                        }
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*title" ){
+                            this.validation_error.isTitleStatus = true;
+                        }
+                    }
+
+                } else{
                     $(selected_id).css({
                         'border-color': '#FF7B88',
                     });
-                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
-                    if (selected_name === "*title"){
+                    $(selected_error_id).html(selected_name+" field is required")
+
+                    if (selected_name === "title" ){
                         this.validation_error.isTitleStatus = false;
                     }
-                }else {
-                    $(selected_id).css({
-                        'border-color': '#ced4da',
+                }
+            },
+
+            validateAndSubmit(){
+
+                if (!this.faqData.en_title){
+                    $('#enTitle').css({
+                        'border-color': '#FF7B88',
                     });
-                    $(selected_error_id).html("");
+                    $('#enTitleError').html("title field is required");
+                }
 
-                    if (selected_name === "*title" ){
-                        this.validation_error.isTitleStatus = true;
+                if (!this.selectedCategory){
+                    $('#categoryID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#categoryIDError').html("category field is required");
+                }
+
+                if (this.validation_error.isTitleStatus    === true &&
+                    this.validation_error.isCategoryStatus === true ){
+                    this.faqAdd();
+                }
+            },
+
+            showServerError(errors){
+
+                $('#enTitleError').html("");
+                $('#categoryIDError').html("");
+                $('#enBodyError').html("");
+
+                $('#enTitle').css({'border-color': '#ced4da'});
+                $('#categoryID').css({'border-color': '#ced4da'});
+
+                this.isSummerNoteError = false;
+                errors.forEach(val => {
+                    if (val.includes("en title")==true){
+                        $('#enTitleError').html(val)
+                        $('#enTitle').css({'border-color': '#FF7B88'});
                     }
-                }
-
-            } else{
-                $(selected_id).css({
-                    'border-color': '#FF7B88',
-                });
-                $(selected_error_id).html(selected_name+" field is required")
-
-                if (selected_name === "title" ){
-                    this.validation_error.isTitleStatus = false;
-                }
-            }
-        },
-
-        validateAndSubmit(){
-
-            if (!this.faqData.en_title){
-                $('#enTitle').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#enTitleError').html("title field is required");
-            }
-
-            if (!this.selectedCategory){
-                $('#categoryID').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#categoryIDError').html("category field is required");
-            }
-
-            if (this.validation_error.isTitleStatus    === true &&
-                this.validation_error.isCategoryStatus === true ){
-                this.faqAdd();
-            }
-        },
-
-        showServerError(errors){
-
-            $('#enTitleError').html("");
-            $('#categoryIDError').html("");
-            $('#enBodyError').html("");
-
-            $('#enTitle').css({'border-color': '#ced4da'});
-            $('#categoryID').css({'border-color': '#ced4da'});
-
-            this.isSummerNoteError = false;
-            errors.forEach(val => {
-                if (val.includes("en title")==true){
-                    $('#enTitleError').html(val)
-                    $('#enTitle').css({'border-color': '#FF7B88'});
-                }
-                else if (val.includes("category")==true){
-                    $('#categoryIDError').html(val)
-                    $('#categoryID').css({'border-color': '#FF7B88'});
-                }
-                else if (val.includes("en body")==true){
-                    $('#enBodyError').html(val);
-                    this.isSummerNoteError = true;
-                }
-            })
-        },
-
-        faqAdd()
-        {
-            let _that           = this;
-            let enBody          = document.getElementById('en_Body').value;
-
-            if (!(document.getElementById('bn_Body'))) {
-                var bnBody      = '';
-            } else {
-                bnBody          = document.getElementById('bn_Body').value;
-            }
-
-            axios.post('faqs', {
-                    category_id     : this.selectedCategory,
-                    en_title        : this.faqData.en_title,
-                    tag             : this.faqData.tag,
-                    en_body         : enBody,
-                    bn_body         : bnBody,
-                    status          : this.faqData.status,
-                },
-                {
-                    headers : {
-                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                    else if (val.includes("category")==true){
+                        $('#categoryIDError').html(val)
+                        $('#categoryID').css({'border-color': '#FF7B88'});
                     }
-                }).then(function (response) {
-                if (response.data.status_code == 201) {
-                    _that.faqData                   = '';
-                    _that.error_message             = '';
-                    _that.success_message           = "FAQ Added Successfully";
+                    else if (val.includes("en body")==true){
+                        $('#enBodyError').html(val);
+                        this.isSummerNoteError = true;
+                    }
+                })
+            },
 
-                    _that.$emit('faq-slide-close', _that.success_message);
+            faqAdd()
+            {
+                let _that           = this;
+                let enBody          = document.getElementById('en_Body').value;
+
+                if (!(document.getElementById('bn_Body'))) {
+                    var bnBody      = '';
                 } else {
-                    _that.success_message = "";
-                    _that.error_messages   = response.data.errors;
-                    _that.showServerError(response.data.errors);
+                    bnBody          = document.getElementById('bn_Body').value;
                 }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
 
-        getCategoryList(){
-
-            let _that   = this;
-
-            axios.get('categories',
-                {
-                    headers     : {
-                        'Authorization'         : 'Bearer '+localStorage.getItem('authToken')
+                axios.post('faqs', {
+                        article_id      : this.article_id,
+                        category_id     : this.selectedCategory,
+                        en_title        : this.faqData.en_title,
+                        tag             : this.faqData.tag,
+                        en_body         : enBody,
+                        bn_body         : bnBody,
+                        status          : this.faqData.status,
                     },
-                    params      :
-                        {
-                            isAdmin             : 1,
-                            without_pagination  : 1
-                        },
+                    {
+                        headers : {
+                            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if (response.data.status_code == 201) {
+                        _that.faqData                   = '';
+                        _that.error_message             = '';
+                        _that.success_message           = "FAQ Added Successfully";
 
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200) {
-                        _that.categoryList          = response.data.category_list;
+                        _that.$emit('faq-slide-close', _that.success_message);
+                        // localStorage.clear('articleID');
+                    } else {
+                        _that.success_message = "";
+                        _that.error_messages   = response.data.errors;
+                        _that.showServerError(response.data.errors);
                     }
-                    else{
-                        _that.success_message       = "";
-                        _that.error_messages        = response.data.errors;
-                    }
-                })
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            getCategoryList(){
+
+                let _that   = this;
+
+                axios.get('categories',
+                    {
+                        headers     : {
+                            'Authorization'         : 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params      :
+                            {
+                                isAdmin             : 1,
+                                without_pagination  : 1
+                            },
+
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200) {
+                            _that.categoryList          = response.data.category_list;
+                        }
+                        else{
+                            _that.success_message       = "";
+                            _that.error_messages        = response.data.errors;
+                        }
+                    })
+            },
         },
-    },
-    created() {
-        this.getCategoryList();
+        created() {
+            this.getCategoryList();
+            this.getAllArticleList();
+        }
     }
-}
 </script>
 
 <style scoped>

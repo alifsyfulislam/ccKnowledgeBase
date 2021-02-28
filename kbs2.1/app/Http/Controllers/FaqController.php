@@ -114,6 +114,7 @@ class FaqController extends Controller
     }
 
 
+
     public function destroy(Request $request)
     {
         if(Auth::user()->can('faq-delete')) {
