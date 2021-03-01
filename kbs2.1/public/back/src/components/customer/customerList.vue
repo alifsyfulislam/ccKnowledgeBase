@@ -20,9 +20,9 @@
                                     <i class="fas fa-plus"></i>
                                     Add User
                                 </button>
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
+                                <!-- <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="reload-download-expand-area">
@@ -51,78 +51,42 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <b-row class="justify-content-end">
-                                <b-col md="3" class="mb-3">
-                                    <b-form-input v-model="filter" type="search" placeholder="Search" ></b-form-input>
-                                </b-col>
-                            </b-row>
-                            <b-table striped small bordered :items="userList" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter">
-                                <template #cell(roles)="data">
-                                    {{ ((data.item.roles).length > 0) ? data.item.roles[0].name : '' }}
-                                </template>
+                            <v-app>
+                                <v-main>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col md="3">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
 
-                                <template #cell(actions)="data">
-                                    <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = data.item.id, isEditCheck=true" v-if="checkPermission('user-edit') && (data.item.roles).length > 0 && data.item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
-                                    <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = data.item.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (data.item.roles).length > 0 && data.item.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
-                                </template>
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-data-table  :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
+                                                    <template v-slot:item.roles="{item}">
+                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
+                                                    </template>
 
-                            </b-table>
-                            <b-pagination v-model="currentPage" :total-rows="row" :per-page="perPage"></b-pagination>
-                            <!-- <table class="table table-bordered gsl-table" v-if="userList">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Username</th>
-                                    <th class="text-center">Roles</th>
-                                    <th class="text-center">First Name</th>
-                                    <th class="text-center">Last Name</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Enroll Date</th>
-                                    <th class="text-center" style="width:120px;">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(a_user) in userList" :key="a_user.id">
-                                    <td class="text-center">{{ a_user.id }}</td>
-                                    <td class="text-center">{{ a_user.username }}</td>
-                                    <td class="text-center">{{ ((a_user.roles).length > 0) ? a_user.roles[0].name : '' }}</td>
-                                    <td class="text-center">{{ a_user.first_name }}</td>
-                                    <td class="text-center">{{ a_user.last_name }}</td>
-                                    <td class="text-center">{{ a_user.email }}</td>
-                                    <td class="text-center">{{ a_user.created_at }}</td>
-                                    <td class="text-center" style="min-width: 120px">
-                                        <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table> -->
+                                                    <template v-slot:item.actions="{item}">
+                                                       <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = item.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
+                                                    </template>
+
+                                                </v-data-table>
+
+                                            </v-col>
+                                        </v-row>
+                                        <v-row justify="start">
+                                            <v-col cols="4">
+                                                <v-pagination v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                                </v-pagination>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-main>
+                            </v-app>
                         </div>
-                        <!-- Table Data End -->
-
-                        <!-- pagination-->
-                        <!-- <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getUsersList('users?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                                    </li>
-
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div> -->
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -234,76 +198,49 @@ export default {
             downloadUrl         : 'users/export/',
             user_permissions    : '',
             mappedPermission    : '',
-            perPage             :20,
-            currentPage         :1,
-             filter              :"",
-            // filter      : {
-            //     isAdmin         : 1,
-            //     username        : '',
-            //     email           : '',
-            //     role            : ''
-            // },
-            // pagination  :{
-            //     from            : '',
-            //     to              : '',
-            //     first_page_url  : '',
-            //     last_page       : '',
-            //     last_page_url   : '',
-            //     next_page_url   :'',
-            //     prev_page_url   : '',
-            //     path            : '',
-            //     per_page        : 10,
-            //     total           : ''
-            // },
-            fields: [
+             search              :"",
+            pagination  :{
+                current         :1,
+                per_page        : 20,
+                total           : ''
+            },
+            headers: [
                 {
-                    key: 'id',
-                    label: 'ID',
-                    sortable: true
+                    text: 'ID',
+                    value: 'id',
+                },
+                 {
+                    text: 'Username',
+                    value: 'username',
                 },
                 {
-                    key: 'username',
-                    label: 'Username',
-                    sortable: true
+                    text: 'Roles',
+                    value: 'roles',
                 },
                 {
-                    key: 'roles',
-                    label: 'Roles',
-                    sortable: true
+                    text: 'First Name',
+                    value: 'first_name',
                 },
                 {
-                    key: 'first_name',
-                    label: 'First Name',
-                    sortable: true
+                    text: 'last Name',
+                    value: 'last_name',
                 },
                 {
-                    key: 'last_name',
-                    label: 'last Name',
-                    sortable: true
+                    text: 'Email',
+                    value: 'email',
                 },
                 {
-                    key: 'email',
-                    label: 'Email',
-                    sortable: true
+                    text: 'Enroll Date',
+                    value: 'created_at',
                 },
                 {
-                    key: 'created_at',
-                    label: 'Enroll Date',
-                    sortable: true
-                },
-                {
-                    key: 'actions',
-                    label: 'Actions '
-                
+                    text: 'Actions',
+                    value: 'actions',
+                    sortable:false
                 },
                 
                 
             ],
-        }
-    },
-    computed: {
-        row() {
-            return this.userList.length;
         }
     },
     methods: {
@@ -324,7 +261,7 @@ export default {
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
-
+    
         clearAllChecker()
         {
             this.isAddCheck         = false;
@@ -363,24 +300,25 @@ export default {
             let _that =this;
 
             pageUrl = pageUrl == undefined ? 'users' : pageUrl;
-
-            axios.get(pageUrl,
+        
+            axios.get(pageUrl+'?page='+this.pagination.current,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     },
-                    params :
-                        {
-                            isAdmin         : 1,
-                            username        : this.filter.username,
-                            email           : this.filter.email,
-                            // role : this.filter.role
-                        },
+                    // params :
+                    //     {
+                    //         isAdmin         : 1,
+                    //         username        : this.filter.username,
+                    //         email           : this.filter.email,
+                    //         // role : this.filter.role
+                    //     },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                       // console.log(response.data.user_list.data);
-                        _that.pagination        = response.data.user_list;
+                       console.log(response.data.user_list);
+                        _that.pagination.current = response.data.user_list.current_page;
+                        _that.pagination.total = response.data.user_list.last_page;
                         _that.userList          = response.data.user_list.data;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
@@ -390,6 +328,10 @@ export default {
                         _that.error_message     = response.data.error;
                     }
                 })
+        },
+
+        onPageChange() {
+            this.getUsersList();
         },
         deleteCustomer()
         {
