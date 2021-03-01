@@ -19,6 +19,7 @@
           <!-- Content Area -->
           <div class="data-content-area pr-15 pb-10">
             <div class="gredient-card-wrapper mb-40">
+
               <div class="gredient-card-body p-20 p-md-30" style="background: #ff7b8836;">
                 <div class="row">
                   <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
@@ -28,6 +29,7 @@
                       <div class="counting-number text-primary">
                         <total-user v-if="totalCountList" :totalUser="totalCountList.total_user"></total-user>
                         <div class="counting-number text-primary" v-else>0</div>
+
                       </div>
                     </div>
                   </div>
@@ -35,6 +37,7 @@
                     <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                       <div class="icon d-inline-flex justify-content-center align-items-center bg-red text-white"><i class="fas fa-user-times"></i></div>
                       <h3 class="my-0 font-16 pt-40 pb-20">Total Articles</h3>
+
                       <total-article v-if="totalCountList" :totalArticle="totalCountList.total_article"></total-article>
                       <div class="counting-number text-red" v-else>0</div>
                     </div>
@@ -44,7 +47,9 @@
                       <div class="icon d-inline-flex justify-content-center align-items-center bg-yellow text-white"><i class="fas fa-hourglass-half"></i></div>
                       <h3 class="my-0 font-16 pt-40 pb-20">Total FAQs</h3>
                       <total-faqs v-if="totalCountList" :totalFaq="totalCountList.total_faq"></total-faqs>
+
                       <div class="counting-number text-yellow" v-else>0</div>
+
                     </div>
                   </div>
                   <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
@@ -53,6 +58,7 @@
                       <h3 class="my-0 font-16 pt-40 pb-20">Total Quiz</h3>
 <!--                      <div class="counting-number text-light-blue"> {{ totalCountList.total_quiz }} </div>-->
                       <total-quiz v-if="totalCountList" :totalQuiz="totalCountList.total_quiz"></total-quiz>
+
                       <div class="counting-number text-light-blue" v-else>0</div>
                     </div>
                   </div>

@@ -75,6 +75,13 @@ $(document).on('click', '.totop', function(){
   }, 1000);
 });
 
+// Responsive menu
+$(document).on('click', '#mainNavigation .nav-link', () => {
+  if($(window).width() < 767){
+    $('.navbar-toggler').trigger('click');
+  }
+});
+
 export default {
   name: "Menu",
 

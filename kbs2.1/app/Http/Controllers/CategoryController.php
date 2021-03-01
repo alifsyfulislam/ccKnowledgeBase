@@ -28,7 +28,6 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        
         if(Auth::user()->can('category-list')) {
 
             if ($request->filled('isAdmin'))

@@ -15,7 +15,8 @@ class CreateFaqsTable extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->uuid('article_id')->nullable();
+            $table->uuid('user_id')->nullable();
             $table->uuid('category_id')->nullable();
             $table->string('en_title')->index();
             $table->string('bn_title')->index()->nullable();

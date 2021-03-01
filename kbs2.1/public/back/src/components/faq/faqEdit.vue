@@ -50,6 +50,13 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Article <span class="required">*</span></label>
+                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label for="tag" class="d-block">Tag</label>
                             <tag-input-edit class="tag-input-wrapper" v-if="isLoading == true" id="tag" :faqInfo="faqData" @tag-list="collectTagList"/>
 <!--                            <tag-input-edit class="tag-input-wrapper" v-else  :faqInfo="faqData" @tag-list="collectTagList"/>-->
@@ -103,13 +110,15 @@
 import axios from "axios";
 import SummernoteEdit from "@/components/summer-note/summernote-edit";
 import TagInputEdit from "../tag/TagEditComponent";
+import Select2 from 'v-select2-component';
 import $ from "jquery";
 
 export default {
     name: "faqEdit.vue",
     components: {
         SummernoteEdit,
-        TagInputEdit
+        TagInputEdit,
+        Select2
     },
 
     props: ['isEditCheck', 'faqId'],
@@ -131,6 +140,11 @@ export default {
             categoryList        :  '',
             isSummerNoteError   : false,
             selectedCategory    : '',
+
+            article_value: '',
+            article_options: [],
+            article_id:'',
+            article_update_id:'',
 
             selected_checkbox    : 1,
             bangla_checkbox      : '',
@@ -156,6 +170,36 @@ export default {
     },
 
     methods: {
+        getAllArticleList()
+        {
+            let _that = this;
+            axios.get('all-article-list', {
+                headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                },
+                params : {
+                    isAdmin : 1,
+                },}).then(function (response) {
+                response.data.article_list.forEach(val => {
+                    _that.article_options.push({
+                        'id' : val.id,
+                        'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..'
+                    })
+                })
+            })
+        },
+
+        myChangeEvent(val){
+            let _that = this;
+            _that.article_update_id = val;
+            console.log(_that.article_update_id + "oka");
+        },
+        mySelectEvent({id, text}){
+            console.log({id, text})
+        },
+
+
+
         collectTagList(tagList){
             this.faqData.tag = tagList.join();
         },
@@ -275,6 +319,8 @@ export default {
             let faqID           = this.faq_id;
             let enBody          = document.getElementById('en_Body').value;
 
+            console.log(_that.article_id);
+
             if (!(document.getElementById('bn_Body'))) {
                 var bnBody      = '';
             } else {
@@ -284,6 +330,7 @@ export default {
             axios.put('faqs/update',
                 {
                     id              : faqID,
+                    article_id      : this.article_update_id,
                     category_id     : this.selectedCategory,
                     en_title        : this.faqData.en_title,
                     tag             : this.faqData.tag,
@@ -302,6 +349,7 @@ export default {
                     _that.selectedCategory      = '';
                     _that.error_message         = '';
                     _that.success_message       = "Faq Updated Successfully";
+                    _that.article_update_id= '';
 
                     _that.$emit('faq-slide-close', _that.success_message);
                 }else if(response.data.status_code === 400){
@@ -332,11 +380,12 @@ export default {
                 })
                 .then(function (response) {
                     if (response.data.status_code === 200) {
-                        //console.log(response.data);
+                        // console.log(response.data);
 
                         _that.isLoading = true;
 
                         _that.faqDetails            = response.data.faq_info;
+                        _that.article_value         = _that.faqDetails.article_id;
                         _that.selectedCategory      = _that.faqDetails.category_id;
                         _that.faqData.en_title      = _that.faqDetails.en_title;
                         _that.faqData.bn_title      = _that.faqDetails.bn_title;
@@ -390,6 +439,7 @@ export default {
         this.faq_id = this.faqId;
         this.getFaqDetails(this.faq_id);
         this.getCategoryList();
+        this.getAllArticleList();
     }
 }
 </script>

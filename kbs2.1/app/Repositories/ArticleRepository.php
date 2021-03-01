@@ -5,8 +5,6 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Article;
-use App\Models\Media;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ArticleRepository implements RepositoryInterface

@@ -14,6 +14,7 @@ class Faq extends Model
         'id',
         'user_id',
         'category_id',
+        'article_id',
         'en_title',
         'bn_title',
         'tag',

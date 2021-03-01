@@ -79,6 +79,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('save-file', [ArticleController::class, 'saveFiles']);
     Route::post('delete-file', [ArticleController::class, 'deleteFiles']);
     Route::get('latest-article-list', [ArticleController::class, 'articleList']);
+    Route::get('all-article-list', [ArticleController::class, 'articleAll']);
 
     Route::post('change-article-status', [ArticleController::class, 'changeArticleStatus']);
     Route::post('change-faq-status', [FaqController::class, 'changeFAQStatus']);
