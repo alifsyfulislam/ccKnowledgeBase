@@ -20,9 +20,9 @@
                                     <i class="fas fa-plus"></i>
                                     Add User
                                 </button>
-                                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
+                                <!-- <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0 text-white" @click="isSearchCheck=true">
                                     <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="reload-download-expand-area">
@@ -51,66 +51,47 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table" v-if="userList">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Username</th>
-                                    <th class="text-center">Roles</th>
-                                    <th class="text-center">First Name</th>
-                                    <th class="text-center">Last Name</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Enroll Date</th>
-                                    <th class="text-center" style="width:120px;">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(a_user) in userList" :key="a_user.id">
-                                    <td class="text-center">{{ a_user.id }}</td>
-                                    <td class="text-center">{{ a_user.username }}</td>
-                                    <td class="text-center">{{ ((a_user.roles).length > 0) ? a_user.roles[0].name : '' }}</td>
-                                    <td class="text-center">{{ a_user.first_name }}</td>
-                                    <td class="text-center">{{ a_user.last_name }}</td>
-                                    <td class="text-center">{{ a_user.email }}</td>
-                                    <td class="text-center">{{ a_user.created_at }}</td>
-                                    <td class="text-center" style="min-width: 120px">
-                                        <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = a_user.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (a_user.roles).length > 0 && a_user.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Table Data End -->
+                            <v-app>
+                                <v-main>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col md="3">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
 
-                        <!-- pagination-->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getUsersList('users?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                                    </li>
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-data-table  :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
+                                                    <template v-slot:item.roles="{item}">
+                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
+                                                    </template>
 
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getUsersList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </nav>
+                                                    <template v-slot:item.actions="{item}">
+                                                       <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = item.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
+                                                    </template>
+
+                                                </v-data-table>
+
+                                            </v-col>
+                                        </v-row>
+                                        <v-row justify="start">
+                                            <v-col cols="4">
+                                                <v-pagination v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                                </v-pagination>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-main>
+                            </v-app>
                         </div>
                     </div>
                     <!-- Content Area End -->
                 </div>
             </div>
-            <!--            message alert as per action-->
+<!--            message alert as per action-->
             <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
                 <div class="close-bar d-flex align-items-center justify-content-end">
                     <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
@@ -119,9 +100,9 @@
                 </div>
                 <!-- add-->
                 <CustomerAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @user-slide-close="getAddDataFromChild"></CustomerAdd>
-                <!--                edit-->
+<!--                edit-->
                 <CustomerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :customerId="customer_id" @user-slide-close="getEditDataFromChild"></CustomerEdit>
-                <!--                delete-->
+<!--                delete-->
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                     <div class="right-sidebar-content-area px-2">
                         <div class="form-wrapper">
@@ -141,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                <!--                search-->
+<!--                search-->
                 <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isSearchCheck">
                     <div class="right-sidebar-content-area px-2">
                         <div class="form-wrapper" >
@@ -179,264 +160,294 @@
 </template>
 
 <script>
-    import Header from "@/layouts/common/Header";
-    import Menu from "@/layouts/common/Menu";
-    import CustomerAdd from "@/components/customer/customerAdd";
-    import CustomerEdit from "@/components/customer/customerEdit";
-    import Loading from "@/components/loader/loading";
-    import axios from "axios";
-    import $ from "jquery";
+import Header from "@/layouts/common/Header";
+import Menu from "@/layouts/common/Menu";
+import CustomerAdd from "@/components/customer/customerAdd";
+import CustomerEdit from "@/components/customer/customerEdit";
+import Loading from "@/components/loader/loading";
+import axios from "axios";
+import $ from "jquery";
 
-    export default {
-        name: "customerList.vue",
-        components: {
-            Header,
-            Menu,
-            CustomerAdd,
-            CustomerEdit,
-            Loading
+export default {
+    name: "customerList.vue",
+    components: {
+        Header,
+        Menu,
+        CustomerAdd,
+        CustomerEdit,
+        Loading
+    },
+
+    data() {
+        return {
+            isLoading           : false,
+            isAddCheck          : false,
+            isEditCheck         : false,
+            isDeleteCheck       : false,
+            isSearchCheck       : false,
+            isExportCheck       : false,
+            success_message     : '',
+            error_message       : '',
+            token               : '',
+            categoryList        : '',
+            articleList         : '',
+            userList            : '',
+            userRole            : '',
+            customer_id         : '',
+            userAllRoles        : '',
+            downloadUrl         : 'users/export/',
+            user_permissions    : '',
+            mappedPermission    : '',
+             search              :"",
+            pagination  :{
+                current         :1,
+                per_page        : 20,
+                total           : ''
+            },
+            headers: [
+                {
+                    text: 'ID',
+                    value: 'id',
+                },
+                 {
+                    text: 'Username',
+                    value: 'username',
+                },
+                {
+                    text: 'Roles',
+                    value: 'roles',
+                },
+                {
+                    text: 'First Name',
+                    value: 'first_name',
+                },
+                {
+                    text: 'last Name',
+                    value: 'last_name',
+                },
+                {
+                    text: 'Email',
+                    value: 'email',
+                },
+                {
+                    text: 'Enroll Date',
+                    value: 'created_at',
+                },
+                {
+                    text: 'Actions',
+                    value: 'actions',
+                    sortable:false
+                },
+                
+                
+            ],
+        }
+    },
+    methods: {
+        setTimeoutElements()
+        {
+            // setTimeout(() => this.isLoading = false, 3e3);
+            setTimeout(() => this.success_message = "", 2e3);
+            setTimeout(() => this.error_message = "", 2e3);
         },
 
-        data() {
-            return {
-                isLoading           : false,
-                isAddCheck          : false,
-                isEditCheck         : false,
-                isDeleteCheck       : false,
-                isSearchCheck       : false,
-                isExportCheck       : false,
-                success_message     : '',
-                error_message       : '',
-                token               : '',
-                categoryList        : '',
-                articleList         : '',
-                userList            : '',
-                userRole            : '',
-                customer_id         : '',
-                userAllRoles        : '',
-                downloadUrl         : 'users/export/',
-                user_permissions    : '',
-                mappedPermission    : '',
-                filter      : {
-                    isAdmin         : 1,
-                    username        : '',
-                    email           : '',
-                    role            : ''
-                },
-                pagination  :{
-                    from            : '',
-                    to              : '',
-                    first_page_url  : '',
-                    last_page       : '',
-                    last_page_url   : '',
-                    next_page_url   :'',
-                    prev_page_url   : '',
-                    path            : '',
-                    per_page        : 10,
-                    total           : ''
-                },
-            }
+        removingRightSideWrapper()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
+
+            document.body.classList.remove('open-side-slider');
+            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
         },
-        methods: {
-            setTimeoutElements()
-            {
-                // setTimeout(() => this.isLoading = false, 3e3);
-                setTimeout(() => this.success_message = "", 2e3);
-                setTimeout(() => this.error_message = "", 2e3);
-            },
+    
+        clearAllChecker()
+        {
+            this.isAddCheck         = false;
+            this.isEditCheck        = false;
+            this.isDeleteCheck      = false;
+            this.isSearchCheck      = false;
+        },
 
-            removingRightSideWrapper()
-            {
-                this.isAddCheck         = false;
-                this.isEditCheck        = false;
-                this.isDeleteCheck      = false;
-                this.isSearchCheck      = false;
+        getAddDataFromChild (status)
+        {
+            this.success_message = status;
+            this.getUsersList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
 
-                document.body.classList.remove('open-side-slider');
-                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-            },
+        getEditDataFromChild (status) {
+            this.success_message = status;
+            this.getUsersList();
+            this.removingRightSideWrapper();
+            this.setTimeoutElements();
+        },
 
-            clearAllChecker()
-            {
-                this.isAddCheck         = false;
-                this.isEditCheck        = false;
-                this.isDeleteCheck      = false;
-                this.isSearchCheck      = false;
-            },
+        clearFilter()
+        {
+            this.filter.username    = "";
+            this.filter.email       = "";
+            this.filter.role        = "";
+            this.success_message    = "";
+            this.error_message      = "";
+            this.getUsersList();
+        },
 
-            getAddDataFromChild (status)
-            {
-                this.success_message = status;
-                this.getUsersList();
-                this.removingRightSideWrapper();
-                this.setTimeoutElements();
-            },
+        getUsersList(pageUrl)
+        {
+            let _that =this;
 
-            getEditDataFromChild (status) {
-                this.success_message = status;
-                this.getUsersList();
-                this.removingRightSideWrapper();
-                this.setTimeoutElements();
-            },
-
-            clearFilter()
-            {
-                this.filter.username    = "";
-                this.filter.email       = "";
-                this.filter.role        = "";
-                this.success_message    = "";
-                this.error_message      = "";
-                this.getUsersList();
-            },
-
-            getUsersList(pageUrl)
-            {
-                let _that =this;
-
-                pageUrl = pageUrl == undefined ? 'users' : pageUrl;
-
-                axios.get(pageUrl,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params :
-                            {
-                                isAdmin         : 1,
-                                username        : this.filter.username,
-                                email           : this.filter.email,
-                                // role : this.filter.role
-                            },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            // console.log(response.data.user_list.data);
-                            _that.pagination        = response.data.user_list;
-                            _that.userList          = response.data.user_list.data;
-                            _that.isLoading         = false;
-                            _that.isExportCheck     = true;
-                            _that.setTimeoutElements();
-                        }
-                        else{
-                            _that.error_message     = response.data.error;
-                        }
-                    })
-            },
-            deleteCustomer()
-            {
-                let _that = this;
-
-                axios.delete('users/delete',
-                    {
-                        data:
-                            {
-                                id      : _that.customer_id
-                            },
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-
-                    if (response.data.status_code == 200)
-                    {
-                        _that.getUsersList();
-                        _that.removingRightSideWrapper();
-                        _that.error_message         = '';
-                        _that.success_message       = "User Deleted Successfully";
-                        _that.setTimeoutElements();
-                    }else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
-            getUserRoles()
-            {
-                let _that =this;
-
-                axios.get('roles',
-                    {
-                        headers: {
-                            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params : {
-                            isAdmin             : 1,
-                            without_pagination  : 1
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            _that.userAllRoles          = response.data.role_list;
-                            // console.log(_that.userRoles);
-                        }
-                        else{
-                            _that.error_message         = response.data.error;
-                        }
-                    })
-            },
-            deleteUser(userId)
-            {
-
-                let _that = this;
-
-                axios.delete('users/delete',
-                    {
-                        data:
-                            {
-                                id          : userId
-                            },
-                        headers: {
-                            'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-
-                    if (response.data.status_code == 200) {
-                        _that.getUsersList();
-                        _that.error_message         = '';
-                        _that.success_message       = "User Deleted Successfully";
-                        _that.removingRightSideWrapper();
+            pageUrl = pageUrl == undefined ? 'users' : pageUrl;
+        
+            axios.get(pageUrl+'?page='+this.pagination.current,
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    // params :
+                    //     {
+                    //         isAdmin         : 1,
+                    //         username        : this.filter.username,
+                    //         email           : this.filter.email,
+                    //         // role : this.filter.role
+                    //     },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                       console.log(response.data.user_list);
+                        _that.pagination.current = response.data.user_list.current_page;
+                        _that.pagination.total = response.data.user_list.last_page;
+                        _that.userList          = response.data.user_list.data;
+                        _that.isLoading         = false;
+                        _that.isExportCheck     = true;
                         _that.setTimeoutElements();
                     }
-                    else
-                    {
-                        _that.success_message       = "";
+                    else{
+                        _that.error_message     = response.data.error;
+                    }
+                })
+        },
+
+        onPageChange() {
+            this.getUsersList();
+        },
+        deleteCustomer()
+        {
+            let _that = this;
+
+            axios.delete('users/delete',
+                {
+                    data:
+                        {
+                            id      : _that.customer_id
+                        },
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                if (response.data.status_code == 200)
+                {
+                    _that.getUsersList();
+                    _that.removingRightSideWrapper();
+                    _that.error_message         = '';
+                    _that.success_message       = "User Deleted Successfully";
+                    _that.setTimeoutElements();
+                }else{
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getUserRoles()
+        {
+            let _that =this;
+
+            axios.get('roles',
+                {
+                    headers: {
+                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                        isAdmin             : 1,
+                        without_pagination  : 1
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.userAllRoles          = response.data.role_list;
+                        // console.log(_that.userRoles);
+                    }
+                    else{
                         _that.error_message         = response.data.error;
                     }
+                })
+        },
+        deleteUser(userId)
+        {
 
-                }).catch(function (error) {
-                    console.log(error);
-                });
+            let _that = this;
 
-            },
-            checkPermission(permissionForCheck)
-            {
+            axios.delete('users/delete',
+                {
+                    data:
+                        {
+                            id          : userId
+                        },
+                    headers: {
+                        'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
 
-                if((this.mappedPermission).includes(permissionForCheck) === true) {
-                    return true;
-                } else {
-                    return false;
+                if (response.data.status_code == 200) {
+                    _that.getUsersList();
+                    _that.error_message         = '';
+                    _that.success_message       = "User Deleted Successfully";
+                    _that.removingRightSideWrapper();
+                    _that.setTimeoutElements();
                 }
-            },
+                else
+                {
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
 
         },
-
-        created()
+        checkPermission(permissionForCheck)
         {
-            this.isLoading  = true;
-            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-            this.getUsersList();
-            this.getUserRoles();
-            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
-        }
+
+            if((this.mappedPermission).includes(permissionForCheck) === true) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+    },
+
+    created()
+    {
+        this.isLoading  = true;
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+        this.getUsersList();
+        this.getUserRoles();
+        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
     }
+}
 </script>
 
 <style scoped>
-    .mhv-100 {
-        min-height: 50vh;
-    }
+.mhv-100 {
+    min-height: 50vh;
+}
 </style>
