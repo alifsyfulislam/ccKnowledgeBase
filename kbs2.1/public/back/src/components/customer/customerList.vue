@@ -65,7 +65,7 @@
                                             <v-col>
                                                 <v-data-table  :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
                                                     <template v-slot:item.roles="{item}">
-                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : 'afff' }}
+                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
                                                     </template>
 
                                                     <template v-slot:item.actions="{item}" >
