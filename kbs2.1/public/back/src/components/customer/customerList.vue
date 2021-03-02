@@ -65,11 +65,11 @@
                                             <v-col>
                                                 <v-data-table  :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
                                                     <template v-slot:item.roles="{item}">
-                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
+                                                        {{ ((item.roles).length > 0) ? item.roles[0].name : 'afff' }}
                                                     </template>
 
-                                                    <template v-slot:item.actions="{item}">
-                                                       <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = a_user.id, isEditCheck=true" v-if="checkPermission('user-edit') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
+                                                    <template v-slot:item.actions="{item}" >
+                                                       <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = item.id, isEditCheck=true" v-if="checkPermission('user-edit') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
                                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="customer_id = item.id, isDeleteCheck=true"  v-if="checkPermission('user-delete') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'" ><i class="fas fa-trash-restore-alt"></i></button>
                                                     </template>
 
