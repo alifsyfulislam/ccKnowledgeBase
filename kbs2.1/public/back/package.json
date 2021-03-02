@@ -13,11 +13,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@mdi/font": "^5.9.55",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "chart.js": "^2.9.4",
     "countup.js": "^2.0.7",
+    "import": "0.0.6",
     "jquery": "^3.5.1",
     "summernote": "^0.8.18",
     "v-select2-component": "^0.4.3",

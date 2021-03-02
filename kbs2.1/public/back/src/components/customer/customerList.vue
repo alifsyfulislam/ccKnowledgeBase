@@ -53,17 +53,15 @@
                         <div class="table-responsive" v-if="isLoading===false">
                             <v-app>
                                 <v-main>
-                                    <v-container>
-                                        <v-row>
-                                            <v-col md="3">
-                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
-
-                                                </v-text-field>
+                                    <v-container class="p-0 position-relative overflow-hidden">
+                                        <v-row justify="end">
+                                            <v-col md="3" class="customer-search-wrapper">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
                                             </v-col>
                                         </v-row>
                                         <v-row>
-                                            <v-col>
-                                                <v-data-table  :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
+                                            <v-col class="customer-data-table-wrapper">
+                                                <v-data-table :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
                                                     <template v-slot:item.roles="{item}">
                                                         {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
                                                     </template>
@@ -77,9 +75,9 @@
 
                                             </v-col>
                                         </v-row>
-                                        <v-row justify="start">
-                                            <v-col cols="4">
-                                                <v-pagination v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                        <v-row justify="end" class="pagination-wrapper">
+                                            <v-col>
+                                                <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
                                                 </v-pagination>
                                             </v-col>
                                         </v-row>
