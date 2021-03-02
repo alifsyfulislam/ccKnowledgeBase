@@ -88,7 +88,7 @@
               <div class="col-lg-12" style="min-height: 350px ; ">
                 <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
                   <div class="heading">{{a_faq.en_title}}</div>
-                  <div class="contents" v-html="a_faq.en_body"></div>
+                  <div class="contents overflow-hidden" v-html="a_faq.en_body"></div>
                 </div>
               </div>
 
