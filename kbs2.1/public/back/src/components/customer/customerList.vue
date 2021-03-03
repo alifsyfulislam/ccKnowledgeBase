@@ -61,7 +61,7 @@
                                         </v-row>
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
-                                                <v-data-table :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1">
+                                                <v-data-table :headers="headers" :items="userList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
                                                     <template v-slot:item.roles="{item}">
                                                         {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
                                                     </template>
@@ -196,7 +196,7 @@ export default {
             downloadUrl         : 'users/export/',
             user_permissions    : '',
             mappedPermission    : '',
-             search              :"",
+            search              :"",
             pagination  :{
                 current         :1,
                 per_page        : 20,

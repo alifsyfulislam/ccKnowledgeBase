@@ -52,41 +52,53 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <b-row class="justify-content-end">
-                                <b-col md="3" class="mb-3">
-                                    <b-form-input v-model="filter" type="search" placeholder="Search" ></b-form-input>
-                                </b-col>
-                            </b-row>
-                            <b-table striped small bordered :items="articleList" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter">
-                                <template #cell(en_title)="data">
-                                    <span v-if="(data.item.en_title).length<30"> {{ data.item.en_title }}</span>
-                                    <span v-else> {{ (data.item.en_title).substring(0,30)+"...." }}</span>
-                                </template>
+                            <v-app>
+                                <v-main>
+                                    <v-container class="p-0 position-relative overflow-hidden">
+                                        <v-row justify="end">
+                                            <v-col md="3" class="customer-search-wrapper">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col class="customer-data-table-wrapper">
+                                                <v-data-table :headers="headers" :items="articleList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                                                    <template v-slot:item.en_title="{item}">
+                                                       <span v-if="(item.en_title).length<30"> {{ item.en_title }}</span>
+                                                        <span v-else> {{ (item.en_title).substring(0,30)+"...." }}</span>
+                                                    </template>
+                                                    <template v-slot:item.author="{item}">
+                                                       {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
+                                                    </template>
+                                                    <template v-slot:item.status="{item}">
+                                                       <select class="form-control" v-model="item.status" @change="articleStatusRequest(item)">
+                                                            <option value="draft">Draft</option>
+                                                            <option value="hide">Hide</option>
+                                                            <option value="private">Private</option>
+                                                            <option value="public">Public</option>
+                                                        </select>
+                                                    </template>
+                                                    <template v-slot:item.actions="{item}">
+                                                       <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-primary btn-xs m-1">
+                                                            <i class="fas fa-eye"></i>
+                                                        </router-link>
+                                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
 
-                                <template #cell(author)="data">
-                                    {{ data.item.user ? (data.item.user.first_name +' '+ data.item.user.last_name) : '' }}
-                                </template>
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=item.id, isDeleteCheck=true" v-if="checkPermission('article-delete')"><i class="fas fa-trash-restore-alt"></i></button>
+                                                    </template>
+                                                </v-data-table>
 
-                                <template #cell(status)="data">
-                                    <select class="form-control" v-model="data.item.status" @change="articleStatusRequest(data.item)">
-                                            <option value="draft">Draft</option>
-                                            <option value="hide">Hide</option>
-                                            <option value="private">Private</option>
-                                            <option value="public">Public</option>
-                                        </select>
-                                </template>
-
-                                <template #cell(actions)="data">
-                                    <router-link :to="{ name: 'articleDetails', params: { id: data.item.slug }}" class="btn btn-primary btn-xs m-1">
-                                            <i class="fas fa-eye"></i>
-                                        </router-link>
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=data.item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
-
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="article_id=data.item.id, isDeleteCheck=true" v-if="checkPermission('article-delete')"><i class="fas fa-trash-restore-alt"></i></button>
-                                </template>
-
-                            </b-table>
-                            <b-pagination v-model="currentPage" :total-rows="row" :per-page="perPage"></b-pagination>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row justify="end" class="pagination-wrapper">
+                                            <v-col>
+                                                <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                                </v-pagination>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-main>
+                            </v-app>
                         </div>
                         <!-- Table Data End -->
                         
@@ -249,66 +261,47 @@ export default {
             currentPage         :1,
 
             article_id          :'',
-            filter              :"",
-            // filter      : {
-            //     isAdmin         : 1,
-            //     category_id     : '',
-            //     status          : '',
-            //     en_title        : '',
-            //     tag             : '',
-            // },
-            // pagination  :{
-            //     from            : '',
-            //     to              : '',
-            //     first_page_url  : '',
-            //     last_page       : '',
-            //     last_page_url   : '',
-            //     next_page_url   :'',
-            //     prev_page_url   : '',
-            //     path            : '',
-            //     per_page        : 10,
-            //     total           : ''
-                
-            // },
-            fields: [
+            search              :"",
+            pagination  :{
+                current         :1,
+                per_page        : 20,
+                total           : ''
+            },
+            headers: [
                 {
-                    key: 'id',
-                    label: 'ID',
+                    text: 'ID',
+                    value: 'id',
+                },
+                {
+                    text: 'Title',
+                    value: 'en_title',
+                },
+                {
+                    text: 'Author',
+                    value: 'author',
+                },
+                {
+                    text: 'Category',
+                    value: 'category.name',
+                },
+                {
+                    text: 'Status',
+                    value: 'status',
                     sortable: true
                 },
                 {
-                    key: 'en_title',
-                    label: 'Title',
+                    text: 'tag',
+                    value: 'tag',
+                },
+                {
+                    text: 'Published Date',
+                    value: 'category.name',
                     sortable: true
                 },
                 {
-                    key: 'author',
-                    label: 'Author',
-                    sortable: true
-                },
-                {
-                    key: 'category.name',
-                    label: 'Category',
-                    sortable: true
-                },
-                {
-                    key: 'status',
-                    label: 'Status',
-                    sortable: true
-                },
-                {
-                    key: 'tag',
-                    label: 'Tag',
-                    sortable: true
-                },
-                {
-                    key: 'created_at',
-                    label: 'Publish Date',
-                    sortable: true
-                },
-                {
-                    key: 'actions',
-                    label: 'Actions '
+                    text: 'Actions',
+                    value: 'actions',
+                    sortable: false
                 
                 },
                 
@@ -317,11 +310,6 @@ export default {
 
             success_message : '',
             error_message   : '',
-        }
-    },
-    computed: {
-        row() {
-            return this.articleList.length;
         }
     },
     methods: {
@@ -439,24 +427,25 @@ export default {
 
             pageUrl = pageUrl == undefined ? 'articles' : pageUrl;
 
-            axios.get(pageUrl,
+            axios.get(pageUrl+'?page'+this.pagination.current,
                 {
                     headers: {
                         'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                     },
-                    params :
-                        {
-                            isAdmin         : 1,
-                            category_id     : this.filter.category_id,
-                            status          : this.filter.status,
-                            en_title        : this.filter.en_title,
-                            tag             : this.filter.tag,
-                        },
+                    // params :
+                    //     {
+                    //         isAdmin         : 1,
+                    //         category_id     : this.filter.category_id,
+                    //         status          : this.filter.status,
+                    //         en_title        : this.filter.en_title,
+                    //         tag             : this.filter.tag,
+                    //     },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
+                        _that.pagination.current = response.data.article_list.current_page;
+                        _that.pagination.total = response.data.article_list.last_page;
                         _that.articleList       = response.data.article_list.data;
-                        _that.pagination        = response.data.article_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
                         _that.setTimeoutElements();
@@ -467,6 +456,9 @@ export default {
                         _that.error_message     = response.data.error;
                     }
                 })
+        },
+        onPageChange() {
+            this.getArticleList();
         },
         setTimeoutElements()
         {
