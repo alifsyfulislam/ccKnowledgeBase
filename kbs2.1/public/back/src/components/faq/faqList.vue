@@ -23,10 +23,10 @@
                   <i class="fas fa-plus"></i>
                   Add FAQ
                 </button>
-                <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0"
+                <!-- <button class="btn common-gradient-btn ripple-btn search-btn right-side-common-form text-white mx-10 m-w-140 px-15 mb-10 mb-md-0"
                         @click="isSearchCheck=true">
                   <i class="fas fa-search"></i> <span class="ml-1">Search</span>
-                </button>
+                </button> -->
               </div>
             </div>
             <div class="reload-download-expand-area">
