@@ -304,13 +304,13 @@ export default {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     },
-                    // params :
-                    //     {
-                    //         isAdmin         : 1,
-                    //         username        : this.filter.username,
-                    //         email           : this.filter.email,
-                    //         // role : this.filter.role
-                    //     },
+                    params :
+                        {
+                            isAdmin         : 1,
+                            // username        : this.filter.username,
+                            // email           : this.filter.email,
+                            // role : this.filter.role
+                        },
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){

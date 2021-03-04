@@ -49,61 +49,45 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-left">Name</th>
-                                    <th class="text-left">Parent Name</th>
-                                    <th class="text-center">Created Date</th>
-                                    <th class="text-center" style="width:120px;">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(a_category) in categoryList" :key="a_category.id">
-                                    <td class="text-center">{{ a_category.id }}</td>
-                                    <td class="text-left">{{ a_category.name }}</td>
-                                    <td class="text-left">{{ a_category.parent_recursive ? a_category.parent_recursive.name : ''   }}</td>
-                                    <td class="text-center">{{ a_category.created_at }}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
-                                                @click="category_id=a_category.id, isEditCheck=true" v-if="checkPermission('category-edit')">
-                                            <i class="fas fa-pen"></i>
-                                        </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                 @click="category_id=a_category.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
-                                            <i class="fas fa-trash-restore-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <v-app>
+                                <v-main>
+                                    <v-container class="p-0 position-relative overflow-hidden">
+                                        <v-row justify="end">
+                                            <v-col md="3" class="customer-search-wrapper">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col class="customer-data-table-wrapper">
+                                                <v-data-table :headers="headers" :items="categoryList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                                                    <template v-slot:item.parent_recursive="{item}">
+                                                        {{ item.parent_recursive ? item.parent_recursive.name : ''   }}
+                                                    </template>
+                                                    <template v-slot:item.actions="{item}">
+                                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
+                                                                @click="category_id=item.id, isEditCheck=true" v-if="checkPermission('category-edit')">
+                                                            <i class="fas fa-pen"></i>
+                                                        </button>
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
+                                                                @click="category_id=item.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
+                                                            <i class="fas fa-trash-restore-alt"></i>
+                                                        </button>
+                                                    </template>
+                                                </v-data-table>
+
+                                            </v-col>
+                                        </v-row>
+                                        <v-row justify="end" class="pagination-wrapper">
+                                            <v-col>
+                                                <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                                </v-pagination>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-main>
+                            </v-app>
                         </div>
                         <!-- Table Data End -->
-                        <!-- Pagination -->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getCategoryList('categories?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                                    </li>
-
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getCategoryList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <!-- Pagination End -->
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -202,18 +186,37 @@ export default {
                 isAdmin         : 1,
                 name            : ''
             },
+            search              :"",
             pagination  :{
-                from            : '',
-                to              : '',
-                first_page_url  : '',
-                last_page       : '',
-                last_page_url   : '',
-                next_page_url   :'',
-                prev_page_url   : '',
-                path            : '',
-                per_page        : 10,
+                current         :1,
+                per_page        : 20,
                 total           : ''
             },
+            headers: [
+                {
+                    text: 'ID',
+                    value: 'id',
+                },
+                 {
+                    text: 'Name',
+                    value: 'name',
+                },
+                {
+                    text: 'Parent Name',
+                    value: 'parent_recursive',
+                },
+                {
+                    text: 'Created Date',
+                    value: 'created_at',
+                },
+                {
+                    text: 'Actions',
+                    value: 'actions',
+                    sortable:false
+                },
+                
+                
+            ],
         }
     },
     methods: {
@@ -255,7 +258,7 @@ export default {
             let _that = this;
             pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
 
-            axios.get(pageUrl,
+            axios.get(pageUrl+'?page='+this.pagination.current,
                 {
                     headers: {
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -269,8 +272,11 @@ export default {
                     if(response.data.status_code === 200)
                     {
                         console.log(response.data);
+                        _that.pagination.current = response.data.category_list.current_page;
+                        _that.pagination.total = response.data.category_list.last_page;
                         _that.categoryList      = response.data.category_list.data;
-                        _that.pagination        = response.data.category_list;
+                        // _that.categoryList      = response.data.category_list.data;
+                        // _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
                         // console.log(_that.pagination.total);
@@ -282,6 +288,9 @@ export default {
                     }
                 });
 
+        },
+        onPageChange() {
+            this.getCategoryList();
         },
 
         categoryUpdate(categoryId)
