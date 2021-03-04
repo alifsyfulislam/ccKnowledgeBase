@@ -54,82 +54,64 @@
             <Loading v-if="isLoading===true"></Loading>
             <!-- Table Data -->
             <div class="table-responsive" v-if="isLoading===false">
-              <table class="table table-bordered gsl-table">
-                <thead>
-                <tr>
-                  <th class="text-center">ID</th>
-                  <th class="text-center">Title</th>
-                  <th class="text-center">User</th>
-                  <th class="text-center">Category</th>
-                  <th class="text-center">Status</th>
-                  <th class="text-center">Tag</th>
-                  <th class="text-center">Publish Date</th>
-                  <th class="text-center" style="width:120px">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="an_faq in faqList" :key="an_faq.id">
-                  <td class="text-center">{{ an_faq.id  }}</td>
-                  <td>{{ an_faq.en_title  }}</td>
-                  <td class="text-center">{{ an_faq.user ? (an_faq.user.first_name +' '+ an_faq.user.last_name) : '' }}</td>
-                  <td class="text-center">{{ an_faq.category ? an_faq.category.name : ''  }}</td>
-                  <td class="text-center">
-                    <select class="form-control" v-model="an_faq.status" @change="faqStatusRequest(an_faq)">
-                      <option value="draft">Draft</option>
-                      <option value="hide">Hide</option>
-                      <option value="private">Private</option>
-                      <option value="public">Public</option>
-                      <!--                                <option value="scheduling">Scheduling</option>-->
-                      <!--                                <option value="announcement">Announcement</option>-->
-                    </select>
-                  </td>
-                  <td class="text-center">{{ an_faq.tag  }}</td>
-                  <td class="text-center">{{ an_faq.created_at  }}</td>
-                  <td class="text-center" style="width:120px">
-                    <router-link :to="{ name: 'faqDetails', params: { id: an_faq.id }}" class="btn btn-primary btn-xs m-1">
-                      <i class="fas fa-eye"></i>
-                    </router-link>
-                    <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
-                            @click="faq_id=an_faq.id, isEditCheck = true"
-                            v-if="checkPermission('faq-edit')">
-                      <i class="fas fa-pen"></i>
-                    </button>
+              <v-app>
+                <v-main>
+                  <v-container>
+                    <v-row justify="end">
+                      <v-col md="3" class="customer-search-wrapper">
+                        <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="customer-data-table-wrapper">
+                          <v-data-table :headers="headers" :items="faqList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                            <template v-slot:item.user="{item}">
+                                  {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
+                              </template>
+                              <template v-slot:item.category="{item}">
+                                  {{ item.category ? item.category.name : ''  }}
+                              </template>
 
-                    <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
-                             @click="faq_id=an_faq.id, isDeleteCheck = true"
-                             v-if="checkPermission('faq-delete')">
-                      <i class="fas fa-trash-restore-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+                              <template v-slot:item.status="{item}">
+                                  <select class="form-control" v-model="item.status" @change="faqStatusRequest(item)">
+                                    <option value="draft">Draft</option>
+                                    <option value="hide">Hide</option>
+                                    <option value="private">Private</option>
+                                    <option value="public">Public</option>
+                                  </select>
+                              </template>
+
+                              <template v-slot:item.actions="{item}" >
+                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id }}" class="btn btn-primary btn-xs m-1">
+                                    <i class="fas fa-eye"></i>
+                                  </router-link>
+                                  <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
+                                          @click="faq_id=item.id, isEditCheck = true"
+                                          v-if="checkPermission('faq-edit')">
+                                    <i class="fas fa-pen"></i>
+                                  </button>
+
+                                  <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
+                                          @click="faq_id=item.id, isDeleteCheck = true"
+                                          v-if="checkPermission('faq-delete')">
+                                    <i class="fas fa-trash-restore-alt"></i>
+                                  </button>
+                              </template>
+
+                          </v-data-table>
+                      </v-col>
+                    </v-row>
+                    <v-row justify="end" class="pagination-wrapper">
+                      <v-col>
+                          <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                          </v-pagination>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-main>
+              </v-app>
             </div>
             <!-- Table Data End -->
-            <!-- Pagination -->
-            <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-              <nav aria-label="Page navigation">
-                <ul class="pagination mb-0">
-                  <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                    <a @click.prevent="getFaqList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                  </li>
-                  <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                    <a @click.prevent="getFaqList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                  </li>
-                  <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                    <a @click.prevent="getFaqList('faqs?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                  </li>
-
-                  <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                    <a @click.prevent="getFaqList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                  </li>
-                  <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                    <a @click.prevent="getFaqList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <!-- Pagination End -->
           </div>
           <!-- Content Area End -->
         </div>
@@ -199,7 +181,7 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <div class="form-group">
+                <div class="form-group">\
                   <label for="category_id">Select A Category</label>
 
                   <select class="form-control" v-model="filter.category_id" id="category_id">
@@ -292,26 +274,70 @@ export default {
       mappedPermission    : '',
       faqList             : '',
       faq_id              : '',
-      filter      : {
-        isAdmin         : 1,
-        category_id     : '',
-        status          : '',
-        en_title        : '',
-        tag             : '',
-      },
+      // filter      : {
+      //   isAdmin         : 1,
+      //   category_id     : '',
+      //   status          : '',
+      //   en_title        : '',
+      //   tag             : '',
+      // },
 
-      pagination  : {
-        from            : '',
-        to              : '',
-        first_page_url  : '',
-        last_page       : '',
-        last_page_url   : '',
-        next_page_url   :'',
-        prev_page_url   : '',
-        path            : '',
-        per_page        : 10,
-        total           : ''
+      // pagination  : {
+      //   from            : '',
+      //   to              : '',
+      //   first_page_url  : '',
+      //   last_page       : '',
+      //   last_page_url   : '',
+      //   next_page_url   :'',
+      //   prev_page_url   : '',
+      //   path            : '',
+      //   per_page        : 10,
+      //   total           : ''
+      // },
+      search              :"",
+      pagination          :{
+          current         :1,
+          per_page        : 20,
+          total           : ''
       },
+      headers: [
+          {
+              text: 'ID',
+              value: 'id',
+          },
+            {
+              text: 'Title',
+              value: 'en_title',
+          },
+          {
+              text: 'User',
+              value: 'user',
+          },
+          {
+              text: 'Category',
+              value: 'category',
+          },
+          {
+              text: 'Status',
+              value: 'status',
+          },
+          {
+              text: 'Tag',
+              value: 'tag',
+          },
+          {
+              text: 'Publish Date',
+              value: 'created_at',
+          },
+          {
+              text: 'Actions',
+              value: 'actions',
+              sortable:false
+          },
+          
+          
+      ],
+      
     }
   },
   methods: {
@@ -426,26 +452,29 @@ export default {
       let _that =this;
       pageUrl = pageUrl == undefined ? 'faqs' : pageUrl;
 
-      axios.get(pageUrl,
+      axios.get(pageUrl+'?page='+this.pagination.current,
         {
           headers: {
             'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
           },
           params :
             {
-              isAdmin         : 1,
-              category_id     : this.filter.category_id,
-              status          : this.filter.status,
-              en_title        : this.filter.en_title,
-              tag             : this.filter.tag,
+              isAdmin         : 1
+              // category_id     : this.filter.category_id,
+              // status          : this.filter.status,
+              // en_title        : this.filter.en_title,
+              // tag             : this.filter.tag,
             },
 
         })
         .then(function (response) {
           if(response.data.status_code === 200){
-            _that.faqList           = response.data.faq_list.data;
-            _that.pagination        = response.data.faq_list;
-            _that.isLoading         = false;
+            console.log(response.data);
+            _that.pagination.current = response.data.faq_list.current_page;
+            _that.pagination.total   = response.data.faq_list.last_page;
+            _that.faqList            = response.data.faq_list.data;
+            // _that.pagination         = response.data.faq_list;
+            _that.isLoading          = false;
             _that.isExportCheck      = true;
           }
           else{
@@ -453,6 +482,9 @@ export default {
             _that.error_message     = response.data.error;
           }
         })
+    },
+    onPageChange() {
+        this.getFaqList();
     },
 
     deleteFaq()
