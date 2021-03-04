@@ -40,63 +40,47 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <table class="table table-bordered gsl-table" v-if="allFields">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">SL</th>
-                                    <th class="text-center">Quiz Form ID</th>
-                                    <th class="text-center">Label</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Class</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(a_quiz_form_field,index) in allFields" :key="a_quiz_form_field.id">
-                                    <td class="text-center">{{ ++index }}</td>
-                                    <td class="text-center">{{ a_quiz_form_field.quiz_form_id }}</td>
-                                    <td class="text-center">{{ a_quiz_form_field.f_label }}</td>
-                                    <td class="text-center">{{ a_quiz_form_field.f_name }}</td>
-                                    <td class="text-center">{{ a_quiz_form_field.f_id }}</td>
-                                    <td class="text-center">{{ a_quiz_form_field.f_class }}</td>
-                                    <td class="text-center" style="min-width: 120px">
-                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = a_quiz_form_field.id, isEditCheck=true"
-                                                v-if="checkPermission('quiz-form-field-edit')">
-                                            <i class="fas fa-pen"></i>
-                                        </button>
-                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = a_quiz_form_field.id, isDeleteCheck=true"
-                                                 v-if="checkPermission('quiz-form-field-delete')">
-                                            <i class="fas fa-trash-restore-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                           <v-app>
+                                <v-main>
+                                    <v-container class="p-0 position-relative overflow-hidden">
+                                        <v-row justify="end">
+                                            <v-col md="3" class="customer-search-wrapper">
+                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col class="customer-data-table-wrapper">
+                                                <v-data-table :headers="headers" :items="allFields" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                                                    <template v-slot:item.sl="{item}">
+                                                       {{allFields.map(function(x) {return x.id; }).indexOf(item.id)+1}}
+                                                    </template>
+
+                                                    <template v-slot:item.actions="{item}" >
+                                                       <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = item.id, isEditCheck=true"
+                                                                v-if="checkPermission('quiz-form-field-edit')">
+                                                            <i class="fas fa-pen"></i>
+                                                        </button>
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="quiz_form_field_id = item.id, isDeleteCheck=true"
+                                                                v-if="checkPermission('quiz-form-field-delete')">
+                                                            <i class="fas fa-trash-restore-alt"></i>
+                                                        </button>
+                                                    </template>
+
+                                                </v-data-table>
+
+                                            </v-col>
+                                        </v-row>
+                                        <v-row justify="end" class="pagination-wrapper">
+                                            <v-col>
+                                                <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                                                </v-pagination>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-main>
+                            </v-app>
                         </div>
                         <!-- Table Data End -->
-                        <!-- pagination-->
-                        <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination mb-0">
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getQuizFormFieldList(pagination.first_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.prev_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getQuizFormFieldList(pagination.prev_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li v-for="n in pagination.last_page" class="page-item mx-1"  :key="n">
-                                        <a @click.prevent="getQuizFormFieldList('quiz-form-fields?page='+n)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill">{{ n }}</a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getQuizFormFieldList(pagination.next_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li :class="[{disabled:!pagination.next_page_url}]" class="page-item mx-1">
-                                        <a @click.prevent="getQuizFormFieldList(pagination.last_page_url)" href="#" class="px-3 bg-primary text-white py-2 rounded-pill"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -180,24 +164,63 @@
                 quizFormName        : [],
                 quiz_form_field_id  :'',
                 allQuizFieldFrom    : '',
-                filter          : {
-                    isAdmin         : 1,
-                    username        : '',
-                    email           : '',
-                    role            : ''
-                },
-                pagination      : {
-                    from            : '',
-                    to              : '',
-                    first_page_url  : '',
-                    last_page       : '',
-                    last_page_url   : '',
-                    next_page_url   :'',
-                    prev_page_url   : '',
-                    path            : '',
-                    per_page        : 10,
+                // filter          : {
+                //     isAdmin         : 1,
+                //     username        : '',
+                //     email           : '',
+                //     role            : ''
+                // },
+                // pagination      : {
+                //     from            : '',
+                //     to              : '',
+                //     first_page_url  : '',
+                //     last_page       : '',
+                //     last_page_url   : '',
+                //     next_page_url   :'',
+                //     prev_page_url   : '',
+                //     path            : '',
+                //     per_page        : 10,
+                //     total           : ''
+                // },
+                search              :"",
+                pagination  :{
+                    current         :1,
+                    per_page        : 20,
                     total           : ''
                 },
+                headers: [
+                    {
+                        text: 'SL',
+                        value: 'sl',
+                    },
+                    {
+                        text: 'Quiz Form ID',
+                        value: 'quiz_form_id',
+                    },
+                    {
+                        text: 'Label',
+                        value: 'f_label',
+                    },
+                    {
+                        text: 'Name',
+                        value: 'f_name',
+                    },
+                    {
+                        text: 'ID',
+                        value: 'f_id',
+                    },
+                    {
+                        text: 'Class',
+                        value: 'f_class',
+                    },
+                    {
+                        text: 'Actions',
+                        value: 'actions',
+                        sortable:false
+                    },
+                    
+                    
+                ],
             }
         },
 
@@ -285,7 +308,7 @@
             {
                 let _that   = this;
                 pageUrl     = pageUrl == undefined ? 'quiz-form-fields' : pageUrl;
-                axios.get(pageUrl,
+                axios.get(pageUrl+'?page='+this.pagination.current,
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -293,7 +316,10 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            _that.pagination        = response.data.quiz_form_field_list;
+                            console.log(response.data);
+                            // _that.pagination        = response.data.quiz_form_field_list;
+                            _that.pagination.current = response.data.quiz_form_field_list.current_page;
+                            _that.pagination.total  = response.data.quiz_form_field_list.last_page;
                             _that.allFields         = response.data.quiz_form_field_list.data;
                             _that.isLoading         = false;
                         }
@@ -302,6 +328,9 @@
                             _that.error_message     = response.data.error;
                         }
                     })
+            },
+            onPageChange() {
+                this.getQuizFormFieldList();
             },
             setTimeoutElements()
             {
