@@ -7,6 +7,11 @@
         <div class="container">
             <div v-if="isFinish">
                 <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
+                <div class="text-center">
+                    <router-link  v-if="showResult>=passMark" class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
+                  Register Now</router-link>
+                </div>
+                
             </div>
             <div v-else>
                 <div v-if="quizInfo">
@@ -119,6 +124,7 @@
                 markCounter: '',
                 resultArray: [],
                 showResult:'',
+                passMark:'',
 
                 pagination:{
                     from: '',
@@ -303,6 +309,7 @@
             _that.detectTab();
             if (_that.$route.params.quiz_info){
                 _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);
+                _that.passMark =  ( _that.quizInfo.total_marks*40 )/100;
                 let timer = _that.quizInfo.duration*60;
                 _that.printTimer(timer);//total time
                 _that.getQuizFormField();

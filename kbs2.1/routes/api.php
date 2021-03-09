@@ -6,6 +6,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\TotalCountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -54,6 +55,9 @@ Route::get('faq/search/{any}',[FaqController::class, 'faqSearch']);
 
 Route::get('quiz-list',[QuizController::class, 'getQuizList']);
 Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
+Route::post('customer/username', [CustomerController::class, 'checkUserNameExist']);
+Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
+Route::post('customer/add',[CustomerController::class, 'store']);
 
 Route::middleware('auth:api')->group(function(){
 

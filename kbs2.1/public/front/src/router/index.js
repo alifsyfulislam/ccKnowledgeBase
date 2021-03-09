@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import CategoryList from "@/views/CategoryList";
 import ArticleDetail from "@/views/ArticleDetail";
+import Registration from "@/views/Registration";
 import Faq from "@/views/Faq";
 import Contact from "@/views/Contact";
 import NotFound from "@/views/NotFound";
@@ -29,6 +30,11 @@ let router =  new Router({
       path: '/quiz',
       name: 'Quiz',
       component: Quiz
+    },
+    {
+      path: '/registration',
+      name: 'Registration',
+      component: Registration
     },
     {
       path: '/start-exam',
