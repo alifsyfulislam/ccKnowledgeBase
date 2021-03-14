@@ -79,8 +79,8 @@
                                                         </select>
                                                     </template>
                                                     <template v-slot:item.actions="{item}">
-                                                       <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-primary btn-xs m-1">
-                                                            <i class="fas fa-eye"></i>
+                                                       <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-secondary btn-xs m-1">
+                                                            <i class="fas fa-eye text-white"></i>
                                                         </router-link>
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
 

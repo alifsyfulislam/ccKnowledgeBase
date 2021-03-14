@@ -82,8 +82,8 @@
                               </template>
 
                               <template v-slot:item.actions="{item}" >
-                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id }}" class="btn btn-primary btn-xs m-1">
-                                    <i class="fas fa-eye"></i>
+                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id }}" class="btn btn-secondary btn-xs m-1">
+                                    <i class="fas fa-eye text-white"></i>
                                   </router-link>
                                   <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
                                           @click="faq_id=item.id, isEditCheck = true"
