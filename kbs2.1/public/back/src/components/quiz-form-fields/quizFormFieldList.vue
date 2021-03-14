@@ -51,9 +51,9 @@
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
                                                 <v-data-table :headers="headers" :items="allFields" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                                                    <template v-slot:item.sl="{item}">
-                                                       {{allFields.map(function(x) {return x.id; }).indexOf(item.id)+1}}
-                                                    </template>
+<!--                                                    <template v-slot:item.sl="{item}">-->
+<!--                                                       {{allFields.map(function(x) {return x.id; }).indexOf(item.id)+1}}-->
+<!--                                                    </template>-->
 
                                                     <template v-slot:item.actions="{item}" >
                                                        <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="quiz_form_field_id = item.id, isEditCheck=true"
@@ -189,10 +189,10 @@
                     total           : ''
                 },
                 headers: [
-                    {
-                        text: 'SL',
-                        value: 'sl',
-                    },
+                    // {
+                    //     text: 'SL',
+                    //     value: 'sl',
+                    // },
                     {
                         text: 'Quiz Form ID',
                         value: 'quiz_form_id',
