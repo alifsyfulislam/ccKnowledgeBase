@@ -54,7 +54,7 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                           <v-app>
+                            <v-app>
                                 <v-main>
                                     <v-container class="p-0 position-relative overflow-hidden">
                                         <v-row justify="end">
@@ -66,11 +66,11 @@
                                             <v-col class="customer-data-table-wrapper">
                                                 <v-data-table :headers="headers" :items="quizList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
                                                     <template v-slot:item.status="{item}">
-                                                       {{ item.status === 0 ? 'Inactive' : 'Active' }}
+                                                        {{ item.status === 0 ? 'Inactive' : 'Active' }}
                                                     </template>
 
                                                     <template v-slot:item.actions="{item}" >
-                                                       <button  v-if="checkPermission('quiz-edit')" class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=item.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
+                                                        <button  v-if="checkPermission('quiz-edit')" class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"  @click="quiz_id=item.id, isEditCheck=true"><i class="fas fa-pen"></i></button>
                                                         <button  v-if="checkPermission('quiz-delete')" class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1" @click="quiz_id=item.id, isDeleteCheck=true"><i class="fas fa-trash-restore-alt"></i></button>
                                                     </template>
 
@@ -132,7 +132,7 @@
                                 <p class="text-center"> Confirmation for Deleting Quiz</p>
 
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteQuiz()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteQuiz()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -149,241 +149,241 @@
 
 <script>
 
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
-import QuizzAdd from "@/components/quiz/quizAdd";
-import QuizzEdit from "@/components/quiz/quizEdit";
-import Loading from "@/components/loader/loading";
-import axios from "axios";
-import $ from "jquery";
+    import Header from "@/layouts/common/Header";
+    import Menu from "@/layouts/common/Menu";
+    import QuizzAdd from "@/components/quiz/quizAdd";
+    import QuizzEdit from "@/components/quiz/quizEdit";
+    import Loading from "@/components/loader/loading";
+    import axios from "axios";
+    import $ from "jquery";
 
-export default {
-    name: "quizList",
-    components: {
-        Header,
-        Menu,
-        QuizzAdd,
-        QuizzEdit,
-        Loading
-    },
-
-    data() {
-        return {
-            isLoading           : false,
-            isEditCheck         : false,
-            isAddCheck          : false,
-            isDeleteCheck       : false,
-            isSearch            : false,
-            success_message     : '',
-            error_message       : '',
-            token               : '',
-            quiz_id             : '',
-            articleList         : '',
-            quizList            : '',
-            userInfo            : '',
-            user_permissions    : '',
-            mappedPermission    : '',
-            search              :"",
-            pagination  :{
-                current         :1,
-                per_page        : 20,
-                total           : ''
-            },
-            // filter      : {
-            //     isAdmin         : 1,
-            //     status          : '',
-            //     name            : '',
-            // },
-
-            // pagination  : {
-            //     from            : '',
-            //     to              : '',
-            //     first_page_url  : '',
-            //     last_page       : '',
-            //     last_page_url   : '',
-            //     next_page_url   :'',
-            //     prev_page_url   : '',
-            //     path            : '',
-            //     per_page        : 10,
-            //     total           : ''
-            // },
-             headers: [
-                {
-                    text: 'Name',
-                    value: 'name',
-                },
-                 {
-                    text: 'Duration',
-                    value: 'duration',
-                },
-                {
-                    text: 'Total Marks',
-                    value: 'total_marks',
-                },
-                {
-                    text: 'Number of Questions',
-                    value: 'number_of_questions',
-                },
-                {
-                    text: 'Status',
-                    value: 'status',
-                },
-                {
-                    text: 'Actions',
-                    value: 'actions',
-                    sortable:false
-                },
-                
-                
-            ],
-        }
-    },
-
-    methods: {
-        removingRightSideWrapper()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-
-            document.body.classList.remove('open-side-slider');
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+    export default {
+        name: "quizList",
+        components: {
+            Header,
+            Menu,
+            QuizzAdd,
+            QuizzEdit,
+            Loading
         },
-        clearAllChecker()
-        {
-            this.isAddCheck    = false;
-            this.isDeleteCheck = false;
-            this.isEditCheck      = false;
-        },
-        getAddDataFromChild (status)
-        {
 
-            this.success_message = status;
-            this.getQuizList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-        getEditDataFromChild (status)
-        {
-            this.success_message = status;
-            this.getQuizList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-        clearFilter()
-        {
-            this.filter.status   = "";
-            this.filter.name     = "";
-            this.success_message = "";
-            this.error_message   = "";
-            this.getQuizList();
-        },
-        getQuizList(pageUrl)
-        {
+        data() {
+            return {
+                isLoading           : false,
+                isEditCheck         : false,
+                isAddCheck          : false,
+                isDeleteCheck       : false,
+                isSearch            : false,
+                success_message     : '',
+                error_message       : '',
+                token               : '',
+                quiz_id             : '',
+                articleList         : '',
+                quizList            : '',
+                userInfo            : '',
+                user_permissions    : '',
+                mappedPermission    : '',
+                search              :"",
+                pagination  :{
+                    current         :1,
+                    per_page        : 20,
+                    total           : ''
+                },
+                // filter      : {
+                //     isAdmin         : 1,
+                //     status          : '',
+                //     name            : '',
+                // },
 
-            let _that =this;
-
-            pageUrl = pageUrl == undefined ? 'quizzes' : pageUrl;
-
-            axios.get(pageUrl+'?page='+this.pagination.current,
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                // pagination  : {
+                //     from            : '',
+                //     to              : '',
+                //     first_page_url  : '',
+                //     last_page       : '',
+                //     last_page_url   : '',
+                //     next_page_url   :'',
+                //     prev_page_url   : '',
+                //     path            : '',
+                //     per_page        : 10,
+                //     total           : ''
+                // },
+                headers: [
+                    {
+                        text: 'Name',
+                        value: 'name',
                     },
-                    params :
-                        {
-                            isAdmin : 1,
-                            // status     : this.filter.status,
-                            // name       : this.filter.name
-                        },
+                    {
+                        text: 'Duration',
+                        value: 'duration',
+                    },
+                    {
+                        text: 'Total Marks',
+                        value: 'total_marks',
+                    },
+                    {
+                        text: 'Number of Questions',
+                        value: 'number_of_questions',
+                    },
+                    {
+                        text: 'Status',
+                        value: 'status',
+                    },
+                    {
+                        text: 'Actions',
+                        value: 'actions',
+                        sortable:false
+                    },
 
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.pagination.current = response.data.quiz_list.current_page;
-                        _that.pagination.total   = response.data.quiz_list.last_page;
-                        _that.quizList           = response.data.quiz_list.data;
-                        // _that.pagination = response.data.quiz_list;
-                        _that.isLoading  = false;
 
-                    }
-                    else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-                })
-        },
-
-        onPageChange() {
-            this.getQuizList();
-        },
-
-        checkPermission(permissionForCheck)
-        {
-            if((this.mappedPermission).includes(permissionForCheck) === true) {
-                return true;
-            } else {
-                return false;
+                ],
             }
         },
 
-        deleteQuiz()
-        {
-            let _that = this;
+        methods: {
+            removingRightSideWrapper()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
 
-            axios.delete('quizzes/delete',
-                {
-                    data:
-                        {
-                            id      : this.quiz_id
+                document.body.classList.remove('open-side-slider');
+                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            },
+            clearAllChecker()
+            {
+                this.isAddCheck    = false;
+                this.isDeleteCheck = false;
+                this.isEditCheck      = false;
+            },
+            getAddDataFromChild (status)
+            {
+
+                this.success_message = status;
+                this.getQuizList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            getEditDataFromChild (status)
+            {
+                this.success_message = status;
+                this.getQuizList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            clearFilter()
+            {
+                this.filter.status   = "";
+                this.filter.name     = "";
+                this.success_message = "";
+                this.error_message   = "";
+                this.getQuizList();
+            },
+            getQuizList(pageUrl)
+            {
+
+                let _that =this;
+
+                pageUrl = pageUrl == undefined ? 'quizzes' : pageUrl;
+
+                axios.get(pageUrl+'?page='+this.pagination.current,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-                    },
-                }).then(function (response) {
+                        params :
+                            {
+                                isAdmin : 1,
+                                // status     : this.filter.status,
+                                // name       : this.filter.name
+                            },
 
-                if (response.data.status_code == 200) {
-                    _that.getQuizList();
-                    _that.error_message   = '';
-                    _that.success_message = "Successfully deleted the Quiz";
-                    _that.removingRightSideWrapper();
-                    _that.setTimeoutElements();
-                }
-                else
-                {
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
-                }
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            console.log(response.data);
+                            _that.pagination.current = response.data.quiz_list.current_page;
+                            _that.pagination.total   = response.data.quiz_list.last_page;
+                            _that.quizList           = response.data.quiz_list.data;
+                            // _that.pagination = response.data.quiz_list;
+                            _that.isLoading  = false;
 
-            }).catch(function (error) {
-                console.log(error);
-            });
+                        }
+                        else{
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
+                    })
+            },
+
+            onPageChange() {
+                this.getQuizList();
+            },
+
+            checkPermission(permissionForCheck)
+            {
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
+            deleteQuiz()
+            {
+                let _that = this;
+
+                axios.delete('quizzes/delete',
+                    {
+                        data:
+                            {
+                                id      : this.quiz_id
+                            },
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+
+                    if (response.data.status_code == 200) {
+                        _that.getQuizList();
+                        _that.error_message   = '';
+                        _that.success_message = "Successfully deleted the Quiz";
+                        _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
+                    }
+                    else
+                    {
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+            },
+
+            setTimeoutElements()
+            {
+                //setTimeout(() => this.isLoading = false, 3000);
+                setTimeout(() => this.success_message = "", 3000);
+                setTimeout(() => this.error_message = "", 3000);
+            },
 
         },
 
-        setTimeoutElements()
+        created()
         {
-            //setTimeout(() => this.isLoading = false, 3000);
-            setTimeout(() => this.success_message = "", 3000);
-            setTimeout(() => this.error_message = "", 3000);
-        },
+            this.isLoading = true;
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+            this.getQuizList();
+        }
 
-    },
-
-    created()
-    {
-        this.isLoading = true;
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-        this.getQuizList();
     }
-
-}
 </script>
 
 <style scoped>
-.mhv-100 {
-    min-height: 50vh;
-}
+    .mhv-100 {
+        min-height: 50vh;
+    }
 </style>

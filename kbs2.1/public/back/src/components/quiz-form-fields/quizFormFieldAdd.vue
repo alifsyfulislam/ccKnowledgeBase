@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label for="quizFormFieldType">Field Type <span class="required">*</span></label>
                                 <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldData.quizfieldType" @change="checkAndValidateFieldType()">
-                                    <option value="" disabled>--Select A Type--</option>
+                                    <option value="" selected disabled>--Select A Type--</option>
                                     <option value="Text">Text</option>
                                     <option value="Email">Email</option>
                                     <option value="Password">Password</option>
@@ -119,8 +119,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-<!--                                <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext= true, validateAndNext()">Add More</button>-->
-                               <button class="btn common-gradient-btn ripple-btn px-50 text-right" @click=" isNext=false ,validateAndSubmit()">Save</button>
+                               <button class="btn common-gradient-btn ripple-btn px-50" @click=" isNext= true, validateAndNext()">Add More</button>
+                               <button class="btn common-gradient-btn ripple-btn px-50 float-right" @click=" isNext=false ,validateAndSubmit()">Save</button>
                             </div>
                         </div>
                     </div>
@@ -445,7 +445,25 @@
 
                         _that.error_message         = '';
                         _that.success_message       = "Quiz form field added successfully";
-                        _that.quizFormFieldData     = ''
+                        // _that.quizFormFieldData.     = '';
+
+                        _that.quizFormFieldData.quizformfieldID         =  '',
+                        _that.quizFormFieldData.quizlabelName           =  '',
+                        _that.quizFormFieldData.quizfieldName           =  '',
+                        _that.quizFormFieldData.quizfieldID             =  '',
+                        _that.quizFormFieldData.quizfieldClass          =  '',
+                        _that.quizFormFieldData.quizfieldType           =  '',
+                        _that.quizFormFieldData.quizfieldOptionValue    =  '',
+                        _that.quizFormFieldData.quizfieldDefaultValue   = '',
+                        _that.quizFormFieldData.quizfieldMaxValue       =  '',
+                        _that.quizFormFieldData.quizfieldSortValue      =  '',
+                        _that.quizFormFieldData.quizfieldRequired       =  1,
+
+                        _that.validation_error.visFieldLabelStatus      = false;
+                        _that.validation_error.isFieldNameStatus        = false;
+                        _that.validation_error.isFieldIDStatus          = false;
+                        _that.validation_error.isFieldClassStatus       = false;
+                        _that.validation_error.isFieldTypeStatus        = false;
 
                         if (_that.isNext == true){
                             _that.setTimeoutElements();

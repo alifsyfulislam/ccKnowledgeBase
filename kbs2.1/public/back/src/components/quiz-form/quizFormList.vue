@@ -123,7 +123,7 @@
                                     </figure>
                                     <p class="text-center"> Confirmation for Deleting Quiz Form</p>
                                     <div class="form-group d-flex justify-content-center align-items-center">
-                                        <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteQuizForm()"><i class="fas fa-trash"></i> Confirm</button>
+                                        <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteQuizForm()"><i class="fas fa-trash"></i> Confirm</button>
                                         <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                     </div>
                                 </div>

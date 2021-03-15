@@ -64,14 +64,14 @@
                                             <v-col class="customer-data-table-wrapper">
                                                 <v-data-table :headers="headers" :items="articleList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
                                                     <template v-slot:item.en_title="{item}">
-                                                       <span v-if="(item.en_title).length<30"> {{ item.en_title }}</span>
+                                                        <span v-if="(item.en_title).length<30"> {{ item.en_title }}</span>
                                                         <span v-else> {{ (item.en_title).substring(0,30)+"...." }}</span>
                                                     </template>
                                                     <template v-slot:item.author="{item}">
-                                                       {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
+                                                        {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
                                                     </template>
                                                     <template v-slot:item.status="{item}">
-                                                       <select class="form-control" v-model="item.status" @change="articleStatusRequest(item)">
+                                                        <select class="form-control" v-model="item.status" @change="articleStatusRequest(item)">
                                                             <option value="draft">Draft</option>
                                                             <option value="hide">Hide</option>
                                                             <option value="private">Private</option>
@@ -79,7 +79,7 @@
                                                         </select>
                                                     </template>
                                                     <template v-slot:item.actions="{item}">
-                                                       <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-secondary btn-xs m-1">
+                                                        <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                                             <i class="fas fa-eye text-white"></i>
                                                         </router-link>
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
@@ -101,7 +101,7 @@
                             </v-app>
                         </div>
                         <!-- Table Data End -->
-                        
+
                     </div>
                     <!-- Content Area End -->
                 </div>
@@ -140,7 +140,7 @@
                                 <p class="text-center"> Confirmation for Deleting Article</p>
 
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger rounded-pill ripple-btn px-30 mx-2" @click="deleteArticle()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteArticle()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -202,7 +202,7 @@
             </div>
         </div>
 
-<!--        change status modal-->
+        <!--        change status modal-->
         <div class="modal fade" id="alertModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -226,293 +226,293 @@
 </template>
 
 <script>
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
-import ArticleAdd from "@/components/article/articleAdd";
-import ArticleEdit from "@/components/article/articleEdit";
-import Loading from "@/components/loader/loading";
-import axios from "axios";
-import $ from "jquery";
+    import Header from "@/layouts/common/Header";
+    import Menu from "@/layouts/common/Menu";
+    import ArticleAdd from "@/components/article/articleAdd";
+    import ArticleEdit from "@/components/article/articleEdit";
+    import Loading from "@/components/loader/loading";
+    import axios from "axios";
+    import $ from "jquery";
 
 
-export default {
-    name: "articleList.vue",
+    export default {
+        name: "articleList.vue",
 
-    components: {
-        Header,
-        Menu,
-        ArticleEdit,
-        ArticleAdd,
-        Loading,
-    },
-    data() {
-        return {
-            isArticleStatus     : '',
-            isExportCheck       : false,
-            isLoading           : false,
-            isEditCheck         : false,
-            isAddCheck          : false,
-            isDeleteCheck       : false,
-            isSearchCheck       : false,
-            downloadUrl         : 'articles/export/',
-            user_permissions : '',
-            mappedPermission : '',
-            perPage             :2,
-            currentPage         :1,
-
-            article_id          :'',
-            search              :"",
-            pagination  :{
-                current         :1,
-                per_page        : 20,
-                total           : ''
-            },
-            headers: [
-                {
-                    text: 'ID',
-                    value: 'id',
-                },
-                {
-                    text: 'Title',
-                    value: 'en_title',
-                },
-                {
-                    text: 'Author',
-                    value: 'author',
-                },
-                {
-                    text: 'Category',
-                    value: 'category.name',
-                },
-                {
-                    text: 'Status',
-                    value: 'status',
-                    sortable: true
-                },
-                {
-                    text: 'tag',
-                    value: 'tag',
-                },
-                {
-                    text: 'Published Date',
-                    value: 'category.name',
-                    sortable: true
-                },
-                {
-                    text: 'Actions',
-                    value: 'actions',
-                    sortable: false
-                
-                },
-                
-                
-            ],
-
-            success_message : '',
-            error_message   : '',
-        }
-    },
-    methods: {
-        articleStatusRequest(selected){
-            $('#alertModal').modal('show');
-            localStorage.setItem('article_status', JSON.stringify(selected));
+        components: {
+            Header,
+            Menu,
+            ArticleEdit,
+            ArticleAdd,
+            Loading,
         },
-        changeArticleStatus(){
-            this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
-            // alert( this.isArticleStatus.id);
-            $('#alertModal').modal('toggle');
-            axios.post('change-article-status',
-                {
-                    id          : this.isArticleStatus.id,
-                    status      : this.isArticleStatus.status,
+        data() {
+            return {
+                isArticleStatus     : '',
+                isExportCheck       : false,
+                isLoading           : false,
+                isEditCheck         : false,
+                isAddCheck          : false,
+                isDeleteCheck       : false,
+                isSearchCheck       : false,
+                downloadUrl         : 'articles/export/',
+                user_permissions : '',
+                mappedPermission : '',
+                perPage             :2,
+                currentPage         :1,
+
+                article_id          :'',
+                search              :"",
+                pagination  :{
+                    current         :1,
+                    per_page        : 20,
+                    total           : ''
                 },
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    }
-                }).then(function (response) {
-                if (response.data.status_code === 200){
-                    // this.getArticleList();
-                    // this.success_message   = "Article status changed successfully!";
-                    localStorage.removeItem("article_status");
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        // acl permission
-        checkPermission(permissionForCheck)
-        {
-            if((this.mappedPermission).includes(permissionForCheck) === true) {
-                return true;
-            } else {
-                return false;
+                headers: [
+                    {
+                        text: 'ID',
+                        value: 'id',
+                    },
+                    {
+                        text: 'Title',
+                        value: 'en_title',
+                    },
+                    {
+                        text: 'Author',
+                        value: 'author',
+                    },
+                    {
+                        text: 'Category',
+                        value: 'category.name',
+                    },
+                    {
+                        text: 'Status',
+                        value: 'status',
+                        sortable: true
+                    },
+                    {
+                        text: 'tag',
+                        value: 'tag',
+                    },
+                    {
+                        text: 'Published Date',
+                        value: 'category.name',
+                        sortable: true
+                    },
+                    {
+                        text: 'Actions',
+                        value: 'actions',
+                        sortable: false
+
+                    },
+
+
+                ],
+
+                success_message : '',
+                error_message   : '',
             }
         },
-        // clear serach
-        clearFilter()
-        {
-            this.filter.category_id = "";
-            this.filter.status   = "";
-            this.filter.en_title = "";
-            this.filter.tag      = "";
-            this.success_message = "";
-            this.error_message   = "";
-            this.getArticleList();
-
-        },
-        // slider close
-        clearAllChecker()
-        {
-            this.isSearchCheck      = false;
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-        },
-        // after crud close
-        removingRightSideWrapper()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-            this.isSearchCheck      = false;
-
-            document.body.classList.remove('open-side-slider');
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-        },
-        //from child
-        getAddDataFromChild (status)
-        {
-            this.getArticleList();
-            this.success_message = status;
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-        getEditDataFromChild (status)
-        {
-            this.getArticleList();
-            this.success_message = status;
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-        //category list
-        getCategoryList()
-        {
-            let _that =this;
-            axios.get('categories',
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+        methods: {
+            articleStatusRequest(selected){
+                $('#alertModal').modal('show');
+                localStorage.setItem('article_status', JSON.stringify(selected));
+            },
+            changeArticleStatus(){
+                this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
+                // alert( this.isArticleStatus.id);
+                $('#alertModal').modal('toggle');
+                axios.post('change-article-status',
+                    {
+                        id          : this.isArticleStatus.id,
+                        status      : this.isArticleStatus.status,
                     },
-                    params :
-                        {
-                            isAdmin     : 1,
-                            without_pagination : 1
-                        },
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        //console.log(response.data);
-                        _that.categoryList = response.data.category_list;
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if (response.data.status_code === 200){
+                        // this.getArticleList();
+                        // this.success_message   = "Article status changed successfully!";
+                        localStorage.removeItem("article_status");
                     }
-                    else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-                })
-        },
-        getArticleList(pageUrl)
-        {
-            let _that = this;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            // acl permission
+            checkPermission(permissionForCheck)
+            {
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            // clear serach
+            clearFilter()
+            {
+                this.filter.category_id = "";
+                this.filter.status   = "";
+                this.filter.en_title = "";
+                this.filter.tag      = "";
+                this.success_message = "";
+                this.error_message   = "";
+                this.getArticleList();
 
-            pageUrl = pageUrl == undefined ? 'articles' : pageUrl;
+            },
+            // slider close
+            clearAllChecker()
+            {
+                this.isSearchCheck      = false;
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+            },
+            // after crud close
+            removingRightSideWrapper()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+                this.isSearchCheck      = false;
 
-            axios.get(pageUrl+'?page='+this.pagination.current,
-                {
-                    headers: {
-                        'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
-                            isAdmin         : 1
-                            // category_id     : this.filter.category_id,
-                            // status          : this.filter.status,
-                            // en_title        : this.filter.en_title,
-                            // tag             : this.filter.tag,
+                document.body.classList.remove('open-side-slider');
+                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            },
+            //from child
+            getAddDataFromChild (status)
+            {
+                this.getArticleList();
+                this.success_message = status;
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            getEditDataFromChild (status)
+            {
+                this.getArticleList();
+                this.success_message = status;
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            //category list
+            getCategoryList()
+            {
+                let _that =this;
+                axios.get('categories',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.pagination.current = response.data.article_list.current_page;
-                        _that.pagination.total = response.data.article_list.last_page;
-                        _that.articleList       = response.data.article_list.data;
-                        _that.isLoading         = false;
-                        _that.isExportCheck     = true;
+                        params :
+                            {
+                                isAdmin     : 1,
+                                without_pagination : 1
+                            },
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            //console.log(response.data);
+                            _that.categoryList = response.data.category_list;
+                        }
+                        else{
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
+                    })
+            },
+            getArticleList(pageUrl)
+            {
+                let _that = this;
+
+                pageUrl = pageUrl == undefined ? 'articles' : pageUrl;
+
+                axios.get(pageUrl+'?page='+this.pagination.current,
+                    {
+                        headers: {
+                            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params :
+                            {
+                                isAdmin         : 1
+                                // category_id     : this.filter.category_id,
+                                // status          : this.filter.status,
+                                // en_title        : this.filter.en_title,
+                                // tag             : this.filter.tag,
+                            },
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            console.log(response.data);
+                            _that.pagination.current = response.data.article_list.current_page;
+                            _that.pagination.total = response.data.article_list.last_page;
+                            _that.articleList       = response.data.article_list.data;
+                            _that.isLoading         = false;
+                            _that.isExportCheck     = true;
+                            _that.setTimeoutElements();
+
+                        }
+                        else{
+                            _that.success_message   = "";
+                            _that.error_message     = response.data.error;
+                        }
+                    })
+            },
+            onPageChange() {
+                this.getArticleList();
+            },
+            setTimeoutElements()
+            {
+                // setTimeout(() => this.isLoading = false, 3e3);
+                setTimeout(() => this.success_message = "", 2e3);
+                setTimeout(() => this.error_message = "", 2e3);
+            },
+            deleteArticle()
+            {
+                let _that = this;
+
+                axios.delete('articles/delete',
+                    {
+                        data    : {
+                            id              : _that.article_id
+                        },
+                        headers : {
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+                    if (response.data.status_code == 200)
+                    {
+                        _that.getArticleList();
+                        _that.removingRightSideWrapper();
+                        _that.error_message         = '';
+                        _that.success_message       = "Article Deleted Successfully";
                         _that.setTimeoutElements();
 
                     }
-                    else{
-                        _that.success_message   = "";
-                        _that.error_message     = response.data.error;
+                    else
+                    {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
                     }
-                })
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
         },
-        onPageChange() {
+        created() {
+            this.isLoading = true;
             this.getArticleList();
-        },
-        setTimeoutElements()
-        {
-            // setTimeout(() => this.isLoading = false, 3e3);
-            setTimeout(() => this.success_message = "", 2e3);
-            setTimeout(() => this.error_message = "", 2e3);
-        },
-        deleteArticle()
-        {
-            let _that = this;
-
-            axios.delete('articles/delete',
-                {
-                    data    : {
-                            id              : _that.article_id
-                    },
-                    headers : {
-                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-                    },
-                }).then(function (response) {
-                if (response.data.status_code == 200)
-                {
-                    _that.getArticleList();
-                    _that.removingRightSideWrapper();
-                    _that.error_message         = '';
-                    _that.success_message       = "Article Deleted Successfully";
-                    _that.setTimeoutElements();
-
-                }
-                else
-                {
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.error;
-                }
-
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-    },
-    created() {
-        this.isLoading = true;
-        this.getArticleList();
-        this.getCategoryList();
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            this.getCategoryList();
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        }
     }
-}
 </script>
 
 <style scoped>
-.mhv-100 {
-    min-height: 50vh;
-}
+    .mhv-100 {
+        min-height: 50vh;
+    }
 </style>
