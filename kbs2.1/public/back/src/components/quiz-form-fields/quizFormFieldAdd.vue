@@ -328,11 +328,11 @@
                         }
 
                     }
-                    else if (selected_data.length >100){
+                    else if (selected_data.length >200){
                         $(selected_id).css({
                             'border-color': '#FF7B88',
                         });
-                        $(selected_error_id).html( selected_name+" should contain maximum 100 character");
+                        $(selected_error_id).html( selected_name+" should contain maximum 200 character");
 
                         if (selected_name === "*field name"){
                             this.validation_error.isFieldNameStatus = false;

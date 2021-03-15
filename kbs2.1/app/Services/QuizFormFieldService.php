@@ -87,10 +87,10 @@ class QuizFormFieldService
         $validator = Validator::make($request->all(),[
 
             'quiz_form_id' => 'required',
-            'f_label'      => 'required|min: 3|max : 100',
-            'f_name'       => 'required|min: 3|max : 100',
-            'f_id'         => 'required|min: 3|max : 100',
-            'f_class'      => 'required|min: 3|max : 100',
+            'f_label'      => 'required|min: 3|max : 200',
+            'f_name'       => 'required|min: 3|max : 200',
+            'f_id'         => 'required|min: 3|max : 200',
+            'f_class'      => 'required|min: 3|max : 200',
             'f_type'       => 'required',
 
         ]);
@@ -127,10 +127,10 @@ class QuizFormFieldService
         $validator = Validator::make($request->all(),[
 
             'quiz_form_id' => 'required',
-            'f_label'      => 'required|min: 3|max : 100',
-            'f_name'       => 'required|min: 3|max : 100',
-            'f_id'         => 'required|min: 3|max : 100',
-            'f_class'      => 'required|min: 3|max : 100',
+            'f_label'      => 'required|min: 3|max : 200',
+            'f_name'       => 'required|min: 3|max : 200',
+            'f_id'         => 'required|min: 3|max : 200',
+            'f_class'      => 'required|min: 3|max : 200',
             'f_type'       => 'required',
 
         ]);
