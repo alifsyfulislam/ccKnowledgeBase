@@ -65,7 +65,7 @@
                     <v-row>
                       <v-col class="customer-data-table-wrapper">
                           <v-data-table :headers="headers" :items="faqList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                            <template v-slot:item.user="{item}">
+                            <template v-slot:item.user.first_name="{item}">
                                   {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
                               </template>
                               <template v-slot:item.category="{item}">
@@ -310,8 +310,8 @@ export default {
               value: 'en_title',
           },
           {
-              text: 'User',
-              value: 'user',
+              text: 'Author',
+              value: 'user.first_name',
           },
           {
               text: 'Category',

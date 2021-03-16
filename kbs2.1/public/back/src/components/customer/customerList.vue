@@ -196,9 +196,9 @@
                 downloadUrl         : 'users/export/',
                 user_permissions    : '',
                 mappedPermission    : '',
-                search              :"",
+                search              : "",
                 pagination  :{
-                    current         :1,
+                    current         : 1,
                     per_page        : 20,
                     total           : ''
                 },
@@ -213,7 +213,7 @@
                     },
                     {
                         text: 'Roles',
-                        value: 'roles',
+                        value: 'roles[0].name',
                     },
                     {
                         text: 'First Name',

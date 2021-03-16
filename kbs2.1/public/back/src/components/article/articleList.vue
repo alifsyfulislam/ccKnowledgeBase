@@ -67,7 +67,7 @@
                                                         <span v-if="(item.en_title).length<30"> {{ item.en_title }}</span>
                                                         <span v-else> {{ (item.en_title).substring(0,30)+"...." }}</span>
                                                     </template>
-                                                    <template v-slot:item.author="{item}">
+                                                    <template v-slot:item.user.first_name="{item}">
                                                         {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
                                                     </template>
                                                     <template v-slot:item.status="{item}">
@@ -278,7 +278,7 @@
                     },
                     {
                         text: 'Author',
-                        value: 'author',
+                        value: 'user.first_name',
                     },
                     {
                         text: 'Category',
