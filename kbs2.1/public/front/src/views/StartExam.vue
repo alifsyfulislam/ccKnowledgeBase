@@ -62,7 +62,7 @@
 
                                     <div v-if="a_form_field.f_type === 'Checkbox'">
                                         <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
-                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChangeCheck(a_val)"/>
                                             <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
                                         </div>
                                     </div>
@@ -125,6 +125,8 @@
                 resultArray: [],
                 showResult:'',
                 passMark:'',
+                checkBoxDataArr : [],
+                strToArr : '',
 
                 pagination:{
                     from: '',
@@ -147,13 +149,22 @@
                 this.fromData = this.fromData.replace("\n", "");
 
             },
-            onChange(val) {
+            onChange(val){
                 let _that = this;
                 _that.fromData = val;
+            },
+            onChangeCheck(val) {
+                let _that = this;
+                _that.checkBoxDataArr.push(val)
+                // console.log(_that.checkBoxDataArr);
+                // console.log(_that.strToArr);
+                _that.fromData = _that.checkBoxDataArr.join();
             },
             checkNextData(){
                 let _that = this;
                 _that.allFromData.push(_that.fromData);
+                _that.checkBoxDataArr = [];
+                _that.strToArr = [];
                 if (_that.isRepeat == false ){
                     _that.finalizeData();
                 }
@@ -163,6 +174,7 @@
             },
             finalizeData(){
                 let _that = this;
+                _that.checkBoxDataArr = [];
                 _that.isFinish = true;
                 clearInterval(_that.clearCounter);
                 if (_that.isRepeat==false){
@@ -177,14 +189,14 @@
                     }
                     _that.showResult = score;
                     _that.questionArray = [];
-                    console.log(_that.questionArray);
+                    // console.log(_that.questionArray);
                 }
             },
 
             getQuizFormField(pageUrl) {
                 let _that = this;
                 if (_that.quizInfo.number_of_questions == 1){
-                    console.log("hi");
+                    // console.log("hi");
                     pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
                     axios.get(pageUrl)
                         .then(function (response) {
@@ -198,11 +210,12 @@
                                 if (val.f_option_value !=null && val.f_option_value.search(',')){
                                     let str = val.f_option_value;
                                     str = str.split(",");
+                                    // _that.strToArr = Object.values(str);
 
-                                    console.log("before"+ str);
+                                    // console.log("before"+ str);
                                     str = str.sort(() => Math.random() - 0.5);
 
-                                    console.log("after" + str);
+                                    // console.log("after" + str);
 
                                     _that.selectBoxOption = Object.assign({}, str);
                                 }
@@ -236,7 +249,7 @@
                                 _that.pagination  = response.data.quiz_form_field_list;
 
                                 _that.questionArray.push(response.data.quiz_form_field_list.data['0'].id)
-                                console.log(_that.questionArray)
+                                // console.log(_that.questionArray)
 
                                 _that.quizFormFieldInfo.forEach(val =>{
                                     _that.resultArray.push(val.f_default_value);
@@ -244,10 +257,11 @@
                                         let str = val.f_option_value;
                                         str = str.split(",");
 
-                                        console.log("before"+ str);
+                                        // console.log("before"+ str);
                                         str = str.sort(() => Math.random() - 0.5);
+                                        // _that.strToArr = Object.values(str);
 
-                                        console.log("after" + str);
+                                        // console.log("after" + str);
 
                                         _that.selectBoxOption = Object.assign({}, str);
                                     }
@@ -293,11 +307,11 @@
             detectTab(){
                 $(window).on("blur",function () {
                     //do something
-                    console.log("You left this tab");
+                    // console.log("You left this tab");
                     if (this.isFinish==true){
                         window.location.reload();
                     } else{
-                        console.log("you may proceed");
+                        // console.log("you may proceed");
                     }
 
                 })
