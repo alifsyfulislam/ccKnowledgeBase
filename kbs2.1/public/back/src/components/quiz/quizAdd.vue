@@ -50,7 +50,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
-                            <input type="number" class="form-control" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
+                            <input type="number" class="form-control" :max="quizTotalQuestion" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
                             <span id="numberOfQuestionsError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -101,6 +101,7 @@ export default {
             token           : '',
             articleList     : '',
             quizformList   : '',
+            quizTotalQuestion : '',
 
             quizData        :{
                 name          : '',
@@ -323,31 +324,31 @@ export default {
 
         },
 
-        getArticleList()
-        {
-            let _that =this;
-
-            axios.get('articles',
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
-                            isAdmin : 1
-                        },
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.articleList = response.data.article_list.data;
-                    }
-                    else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-                })
-        },
+        // getArticleList()
+        // {
+        //     let _that =this;
+        //
+        //     axios.get('articles',
+        //         {
+        //             headers: {
+        //                 'Authorization': 'Bearer '+localStorage.getItem('authToken')
+        //             },
+        //             params :
+        //                 {
+        //                     isAdmin : 1
+        //                 },
+        //         })
+        //         .then(function (response) {
+        //             if(response.data.status_code === 200){
+        //                 console.log(response.data);
+        //                 _that.articleList = response.data.article_list.data;
+        //             }
+        //             else{
+        //                 _that.success_message = "";
+        //                 _that.error_message   = response.data.error;
+        //             }
+        //         })
+        // },
 
         getQuizFormList(){
             let _that =this;
@@ -360,8 +361,11 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        console.log(response.data.quiz_form_list);
+                        // console.log(response.data.quiz_form_list);
                         _that.quizformList = response.data.quiz_form_list.data;
+                        _that.quizTotalQuestion = response.data.quiz_form_list.total;
+                        console.log(_that.quizTotalQuestion);
+
                     }
                     else{
                         _that.success_message = "";
@@ -373,7 +377,7 @@ export default {
     },
     created() {
       /*  this.isAdd = this.isAddCheck;*/
-        this.getArticleList();
+        // this.getArticleList();
         this.getQuizFormList();
     }
 }
