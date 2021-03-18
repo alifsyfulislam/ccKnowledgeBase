@@ -40,7 +40,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="quizFormFieldOptionDefaultValue">Field Answer <span class="required">*</span></label>
-                                <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldData.quizfieldDefaultValue"  class="form-control" placeholder="Enter Field Option Default Value">
+                                <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldData.quizfieldDefaultValue"  class="form-control" placeholder="Enter Field Option Default Value" @keyup="checkQuizDefaultValue(quizFormFieldData.quizfieldDefaultValue)">
+                                <span id="fieldOptionDefaultValue" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -63,7 +64,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="quizFormFieldID">Field ID</label>
-                                <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID" @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldID, '#quizFormFieldID', '#fieldIDError', '*field ID')">
+<!--                                @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldID, '#quizFormFieldID', '#fieldIDError', '*field ID')"-->
+                                <input id="quizFormFieldID" type="text" v-model="quizFormFieldData.quizfieldID"  class="form-control" placeholder="Enter Field ID">
                                 <span id="fieldIDError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -71,7 +73,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="quizFormFieldClass">Field Class</label>
-                                <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class" @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldClass, '#quizFormFieldClass', '#fieldClassError', '*field class')">
+<!--                                @keyup="checkAndChangeValidation(quizFormFieldData.quizfieldClass, '#quizFormFieldClass', '#fieldClassError', '*field class')"-->
+                                <input id="quizFormFieldClass" type="text" v-model="quizFormFieldData.quizfieldClass"  class="form-control" placeholder="Enter Field Class">
                                 <span id="fieldClassError" class="text-danger small"></span>
                             </div>
                         </div>
@@ -163,8 +166,6 @@
 <script>
     import axios from 'axios'
     import $ from "jquery";
-    // import $ from 'jquery'
-
 
     export default {
         name: "quizFormFieldAdd.vue",
@@ -205,14 +206,32 @@
                 validation_error:{
                     isFieldLabelStatus      : false,
                     isFieldNameStatus       : false,
-                    isFieldIDStatus         : false,
-                    isFieldClassStatus      : false,
+                    // isFieldIDStatus         : false,
+                    // isFieldClassStatus      : false,
+                    isFieldDefaultValue : false,
                     isFieldTypeStatus       : false,
                 },
             }
         },
 
         methods: {
+            checkQuizDefaultValue(val){
+                if (val.length > 0) {
+                    $('#quizFormFieldOptionDefaultValue').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#fieldOptionDefaultValue').html("");
+                    this.validation_error.isFieldDefaultValue =  true;
+
+                } else{
+                    $('#quizFormFieldOptionDefaultValue').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#fieldOptionDefaultValue').html("*field default is required");
+
+                    this.validation_error.isFieldDefaultValue =  false;
+                }
+            },
             // toggleIDClassField(){
             //     this.isAutoData = !this.isAutoData
             // },
@@ -245,22 +264,29 @@
                     });
                     $('#fieldNameError').html("*field name is required");
                 }
-
-                if (!this.quizFormFieldData.quizfieldID){
-
-                    $('#quizFormFieldID').css({
+                if (!this.quizFormFieldData.quizfieldDefaultValue){
+                    $('#quizFormFieldOptionDefaultValue').css({
                         'border-color': '#FF7B88',
                     });
-                    $('#fieldIDError').html("*field ID is required");
+
+                    $('#fieldOptionDefaultValue').html("*field name is required");
                 }
 
-                if (!this.quizFormFieldData.quizfieldClass){
-
-                    $('#quizFormFieldClass').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#fieldClassError').html("*field class is required");
-                }
+                // if (!this.quizFormFieldData.quizfieldID){
+                //
+                //     $('#quizFormFieldID').css({
+                //         'border-color': '#FF7B88',
+                //     });
+                //     $('#fieldIDError').html("*field ID is required");
+                // }
+                //
+                // if (!this.quizFormFieldData.quizfieldClass){
+                //
+                //     $('#quizFormFieldClass').css({
+                //         'border-color': '#FF7B88',
+                //     });
+                //     $('#fieldClassError').html("*field class is required");
+                // }
                 if (!this.quizFormFieldData.quizfieldType){
 
                     $('#quizFormFieldType').css({
@@ -268,10 +294,17 @@
                     });
                     $('#fieldTypeError').html("*field type is required");
                 }
+                // if (this.validation_error.isFieldLabelStatus === true &&
+                //     this.validation_error.isFieldNameStatus === true &&
+                //     this.validation_error.isFieldIDStatus === true &&
+                //     this.validation_error.isFieldClassStatus === true &&
+                //     this.validation_error.isFieldTypeStatus === true){
+                //     this.quizformfieldStore();
+                //     // store to an array
+                // }
                 if (this.validation_error.isFieldLabelStatus === true &&
                     this.validation_error.isFieldNameStatus === true &&
-                    this.validation_error.isFieldIDStatus === true &&
-                    this.validation_error.isFieldClassStatus === true &&
+                    this.validation_error.isFieldDefaultValue === true &&
                     this.validation_error.isFieldTypeStatus === true){
                     this.quizformfieldStore();
                     // store to an array
@@ -293,20 +326,27 @@
                     $('#fieldNameError').html("*field name is required");
                 }
 
-                if (!this.quizFormFieldData.quizfieldID){
-
-                    $('#quizFormFieldID').css({
+                // if (!this.quizFormFieldData.quizfieldID){
+                //
+                //     $('#quizFormFieldID').css({
+                //         'border-color': '#FF7B88',
+                //     });
+                //     $('#fieldIDError').html("*field ID is required");
+                // }
+                //
+                // if (!this.quizFormFieldData.quizfieldClass){
+                //
+                //     $('#quizFormFieldClass').css({
+                //         'border-color': '#FF7B88',
+                //     });
+                //     $('#fieldClassError').html("*field class is required");
+                // }
+                if (!this.quizFormFieldData.quizfieldDefaultValue){
+                    $('#quizFormFieldOptionDefaultValue').css({
                         'border-color': '#FF7B88',
                     });
-                    $('#fieldIDError').html("*field ID is required");
-                }
 
-                if (!this.quizFormFieldData.quizfieldClass){
-
-                    $('#quizFormFieldClass').css({
-                        'border-color': '#FF7B88',
-                    });
-                    $('#fieldClassError').html("*field class is required");
+                    $('#fieldOptionDefaultValue').html("*field name is required");
                 }
                 if (!this.quizFormFieldData.quizfieldType){
 
@@ -315,10 +355,16 @@
                     });
                     $('#fieldTypeError').html("*field type is required");
                 }
+                // if (this.validation_error.isFieldLabelStatus === true &&
+                //     this.validation_error.isFieldNameStatus === true &&
+                //     this.validation_error.isFieldIDStatus === true &&
+                //     this.validation_error.isFieldClassStatus === true &&
+                //     this.validation_error.isFieldTypeStatus === true){
+                //     this.quizformfieldStore();
+                // }
                 if (this.validation_error.isFieldLabelStatus === true &&
                     this.validation_error.isFieldNameStatus === true &&
-                    this.validation_error.isFieldIDStatus === true &&
-                    this.validation_error.isFieldClassStatus === true &&
+                    this.validation_error.isFieldDefaultValue === true &&
                     this.validation_error.isFieldTypeStatus === true){
                     this.quizformfieldStore();
                 }
@@ -356,11 +402,12 @@
                             this.validation_error.isFieldNameStatus = false;
                         } else if(selected_name === "*field label"){
                             this.validation_error.isFieldLabelStatus = false;
-                        }else if(selected_name === "*field ID"){
-                            this.validation_error.isFieldIDStatus = false;
-                        }else if(selected_name === "*field class"){
-                            this.validation_error.isFieldClassStatus = false;
                         }
+                        // else if(selected_name === "*field ID"){
+                        //     this.validation_error.isFieldIDStatus = false;
+                        // }else if(selected_name === "*field class"){
+                        //     this.validation_error.isFieldClassStatus = false;
+                        // }
 
                     }
                     else if (selected_data.length >200){
@@ -371,17 +418,14 @@
 
                         if (selected_name === "*field name"){
                             this.validation_error.isFieldNameStatus = false;
-                            // parallel
-                            this.validation_error.isFieldIDStatus = false;
-                            this.validation_error.isFieldClassStatus = false;
-
                         }else if(selected_name === "*field label"){
                             this.validation_error.isFieldLabelStatus = false;
-                        }else if(selected_name === "*field ID"){
-                            this.validation_error.isFieldIDStatus = false;
-                        }else if(selected_name === "*field class"){
-                            this.validation_error.isFieldClassStatus = false;
                         }
+                        // else if(selected_name === "*field ID"){
+                        //     this.validation_error.isFieldIDStatus = false;
+                        // }else if(selected_name === "*field class"){
+                        //     this.validation_error.isFieldClassStatus = false;
+                        // }
                     }else {
                         $(selected_id).css({
                             'border-color': '#ced4da',
@@ -390,17 +434,14 @@
 
                         if (selected_name === "*field name" ){
                             this.validation_error.isFieldNameStatus = true;
-                            // parallel
-                            this.validation_error.isFieldIDStatus = true;
-                            this.validation_error.isFieldClassStatus = true;
-
                         }else if(selected_name === "*field label"){
                             this.validation_error.isFieldLabelStatus = true;
-                        }else if(selected_name === "*field ID"){
-                            this.validation_error.isFieldIDStatus = true;
-                        }else if(selected_name === "*field class"){
-                            this.validation_error.isFieldClassStatus = true;
                         }
+                        // else if(selected_name === "*field ID"){
+                        //     this.validation_error.isFieldIDStatus = true;
+                        // }else if(selected_name === "*field class"){
+                        //     this.validation_error.isFieldClassStatus = true;
+                        // }
                     }
 
                 } else{
@@ -413,11 +454,12 @@
                         this.validation_error.isFieldNameStatus = false;
                     } else if(selected_name === "*field label"){
                         this.validation_error.isFieldLabelStatus = false;
-                    }else if(selected_name === "*field ID"){
-                        this.validation_error.isFieldIDStatus = false;
-                    }else if(selected_name === "*field class"){
-                        this.validation_error.isFieldClassStatus = false;
                     }
+                    // else if(selected_name === "*field ID"){
+                    //     this.validation_error.isFieldIDStatus = false;
+                    // }else if(selected_name === "*field class"){
+                    //     this.validation_error.isFieldClassStatus = false;
+                    // }
                 }
             },
 
@@ -425,14 +467,16 @@
             {
                 $('#fieldLabelError').html("");
                 $('#fieldNameError').html("");
-                $('#fieldIDError').html("");
-                $('#fieldClassError').html("");
+                // $('#fieldIDError').html("");
+                // $('#fieldClassError').html("");
+                $('#fieldOptionDefaultValue').html("");
                 $('#fieldTypeError').html("");
 
                 $('#quizFormFieldLabel').css({'border-color': '#ced4da'});
                 $('#quizFormFieldName').css({'border-color': '#ced4da'});
-                $('#quizFormFieldID').css({'border-color': '#ced4da'});
-                $('#quizFormFieldClass').css({'border-color': '#ced4da'});
+                // $('#quizFormFieldID').css({'border-color': '#ced4da'});
+                // $('#quizFormFieldClass').css({'border-color': '#ced4da'});
+                $('#quizFormFieldOptionDefaultValue').css({'border-color': '#ced4da'});
                 $('#quizFormFieldType').css({'border-color': '#ced4da'});
 
                 errors.forEach(val=>{
@@ -445,15 +489,22 @@
                         $('#fieldNameError').html(val)
                         $('#quizFormFieldName').css({'border-color': '#FF7B88'});
 
-                    }else if(val.includes("f id") === true){
-                        $('#fieldIDError').html(val)
-                        $('#quizFormFieldID').css({'border-color': '#FF7B88'});
-
-                    }else if(val.includes("f class") === true){
-                        $('#fieldClassError').html(val)
-                        $('#quizFormFieldClass').css({'border-color': '#FF7B88'});
-
-                    }else if(val.includes("f type") === true){
+                    }
+                    // else if(val.includes("f id") === true){
+                    //     $('#fieldIDError').html(val)
+                    //     $('#quizFormFieldID').css({'border-color': '#FF7B88'});
+                    //
+                    // }
+                    // else if(val.includes("f class") === true){
+                    //     $('#fieldClassError').html(val)
+                    //     $('#quizFormFieldClass').css({'border-color': '#FF7B88'});
+                    //
+                    // }
+                    else if(val.includes("f default value") === true){
+                        $('#fieldOptionDefaultValue').html(val)
+                        $('#quizFormFieldOptionDefaultValue').css({'border-color': '#FF7B88'})
+                    }
+                    else if(val.includes("f type") === true){
                         $('#fieldTypeError').html(val)
                         $('#quizFormFieldType').css({'border-color': '#FF7B88'});
                     }
@@ -504,8 +555,8 @@
 
                         _that.validation_error.visFieldLabelStatus      = false;
                         _that.validation_error.isFieldNameStatus        = false;
-                        _that.validation_error.isFieldIDStatus          = false;
-                        _that.validation_error.isFieldClassStatus       = false;
+                        // _that.validation_error.isFieldIDStatus          = false;
+                        // _that.validation_error.isFieldClassStatus       = false;
                         _that.validation_error.isFieldTypeStatus        = false;
 
                         if (_that.isNext == true){
