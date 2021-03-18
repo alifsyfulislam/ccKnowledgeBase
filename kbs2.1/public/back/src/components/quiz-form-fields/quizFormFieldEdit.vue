@@ -15,7 +15,7 @@
                     </div>
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="quizFormFieldLabel">Field Label <span class="required">*</span></label>
                             <input id="quizFormFieldLabel" type="text" v-model="quizFormFieldDetails.f_label" class="form-control" placeholder="Enter Label Name" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_label, '#quizFormFieldLabel', '#fieldLabelError', '*field label')">
@@ -23,32 +23,46 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="quizFormFieldOptionValue">Field Option Value</label>
+                            <input id="quizFormFieldOptionValue" type="text" v-model="quizFormFieldDetails.f_option_value"  class="form-control" placeholder="Enter Field Option Value">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="quizFormFieldOptionDefaultValue">Field Answer <span class="required">*</span></label>
+                            <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldDetails.f_default_value"  class="form-control" placeholder="Enter Field Option Default Value">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="quizFormFieldName">Field Name <span class="required">*</span></label>
-                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldDetails.f_name" class="form-control" placeholder="Enter Field Name" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_name, '#quizFormFieldName', '#fieldNameError', '*field name')">
+                            <input id="quizFormFieldName" type="text" v-model="quizFormFieldDetails.f_name" class="form-control" placeholder="Enter Field Name" @keyup="giveIdClass(quizFormFieldDetails.f_name),checkAndChangeValidation(quizFormFieldDetails.f_name, '#quizFormFieldName', '#fieldNameError', '*field name')" @change="giveIdClass(quizFormFieldDetails.f_name)">
                             <span id="fieldNameError" class="text-danger small"></span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="quizFormFieldID">Field ID <span class="required">*</span></label>
+                            <label for="quizFormFieldID">Field ID</label>
                             <input id="quizFormFieldID" type="text" v-model="quizFormFieldDetails.f_id"  class="form-control" placeholder="Enter Field ID" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_id, '#quizFormFieldID', '#fieldIDError', '*field ID')">
                             <span id="fieldIDError" class="text-danger small"></span>
                         </div>
                     </div>
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="quizFormFieldClass">Field Class <span class="required">*</span></label>
+                            <label for="quizFormFieldClass">Field Class</label>
                             <input id="quizFormFieldClass" type="text" v-model="quizFormFieldDetails.f_class"  class="form-control" placeholder="Enter Field Class" @keyup="checkAndChangeValidation(quizFormFieldDetails.f_class, '#quizFormFieldClass', '#fieldClassError', '*field class')">
                             <span id="fieldClassError" class="text-danger small"></span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="quizFormFieldType">Field Type <span class="required">*</span></label>
                             <select id="quizFormFieldType" class="form-control" v-model="quizFormFieldDetails.f_type">
@@ -67,36 +81,36 @@
                     </div>
 
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="quizFormFieldOptionValue">Field Option Value</label>
-                            <input id="quizFormFieldOptionValue" type="text" v-model="quizFormFieldDetails.f_option_value"  class="form-control" placeholder="Enter Field Option Value">
-                        </div>
-                    </div>
+<!--                    <div class="col-md-4">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="quizFormFieldOptionValue">Field Option Value</label>-->
+<!--                            <input id="quizFormFieldOptionValue" type="text" v-model="quizFormFieldDetails.f_option_value"  class="form-control" placeholder="Enter Field Option Value">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="quizFormFieldOptionDefaultValue">Question Answer</label>
-                            <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldDetails.f_default_value"  class="form-control" placeholder="Enter Field Option Default Value">
-                        </div>
-                    </div>
+<!--                    <div class="col-md-4">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="quizFormFieldOptionDefaultValue">Question Answer <span class="required">*</span></label>-->
+<!--                            <input id="quizFormFieldOptionDefaultValue" type="text" v-model="quizFormFieldDetails.f_default_value"  class="form-control" placeholder="Enter Field Option Default Value">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="quizFormFieldMaxValue">Field Max Value</label>
                             <input id="quizFormFieldMaxValue" type="number" v-model="quizFormFieldDetails.f_max_value"  class="form-control" placeholder="Enter Max Number">
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="quizFormFieldSortValue">Field Sort Value</label>
                             <input id="quizFormFieldSortValue" type="number" v-model="quizFormFieldDetails.f_sort_order"  class="form-control" placeholder="Enter Sort Number">
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="quizFormFieldRequired">Field Required <span class="required">*</span></label>
 
@@ -108,7 +122,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-group text-left">
                             <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
                         </div>
@@ -156,6 +170,14 @@
         },
 
         methods: {
+            giveIdClass(val){
+                console.log(val);
+                val = val.replace(/[\W_]/g, "_");
+                val = val.replace(" ","_");
+                this.quizFormFieldDetails.f_name = val;
+                this.quizFormFieldDetails.f_id = val;
+                this.quizFormFieldDetails.f_class = val;
+            },
             checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
             {
                 if (selected_data.length >0) {
@@ -184,6 +206,10 @@
 
                         if (selected_name === "*field name"){
                             this.validation_error.isFieldNameStatus = false;
+                            // parallel
+                            this.validation_error.isFieldIDStatus = false;
+                            this.validation_error.isFieldClassStatus = false;
+
                         }else if(selected_name === "*field label"){
                             this.validation_error.isFieldLabelStatus = false;
                         }else if(selected_name === "*field ID"){
@@ -199,6 +225,10 @@
 
                         if (selected_name === "*field name" ){
                             this.validation_error.isFieldNameStatus = true;
+                            // parallel
+                            this.validation_error.isFieldIDStatus = true;
+                            this.validation_error.isFieldClassStatus = true;
+
                         }else if(selected_name === "*field label"){
                             this.validation_error.isFieldLabelStatus = true;
                         }else if(selected_name === "*field ID"){
