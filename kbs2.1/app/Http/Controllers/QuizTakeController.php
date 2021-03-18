@@ -24,6 +24,17 @@ class QuizTakeController extends Controller
 
     }
 
+    public function totalCount($id){
+
+        $total_quiz_count = count(QuizFormField::where('quiz_form_id', $id)->get());
+
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'total_quiz_count' => $total_quiz_count
+        ]);
+    }
+
 
 
 }

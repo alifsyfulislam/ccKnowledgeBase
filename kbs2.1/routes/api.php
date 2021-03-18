@@ -97,6 +97,8 @@ Route::middleware('auth:api')->group(function(){
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 
+    Route::get('quiz-form/quiz-field-list/{id}',[QuizTakeController::class, 'totalCount']);
+
     Route::post('logout', [UserController::class, 'logout']);
 
 });

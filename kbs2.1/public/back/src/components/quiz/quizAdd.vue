@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label>Select Quiz Form</label>
 
-                            <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType()" >
+                            <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType(), checkTotalQuestions(quizData.quiz_form_id)" >
                                 <option value="" disabled>Select A Quiz Form</option>
                                 <option v-for="a_quiz_form in quizformList" :value="a_quiz_form.id" :key="a_quiz_form.id">
                                     {{ a_quiz_form.name }}
@@ -49,8 +49,8 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="numberOfQuestions">Number Of Questions<span class="required">*</span></label>
-                            <input type="number" class="form-control" :max="quizTotalQuestion" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
+                            <label for="numberOfQuestions">Number Of Questions<span class="required">*</span><span class="text-bold" v-if="quizTotalQuestion"> (total question on this form: {{quizTotalQuestion}}) </span></label>
+                            <input type="number" class="form-control" :max="quizTotalQuestion" min="0" step="1" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
                             <span id="numberOfQuestionsError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -122,6 +122,16 @@ export default {
         }
     },
     methods: {
+        // checkMaxExceedNumber(val){
+        //     let min = 0;
+        //     let max = this.quizTotalQuestion;
+        //     // here we perform the parsing instead of calling another function
+        //     if (val > max){
+        //         console.log('*maximum number of questions exceeded')
+        //         // $("#numberOfQuestionsError").html('*maximum number of questions exceeded');
+        //         document.getElementById('numberOfQuestionsError').innerHTML = 'test';
+        //     }
+        // },
 
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
 
@@ -288,12 +298,12 @@ export default {
 
             axios.post('quizzes',
                 {
-                    name          : this.quizData.name,
-                    quiz_form_id  : this.quizData.quiz_form_id,
-                    duration      : this.quizData.duration,
-                    total_marks   : this.quizData.total_marks,
-                    status        : this.quizData.status,
-                    number_of_questions   : this.quizData.number_of_questions,
+                    name                    : this.quizData.name,
+                    quiz_form_id            : this.quizData.quiz_form_id,
+                    duration                : this.quizData.duration,
+                    total_marks             : this.quizData.total_marks,
+                    status                  : this.quizData.status,
+                    number_of_questions     : this.quizData.number_of_questions,
                 },
                 {
                     headers: {
@@ -324,31 +334,6 @@ export default {
 
         },
 
-        // getArticleList()
-        // {
-        //     let _that =this;
-        //
-        //     axios.get('articles',
-        //         {
-        //             headers: {
-        //                 'Authorization': 'Bearer '+localStorage.getItem('authToken')
-        //             },
-        //             params :
-        //                 {
-        //                     isAdmin : 1
-        //                 },
-        //         })
-        //         .then(function (response) {
-        //             if(response.data.status_code === 200){
-        //                 console.log(response.data);
-        //                 _that.articleList = response.data.article_list.data;
-        //             }
-        //             else{
-        //                 _that.success_message = "";
-        //                 _that.error_message   = response.data.error;
-        //             }
-        //         })
-        // },
 
         getQuizFormList(){
             let _that =this;
@@ -361,10 +346,8 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        // console.log(response.data.quiz_form_list);
+
                         _that.quizformList = response.data.quiz_form_list.data;
-                        _that.quizTotalQuestion = response.data.quiz_form_list.total;
-                        console.log(_that.quizTotalQuestion);
 
                     }
                     else{
@@ -374,10 +357,36 @@ export default {
                 })
         },
 
+        checkTotalQuestions(quizFormID){
+            this.getQuizFormFieldDetails(quizFormID);
+        },
+
+
+        getQuizFormFieldDetails(quizFormID)
+        {
+            let _that               = this;
+
+            _that.quizData.number_of_questions = '';
+
+            axios.get("quiz-form/quiz-field-list/"+quizFormID,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                })
+                .then(function (response) {
+                    if (response.data.status_code === 200) {
+                        _that.quizTotalQuestion  = response.data.total_quiz_count;
+                    } else {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                    }
+                })
+        },
+
     },
     created() {
       /*  this.isAdd = this.isAddCheck;*/
-        // this.getArticleList();
         this.getQuizFormList();
     }
 }
