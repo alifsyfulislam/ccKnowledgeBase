@@ -33,8 +33,16 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label for="numberOfQuestions">Number Of Questions<span class="required">*</span><span class="text-bold" v-if="quizTotalQuestion"> (total question on this form: {{quizTotalQuestion}}) </span></label>
+                            <input type="number" class="form-control" :max="quizTotalQuestion" min="0" step="1" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')" @change="checkMaxQuestionAvailability(quizData.number_of_questions)">
+                            <span id="numberOfQuestionsError" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label for="duration">Duration (Minutes)</label>
-                            <input type="number" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30" @keyup="checkAndChangeValidation(quizData.duration, '#duration', '#durationError', '*duration')">
+                            <input type="number" min="0" class="form-control" v-model="quizData.duration"  id="duration" placeholder="Ex : 30" @keyup="checkAndChangeValidation(quizData.duration, '#duration', '#durationError', '*duration')" @change="checkValidTime(quizData.duration)">
                             <span id="durationError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -42,16 +50,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="totalMarks">Total Marks<span class="required">*</span></label>
-                            <input type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100" @keyup="checkAndChangeValidation(quizData.total_marks, '#totalMarks', '#totalMarksError', '*total marks')">
+                            <input min="0" type="number" class="form-control " v-model="quizData.total_marks" id="totalMarks" placeholder="Ex : 100" @keyup="checkAndChangeValidation(quizData.total_marks, '#totalMarks', '#totalMarksError', '*total marks')" @change="checkValidMarks(quizData.total_marks)">
                             <span id="totalMarksError" class="text-danger small"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="numberOfQuestions">Number Of Questions<span class="required">*</span><span class="text-bold" v-if="quizTotalQuestion"> (total question on this form: {{quizTotalQuestion}}) </span></label>
-                            <input type="number" class="form-control" :max="quizTotalQuestion" min="0" step="1" v-model="quizData.number_of_questions" id="numberOfQuestions" placeholder="Ex : 10" @keyup="checkAndChangeValidation(quizData.number_of_questions, '#numberOfQuestions', '#numberOfQuestionsError', '*number of questions')">
-                            <span id="numberOfQuestionsError" class="text-danger small"></span>
                         </div>
                     </div>
 
@@ -122,16 +122,81 @@ export default {
         }
     },
     methods: {
-        // checkMaxExceedNumber(val){
-        //     let min = 0;
-        //     let max = this.quizTotalQuestion;
-        //     // here we perform the parsing instead of calling another function
-        //     if (val > max){
-        //         console.log('*maximum number of questions exceeded')
-        //         // $("#numberOfQuestionsError").html('*maximum number of questions exceeded');
-        //         document.getElementById('numberOfQuestionsError').innerHTML = 'test';
-        //     }
-        // },
+        checkValidMarks(val){
+            if (val <= 0){
+                this.validation_error.isTotalMarksStatus = false;
+
+                $('#totalMarks').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#totalMarksError').html("*total marks invalid");
+            }
+            else{
+                this.validation_error.isTotalMarksStatus = true;
+
+                $('#totalMarks').css({
+                    'border-color': '#ced4da',
+                });
+                $('#totalMarksError').html("");
+            }
+        },
+        checkValidTime(val){
+            if (val <= 0){
+                this.validation_error.isDurationStatus = false;
+
+                $('#duration').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#durationError').html("*duration time invalid");
+            }
+            else{
+                this.validation_error.isDurationStatus = true;
+
+                $('#duration').css({
+                    'border-color': '#ced4da',
+                });
+                $('#durationError').html("");
+            }
+        },
+
+        checkMaxQuestionAvailability(val){
+            if (this.quizTotalQuestion < val){
+                // error
+                console.log('error');
+                this.validation_error.isNumberOfQuestionStatus = false;
+
+                $('#numberOfQuestions').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#numberOfQuestionsError').html("*maximum number of questions exceeded");
+            }
+            else if (val == 0) {
+                this.validation_error.isNumberOfQuestionStatus = false;
+
+                $('#numberOfQuestions').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#numberOfQuestionsError').html("*minimum number of questions exceeded");
+            }
+            else if (val < 0) {
+                this.validation_error.isNumberOfQuestionStatus = false;
+
+                $('#numberOfQuestions').css({
+                    'border-color': '#FF7B88',
+                });
+                $('#numberOfQuestionsError').html("*minimum number of questions exceeded");
+            }
+            else if (val > 0) {
+                //right
+                console.log('no error');
+                this.validation_error.isNumberOfQuestionStatus = true;
+
+                $('#numberOfQuestions').css({
+                    'border-color': '#ced4da',
+                });
+                $('#numberOfQuestionsError').html("");
+            }
+        },
 
         checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
 
