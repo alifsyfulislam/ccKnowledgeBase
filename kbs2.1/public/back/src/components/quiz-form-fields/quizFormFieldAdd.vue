@@ -560,6 +560,7 @@
                         _that.validation_error.isFieldTypeStatus        = false;
 
                         if (_that.isNext == true){
+                            _that.success_message = "Quiz form field added and add more"
                             _that.setTimeoutElements();
                         }else{
                             _that.$emit('quiz-form-field-slide-close', _that.success_message);
