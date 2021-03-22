@@ -36,9 +36,6 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        return $request->all();
-
         $validator = Validator::make($request->all(),[
             'role_id' => 'required',
         ]);
@@ -53,17 +50,17 @@ class ContentController extends Controller
 
         }
 
-        $input = $request->all();
-//        $input['id'] = time().rand(1000,9000);
-
         $content = new Content();
-        $content->id = $input['id'];
-        $content->article_id = $input['article_id'];
-        $content->en_body = $input['en_body'];
-        $content->role_id = $input['role_id'];
+        $content->id = $request->id;
+        $content->article_id = $request->article_id;
+        $content->en_body = $request->en_body;
+        $content->role_id = $request->role_id;
         $content->save();
 
-        return response()->json(['status_code' => 201, 'messages'=>config('status.status_code.201')]);
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
     }
 
     /**
@@ -74,7 +71,11 @@ class ContentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($data){
+           return $data;
+        }
+
     }
 
     /**

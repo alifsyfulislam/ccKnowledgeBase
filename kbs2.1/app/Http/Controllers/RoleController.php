@@ -72,16 +72,16 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->roleService->createItem($request);
-//        if(Auth::user()->can('role-create')) {
-//
-//            return $this->roleService->createItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+//        return $this->roleService->createItem($request);
+        if(Auth::user()->can('role-create')) {
+
+            return $this->roleService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
 
     }

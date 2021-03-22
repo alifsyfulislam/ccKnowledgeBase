@@ -49,8 +49,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-1" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary rounded btn-md m-1" @click="validateAndSubmit">Update</button>
+                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-1 text-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary rounded btn-md m-1 text-white" @click="validateAndSubmit">Update</button>
                     </div>
                 </div>
             </div>

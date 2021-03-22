@@ -9,5 +9,5 @@ class Content extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['article_id', 'en_body', 'roles_id'];
+    protected $fillable = ['article_id', 'en_body', 'role_id'];
 }
