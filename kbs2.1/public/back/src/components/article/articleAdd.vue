@@ -18,19 +18,12 @@
                     </div>
                 </div>
 
-
-
-<!--                <select v-model="selected_language" class="form-control col-md-12 mb-20">
-                    <option value="english">English</option>
-                    <option value="bangla">Bangla</option>
-                </select>-->
-
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="enTitle">Title <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
+                            <input hidden class="form-control" type="text" v-model="articleData.id" id="art_id">
+                            <input placeholder="Enter title here" class="form-control" type="text" v-model="articleData.en_title" id="enTitle" @keyup="checkAndChangeValidation(articleData.en_title, '#enTitle', '#enTitleError', '*title')" required>
                             <span id="enTitleError" class="text-danger small"></span>
                         </div>
                     </div>
@@ -38,7 +31,7 @@
                     <div class="col-md-6" v-if="selected_language=='bangla'">
                         <div class="form-group">
                             <label>Bangla Title </label>
-                            <input class="form-control" type="text" v-model="articleData.bn_title">
+                            <input placeholder="Enter bangla title here" class="form-control" type="text" v-model="articleData.bn_title">
                         </div>
                     </div>
 
@@ -58,7 +51,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="tag" class="d-block">Tag</label>
-<!--                            <input class="form-control" type="text" v-model="articleData.tag" id="tag">-->
+                            <!--                            <input class="form-control" type="text" v-model="articleData.tag" id="tag">-->
                             <tag-input id="tag" class="tag-input-wrapper" @tag-list="collectArticleList"/>
                         </div>
                     </div>
@@ -66,29 +59,23 @@
                     <div class="col-md-12">
                         <div class="form-group mb-15">
                             <label>English Short Summary</label>
-                            <textarea  cols="30" rows="4" class="form-control" v-model="articleData.en_short_summary"></textarea>
+                            <textarea placeholder="type here"  cols="30" rows="4" class="form-control" v-model="articleData.en_short_summary"></textarea>
                         </div>
                     </div>
 
                     <div class="col-md-12" v-if="selected_language=='bangla'">
                         <div class="form-group mb-15">
                             <label for="bn_short_summary">Bangla Short Summary</label>
-                            <textarea cols="30" rows="4" class="form-control " v-model="articleData.bn_short_summary" id="bn_short_summary"></textarea>
+                            <textarea placeholder="type here" cols="30" rows="4" class="form-control " v-model="articleData.bn_short_summary" id="bn_short_summary"></textarea>
                         </div>
                     </div>
+
 
                     <div class="col-md-12">
-                        <div class="form-group mb-15">
-                            <label >English Body</label>
-                            <Summernote  v-model="articleData.en_body" :idFromParent="enBody" ></Summernote>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" v-if="selected_language=='bangla'">
-                        <div class="form-group mb-15">
-                            <label >Bangla Body</label>
-                            <Summernote   v-model="articleData.bn_body" :idFromParent="bnBody" ></Summernote>
+                        <div class="text-left">
+                            <button @click.prevent class="btn common-gradient-btn ripple-btn px-15 p-2 bg-primary" data-toggle="modal" data-target="#contentModal">
+                                <i class="fa fa-plus text-white"></i> Add Content
+                            </button>
                         </div>
                     </div>
 
@@ -125,8 +112,8 @@
                                 <option value="hide">Hide</option>
                                 <option value="private">Private</option>
                                 <option value="public">Public</option>
-<!--                                <option value="scheduling">Scheduling</option>-->
-<!--                                <option value="announcement">Announcement</option>-->
+                                <!--                                <option value="scheduling">Scheduling</option>-->
+                                <!--                                <option value="announcement">Announcement</option>-->
                             </select>
                         </div>
                     </div>
@@ -139,280 +126,410 @@
             </div>
 
         </div>
+
+        <div class="modal fade" id="contentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <div class="form-group mb-15">
+                                <label>Content Body</label>
+                                <input hidden class="form-control" type="text" v-model="contentData.article_id">
+                                <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+<!--                                for="roles"-->
+                                <label>Roles <span class="required">*</span></label>
+<!--                                <select2 id="roles" v-model="contentData.role_id" :options="role_options" :settings="{ settingOption: role_value, settingOption: role_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>-->
+
+
+                                <ul class="list-unstyled permission-list m-0 p-0">
+                                    <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                        <input type="checkbox" v-model="contentData.role_id" :value="a_user.id" v-bind:id="a_user.id" > <label class="pl-2 mb-0"> {{ a_user.name }} </label>
+                                    </li>
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-1 text-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary rounded btn-md m-1 text-white" @click="addContentData()">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
-import Summernote from "@/components/summer-note/summernote";
-import TagInput from "../tag/TagComponent";
-import $ from "jquery";
-// import "@/jquery.fileupload.js";
+    import axios from 'axios'
+    import Summernote from "@/components/summer-note/summernote";
+    import TagInput from "../tag/TagComponent";
+    import Select2 from 'v-select2-component';
+    import $ from "jquery";
+    // import "@/jquery.fileupload.js";
 
 
-export default {
-    name: "articleAdd.vue",
-    props: ['isAddCheck'],
-    components: {
-        Summernote,
-        TagInput
-    },
-    data() {
-        return {
-            checked :true,
-            enBody                  : "en_Body",
-            bnBody                  : "bn_Body",
-            selected_language       : 'english',
-            success_message         : '',
-            error_message           : '',
-            token                   : '',
-            categoryList            : '',
-            selectedCategory        : '',
-            userInfo                : '',
-
-            articleData : {
-                en_title            : '',
-                bn_title            : '',
-                tag                 : '',
-                en_short_summary    : '',
-                bn_short_summary    : '',
-                en_body             : '',
-                bn_body             : '',
-                status              : 'draft',
-            },
-
-            validation_error : {
-                isTitleStatus       : false,
-                isCategoryStatus    : false,
-            },
-
-            selected_checkbox    : 1,
-            bangla_checkbox      : '',
-
-            fileUrl       : [],
-            article_files : [],
-            url           : '',
-            video_files   : ''
-        }
-    },
-    methods: {
-
-        deleteUploadedFile(index){
-            document.getElementById('files').value= "";
-            (this.article_files).splice(index, 1);
+    export default {
+        name: "articleAdd.vue",
+        props: ['isAddCheck'],
+        components: {
+            Summernote,
+            TagInput,
+            // Select2
         },
+        data() {
+            return {
+                checked                 :true,
+                enBody                  : "en_Body",
+                bnBody                  : "bn_Body",
+                selected_language       : 'english',
+                success_message         : '',
+                error_message           : '',
+                token                   : '',
+                categoryList            : '',
+                selectedCategory        : '',
+                userInfo                : '',
+                user_roles              : '',
 
-        fileUploadChange(e) {
-            let _that = this;
-            const selectedFiles = e.target.files;
+                // role_value: '',
+                // role_options: [],
+                // role_id:'',
 
-            for(var j=0; j<selectedFiles.length; j++){
-               console.log(selectedFiles[j]);
-                _that.article_files.push(selectedFiles[j]);
-            }
+                articleData : {
+                    id                  : '',
+                    en_title            : '',
+                    bn_title            : '',
+                    tag                 : '',
+                    en_short_summary    : '',
+                    bn_short_summary    : '',
+                    en_body             : '',
+                    bn_body             : '',
+                    status              : 'draft',
+                },
+                contentData :{
+                    id                  : '',
+                    article_id          : '',
+                    en_body             : '',
+                    role_id               : [],
+                },
 
-        },
+                validation_error : {
+                    isTitleStatus       : false,
+                    isCategoryStatus    : false,
+                },
 
-        collectArticleList(tagList){
-            this.articleData.tag = tagList.join();
-        },
+                selected_checkbox    : 1,
+                bangla_checkbox      : '',
 
-        changeCheckBox() {
-            if (this.bangla_checkbox === true)
-                this.selected_language = 'bangla';
-            else
-                this.selected_language = 'english';
-        },
-
-        checkAndValidateSelectType()
-        {
-            if (!this.selectedCategory) {
-                $('#categoryID').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#categoryIDError').html("category field is required");
-                this.validation_error.isCategoryStatus = false;
-
-            } else{
-                $('#categoryID').css({
-                    'border-color': '#ced4da',
-                });
-                $('#categoryIDError').html("");
-                this.validation_error.isCategoryStatus = true;
+                fileUrl       : [],
+                article_files : [],
+                url           : '',
+                video_files   : ''
             }
         },
+        methods: {
+            addContentData(){
+                let enBody      = document.getElementById('en_Body').value;
+                this.contentData.id = (Math.round((new Date()).getTime()*10));
+                this.contentData.en_body = enBody;
+                this.contentData.role_id = this.contentData.role_id.toString();
+                console.log(this.contentData);
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
-        {
 
-            if (selected_data.length >0) {
-                if (selected_data.length <3){
+                axios.post('contents',
+                    {
+                        id                      : this.contentData.id,
+                        article_id              : this.contentData.article_id,
+                        en_body                 : this.contentData.article_id,
+                        role_id                 : this.contentData.role_id
+                    },
+                    {
+                        headers: {
+                            'Content-Type'  : 'multipart/form-data',
+                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            // makeCustomArticleID(){
+            //     this.articleData.id = (Math.round((new Date()).getTime()/1000));
+            // },
+            deleteUploadedFile(index){
+                document.getElementById('files').value= "";
+                (this.article_files).splice(index, 1);
+            },
+
+            fileUploadChange(e) {
+                let _that = this;
+                const selectedFiles = e.target.files;
+
+                for(var j=0; j<selectedFiles.length; j++){
+                    console.log(selectedFiles[j]);
+                    _that.article_files.push(selectedFiles[j]);
+                }
+
+            },
+
+            collectArticleList(tagList){
+                this.articleData.tag = tagList.join();
+            },
+
+            changeCheckBox() {
+                if (this.bangla_checkbox === true)
+                    this.selected_language = 'bangla';
+                else
+                    this.selected_language = 'english';
+            },
+
+            checkAndValidateSelectType()
+            {
+                if (!this.selectedCategory) {
+                    $('#categoryID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#categoryIDError').html("category field is required");
+                    this.validation_error.isCategoryStatus = false;
+
+                } else{
+                    $('#categoryID').css({
+                        'border-color': '#ced4da',
+                    });
+                    $('#categoryIDError').html("");
+                    this.validation_error.isCategoryStatus = true;
+                }
+            },
+
+            checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+            {
+
+                if (selected_data.length >0) {
+                    if (selected_data.length <3){
+                        $(selected_id).css({
+                            'border-color': '#FF7B88',
+                        });
+                        $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+                        if (selected_name === "*title"){
+                            this.validation_error.isTitleStatus = false;
+                        }
+                    }else {
+                        $(selected_id).css({
+                            'border-color': '#ced4da',
+                        });
+                        $(selected_error_id).html("");
+
+                        if (selected_name === "*title" ){
+                            this.validation_error.isTitleStatus = true;
+                        }
+                    }
+
+                } else{
                     $(selected_id).css({
                         'border-color': '#FF7B88',
                     });
-                    $(selected_error_id).html( selected_name+" should contain minimum 3 character");
-                    if (selected_name === "*title"){
+                    $(selected_error_id).html(selected_name+" field is required")
+
+                    if (selected_name === "title" ){
                         this.validation_error.isTitleStatus = false;
                     }
-                }else {
-                    $(selected_id).css({
-                        'border-color': '#ced4da',
+                }
+            },
+
+            validateAndSubmit(){
+
+                if (!this.articleData.en_title){
+                    $('#enTitle').css({
+                        'border-color': '#FF7B88',
                     });
-                    $(selected_error_id).html("");
+                    $('#enTitleError').html("title field is required");
+                }
 
-                    if (selected_name === "*title" ){
-                        this.validation_error.isTitleStatus = true;
+                if (!this.selectedCategory){
+                    $('#categoryID').css({
+                        'border-color': '#FF7B88',
+                    });
+                    $('#categoryIDError').html("category field is required");
+                }
+
+                if (this.validation_error.isTitleStatus    === true &&
+                    this.validation_error.isCategoryStatus === true ){
+                    this.articleAdd();
+                }
+            },
+
+            showServerError(errors)
+            {
+                $('#enTitleError').html("");
+                $('#categoryIDError').html("");
+
+                $('#enTitle').css({'border-color': '#ced4da'});
+                $('#categoryID').css({'border-color': '#ced4da'});
+
+                errors.forEach(val=>{
+                    console.log(val);
+                    if (val.includes("en title")==true){
+                        $('#enTitleError').html(val)
+                        $('#enTitle').css({'border-color': '#FF7B88'});
                     }
-                }
-
-            } else{
-                $(selected_id).css({
-                    'border-color': '#FF7B88',
-                });
-                $(selected_error_id).html(selected_name+" field is required")
-
-                if (selected_name === "title" ){
-                    this.validation_error.isTitleStatus = false;
-                }
-            }
-        },
-
-        validateAndSubmit(){
-
-            if (!this.articleData.en_title){
-                $('#enTitle').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#enTitleError').html("title field is required");
-            }
-
-            if (!this.selectedCategory){
-                $('#categoryID').css({
-                    'border-color': '#FF7B88',
-                });
-                $('#categoryIDError').html("category field is required");
-            }
-
-            if (this.validation_error.isTitleStatus    === true &&
-                this.validation_error.isCategoryStatus === true ){
-                this.articleAdd();
-            }
-        },
-
-        showServerError(errors)
-        {
-            $('#enTitleError').html("");
-            $('#categoryIDError').html("");
-
-            $('#enTitle').css({'border-color': '#ced4da'});
-            $('#categoryID').css({'border-color': '#ced4da'});
-
-            errors.forEach(val=>{
-                console.log(val);
-                if (val.includes("en title")==true){
-                    $('#enTitleError').html(val)
-                    $('#enTitle').css({'border-color': '#FF7B88'});
-                }
-                else if (val.includes("category")==true){
-                    $('#categoryIDError').html(val)
-                    $('#categoryID').css({'border-color': '#FF7B88'});
-                }
-
-            })
-        },
-
-        articleAdd()
-        {
-
-            let _that       = this;
-            let formData    = new FormData();
-
-            for( var i = 0; i < this.article_files.length; i++ ){
-                let file = this.article_files[i];
-
-                formData.append('uploaded_file[' + i + ']', file);
-            }
-
-            let enBody      = document.getElementById('en_Body').value;
-
-            if (!(document.getElementById('bn_Body'))) {
-                var bnBody  = '';
-            } else {
-                bnBody      = document.getElementById('bn_Body').value;
-            }
-            formData.append('category_id', this.selectedCategory);
-            formData.append('en_title', this.articleData.en_title);
-            formData.append('bn_title', this.articleData.bn_title);
-            formData.append('tag', this.articleData.tag);
-            formData.append('en_short_summary', this.articleData.en_short_summary);
-            formData.append('bn_short_summary', this.articleData.bn_short_summary);
-            formData.append('en_body', enBody);
-            formData.append('bn_body', bnBody);
-            formData.append('status', this.articleData.status);
-
-            axios.post('articles', formData,
-                {
-                    headers: {
-                        'Content-Type'  : 'multipart/form-data',
-                        'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                    else if (val.includes("category")==true){
+                        $('#categoryIDError').html(val)
+                        $('#categoryID').css({'border-color': '#FF7B88'});
                     }
-                }).then(function (response) {
-                  console.log(response);
 
-                if (response.data.status_code === 201) {
-                    _that.articleData           = '';
-                    _that.selectedCategory      = '';
-                    _that.error_message         = '';
-                    _that.success_message       = "Article Added Successfully";
-                    _that.$emit('article-slide-close', _that.success_message);
-                }else if(response.data.status_code === 400){
-                    _that.success_message       = "";
-                    _that.error_message         = "";
-                    _that.showServerError(response.data.errors);
+                })
+            },
 
-                }else{
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.message;
+            articleAdd()
+            {
+
+                let _that       = this;
+                let formData    = new FormData();
+
+                for( var i = 0; i < this.article_files.length; i++ ){
+                    let file = this.article_files[i];
+
+                    formData.append('uploaded_file[' + i + ']', file);
                 }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
 
-        getCategoryList()
-        {
-            let _that =this;
+                // let enBody      = document.getElementById('en_Body').value;
 
-            axios.get('categories',
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    },
-                    params :
-                        {
+                // if (!(document.getElementById('bn_Body'))) {
+                //     var bnBody  = '';
+                // } else {
+                //     bnBody      = document.getElementById('bn_Body').value;
+                // }
+                formData.append('id',this.articleData.id);
+                formData.append('category_id', this.selectedCategory);
+                formData.append('en_title', this.articleData.en_title);
+                formData.append('bn_title', this.articleData.bn_title);
+                formData.append('tag', this.articleData.tag);
+                formData.append('en_short_summary', this.articleData.en_short_summary);
+                formData.append('bn_short_summary', this.articleData.bn_short_summary);
+                // formData.append('en_body', enBody);
+                // formData.append('bn_body', bnBody);
+                formData.append('status', this.articleData.status);
+
+                axios.post('articles', formData,
+                    {
+                        headers: {
+                            'Content-Type'  : 'multipart/form-data',
+                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    console.log(response);
+
+                    if (response.data.status_code === 201) {
+                        _that.articleData           = '';
+                        _that.selectedCategory      = '';
+                        _that.error_message         = '';
+                        _that.success_message       = "Article Added Successfully";
+                        _that.$emit('article-slide-close', _that.success_message);
+                    }else if(response.data.status_code === 400){
+                        _that.success_message       = "";
+                        _that.error_message         = "";
+                        _that.showServerError(response.data.errors);
+
+                    }else{
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.message;
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            getCategoryList()
+            {
+                let _that =this;
+
+                axios.get('categories',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params :
+                            {
+                                isAdmin : 1,
+                                without_pagination : 1
+                            },
+
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
+                            // console.log(response.data);
+                            _that.categoryList = response.data.category_list;
+                        }
+                        else{
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
+                    })
+            },
+            myChangeEvent(val){
+                let _that = this;
+                _that.article_id = val;
+            },
+            mySelectEvent({id, text}){
+                console.log({id, text})
+            },
+            getUserRoles()
+            {
+                let _that =this;
+                axios.get('roles',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        },
+                        params : {
                             isAdmin : 1,
                             without_pagination : 1
                         },
+                    })
+                    .then(function (response) {
+                        if(response.data.status_code === 200){
 
-                })
-                .then(function (response) {
-                    if(response.data.status_code === 200){
-                        console.log(response.data);
-                        _that.categoryList = response.data.category_list;
-                    }
-                    else{
-                        _that.success_message = "";
-                        _that.error_message   = response.data.error;
-                    }
-                })
+                            _that.user_roles = response.data.role_list;
+
+                            // response.data.role_list.forEach(val => {
+                            //     console.log(val);
+                            //     _that.role_options.push({
+                            //         'id' : val.id,
+                            //         'text' : val.name
+                            //     })
+                            // })
+                        }
+                        else{
+                            _that.success_message = "";
+                            _that.error_message   = response.data.error;
+                        }
+                    })
+            }
+
+
         },
-
-    },
-    created()
-    {
-        this.getCategoryList();
+        created()
+        {
+            this.articleData.id = (Math.round((new Date()).getTime()*10));
+            this.contentData.article_id = (Math.round((new Date()).getTime()*10));
+            // this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            // console.log(this.userInformation);
+            this.getCategoryList();
+            this.getUserRoles();
+        }
     }
-}
 </script>
 
 <style scoped>
@@ -430,5 +547,9 @@ export default {
         line-height: 16px;
         border-radius: 50%;
         text-indent: 1px;
+    }
+
+    #contentModal.modal {
+        background: rgba(0,0,0,0.35);
     }
 </style>

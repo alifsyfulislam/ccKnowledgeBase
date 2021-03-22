@@ -443,7 +443,7 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data);
+                            // console.log(response.data);
                             _that.pagination.current = response.data.article_list.current_page;
                             _that.pagination.total = response.data.article_list.last_page;
                             _that.articleList       = response.data.article_list.data;

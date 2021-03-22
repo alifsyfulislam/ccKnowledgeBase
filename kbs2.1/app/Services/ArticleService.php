@@ -85,7 +85,7 @@ class ArticleService
 
         $input = $request->all();
 
-        $input['id'] = time().rand(1000,9000);
+        $input['id'] = $request->id;
         $input['user_id'] = auth()->user()->id;
         $input['publish_date'] = date('Y-m-d H:i:s');
 
