@@ -354,7 +354,7 @@
                 }).then(function (response) {
                     console.log(response);
                     _that.isMounted =true;
-                    _that.aContent = response.data;
+                    _that.aContent = response.data.content_info;
                     _that.enBodyData  = _that.aContent.en_body;
                     _that.bnBodyData  = _that.aContent.bn_body;
                     console.log(_that.bnBodyData);
@@ -377,7 +377,8 @@
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-                    _that.contentList = response.data;
+                    console.log(response.data)
+                    _that.contentList = response.data.content_list;
                 })
             },
             addContentData(){
@@ -457,13 +458,6 @@
 
                             _that.user_roles = response.data.role_list;
 
-                            // response.data.role_list.forEach(val => {
-                            //     console.log(val);
-                            //     _that.role_options.push({
-                            //         'id' : val.id,
-                            //         'text' : val.name
-                            //     })
-                            // })
                         }
                         else{
                             _that.success_message = "";
@@ -695,7 +689,7 @@
             this.getAllArticleList();
             this.getUserRoles();
             this.getContentList(this.faqData.id);
-            this.$emit('article-id', this.faqData.id);
+            this.$emit('faq-id', this.faqData.id);
             console.log('from child'+this.faqData.id);
         }
     }

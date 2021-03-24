@@ -134,7 +134,7 @@
         </button>
       </div>
       <!--            add-->
-      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @article-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
+      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
       <!--            edit-->
       <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
       <!--delete-->
@@ -261,6 +261,7 @@ export default {
       isFaqStatus         : '',
       isLoading           : false,
       isEditCheck         : false,
+      unstoredFaqID       :'',
       isAddCheck          : false,
       isDeleteCheck       : false,
       isSearchCheck       : false,
@@ -341,9 +342,9 @@ export default {
     }
   },
   methods: {
-    getFaqIDFromChild(article_id){
-        console.log(article_id);
-        this.unstoredArticleID = article_id;
+    getFaqIDFromChild(faq_id){
+        console.log(faq_id);
+        this.unstoredFaqID = faq_id;
     },
     faqStatusRequest(selected){
       $('#alertModal').modal('show');
@@ -389,16 +390,14 @@ export default {
         _that.isEditCheck        = false;
         _that.isDeleteCheck      = false;
 
-        if (!_that.unstoredArticleID){
-            axios.get('contents-faq-exist/'+this.unstoredArticleID,{
-                headers: {
-                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-                },
-            }).then(function (response) {
-                console.log(response);
-                _that.unstoredArticleID = '';
-            })
-        }
+          axios.get('contents-faq-exist/'+this.unstoredFaqID,{
+              headers: {
+                  'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+              },
+          }).then(function (response) {
+              console.log(response);
+              _that.unstoredFaqID = '';
+          })
     },
     setTimeoutElements()
     {

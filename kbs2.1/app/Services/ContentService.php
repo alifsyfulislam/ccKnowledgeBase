@@ -54,6 +54,38 @@ class ContentService
 
         ]);
     }
+    public function checkFaqExist($id){
+
+        DB::beginTransaction();
+
+        try {
+
+            $content_list = $this->contentRepository->faqAvailabilty($id);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
+
+        }
+
+        DB::commit();
+
+        return response()->json([
+
+            'status_code' => 200,
+            'messages'    => "Content Deleted Successfully",
+            'content_list' => $content_list
+
+        ]);
+    }
 
     public function articleContentList($id){
 

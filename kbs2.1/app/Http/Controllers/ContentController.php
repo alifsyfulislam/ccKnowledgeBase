@@ -147,4 +147,9 @@ class ContentController extends Controller
         return $this->contentService->checkArticleExist($id);
 
     }
+    public function checkFaqAvailability($id){
+
+        return $this->contentService->checkFaqExist($id);
+
+    }
 }
