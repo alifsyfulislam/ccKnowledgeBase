@@ -54,6 +54,7 @@ class ContentController extends Controller
         $content->id = $request->id;
         $content->article_id = $request->article_id;
         $content->en_body = $request->en_body;
+        $content->bn_body = $request->bn_body!= null ? $request->bn_body : 'n/a';
         $content->role_id = $request->role_id;
         $content->save();
 
@@ -71,11 +72,7 @@ class ContentController extends Controller
      */
     public function show($id)
     {
-        $data = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
-        if ($data){
-           return $data;
-        }
-
+        return Content::where('id', $id)->first();
     }
 
     /**
@@ -96,9 +93,34 @@ class ContentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+//        return response()->json($request->all());
+        $validator = Validator::make($request->all(),[
+            'role_id' => 'required',
+        ]);
+
+        if($validator->fails()) {
+
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
+
+        }
+
+        $content = Content::find($request->id);
+        $content->article_id = $request->article_id;
+        $content->en_body = $request->en_body;
+        $content->bn_body = $request->bn_body != null ? $request->bn_body : 'n/a';
+        $content->role_id = $request->role_id;
+        $content->save();
+
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200')
+        ]);
     }
 
     /**
@@ -107,8 +129,33 @@ class ContentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $content = Content::find($request->id);
+        if ($content){
+            $content->delete();
+        }else{
+            return 'no content found';
+        }
+    }
+
+    public function showArticleContent($id){
+        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($contents){
+            return $contents;
+        }else{
+            return 'no content found';
+        }
+    }
+
+    public function checkArticleAvailability($id){
+        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($contents){
+            foreach ($contents as $content){
+                $content->delete();
+            }
+        }else{
+            return 'no article found';
+        }
     }
 }

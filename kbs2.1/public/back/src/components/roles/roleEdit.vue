@@ -52,281 +52,284 @@
 </template>
 
 <script>
-import axios from "axios";
-import $ from "jquery";
+  import axios from "axios";
+  import $ from "jquery";
 
-export default {
-  name: "rolesEdit.vue",
-  props: ['isEditCheck', 'roleId'],
+  export default {
+    name: "rolesEdit.vue",
+    props: ['isEditCheck', 'roleId'],
 
-  data() {
-    return {
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      rolesDetails    : '',
-      role_id         :  '',
-      allRoles  :'',
-      allPermissions  : [],
-      roles_info      :'',
-      selectedCheckboxes :[],
-      allSelectedPermissionIds : [],
-      roles  :'',
-      allAccess : [],
-      storeName :'',
+    data() {
+      return {
+        success_message : '',
+        error_message   : '',
+        token           : '',
+        rolesDetails    : '',
+        role_id         :  '',
+        allRoles  :'',
+        allPermissions  : [],
+        roles_info      :'',
+        selectedCheckboxes :[],
+        allSelectedPermissionIds : [],
+        roles  :'',
+        allAccess : [],
+        storeName :'',
 
-      validation_error :{
-        isRoleNameStatus : true,
+        validation_error :{
+          isRoleNameStatus : true,
+        },
+
+        filter : {
+          isAdmin : 1
+        }
+      }
+    },
+
+    methods: {
+      checkRoleNameExist(roleInfo)
+      {
+        let _that = this;
+        let role_info  =  roleInfo.trim();
+        if (role_info == null){
+          $('#roleNameError').html("*name field is required");
+        }
+        else if (role_info.length > 2 || role_info.length < 100){
+          axios.post('role/name',
+                  {
+                    id              : this.role_id,
+                    name            : this.storeName,
+                  },
+                  {
+                    headers: {
+                      'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    }
+                  }).then(function (response) {
+            console.log(response)
+            if(response.data.status_code === 400)
+            {
+              _that.success_message           = "";
+              _that.error_message             = "";
+              $('#roleNameError').html("*"+response.data.error);
+
+            }
+          }).catch(function (error) {
+            console.log(error);
+          });
+        }
       },
 
-      filter : {
-        isAdmin : 1
-      }
-    }
-  },
+      showSelectedItem()
+      {
+        console.log(this.selectedCheckboxes);
+      },
 
-  methods: {
-    checkRoleNameExist(roleInfo)
-    {
-      let _that = this;
-      let role_info  =  roleInfo.trim();
-      if (role_info == null){
-        $('#roleNameError').html("*name field is required");
-      }
-      else if (role_info.length > 2 || role_info.length < 100){
-        axios.post('role/name',
-          {
-            id              : this.role_id,
-            name            : this.storeName,
-          },
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
+      checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+      {
+        if (selected_data.length >0) {
+          if (selected_data.length <3){
+            $(selected_id).css({
+              'border-color': '#FF7B88',
+            });
+            $(selected_error_id).html( selected_name+" should contain minimum 3 character");
+
+            if (selected_name === "*role name"){
+              this.validation_error.isRoleNameStatus = false;
             }
-          }).then(function (response) {
-          console.log(response)
-          if(response.data.status_code === 400)
-          {
-            _that.success_message           = "";
-            _that.error_message             = "";
-            $('#roleNameError').html("*"+response.data.error);
 
+          }else {
+            $(selected_id).css({
+              'border-color': '#ced4da',
+            });
+            $(selected_error_id).html("");
+
+            if (selected_name === "*role name" ){
+              this.validation_error.isRoleNameStatus = true;
+            }
           }
-        }).catch(function (error) {
-          console.log(error);
-        });
-      }
-    },
 
-    showSelectedItem()
-    {
-      console.log(this.selectedCheckboxes);
-    },
-
-    checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
-    {
-      if (selected_data.length >0) {
-        if (selected_data.length <3){
+        } else{
           $(selected_id).css({
             'border-color': '#FF7B88',
           });
-          $(selected_error_id).html( selected_name+" should contain minimum 3 character");
-
-          if (selected_name === "*role name"){
-            this.validation_error.isRoleNameStatus = false;
-          }
-
-        }else {
-          $(selected_id).css({
-            'border-color': '#ced4da',
-          });
-          $(selected_error_id).html("");
+          $(selected_error_id).html(selected_name+" field is required")
 
           if (selected_name === "*role name" ){
-            this.validation_error.isRoleNameStatus = true;
+            this.validation_error.isRoleNameStatus = false;
           }
         }
+      },
+      validateAndSubmit()
+      {
 
-      } else{
-        $(selected_id).css({
-          'border-color': '#FF7B88',
-        });
-        $(selected_error_id).html(selected_name+" field is required")
-
-        if (selected_name === "*role name" ){
-          this.validation_error.isRoleNameStatus = false;
-        }
-      }
-    },
-    validateAndSubmit()
-    {
-
-      if (!this.storeName){
-        $('#role_name').css({
-          'border-color': '#FF7B88',
-        });
-        $('#roleNameError').html("*role name field is required");
-      }
-
-      if (this.validation_error.isRoleNameStatus === true){
-        this.updateRole();
-      }
-    },
-    showServerError(errors)
-    {
-      $('#nameError').html("");
-
-      $('#name').css({'border-color': '#ced4da'});
-
-      errors.forEach(val=>{
-        console.log(val);
-        if (val.includes("name")===true){
-          $('#roleNameError').html(val)
-          $('#role_name').css({'border-color': '#FF7B88'});
+        if (!this.storeName){
+          $('#role_name').css({
+            'border-color': '#FF7B88',
+          });
+          $('#roleNameError').html("*role name field is required");
         }
 
-      })
-    },
+        if (this.validation_error.isRoleNameStatus === true){
+          this.updateRole();
+        }
+      },
+      showServerError(errors)
+      {
+        $('#nameError').html("");
 
-    updateRole()
-    {
-      let _that       = this;
-      let rolesID     = this.role_id;
+        $('#name').css({'border-color': '#ced4da'});
 
-      // console.log(rolesID+" "+ _that.storeName+" "+_that.selectedCheckboxes);
-
-      axios.put('roles/update',
-        {
-          id          : rolesID,
-          name        : this.storeName,
-          permission  : this.selectedCheckboxes
-        },
-        {
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+        errors.forEach(val=>{
+          console.log(val);
+          if (val.includes("name")===true){
+            $('#roleNameError').html(val)
+            $('#role_name').css({'border-color': '#FF7B88'});
           }
-        }).then(function (response) {
-        if (response.data.status_code == 200)
-        {
-          _that.storeName                     = '';
-          _that.selectedCheckboxes            = [];
-          _that.error_message                 = '';
-          _that.success_message               = "Role updated successfully with permission!";
-
-          _that.$emit('role-slide-close', _that.success_message);
-        }
-        else
-        {
-          _that.success_message = "";
-          _that.error_message   = "";
-          _that.showServerError(response.data.errors);
-        }
-
-      }).catch(function (error) {
-        console.log(error);
-      });
-
-    },
-
-    geRolesDetails()
-    {
-      let _that       = this;
-      let rolesID     = this.role_id;
-      axios.get("roles/"+rolesID,
-        {
-          headers: {
-            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-          },
-        })
-        .then(function (response) {
-          console.log(response)
-          if (response.data.status_code === 200) {
-            _that.rolesDetails          = response.data.role_info;
-            _that.roles                 = _that.rolesDetails.id;
-            _that.storeName             = _that.rolesDetails.name;
-            _that.allAccess             = _that.rolesDetails.permissions;
-            _that.allAccess.forEach( anAccessId =>
-            {
-              _that.allSelectedPermissionIds.push(anAccessId.id)
-            });
-            _that.selectedCheckboxes    = _that.allSelectedPermissionIds;
-          } else {
-            _that.success_message       = "";
-            _that.error_message         = response.data.error;
-          }
-        })
-    },
-
-    getAllPermission()
-    {
-      let _that   = this;
-      axios.get('permissions',
-        {
-          headers: {
-            'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
-          },
 
         })
-        .then(function (response) {
-          if (response.data.status_code === 200) {
-            //_that.allPermissions = response.data.permission_list;
+      },
 
-            _that.allPermissions    = response.data.permission_list;
-            /*console.log("before splice");
-            console.log( _that.allPermissions);
+      updateRole()
+      {
+        let _that       = this;
+        let rolesID     = this.role_id;
 
-            (_that.allPermissions).forEach( aRole => {
+        // console.log(rolesID+" "+ _that.storeName+" "+_that.selectedCheckboxes);
 
-              (_that.allAccess).forEach( anAccess => {
-                if ( anAccess.id == aRole.id)
+        axios.put('roles/update',
                 {
-                  console.log("in for each loop")
-                  _that.allPermissions.splice(_that.allPermissions.indexOf(aRole.id), 1);
-                }
-              });
+                  id          : rolesID,
+                  name        : this.storeName,
+                  permission  : this.selectedCheckboxes
+                },
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  }
+                }).then(function (response) {
+          if (response.data.status_code == 200)
+          {
+            _that.storeName                     = '';
+            _that.selectedCheckboxes            = [];
+            _that.error_message                 = '';
+            _that.success_message               = "Role updated successfully with permission!";
 
-            });*/
-
-            // console.log("after splice");
-            // console.log( _that.allPermissions);
-            //  _that.allPermissions    = tempRoleData;
-          } else {
+            _that.$emit('role-slide-close', _that.success_message);
+          }
+          else
+          {
             _that.success_message = "";
-            _that.error_message = response.data.error;
+            _that.error_message   = "";
+            _that.showServerError(response.data.errors);
           }
-        })
+
+        }).catch(function (error) {
+          console.log(error);
+        });
+
+      },
+
+      geRolesDetails()
+      {
+        let _that       = this;
+        let rolesID     = this.role_id;
+        axios.get("roles/"+rolesID,
+                {
+                  headers: {
+                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                  },
+                })
+                .then(function (response) {
+                  console.log(response)
+                  if (response.data.status_code === 200) {
+                    _that.rolesDetails          = response.data.role_info;
+                    _that.roles                 = _that.rolesDetails.id;
+                    _that.storeName             = _that.rolesDetails.name;
+                    _that.allAccess             = _that.rolesDetails.permissions;
+                    // console.log(_that.allAccess);
+                    _that.allAccess.forEach( anAccessId =>
+                    {
+                      _that.allSelectedPermissionIds.push(anAccessId.id)
+                      console.log(_that.allSelectedPermissionIds);
+                    });
+                    _that.selectedCheckboxes    = _that.allSelectedPermissionIds;
+                    console.log(_that.selectedCheckboxes);
+                  } else {
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
+                  }
+                })
+      },
+
+      getAllPermission()
+      {
+        let _that   = this;
+        axios.get('permissions',
+                {
+                  headers: {
+                    'Authorization' : 'Bearer ' + localStorage.getItem('authToken')
+                  },
+
+                })
+                .then(function (response) {
+                  if (response.data.status_code === 200) {
+                    //_that.allPermissions = response.data.permission_list;
+
+                    _that.allPermissions    = response.data.permission_list;
+                    /*console.log("before splice");
+                    console.log( _that.allPermissions);
+
+                    (_that.allPermissions).forEach( aRole => {
+
+                      (_that.allAccess).forEach( anAccess => {
+                        if ( anAccess.id == aRole.id)
+                        {
+                          console.log("in for each loop")
+                          _that.allPermissions.splice(_that.allPermissions.indexOf(aRole.id), 1);
+                        }
+                      });
+
+                    });*/
+
+                    // console.log("after splice");
+                    // console.log( _that.allPermissions);
+                    //  _that.allPermissions    = tempRoleData;
+                  } else {
+                    _that.success_message = "";
+                    _that.error_message = response.data.error;
+                  }
+                })
+      },
+
+      getRolesList()
+      {
+        let _that       = this;
+        axios.get('roles',
+                {
+                  headers: {
+                    'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                  },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    //_that.allRoles = response.data.role_list;
+                  }
+                  else{
+                    _that.success_message   = "";
+                    _that.error_message     = response.data.error;
+                  }
+                })
+      }
     },
-
-    getRolesList()
-    {
-      let _that       = this;
-      axios.get('roles',
-        {
-          headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
-          },
-
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            //_that.allRoles = response.data.role_list;
-          }
-          else{
-            _that.success_message   = "";
-            _that.error_message     = response.data.error;
-          }
-        })
+    created() {
+      this.category_id = this.categoryId;
+      this.role_id = this.roleId;
+      console.log(this.role_id);
+      this.getRolesList();
+      this.geRolesDetails();
+      this.getAllPermission();
     }
-  },
-  created() {
-    this.category_id = this.categoryId;
-    this.role_id = this.roleId;
-    console.log(this.role_id);
-    this.getRolesList();
-    this.geRolesDetails();
-    this.getAllPermission();
   }
-}
 </script>
 
 <style scoped>

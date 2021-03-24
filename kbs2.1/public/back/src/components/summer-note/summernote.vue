@@ -30,7 +30,7 @@ props: ['idFromParent'],
     const vm = this;
     const options = {
       lang: 'en-US',
-      height: 200,
+      height: 150,
       dialogsInBody: true,
       fontNames: fontsArray,
       fontNamesIgnoreCheck: fontsArray,

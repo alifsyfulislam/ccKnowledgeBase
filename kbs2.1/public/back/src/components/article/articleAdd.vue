@@ -80,15 +80,14 @@
                     </div>
 
                     <div class="col-md-12">
-                        <ul v-if="contentList">
-                            <div v-for="(a_content,index) in contentList" :key="a_content.id" class="bg-dark p-3">
-                                <span class="text-white font-18" v-if="a_content.en_body">Content {{ index+1 }}</span>
-                                <span>
-                                    <i class="fa fa-edit text-white"></i> | <i class="fa fa-trash text-danger"></i>
-                                </span>
-<!--                                <div> Role: {{a_content.role_id}}</div>-->
-
-                            </div>
+                        <ul v-if="contentList" class="mb-0">
+                            <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
+                                <span class="text-black font-12" v-if="a_content.en_body">Block {{ index+1 }}</span>
+                                <div class="action-buttons">
+                                    <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
+                                    <i @click="deleteContent(a_content.id)"  class="fa fa-trash d-inline-block text-red font-12"></i>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -96,7 +95,7 @@
 
                         <div class="form-group mb-15">
                             <label class="form-label" >Upload Files</label>
-                            <input type="file"  id="files" class="form-control" ref="files" multiple @change="fileUploadChange"  >
+                            <input type="file"  id="files" ref="files" multiple @change="fileUploadChange"  >
                         </div>
                     </div>
 
@@ -146,34 +145,78 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>
                     </div>
-                    <div class="modal-body">
-                        <div class="col-md-12">
-                            <div class="form-group mb-15">
-                                <label>Content Body</label>
-                                <input hidden class="form-control" type="text" v-model="contentData.article_id">
-                                <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>
-                            </div>
+                    <div class="modal-body" style="max-height: 450px;overflow-y: auto;">
+                        <div class="form-group">
+                            <label>English Body</label>
+                            <input hidden class="form-control" type="text" v-model="contentData.article_id">
+                            <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>
                         </div>
 
+                        <div class="form-group mb-2" v-if="selected_language=='bangla'">
+                            <label >Bangla Body</label>
+                            <Summernote  v-model="contentData.en_body" :idFromParent="bnBody"></Summernote>
+                        </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-<!--                                for="roles"-->
-                                <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
-<!--                                <select2 id="roles" v-model="contentData.role_id" :options="role_options" :settings="{ settingOption: role_value, settingOption: role_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>-->
+                        <div class="form-group mb-2">
+                            <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
-
-                                <ul class="list-unstyled permission-list m-0 p-0">
-                                    <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                        <input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > <label class="pl-2 mb-0"> {{ a_user.name }} </label>
-                                    </li>
-                                </ul>
-                            </div>
+                            <ul class="list-unstyled permission-list m-0 p-0">
+                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>
-                        <button type="button" class="btn btn-primary rounded btn-md m-1 text-white" @click="addContentData()">Add</button>
+                        <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>
+                        <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="addContentData()">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="contentModalEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contentModalLabel_2">Edit New Content</h5>
+                    </div>
+                    <div class="modal-body">
+<!--                        <div class="d-inline-block">-->
+<!--                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
+<!--                            <label for="checkbox3" class="ml-2">Bangla</label>-->
+<!--                        </div>-->
+
+                        <div class="form-group">
+                            <label>English Body</label>
+                            <input hidden class="form-control" type="text" v-model="aContent.id">
+                            <SummernoteEdit v-if="isMounted"   :idFromParent="enBodyEdit" :dataFromParent="enBodyData"></SummernoteEdit>
+                        </div>
+
+                        <div class="form-group mb-15" v-if="selected_language=='bangla'">
+                            <label>Bangla Body</label>
+                            <SummernoteEdit v-if="isMounted"  :idFromParent="bnBodyEdit" :dataFromParent="bnBodyData"></SummernoteEdit>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
+                            <ul class="list-unstyled permission-list m-0 p-0">
+                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2"><input  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>
+                                    </div>
+                                    <div v-else class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="closeModal_3" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="clearAll()">Close</button>
+                        <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="updateContentData(aContent.id)">Update</button>
                     </div>
                 </div>
             </div>
@@ -184,6 +227,7 @@
 <script>
     import axios from 'axios'
     import Summernote from "@/components/summer-note/summernote";
+    import SummernoteEdit from "@/components/summer-note/summernote-edit";
     import TagInput from "../tag/TagComponent";
     import $ from "jquery";
 
@@ -193,13 +237,18 @@
         props: ['isAddCheck'],
         components: {
             Summernote,
+            SummernoteEdit,
             TagInput,
             // Select2
         },
         data() {
             return {
+                isToogleModal           : false,
+                isMounted               : false,
                 checked                 :true,
                 enBody                  : "en_Body",
+                enBodyEdit              : "en_Body_edit",
+                bnBodyEdit              : "bn_Body_edit",
                 bnBody                  : "bn_Body",
                 selected_language       : 'english',
                 success_message         : '',
@@ -210,6 +259,10 @@
                 userInfo                : '',
                 user_roles              : '',
                 contentList                : '',
+                enBodyData              : '',
+                bnBodyData              : '',
+                aContent                : '',
+                roleAccess              : [],
 
                 articleData : {
                     id                  : '',
@@ -226,6 +279,7 @@
                     id                  : '',
                     article_id          : '',
                     en_body             : '',
+                    bn_body             : '',
 
                 },
                 role_id               : [],
@@ -247,11 +301,93 @@
             }
         },
         methods: {
+            deleteContent(content_id){
+                let _that = this;
+
+                axios.delete('contents/delete',{
+                    data    : {
+                        id                  : content_id
+                    },
+                    headers : {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+
+                    console.log(response);
+                    _that.getContentList(_that.contentData.article_id);
+
+                })
+            },
+            clearAll(){
+                let _that = this;
+                _that.isMounted  = false;
+                _that.enBodyData = '';
+                _that.roleAccess = [];
+            },
+            updateContentData(content_id){
+
+                let _that = this;
+                let collection;
+                let enBody      = $('#en_Body_edit').val();
+                let bnBody      = $('#bn_Body_edit').val();
+                _that.aContent.en_body = enBody;
+                _that.aContent.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
+                collection = _that.roleAccess.join();
+
+                axios.put('contents/update',
+                    {
+                        id      : _that.aContent.id,
+                        article_id : _that.aContent.article_id,
+                        en_body : _that.aContent.en_body,
+                        bn_body : _that.aContent.bn_body,
+                        role_id : collection
+                    },{
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                        console.log(response);
+                        if (response.data.status_code === 200){
+                            _that.getCategoryList(_that.aContent.article_id);
+                            $('#closeModal_3').click();
+                            $('#roleIdError_2').html("");
+                        }
+                        else if (response.data.status_code === 400){
+                            console.log(response.data.errors);
+                            _that.showServerError(response.data.errors)
+                        }
+                    })
+            },
+            getContentDetails(content_id){
+
+                let _that = this;
+
+                axios.get('contents/'+content_id,{
+                    headers: {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+                    console.log(response);
+                    _that.isMounted =true;
+                    _that.aContent = response.data;
+                    _that.enBodyData  = _that.aContent.en_body;
+                    _that.bnBodyData  = _that.aContent.bn_body;
+                    console.log(_that.bnBodyData);
+                    if ((_that.aContent.role_id).includes(',')) {
+                        _that.roleAccess = (_that.aContent.role_id).split(',');
+                        _that.roleAccess = _that.roleAccess.map(i=>Number(i))
+                        console.log(_that.roleAccess);
+                    }else{
+                        _that.roleAccess.push(_that.aContent.role_id);
+                    }
+                })
+
+            },
             getContentList(articleID){
                 let _that = this;
-                console.log(articleID);
+                // console.log(articleID);
 
-                axios.get('contents/'+articleID,{
+                axios.get('contents-article/'+articleID,{
                     headers: {
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
@@ -261,13 +397,16 @@
             },
             addContentData(){
                 let _that = this
-                let enBody      = document.getElementById('en_Body').value;
+                let enBody      = $('#en_Body').val();
+                let bnBody      = $('#bn_Body').val();
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
+                _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
                 let formData = new FormData();
                 formData.append('id', _that.contentData.id);
                 formData.append('article_id', _that.contentData.article_id);
                 formData.append('en_body', _that.contentData.en_body);
+                formData.append('bn_body', _that.contentData.bn_body);
                 formData.append('role_id', _that.role_id);
 
 
@@ -277,24 +416,25 @@
                             'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                        if (response.data.status_code === 200){
+                    if (response.data.status_code === 200){
 
-                            $('#closeModal_2').click();
-                            _that.contentData.id = '';
-                            _that.contentData.en_body = '';
-                            _that.getContentList(_that.contentData.article_id);
-                            _that.success_message = "Content added successfully";
-                            _that.setTimeoutElements();
-                            _that.unSelectAll();
-                        }
+                        $('#closeModal_2').click();
+                        _that.contentData.id = '';
+                        _that.contentData.en_body = '';
+                        _that.contentData.bn_body = '';
+                        _that.getContentList(_that.contentData.article_id);
+                        _that.success_message = "Content added successfully";
+                        _that.setTimeoutElements();
+                        _that.unSelectAll();
+                    }
 
-                        else if (response.data.status_code === 400){
-                            console.log(response.data.errors);
-                            _that.showServerError(response.data.errors)
-                        }
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
+                    else if (response.data.status_code === 400){
+                        console.log(response.data.errors);
+                        _that.showServerError(response.data.errors)
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
 
             unSelectAll(){
@@ -302,13 +442,13 @@
                 this.role_id = [];
                 let items=document.querySelectorAll('.check-role');
                 for(let i=0; i<items.length; i++){
-                if(items[i].type=='checkbox'){
-                    items[i].checked=false;
-                }
+                    if(items[i].type=='checkbox'){
+                        items[i].checked=false;
+                    }
 
-            }
-    },
-    setTimeoutElements()
+                }
+            },
+            setTimeoutElements()
             {
                 // setTimeout(() => this.isLoading = false, 3e3);
                 setTimeout(() => this.success_message = "", 2e3);
@@ -422,6 +562,7 @@
                 $('#enTitleError').html("");
                 $('#categoryIDError').html("");
                 $('#roleIdError').html("");
+                $('#roleIdError_2').html("");
 
                 $('#enTitle').css({'border-color': '#ced4da'});
                 $('#categoryID').css({'border-color': '#ced4da'});
@@ -438,6 +579,7 @@
                     }
                     else if (val.includes("role id")=== true){
                         $('#roleIdError').html(val)
+                        $('#roleIdError_2').html(val)
                         $('#categoryID').css({'border-color': '#FF7B88'});
                     }
 
@@ -577,10 +719,12 @@
             this.articleData.id = (Math.round((new Date()).getTime()*10));
             this.contentData.article_id = (Math.round((new Date()).getTime()*10));
             // this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-            // console.log(this.userInformation);
+
             this.getCategoryList();
             this.getUserRoles();
             this.getContentList(this.articleData.id);
+            this.$emit('article-id', this.articleData.id);
+            console.log('from child'+this.articleData.id);
         }
     }
 </script>
@@ -604,5 +748,26 @@
 
     #contentModal.modal {
         background: rgba(0,0,0,0.35);
+    }
+
+    #contentModalEdit.modal{
+        background: rgba(0,0,0,0.35);
+    }
+
+    .content-list {
+         background: #c5ecff;
+         border-radius: 6px;
+         color: #000;
+         margin-bottom: 5px;
+        transition: all 0.4s;
+     }
+
+    .content-list:hover {
+        background: #2e9ce0;
+        color: #fff;
+    }
+
+    .action-buttons i {
+        cursor: pointer;
     }
 </style>

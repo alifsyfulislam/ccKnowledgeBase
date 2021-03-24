@@ -64,6 +64,7 @@ Route::middleware('auth:api')->group(function(){
 
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('contents', ContentController::class);
+
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('faqs', FaqController::class);
 
@@ -100,6 +101,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 
     Route::get('quiz-form/quiz-field-list/{id}',[QuizTakeController::class, 'totalCount']);
+
+    Route::get('contents-article/{id}', [ContentController::class, 'showArticleContent']);
+    Route::get('contents-article-exist/{id}', [ContentController::class, 'checkArticleAvailability']);
 
     Route::post('logout', [UserController::class, 'logout']);
 

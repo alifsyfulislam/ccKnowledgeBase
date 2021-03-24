@@ -124,7 +124,7 @@
                 </button>
             </div>
             <!--add-->
-            <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-slide-close="getAddDataFromChild"></ArticleAdd>
+            <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-id="getArticleIDFromChild" @article-slide-close="getAddDataFromChild"></ArticleAdd>
             <!--edit-->
             <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-close="getEditDataFromChild"></ArticleEdit>
             <!--delete-->
@@ -259,6 +259,7 @@
                 mappedPermission : '',
                 perPage             :2,
                 currentPage         :1,
+                unstoredArticleID   :'',
 
                 article_id          :'',
                 search              :"",
@@ -313,6 +314,10 @@
             }
         },
         methods: {
+            getArticleIDFromChild(article_id){
+                console.log(article_id);
+                this.unstoredArticleID = article_id;
+            },
             articleStatusRequest(selected){
                 $('#alertModal').modal('show');
                 localStorage.setItem('article_status', JSON.stringify(selected));
@@ -364,10 +369,22 @@
             // slider close
             clearAllChecker()
             {
-                this.isSearchCheck      = false;
-                this.isAddCheck         = false;
-                this.isEditCheck        = false;
-                this.isDeleteCheck      = false;
+                let _that = this;
+                _that.isSearchCheck      = false;
+                _that.isAddCheck         = false;
+                _that.isEditCheck        = false;
+                _that.isDeleteCheck      = false;
+
+                if (!_that.unstoredArticleID){
+                    axios.get('contents-article-exist/'+this.unstoredArticleID,{
+                        headers: {
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+                        console.log(response);
+                        _that.unstoredArticleID = '';
+                    })
+                }
             },
             // after crud close
             removingRightSideWrapper()
