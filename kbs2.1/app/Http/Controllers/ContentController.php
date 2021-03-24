@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Content;
+use App\Services\ContentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Auth;
+
 
 class ContentController extends Controller
 {
+    protected $contentService;
+
+
+    public function __construct(ContentService $contentService)
+    {
+
+        $this->contentService = $contentService;
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,32 +46,20 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'role_id' => 'required',
-        ]);
 
-        if($validator->fails()) {
+
+        if(Auth::user()->can('article-create')) {
+
+            return $this->contentService->createItem($request);
+
+        } else {
 
             return response()->json([
-                'status_code' => 400,
-                'messages'    => config('status.status_code.400'),
-                'errors'      => $validator->errors()->all()
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
             ]);
 
         }
-
-        $content = new Content();
-        $content->id = $request->id;
-        $content->article_id = $request->article_id;
-        $content->en_body = $request->en_body;
-        $content->bn_body = $request->bn_body!= null ? $request->bn_body : 'n/a';
-        $content->role_id = $request->role_id;
-        $content->save();
-
-        return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200')
-        ]);
     }
 
     /**
@@ -72,7 +70,9 @@ class ContentController extends Controller
      */
     public function show($id)
     {
-        return Content::where('id', $id)->first();
+
+        return $this->contentService->getById($id);
+
     }
 
     /**
@@ -95,32 +95,21 @@ class ContentController extends Controller
      */
     public function update(Request $request)
     {
-//        return response()->json($request->all());
-        $validator = Validator::make($request->all(),[
-            'role_id' => 'required',
-        ]);
 
-        if($validator->fails()) {
+        if(Auth::user()->can('article-edit')) {
+
+            return $this->contentService->updateItem($request);
+
+        } else {
 
             return response()->json([
-                'status_code' => 400,
-                'messages'    => config('status.status_code.400'),
-                'errors'      => $validator->errors()->all()
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
             ]);
-
         }
 
-        $content = Content::find($request->id);
-        $content->article_id = $request->article_id;
-        $content->en_body = $request->en_body;
-        $content->bn_body = $request->bn_body != null ? $request->bn_body : 'n/a';
-        $content->role_id = $request->role_id;
-        $content->save();
 
-        return response()->json([
-            'status_code' => 200,
-            'messages'=>config('status.status_code.200')
-        ]);
+
     }
 
     /**
@@ -131,31 +120,31 @@ class ContentController extends Controller
      */
     public function destroy(Request $request)
     {
-        $content = Content::find($request->id);
-        if ($content){
-            $content->delete();
-        }else{
-            return 'no content found';
+        if(Auth::user()->can('article-delete')) {
+
+            return  $this->contentService->deleteItem($request->id);
+
         }
+        else{
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
+
+        }
+
     }
 
     public function showArticleContent($id){
-        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
-        if ($contents){
-            return $contents;
-        }else{
-            return 'no content found';
-        }
+
+        return $this->contentService->articleContentList($id);
+
     }
 
     public function checkArticleAvailability($id){
-        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
-        if ($contents){
-            foreach ($contents as $content){
-                $content->delete();
-            }
-        }else{
-            return 'no article found';
-        }
+
+        return $this->contentService->checkArticleExist($id);
+
     }
 }

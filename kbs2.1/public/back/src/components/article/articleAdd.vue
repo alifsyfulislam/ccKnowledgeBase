@@ -79,8 +79,8 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
-                        <ul v-if="contentList" class="mb-0">
+                    <div class="col-md-12" v-if="contentList">
+                        <ul class="mb-0">
                             <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
                                 <span class="text-black font-12" v-if="a_content.en_body">Block {{ index+1 }}</span>
                                 <div class="action-buttons">
@@ -323,6 +323,9 @@
                 _that.isMounted  = false;
                 _that.enBodyData = '';
                 _that.roleAccess = [];
+
+                $('#roleIdError').html("");
+                $('#roleIdError_2').html("");
             },
             updateContentData(content_id){
 
@@ -367,9 +370,9 @@
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-                    console.log(response);
+                    console.log(response.data);
                     _that.isMounted =true;
-                    _that.aContent = response.data;
+                    _that.aContent = response.data.content_info;
                     _that.enBodyData  = _that.aContent.en_body;
                     _that.bnBodyData  = _that.aContent.bn_body;
                     console.log(_that.bnBodyData);
@@ -392,7 +395,8 @@
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-                    _that.contentList = response.data;
+                    // console.log(response.data)
+                    _that.contentList = response.data.content_list;
                 })
             },
             addContentData(){
@@ -417,7 +421,7 @@
                         }
                     }).then(function (response) {
                     if (response.data.status_code === 200){
-
+                        console.log(response.data);
                         $('#closeModal_2').click();
                         _that.contentData.id = '';
                         _that.contentData.en_body = '';
@@ -447,6 +451,8 @@
                     }
 
                 }
+                $('#roleIdError').html("");
+                $('#roleIdError_2').html("");
             },
             setTimeoutElements()
             {

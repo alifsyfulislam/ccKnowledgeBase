@@ -2,7 +2,7 @@
     <div class="tag-input" @click="inputFocus($event)">
         <div v-for="(tag, index) in tags" :key="index" class="tag-group">
             <span class="tag tag-primary" @dblclick="updateTag(tag,index)">{{tag}}</span>
-            <span v-if="index != 0" class="tag tag-delete tag-secondary" @click="removeTag(index)">X</span>
+            <span class="tag tag-delete tag-secondary" @click="removeTag(index)">X</span>
         </div>
         <input v-if="isExceed" type="text" class="tag-control form-control" placeholder="Add a new tag" v-model="tagValue" @keyup="error_message = ''" @blur="tagValue = ''" @input="autoWidth($event)"
                @keyup.enter="createTag($event)">
@@ -73,7 +73,7 @@ export default {
         },
         removeTag(i){
             this.tags.splice(i,1)
-            if (this.tagList.length <= 10 && this.tagList.length != 0 ){
+            if (this.tagList.length <= 10 && this.tagList.length == 0 ){
                 this.isExceed = true;
                 this.$emit('tag-list', this.tagList);
             }
