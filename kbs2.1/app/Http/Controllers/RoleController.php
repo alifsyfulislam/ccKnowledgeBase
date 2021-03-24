@@ -39,16 +39,16 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->roleService->paginateData($request);
-//        if(Auth::user()->can('role-list')) {
-//
-//            return $this->roleService->paginateData($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+//        return $this->roleService->paginateData($request);
+        if(Auth::user()->can('role-list')) {
+
+            return $this->roleService->paginateData($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
@@ -113,17 +113,17 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        return $this->roleService->getById($id);
+//        return $this->roleService->getById($id);
 
-//        if(Auth::user()->can('role-list')) {
-//
-//            return $this->roleService->getById($id);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('role-list')) {
+
+            return $this->roleService->getById($id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
 
     }
@@ -136,17 +136,17 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
-        return $this->roleService->updateItem($request);
+//        return $this->roleService->updateItem($request);
 
-//        if(Auth::user()->can('role-edit')) {
-//
-//            return $this->roleService->updateItem($request);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('role-edit')) {
+
+            return $this->roleService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 
@@ -169,17 +169,17 @@ class RoleController extends Controller
 
     public function destroy(Request $request)
     {
-        return  $this->roleService->deleteItem($request->id);
+//        return  $this->roleService->deleteItem($request->id);
 
-//        if(Auth::user()->can('role-delete')) {
-//
-//            return  $this->roleService->deleteItem($request->id);
-//
-//        } else {
-//
-//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
-//
-//        }
+        if(Auth::user()->can('role-delete')) {
+
+            return  $this->roleService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
 
     }
 }

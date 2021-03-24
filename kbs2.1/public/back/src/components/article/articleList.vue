@@ -126,7 +126,7 @@
             <!--add-->
             <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-id="getArticleIDFromChild" @article-slide-close="getAddDataFromChild"></ArticleAdd>
             <!--edit-->
-            <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :articleId="article_id" @article-edit-close="getEditDataFromChild"></ArticleEdit>
+            <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" @article-edit-id="getArticleIDFromChild" :articleId="article_id" @article-edit-close="getEditDataFromChild"></ArticleEdit>
             <!--delete-->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                 <div class="right-sidebar-content-area px-2">
@@ -375,16 +375,18 @@
                 _that.isEditCheck        = false;
                 _that.isDeleteCheck      = false;
 
-                if (!_that.unstoredArticleID){
-                    axios.get('contents-article-exist/'+this.unstoredArticleID,{
-                        headers: {
-                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-                        console.log(response);
-                        _that.unstoredArticleID = '';
-                    })
-                }
+                console.log("check if"+_that.unstoredArticleID);
+
+
+                axios.get('contents-article-exist/'+this.unstoredArticleID,{
+                    headers: {
+                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                    },
+                }).then(function (response) {
+                    console.log(response);
+                    _that.unstoredArticleID = '';
+                })
+
             },
             // after crud close
             removingRightSideWrapper()

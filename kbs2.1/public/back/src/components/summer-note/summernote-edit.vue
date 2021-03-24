@@ -23,8 +23,8 @@ export default {
   },
   mounted() {
 
-    // this.textId = this.idFromParent;
-    //console.log(this.textId);
+    this.textId = this.dataFromParent;
+    console.log(this.textId);
 
     let fontsArray = ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Roboto'];
     const vm = this;
