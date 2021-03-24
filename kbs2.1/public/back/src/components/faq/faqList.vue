@@ -134,7 +134,7 @@
         </button>
       </div>
       <!--            add-->
-      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
+      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @article-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
       <!--            edit-->
       <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
       <!--delete-->
@@ -341,6 +341,10 @@ export default {
     }
   },
   methods: {
+    getFaqIDFromChild(article_id){
+        console.log(article_id);
+        this.unstoredArticleID = article_id;
+    },
     faqStatusRequest(selected){
       $('#alertModal').modal('show');
       localStorage.setItem('faq_status', JSON.stringify(selected));
@@ -377,6 +381,25 @@ export default {
       this.error_message          = "";
       this.getFaqList();
     },
+    clearAllChecker()
+    {
+        let _that = this;
+        _that.isSearchCheck      = false;
+        _that.isAddCheck         = false;
+        _that.isEditCheck        = false;
+        _that.isDeleteCheck      = false;
+
+        if (!_that.unstoredArticleID){
+            axios.get('contents-faq-exist/'+this.unstoredArticleID,{
+                headers: {
+                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                },
+            }).then(function (response) {
+                console.log(response);
+                _that.unstoredArticleID = '';
+            })
+        }
+    },
     setTimeoutElements()
     {
       // setTimeout(() => this.isLoading = false, 3e3);
@@ -393,14 +416,6 @@ export default {
 
       document.body.classList.remove('open-side-slider');
       $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-    },
-
-    clearAllChecker()
-    {
-      this.isAddCheck         = false;
-      this.isEditCheck        = false;
-      this.isDeleteCheck      = false;
-      this.isSearchCheck      = false;
     },
 
     getAddDataFromChild (status)
