@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Article;
+use App\Models\Content;
 use Illuminate\Support\Str;
 
 class ArticleRepository implements RepositoryInterface
@@ -95,12 +96,24 @@ class ArticleRepository implements RepositoryInterface
 
 
     /**
-     * @param $id
+     * @param $idgit
      * @return mixed
      */
     public function delete($id)
     {
-        return Article::find($id)->delete();
+
+        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($contents){
+            foreach ($contents as $content){
+                $content->delete();
+            }
+            Article::find($id)->delete();
+            return 'content article delete';
+        }else{
+            Article::find($id)->delete();
+            return 'no content found';
+        }
+//        return Article::find($id)->delete();
     }
 
 
