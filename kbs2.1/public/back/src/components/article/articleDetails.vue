@@ -21,84 +21,73 @@
 
 
         <div class="content-wrapper bg-white" v-if="aArticle">
-          <div class="col-md-12 article-lang-switcher">
-            <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'n/a'">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
-              </li>
-            </ul>
-          </div>
+          <div class="data-content-area px-15 py-10">
+            <h3 class="font-weight-bold">Articles Details Page</h3>
+            <div>
+              <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
+            </div>
+            <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
 
-          <div class="col-md-12">
-            <div class="tab-content pt-3" id="myTabContent">
-              <div class="tab-pane fade active show" id="tabEnglish">
-                <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
-                <div>
-                  <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
-                </div>
-                <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-                <div class="ta-wrapper d-flex align-items-center py-10 my-40">
-                  <div class="avatar mr-10">
-                    <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                  </div>
-                  <div class="tc-wrapper">
-                    <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                    <p class="mb-0">Post on: {{aArticle.created_at}}</p>
-                  </div>
-                </div>
-
-                <div class="ta-content-wrapper">
-                  <h3 class="">{{aArticle.en_title}}</h3>
-                </div>
-                <div class="ta-content-wrapper">
-                  <div v-html="aArticle.en_body"></div>
-                </div>
+            <div class="ta-wrapper d-flex align-items-center py-10 my-15">
+              <div class="avatar mr-10">
+                <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
               </div>
-
-
-              <!--bangla-->
-              <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
-                <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
-                <div>
-                  <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
-                </div>
-                <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-                <div class="ta-wrapper d-flex align-items-center py-10 my-40">
-                  <div class="avatar mr-10">
-                    <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                  </div>
-                  <div class="tc-wrapper">
-                    <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                    <p class="mb-0">Post on: {{aArticle.created_at}}</p>
-                  </div>
-                </div>
-
-                <div class="ta-content-wrapper">
-                  <h3 class="">{{aArticle.bn_title}}</h3>
-                </div>
-                <div class="ta-content-wrapper">
-                  <div v-html="aArticle.bn_body"></div>
-                </div>
+              <div class="tc-wrapper">
+                <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                <p class="mb-0">Post on: {{aArticle.created_at}}</p>
               </div>
             </div>
 
+
+            <div class="col-md-12 article-lang-switcher" v-if="aArticle.bn_title != 'n/a'">
+              <ul class="nav nav-tabs" id="myTab">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="col-md-12">
+              <div class="tab-content pt-3" id="myTabContent">
+                <div class="tab-pane fade active show" id="tabEnglish" v-if="aArticle">
+                  <div class="ta-content-wrapper">
+                    <h3 class="pb-10">{{aArticle.en_title}}</h3>
+                  </div>
+                  <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
+                    <div v-if="a_article_content.en_body != 'n/a'" v-html="a_article_content.en_body"></div>
+                  </div>
+                </div>
+
+
+                <!--bangla-->
+                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.contents.bn_title != 'n/a'">
+                  <div class="ta-content-wrapper">
+                    <h3 class="pb-10">{{aArticle.bn_title}}</h3>
+                  </div>
+                  <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
+                    <div v-if="a_article_content.bn_body != 'n/a'" v-html="a_article_content.bn_body"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <br/>
+
+            <div class="col-md-12" v-if="aArticle.media.length > 0">
+              <h5 class="mb-0 font-weight-bold pb-2">Refferences</h5>
+              <ul class="pl-15">
+                <li v-for="a_file in aArticle.media" :key="a_file.id">
+                  <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Content Area End -->
           </div>
-
-          <br/>
-
-          <div class="col-md-12" v-if="aArticle.media.length > 0">
-            <h5 class="mb-0 font-weight-bold pb-2">Refferences</h5>
-            <ul class="pl-15">
-              <li v-for="a_file in aArticle.media" :key="a_file.id">
-                <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Content Area End -->
         </div>
       </div>
       <!-- Content Area End -->
@@ -151,7 +140,7 @@ export default {
         .then(function (response) {
           _that.aArticle = response.data.article_info;
 
-          console.log(_that.aArticle.media);
+          console.log(_that.aArticle.contents);
         })
     },
 

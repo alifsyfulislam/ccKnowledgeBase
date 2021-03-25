@@ -82,7 +82,7 @@
                     <div class="col-md-12" v-if="contentList">
                         <ul class="mb-0">
                             <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
-                                <span class="text-black font-12" v-if="a_content.en_body">Block {{ index+1 }}</span>
+                                <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                                 <div class="action-buttons">
                                     <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
                                     <i @click="deleteContent(a_content.id)"  class="fa fa-trash d-inline-block text-red font-12"></i>
@@ -146,6 +146,11 @@
                         <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>
                     </div>
                     <div class="modal-body" style="max-height: 450px;overflow-y: auto;">
+                        <div class="d-inline-block">
+                            <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">
+                            <label for="checkbox4" class="ml-2">Bangla</label>
+                        </div>
+
                         <div class="form-group">
                             <label>English Body</label>
                             <input hidden class="form-control" type="text" v-model="contentData.article_id">
@@ -162,7 +167,7 @@
 
                             <ul class="list-unstyled permission-list m-0 p-0">
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
+                                    <label class="pl-2 mb-0"><input @click="allSelected = false" class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
                                 </li>
                             </ul>
                         </div>
@@ -183,10 +188,10 @@
                         <h5 class="modal-title" id="contentModalLabel_2">Edit New Content</h5>
                     </div>
                     <div class="modal-body">
-<!--                        <div class="d-inline-block">-->
-<!--                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
-<!--                            <label for="checkbox3" class="ml-2">Bangla</label>-->
-<!--                        </div>-->
+                        <div class="d-inline-block">
+                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">
+                            <label for="checkbox3" class="ml-2">Bangla</label>
+                        </div>
 
                         <div class="form-group">
                             <label>English Body</label>
@@ -243,7 +248,6 @@
         },
         data() {
             return {
-                isToogleModal           : false,
                 isMounted               : false,
                 checked                 :true,
                 enBody                  : "en_Body",
@@ -604,13 +608,6 @@
                     formData.append('uploaded_file[' + i + ']', file);
                 }
 
-                // let enBody      = document.getElementById('en_Body').value;
-
-                // if (!(document.getElementById('bn_Body'))) {
-                //     var bnBody  = '';
-                // } else {
-                //     bnBody      = document.getElementById('bn_Body').value;
-                // }
                 formData.append('id',this.articleData.id);
                 formData.append('category_id', this.selectedCategory);
                 formData.append('en_title', this.articleData.en_title);
@@ -618,8 +615,6 @@
                 formData.append('tag', this.articleData.tag);
                 formData.append('en_short_summary', this.articleData.en_short_summary);
                 formData.append('bn_short_summary', this.articleData.bn_short_summary);
-                // formData.append('en_body', enBody);
-                // formData.append('bn_body', bnBody);
                 formData.append('status', this.articleData.status);
 
                 axios.post('articles', formData,
@@ -703,13 +698,6 @@
 
                             _that.user_roles = response.data.role_list;
 
-                            // response.data.role_list.forEach(val => {
-                            //     console.log(val);
-                            //     _that.role_options.push({
-                            //         'id' : val.id,
-                            //         'text' : val.name
-                            //     })
-                            // })
                         }
                         else{
                             _that.success_message = "";
@@ -717,7 +705,6 @@
                         }
                     })
             }
-
 
         },
         created()

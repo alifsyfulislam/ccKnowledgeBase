@@ -229,6 +229,10 @@
     margin-bottom: 20px;
 }
 
+.ta-content-wrapper ul {
+    overflow: auto;
+}
+
 .close-bar {
     z-index: 99;
 }
