@@ -32,6 +32,13 @@ class Article extends Model
 
     }
 
+    public function contents()
+    {
+
+        return $this->hasMany(Content::class);
+
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

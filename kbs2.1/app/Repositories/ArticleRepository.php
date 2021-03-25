@@ -50,7 +50,7 @@ class ArticleRepository implements RepositoryInterface
 
     public function getBySlug($slug)
     {
-        return Article::with('user','category','media')
+        return Article::with('user','category','media','contents')
             ->where('slug', $slug)
             ->first();
     }
