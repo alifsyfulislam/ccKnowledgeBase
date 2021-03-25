@@ -136,7 +136,7 @@
       <!--            add-->
       <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
       <!--            edit-->
-      <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
+      <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id"  @faq-edit-id="getFaqIDFromChild" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
       <!--delete-->
       <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
         <div class="right-sidebar-content-area px-2">
