@@ -57,7 +57,7 @@
                     <h3 class="pb-10">{{aArticle.en_title}}</h3>
                   </div>
                   <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
-                    <div v-if="a_article_content.en_body != 'n/a'" v-html="a_article_content.en_body"></div>
+                    <div v-if="a_article_content.en_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.en_body"></div>
                   </div>
                 </div>
 
@@ -68,7 +68,7 @@
                     <h3 class="pb-10">{{aArticle.bn_title}}</h3>
                   </div>
                   <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
-                    <div v-if="a_article_content.bn_body != 'n/a'" v-html="a_article_content.bn_body"></div>
+                    <div v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
                   </div>
                 </div>
               </div>
@@ -98,92 +98,105 @@
 </template>
 
 <script>
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
-import axios from "axios";
+  import Header from "@/layouts/common/Header";
+  import Menu from "@/layouts/common/Menu";
+  import axios from "axios";
 
-export default {
-  name: "articleDetails.vue",
-  components: {
-    Header,
-    Menu
-  },
-  filters:{
-    formatFileName(fileName){
-      let res;
-      res = fileName.split('/')
-      return res[res.length - 1];;
+  export default {
+    name: "articleDetails.vue",
+    components: {
+      Header,
+      Menu
+    },
+    filters:{
+      formatFileName(fileName){
+        let res;
+        res = fileName.split('/')
+        return res[res.length - 1];;
+      }
+    },
+    data(){
+
+      return{
+
+        articleID: '',
+        aArticle: '',
+        articleCounter: [],
+        allCategoryArticle: '',
+        categoryHasArticle: [],
+        allArticle: '',
+        query_string: '',
+        roleAccess : [],
+        userInformation : '',
+
+      }
+
+    },
+
+    methods: {
+
+      articleSearch(v){
+        let _that = this;
+        let articleID = v;
+        axios.get('article-details/'+articleID)
+          .then(function (response) {
+            _that.aArticle = response.data.article_info;
+
+            console.log(_that.aArticle.contents);
+
+            // _that.aArticle.contents.forEach(val=>{
+            //   console.log(val.role_id);
+            //
+            //   if ((val.role_id).includes(',')) {
+            //     _that.roleAccess = (val.role_id).split(',');
+            //     _that.roleAccess = _that.roleAccess.map(i=>Number(i))
+            //     console.log(_that.roleAccess);
+            //   }
+            // })
+          })
+      },
+
+      searchData(){
+        let _that = this;
+        _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
+      },
+
+      getRecentArticleList(){
+        let _that = this;
+        axios.get('article-list')
+                .then(function (response) {
+                  _that.allArticle = response.data.article_list;
+                })
+      },
+
+      getCategoryArticleList()
+      {
+        let _that =this;
+        // let articleCounter = 0;
+        axios.get('category-article-list', { cache: false })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.allCategoryArticle = response.data.category_list;
+                    _that.allCategoryArticle.forEach(val =>{
+                      if (val.article.length!=0){
+                        _that.categoryHasArticle.push(val);
+                      }
+                    })
+                  }
+                })
+      },
+
+    },
+
+    created() {
+      this.articleID = this.$route.params.id;
+      console.log(this.articleID);
+      this.articleSearch(this.articleID);
+      this.getCategoryArticleList();
+      this.getRecentArticleList();
+      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
     }
-  },
-  data(){
-
-    return{
-
-      articleID: '',
-      aArticle: '',
-      articleCounter: [],
-      allCategoryArticle: '',
-      categoryHasArticle: [],
-      allArticle: '',
-      query_string: ''
-
-    }
-
-  },
-
-  methods: {
-
-    articleSearch(v){
-      let _that = this;
-      let articleID = v;
-      axios.get('article-details/'+articleID)
-        .then(function (response) {
-          _that.aArticle = response.data.article_info;
-
-          console.log(_that.aArticle.contents);
-        })
-    },
-
-    searchData(){
-      let _that = this;
-      _that.$router.push({ name: 'Search', params: { query_string: _that.query_string } });
-    },
-
-    getRecentArticleList(){
-      let _that = this;
-      axios.get('article-list')
-        .then(function (response) {
-          _that.allArticle = response.data.article_list;
-        })
-    },
-
-    getCategoryArticleList()
-    {
-      let _that =this;
-      // let articleCounter = 0;
-      axios.get('category-article-list', { cache: false })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.allCategoryArticle = response.data.category_list;
-            _that.allCategoryArticle.forEach(val =>{
-              if (val.article.length!=0){
-                _that.categoryHasArticle.push(val);
-              }
-            })
-          }
-        })
-    },
-
-  },
-
-  created() {
-    this.articleID = this.$route.params.id;
-    console.log(this.articleID);
-    this.articleSearch(this.articleID);
-    this.getCategoryArticleList();
-    this.getRecentArticleList();
   }
-}
 
 </script>
 

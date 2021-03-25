@@ -167,7 +167,7 @@
 
                             <ul class="list-unstyled permission-list m-0 p-0">
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label class="pl-2 mb-0"><input @click="allSelected = false" class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
+                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
                                 </li>
                             </ul>
                         </div>
@@ -287,6 +287,7 @@
 
                 },
                 role_id               : [],
+                userInformation         : '',
 
 
 
@@ -718,6 +719,7 @@
             this.getContentList(this.articleData.id);
             this.$emit('article-id', this.articleData.id);
             console.log('from child'+this.articleData.id);
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
         }
     }
 </script>

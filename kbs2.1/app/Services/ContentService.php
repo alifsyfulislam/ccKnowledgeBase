@@ -140,7 +140,15 @@ class ContentService
 
         try {
 
-            $this->contentRepository->update($request);
+            $result_array = explode(",",$request->role_id);
+
+            if (in_array('1',$result_array)){
+                $this->contentRepository->update($request);
+            }else{
+                array_push($result_array,'1');
+                $request->role_id = implode(',',$result_array);
+                $this->contentRepository->update($request);
+            }
 
         } catch (Exception $e) {
 
@@ -200,7 +208,15 @@ class ContentService
 
         try {
 
-            $this->contentRepository->create($request);
+            $result_array = explode(",",$request->role_id);
+
+            if (in_array('1',$result_array)){
+                $this->contentRepository->create($request);
+            }else{
+                array_push($result_array,'1');
+                $request->role_id = implode(',',$result_array);
+                $this->contentRepository->create($request);
+            }
 
         } catch (Exception $e) {
 

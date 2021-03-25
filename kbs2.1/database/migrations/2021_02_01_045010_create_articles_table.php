@@ -24,8 +24,6 @@ class CreateArticlesTable extends Migration
             $table->string('slug');
             $table->text('en_short_summary')->nullable();
             $table->text('bn_short_summary')->nullable();
-            $table->binary('en_body')->nullable();
-            $table->binary('bn_body')->nullable();
             $table->enum('status', ['draft', 'hide', 'private', 'public']);
             $table->timestamp('publish_date')->nullable();
             $table->timestamps();
