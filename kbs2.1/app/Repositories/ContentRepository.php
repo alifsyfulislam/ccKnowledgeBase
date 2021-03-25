@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Models\Article;
+use App\Models\Faq;
 use App\Models\Content;
 
 class ContentRepository
@@ -60,6 +61,24 @@ class ContentRepository
 
         $article = Article::find($id);
         if (empty($article)){
+            $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+            if ($contents){
+                foreach ($contents as $content){
+                    $content->delete();
+                }
+            }
+            else{
+                return 'no content found';
+            }
+
+        }else{
+            return 'article found';
+        }
+    }
+    public function faqAvailabilty($id){
+
+        $faq = Faq::find($id);
+        if (empty($faq)){
             $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
             if ($contents){
                 foreach ($contents as $content){

@@ -134,9 +134,9 @@
         </button>
       </div>
       <!--            add-->
-      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
+      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
       <!--            edit-->
-      <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
+      <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id"  @faq-edit-id="getFaqIDFromChild" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
       <!--delete-->
       <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
         <div class="right-sidebar-content-area px-2">
@@ -261,6 +261,7 @@ export default {
       isFaqStatus         : '',
       isLoading           : false,
       isEditCheck         : false,
+      unstoredFaqID       :'',
       isAddCheck          : false,
       isDeleteCheck       : false,
       isSearchCheck       : false,
@@ -341,6 +342,10 @@ export default {
     }
   },
   methods: {
+    getFaqIDFromChild(faq_id){
+        console.log(faq_id);
+        this.unstoredFaqID = faq_id;
+    },
     faqStatusRequest(selected){
       $('#alertModal').modal('show');
       localStorage.setItem('faq_status', JSON.stringify(selected));
@@ -377,6 +382,23 @@ export default {
       this.error_message          = "";
       this.getFaqList();
     },
+    clearAllChecker()
+    {
+        let _that = this;
+        _that.isSearchCheck      = false;
+        _that.isAddCheck         = false;
+        _that.isEditCheck        = false;
+        _that.isDeleteCheck      = false;
+
+          axios.get('contents-faq-exist/'+this.unstoredFaqID,{
+              headers: {
+                  'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+              },
+          }).then(function (response) {
+              console.log(response);
+              _that.unstoredFaqID = '';
+          })
+    },
     setTimeoutElements()
     {
       // setTimeout(() => this.isLoading = false, 3e3);
@@ -393,14 +415,6 @@ export default {
 
       document.body.classList.remove('open-side-slider');
       $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-    },
-
-    clearAllChecker()
-    {
-      this.isAddCheck         = false;
-      this.isEditCheck        = false;
-      this.isDeleteCheck      = false;
-      this.isSearchCheck      = false;
     },
 
     getAddDataFromChild (status)

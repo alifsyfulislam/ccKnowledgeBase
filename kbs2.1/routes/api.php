@@ -104,6 +104,7 @@ Route::middleware('auth:api')->group(function(){
 
     Route::get('contents-article/{id}', [ContentController::class, 'showArticleContent']);
     Route::get('contents-article-exist/{id}', [ContentController::class, 'checkArticleAvailability']);
+    Route::get('contents-faq-exist/{id}', [ContentController::class, 'checkFaqAvailability']);
 
     Route::post('logout', [UserController::class, 'logout']);
 
