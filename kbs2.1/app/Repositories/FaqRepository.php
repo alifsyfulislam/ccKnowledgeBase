@@ -28,7 +28,7 @@ class FaqRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Faq::with( 'user', 'category')->find($id);
+        return Faq::with( 'user', 'category','contents')->find($id);
     }
 
     /**
@@ -44,7 +44,7 @@ class FaqRepository implements RepositoryInterface
         $dataObj->user_id = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
         $dataObj->en_title = $data['en_title'];
-        //$dataObj->bn_title = $data['bn_title'];
+        $dataObj->bn_title = $data['bn_title'];
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
         $dataObj->en_body = $data['en_body'];

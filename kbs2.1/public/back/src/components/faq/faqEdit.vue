@@ -643,6 +643,7 @@ export default {
                     article_id      : this.article_update_id,
                     category_id     : this.selectedCategory,
                     en_title        : this.faqData.en_title,
+                    bn_title        : this.faqData.bn_title,
                     tag             : this.faqData.tag,
                     en_body         : enBody,
                     bn_body         : bnBody,
