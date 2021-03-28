@@ -72,6 +72,12 @@ class PermissionTableSeeder extends Seeder
             'Page Edit',
             'Page Delete',
 
+            'Banner Create',
+            'Banner List',
+            'Banner Edit',
+            'Banner Delete',
+
+
         ];
 
 
