@@ -87,7 +87,7 @@
 
           <div class="col-md-12" v-if="contentList">
             <ul class="mb-0">
-              <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
+              <li v-for="(a_content,index) in contentList" v-if="a_content.role_id.includes(userInformation.roles[0].id)" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
                 <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                 <div class="action-buttons">
                   <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
@@ -290,6 +290,7 @@
         articleDetails            : '',
         enBodyData                : '',
         bnBodyData                : '',
+        userInformation           : '',
 
         articleData       : {
           category_id             : '',
@@ -817,6 +818,7 @@
       this.getUserRoles();
       this.getContentList(this.contentData.article_id);
       this.$emit('article-edit-id', this.contentData.article_id);
+      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
     }
   }
 </script>
