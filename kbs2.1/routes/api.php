@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\TotalCountController;
 use App\Http\Controllers\AuthController;
@@ -64,6 +65,8 @@ Route::middleware('auth:api')->group(function(){
 
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('contents', ContentController::class);
+    Route::apiResource('banners', BannerController::class);
+//    Route::post('banner-update', [BannerController::class,'bannerUpdate']);
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('faqs', FaqController::class);
