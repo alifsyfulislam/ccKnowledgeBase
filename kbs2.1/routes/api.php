@@ -66,6 +66,7 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('contents', ContentController::class);
     Route::apiResource('banners', BannerController::class);
+//    Route::post('banner-update', [BannerController::class,'bannerUpdate']);
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('faqs', FaqController::class);

@@ -68,7 +68,7 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->bannerService->getById($id);
     }
 
     /**
@@ -78,9 +78,21 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+        if(Auth::user()->can('banner-edit')) {
+
+            return $this->bannerService->updateItem($request);
+
+        } else {
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'=>'User does not have the right permissions'
+            ]);
+
+        }
     }
 
     /**
@@ -89,8 +101,18 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+
+        if(Auth::user()->can('banner-delete')) {
+
+            return  $this->bannerService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+
     }
 }

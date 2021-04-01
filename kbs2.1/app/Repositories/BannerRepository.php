@@ -6,6 +6,8 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Models\Banner;
+use App\Models\Media;
+
 
 class BannerRepository
 {
@@ -23,6 +25,18 @@ class BannerRepository
         return $dataObj->save();
     }
 
+    public function update($input){
+
+        $banner = Banner::find($input['id']);
+        $banner->title = $input['title'];
+        $banner->slug = Helper::slugify($input['title']);
+        $banner->status = $input['status'];
+        $banner->role_id = $input['role_id'];
+        $banner->save();
+        return $banner;
+
+    }
+
 
     public function get($id)
     {
@@ -38,6 +52,34 @@ class BannerRepository
     {
 
         return Banner::with('media')->orderBy('id','DESC')->paginate(20);
+
+    }
+
+    public function delete($id){
+
+
+
+        $banner = Banner::where('id',$id)->first();
+
+//        return $banner;
+
+        if ($banner){
+            $banner->delete();
+
+            $media = Media::where('mediable_id', $id)->first();
+            $mediaName =  substr($media->url, strpos($media->url, "media") );
+
+            if ($mediaName){
+
+
+                unlink(public_path().'/'.$mediaName );
+                $media->delete();
+
+            }
+
+//            $media->delete();
+
+        }
 
     }
 }

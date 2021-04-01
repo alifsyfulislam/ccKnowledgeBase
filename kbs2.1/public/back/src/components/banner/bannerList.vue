@@ -71,6 +71,7 @@
                                                             <span v-else>
                                                                 <video class="preview" controls>
                                                                     <source :src="a_url.url" type="video/mp4">
+                                                                    <source :src="a_url.url" type="video/ogg">
                                                                 </video>
 
                                                             </span>
@@ -80,11 +81,11 @@
 
                                                     <template v-slot:item.actions="{item}">
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
-                                                                @click="category_id=item.id, isEditCheck=true" v-if="checkPermission('category-edit')">
+                                                                @click="banner_id=item.id, isEditCheck=true" v-if="checkPermission('banner-edit')">
                                                             <i class="fas fa-pen"></i>
                                                         </button>
                                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                                 @click="category_id=item.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
+                                                                 @click="banner_id=item.id, isDeleteCheck=true" v-if="checkPermission('banner-delete')">
                                                             <i class="fas fa-trash-restore-alt"></i>
                                                         </button>
                                                     </template>
@@ -127,7 +128,7 @@
             <!--            add data-->
             <BannerAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @banner-slide-close="getAddDataFromChild"></BannerAdd>
             <!--            edit data-->
-            <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-slide-close="getEditDataFromChild"></CategoryEdit>
+            <BannerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="banner_id" @banner-slide-close="getEditDataFromChild"></BannerEdit>
             <!--            delete data -->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                 <div class="right-sidebar-content-area px-2">
@@ -144,9 +145,9 @@
                                 <figure class="mx-auto text-center">
                                     <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                 </figure>
-                                <p class="text-center"> Confirmation for Deleting Category</p>
+                                <p class="text-center"> Confirmation for Deleting Banner</p>
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteBanner()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -163,7 +164,7 @@
     import Menu from '@/layouts/common/Menu'
     import Header from '@/layouts/common/Header'
     import BannerAdd from "@/components/banner/bannerAdd";
-    import CategoryEdit from "@/components/category/categoryEdit";
+    import BannerEdit from "@/components/banner/bannerEdit";
     import Loading from "@/components/loader/loading";
 
     import $ from "jquery";
@@ -174,7 +175,7 @@
             Header,
             Menu,
             BannerAdd,
-            CategoryEdit,
+            BannerEdit,
             Loading,
         },
 
@@ -186,7 +187,7 @@
                 isDeleteCheck       : false,
                 isExportCheck        :false,
                 isSearch            : false,
-                category_id         : '',
+                banner_id         : '',
                 category_parent_id  : '',
                 category_name       : '',
                 success_message     : '',
@@ -255,7 +256,7 @@
             getAddDataFromChild (status){
 
                 this.success_message = status;
-                this.getCategoryList();
+                this.getBannerList();
                 this.removingRightSideWrapper();
                 this.setTimeoutElements();
             },
@@ -287,11 +288,9 @@
                         _that.pagination.current = response.data.banner_list.current_page;
                         _that.pagination.total = response.data.banner_list.last_page;
                         _that.bannerList      = response.data.banner_list.data;
-                        // _that.bannerList      = response.data.category_list.data;
-                        // _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
-                        // console.log(_that.pagination.total);
+
                     }
                     else
                     {
@@ -336,14 +335,14 @@
 
             },
 
-            deleteCategory()
+            deleteBanner()
             {
                 let _that = this;
-                axios.delete('categories/delete',
+                axios.delete('banners/delete',
                     {
                         data:
                             {
-                                id      : this.category_id
+                                id      : _that.banner_id
                             },
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
@@ -351,10 +350,10 @@
                     }).then(function (response) {
 
                     if (response.data.status_code == 200) {
-                        _that.getCategoryList();
+                        _that.getBannerList();
                         _that.removingRightSideWrapper();
                         _that.error_message         = '';
-                        _that.success_message       = "Category Deleted Successfully";
+                        _that.success_message       = "Banner Deleted Successfully";
                         _that.setTimeoutElements();
 
                     } else {
