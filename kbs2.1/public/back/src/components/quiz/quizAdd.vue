@@ -57,6 +57,28 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label> Is Authorized? <input type="checkbox" v-model="isAuthorized" :value="1"></label> 
+                            <div v-if="isAuthorized">
+                                <!-- <label>User Groups <span class="required">*</span></label>
+                                <select2 id="articleIDError" v-model="roles" :options="userRoles" :settings="{ settingOption: roles, settingOption: roles,multiple: true}" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/> -->
+                                <div class="form-group mb-2">
+                                    <label>User Groups <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
+
+                                    <ul class="list-unstyled permission-list m-0 p-0">
+                                        <li v-for="a_user in userRoles" :key="a_user.id" class="text-left pb-2">
+                                            <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+                                            
+                                            <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>     
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Select A Status</label>
 
                             <select class="form-control" v-model="quizData.status">
@@ -84,12 +106,12 @@
 
 import axios from "axios";
 import $ from "jquery";
-
+ import Select2 from 'v-select2-component';
 export default {
     name: "quizAdd",
     props: ['isAddCheck'],
     components: {
-
+         Select2
     },
 
     data() {
@@ -100,7 +122,10 @@ export default {
             error_message   : '',
             token           : '',
             articleList     : '',
-            quizformList   : '',
+            quizformList    : '',
+            isAuthorized    : 0,
+            userRoles       :[],
+            role_id         :[],
             quizTotalQuestion : '',
 
             quizData        :{
@@ -360,7 +385,10 @@ export default {
 
         quizAdd() {
             let _that = this;
-
+            
+            if(this.isAuthorized == 1) {
+                this.role_id.push(1);
+            }
             axios.post('quizzes',
                 {
                     name                    : this.quizData.name,
@@ -369,6 +397,9 @@ export default {
                     total_marks             : this.quizData.total_marks,
                     status                  : this.quizData.status,
                     number_of_questions     : this.quizData.number_of_questions,
+                    is_authorized           : this.isAuthorized,
+                    role_id                 : this.role_id,
+
                 },
                 {
                     headers: {
@@ -427,6 +458,45 @@ export default {
         },
 
 
+         getUserRoles()
+        {
+            let _that =this;
+            axios.get('roles',
+                {
+                    headers: {
+                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                    },
+                    params : {
+                        isAdmin : 1,
+                        without_pagination : 1
+                    },
+                })
+                .then(function (response) {
+                    if(response.data.status_code === 200){
+                        _that.userRoles = response.data.role_list;
+
+                        // response.data.role_list.forEach(val => {
+                        //     _that.userRoles.push({
+                        //         'id' : val.id,
+                        //         'text' : val.name
+                        //     })
+                        // })
+                        // console.log(_that.userRoles);
+                    }
+                    else{
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
+                    }
+                })
+        },
+        // myChangeEvent(val){
+        //     let _that = this;
+        //     _that.roles = val;
+        // },
+        // mySelectEvent({id, text}){
+        //     console.log({id, text})
+        // },
+
         getQuizFormFieldDetails(quizFormID)
         {
             let _that               = this;
@@ -453,6 +523,7 @@ export default {
     created() {
       /*  this.isAdd = this.isAddCheck;*/
         this.getQuizFormList();
+        this.getUserRoles();
     }
 }
 </script>

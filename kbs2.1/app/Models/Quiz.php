@@ -22,7 +22,9 @@ class Quiz extends Model
         "duration",
         "total_marks",
         "number_of_questions",
-        "status"
+        "status",
+        "is_authorized",
+        "role_id",
     ];
 
     /**
