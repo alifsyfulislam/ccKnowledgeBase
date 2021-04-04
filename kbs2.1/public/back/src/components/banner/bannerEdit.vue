@@ -33,8 +33,10 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="d-block">Image or Video</label>
-                            <input type="file" id="files" ref="files" @change="onMediaFileChange" >
-                            <span id="fileError" class="small text-danger banner_name" role="alert"></span>
+                            <input accept="audio/*,video/*,image/*" type="file" id="files" ref="files" @change="onMediaFileChange" >
+                            <div class="p-0 m-0">
+                                <span id="fileError" class="small text-danger banner_name" role="alert"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -121,7 +123,6 @@
                 validation_error : {
                     isTitleStatus       : true,
                     isRoleStatus        : true,
-                    isFileStatus        : true,
                 },
             }
         },
@@ -170,7 +171,7 @@
                     $('#roleIdError').html("role field is required");
                 }
 
-                if (this.validation_error.isTitleStatus    === true && this.validation_error.isFileStatus  === true){
+                if (this.validation_error.isTitleStatus    === true){
                     this.bannerUpdate();
                 }
             },
@@ -243,6 +244,7 @@
             {
                 $('#bannerTitleError').html("");
                 $('#roleIdError').html("");
+                $('#fileError').html("");
 
                 $('#bannerTitle').css({'border-color': '#ced4da'});
 
@@ -254,6 +256,9 @@
                     }
                     else if (val.includes("role id")==true){
                         $('#roleIdError').html(val)
+                    }
+                    else if (val.includes("banner file")==true){
+                        $('#fileError').html(val)
                     }
                 })
             },
@@ -276,7 +281,7 @@
                 formData.append('role_id', collection);
                 formData.append('status', _that.aBanner.status);
                 formData.append("_method", "put");
-                formData.append("mediable_id", _that.aBanner.media[0].mediable_id);
+                formData.append("mediable_id", _that.aBanner.id);
 
 
                 collection = _that.roleAccess.join();

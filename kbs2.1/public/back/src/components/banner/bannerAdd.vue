@@ -16,8 +16,10 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="d-block">Image or Video</label>
-                            <input type="file" id="files" refs="files" @change="onMediaFileChange" >
-                            <span id="fileError" class="small text-danger banner_name" role="alert"></span>
+                            <input type="file" id="files" accept="audio/*,video/*,image/*" refs="files" @change="onMediaFileChange" >
+                            <div class="m-0 p-0">
+                                <span id="fileError" class="small text-danger banner_name" role="alert"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -125,7 +127,7 @@
 
             validateAndSubmit(){
 
-                this.checkFileValid();
+                // this.checkFileValid();
 
                 if (this.roleAccess.length > 0){
                     $('#roleIdError').html("");
@@ -146,7 +148,7 @@
                     $('#roleIdError').html("role field is required");
                 }
 
-                if (this.validation_error.isTitleStatus    === true && this.validation_error.isFileStatus  === true){
+                if (this.validation_error.isTitleStatus    === true){
                     this.bannerAdd();
                 }
             },
@@ -199,6 +201,7 @@
             {
                 $('#bannerTitleError').html("");
                 $('#roleIdError').html("");
+                $('#fileError').html("");
 
                 $('#bannerTitle').css({'border-color': '#ced4da'});
 
@@ -210,6 +213,10 @@
                     }
                     else if (val.includes("role id")==true){
                         $('#roleIdError').html(val)
+                    }
+
+                    else if (val.includes("banner file")==true){
+                        $('#fileError').html(val)
                     }
                 })
             },
