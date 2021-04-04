@@ -16,6 +16,16 @@
         </div>
 
         <div class="content-wrapper d-fullscreen">
+          <div class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
+                  <div class="modal-body">
+                      <BannerSlider></BannerSlider>
+                  </div>
+                </div>
+            </div>
+          </div>
           <!-- Content Area -->
           <div class="data-content-area pr-15 pb-10">
             <div class="gredient-card-wrapper mb-40">
@@ -161,6 +171,18 @@ $(document).on('keyup',(e)=> {
   }
 });
 
+$(window).on('load', function() {
+    $('.BannerSliderModal').modal({
+      show: true,
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    $('.bannerCloseBtn').on('click', () => {
+        $('.BannerSliderModal').modal('hide');
+    })
+});
+
 
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
@@ -181,6 +203,8 @@ import axios from "axios";
 import TotalFaqs from "../wallboard/totalFaqs";
 import TotalQuiz from "../wallboard/totalQuiz";
 
+import BannerSlider from '../slider/slider'
+
 export default {
   name: "dashboard.vue",
   components: {
@@ -192,6 +216,7 @@ export default {
     BarChart,
     totalUser,
     totalArticle,
+    BannerSlider,
     // totalFaqs,
     // totalQuiz,
     // PieChart,
@@ -335,5 +360,16 @@ export default {
 </script>
 
 <style scoped>
+.BannerSliderModal .btn-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  color: #000;
+  z-index: 1;
+  border-radius: 50rem;
+}
 
 </style>
