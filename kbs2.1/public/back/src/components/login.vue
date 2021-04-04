@@ -84,11 +84,6 @@ import $ from 'jquery'
 
 // Login Form
 
-
-
-
-
-
 // Password show hide
 $(document).on('click','.password-show-hide',function(){
     $(this).toggleClass("show");
@@ -106,18 +101,18 @@ export default {
     name: "login.vue",
     data() {
         return {
-            notFound        : false,
-            success_message : '',
-            error_message   : '',
-            token           : '',
-            static_image        : [],
-            checkedCounter  : 0,
-            formData        : {
-                username : '',
-                password : '',
+            notFound                : false,
+            success_message         : '',
+            error_message           : '',
+            token                   : '',
+            static_image            : [],
+            checkedCounter          : 0,
+            formData          : {
+                username            : '',
+                password            : '',
 
             },
-            userInfo        : '',
+            userInfo                : '',
             validation_error :{
                 isUserNameStatus    : false,
                 isPasswordStatus    : false,
@@ -230,6 +225,7 @@ export default {
                     _that.token           = response.data.token;
                     _that.error_message   = '';
                     _that.success_message = response.data.messages;
+
                     localStorage.setItem('authToken', _that.token);
                     localStorage.setItem('userInformation', JSON.stringify(response.data.user_info));
                     localStorage.setItem('userPermissions', JSON.stringify(response.data.user_info.roles[0].permissions));
@@ -272,8 +268,8 @@ export default {
         },
     },
     created() {
-        this.static_image['dashboard_logo']     = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
-        this.static_image['dashboard_sm_logo']     = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
+        this.static_image['dashboard_logo']         = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
+        this.static_image['dashboard_sm_logo']      = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
         this.clearanceAll();
     /*    if (this.$route.params){
             this.success_message = this.$route.params.message;

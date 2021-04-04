@@ -39,7 +39,7 @@ export default {
     },
   },
   created() {
-    console.log(this.totalUser);
+    // console.log(this.totalUser);
   }
 }
 </script>
