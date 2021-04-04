@@ -296,7 +296,7 @@
                     },
                     {
                         text: 'Published Date',
-                        value: 'category.created_at',
+                        value: 'created_at',
                         sortable: true
                     },
                     {
