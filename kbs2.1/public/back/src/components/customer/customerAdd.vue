@@ -58,7 +58,7 @@
                             <label for="roles">Roles <span class="required">*</span></label>
                             <select class="form-control" v-model="userData.roles" id="roles" @change="checkAndValidateRoles()" required>
                                 <option value="" disabled>Select A Role</option>
-                                <option v-for="a_role in userRoles" :key="a_role" :value="a_role.id">{{a_role.name}}</option>
+                                <option v-for="a_role in userRoles" :key="a_role.id" :value="a_role.id">{{a_role.name}}</option>
                             </select>
                             <span id="rolesError" class="text-danger small"> </span>
                         </div>

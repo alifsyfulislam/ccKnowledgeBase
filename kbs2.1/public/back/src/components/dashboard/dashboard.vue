@@ -201,29 +201,37 @@ export default {
 
   data() {
     return {
-      isArticleList : false,
-      category_parent_id : '',
-      category_name   : '',
-      success_message : '',
-      error_message   : '',
-      token           : '',
-      categoryList    : '',
-      articleList     : '',
-      userInfo        : '',
-      recentArticles   : '',
-      filter : {
-        isAdmin : 1,
-        category_id : '',
-        status : '',
-        en_title : '',
-        tag : '',
+      isArticleList         : false,
+      category_parent_id    : '',
+      category_name         : '',
+      success_message       : '',
+      error_message         : '',
+      token                 : '',
+      categoryList          : '',
+      articleList           : '',
+      userInfo              : '',
+      recentArticles        : '',
+
+      user_info             : '',
+      current_user_role_id  : '',
+      // user_permissions      : '',
+      // mappedPermission      : '',
+
+      filter        : {
+        isAdmin             : 1,
+        category_id         : '',
+        status              : '',
+        en_title            : '',
+        tag                 : '',
       },
-      chartData: {
-        Books: 24,
-        Magazine: 30,
-        Newspapers: 10
+
+      chartData   : {
+        Books               : 24,
+        Magazine            : 30,
+        Newspapers          : 10
       },
-      totalCountList : '',
+
+      totalCountList        : '',
     }
   },
   methods: {
@@ -235,13 +243,13 @@ export default {
 
     clearFilter()
     {
-      this.isArticleList     = false;
-      this.filter.category_id = "";
-      this.filter.status   = "";
-      this.filter.en_title = "";
-      this.filter.tag      = "";
-      this.success_message = "";
-      this.error_message   = "";
+      this.isArticleList        = false;
+      this.filter.category_id   = "";
+      this.filter.status        = "";
+      this.filter.en_title      = "";
+      this.filter.tag           = "";
+      this.success_message      = "";
+      this.error_message        = "";
     },
 
     getCategoryList()
@@ -323,13 +331,46 @@ export default {
         })
     },
 
-  },
-  created() {
+    getBannerList(){
+      let _that =this;
 
+      axios.post('role-banners',
+              {
+                role_id : this.current_user_role_id
+              },
+              {
+                headers: {
+                  'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                },
+
+              })
+              .then(function (response) {
+                console.log(response)
+                // if(response.data.status_code === 200){
+                //   _that.totalCountList = response.data.total_count;
+                //   _that.totalUser = _that.totalCountList.total_user
+                // }
+                // else{
+                //   _that.success_message = "";
+                //   _that.error_message   = response.data.error;
+                // }
+              })
+    }
+
+  },
+
+  created()
+  {
     this.getArticleList();
     this.getCategoryList();
     this.getAllTotalCount();
 
+    this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
+    // this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
+    // this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
+
+    this.current_user_role_id = this.user_info.roles[0].id
+    this.getBannerList();
   }
 }
 </script>

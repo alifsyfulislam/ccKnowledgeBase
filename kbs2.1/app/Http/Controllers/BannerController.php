@@ -115,4 +115,19 @@ class BannerController extends Controller
         }
 
     }
+
+    public function showLatestBannerList(Request $request){
+
+        return  $this->bannerService->roleBanners($request);
+
+//        if(Auth::user()->can('banner-list')) {
+//
+//            return  $this->bannerService->roleBanners($request);
+//
+//        } else {
+//
+//            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+//
+//        }
+    }
 }

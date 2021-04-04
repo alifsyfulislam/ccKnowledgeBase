@@ -37,7 +37,7 @@ export default {
     },
   },
   created() {
-    console.log(this.totalFaq);
+    // console.log(this.totalFaq);
   }
 }
 </script>

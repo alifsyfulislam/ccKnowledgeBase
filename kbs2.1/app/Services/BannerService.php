@@ -228,4 +228,16 @@ class BannerService
         ]);
     }
 
+
+    public function roleBanners($request){
+
+        return response()->json([
+
+                'status_code'   => 200,
+                'messages'      => config('status.status_code.200'),
+                'banner_list' => $this->bannerRepository->getRoleBanners($request)
+
+        ]);
+    }
+
 }
