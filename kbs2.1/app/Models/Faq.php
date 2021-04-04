@@ -48,7 +48,13 @@ class Faq extends Model
     {
         return date('j M, Y', strtotime($date));
     }
+    
+    public function contents()
+    {
 
+        return $this->hasMany(Content::class, 'article_id');
+
+    }
     /**
      * @param $date
      * @return false|string

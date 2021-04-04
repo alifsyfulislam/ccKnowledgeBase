@@ -23,10 +23,11 @@
 
                 <div class="content-wrapper bg-white" v-if="faqDetails">
                     <div class="data-content-area px-15 py-10">
-                        <h3 class="">{{faqDetails.en_title}}</h3>
-
-
-
+                       <h3 class="font-weight-bold">Faq Details Page</h3>
+                        <!-- <h3 class="">{{faqDetails.en_title}}</h3> -->
+                        <div>
+                          <small class="font-16"><strong>Category: </strong>{{faqDetails.category ? faqDetails.category.name : 'N/A'}}</small>
+                        </div>
                         <p class="font-16"><strong>Tags: </strong>{{faqDetails.tag}}</p>
                         <div class="ta-wrapper d-flex align-items-center py-10 my-25">
                             <div class="avatar mr-10">
@@ -37,10 +38,45 @@
                                 <p class="mb-0">Post on: {{faqDetails.created_at}}</p>
                             </div>
                         </div>
-
-                        <div class="ta-content-wrapper">
-                            <div v-html="faqDetails.en_body"></div>
+                        <div class="col-md-12 article-lang-switcher" v-if="faqDetails.bn_title != 'n/a'">
+                          <ul class="nav nav-tabs" id="myTab">
+                            <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
+                            </li>
+                          </ul>
                         </div>
+
+
+                        <!-- <div class="ta-content-wrapper">
+                          {{faqDetails.contents}}
+                            <div v-html="faqDetails.en_body"></div>
+                        </div> -->
+                        <div class="col-md-12">
+                          <div class="tab-content pt-3" id="myTabContent">
+                            <div class="tab-pane fade active show" id="tabEnglish" v-if="faqDetails">
+                              <div class="ta-content-wrapper">
+                                <h3 class="pb-10">{{faqDetails.en_title}}</h3>
+                              </div>
+                              <div class="ta-content-wrapper" v-for="faqContent in faqDetails.contents">
+                                <div v-if="faqContent.en_body != 'n/a' && faqContent.role_id.includes(userInformation.roles[0].id)" v-html="faqContent.en_body"></div>
+                              </div>
+                            </div>
+
+
+                            <!--bangla-->
+                            <div class="tab-pane fade" id="tabBangla" v-if="faqDetails.contents.bn_title != 'n/a'">
+                              <div class="ta-content-wrapper">
+                                <h3 class="pb-10">{{faqDetails.bn_title}}</h3>
+                              </div>
+                              <div class="ta-content-wrapper" v-for="faqContent in faqDetails.contents">
+                                <div v-if="faqContent.bn_body != 'n/a' && faqContent.role_id.includes(userInformation.roles[0].id)" v-html="faqContent.bn_body"></div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
                     </div>
 
                     <!-- Content Area End -->
@@ -75,6 +111,7 @@ name: "faqDetails.vue",
       faqDetails      : '',
       faq_id          :  '',
       userInfo        : '',
+      userInformation : '',
       filter : {
         isAdmin : 1
       }
@@ -111,6 +148,7 @@ name: "faqDetails.vue",
     this.faq_id = this.$route.params.id;
     //console.log(this.faq_id);
     this.getFaqDetails();
+     this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
   }
 }
 </script>

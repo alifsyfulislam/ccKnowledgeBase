@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Faq;
+use App\Models\Content;
 
 class FaqRepository implements RepositoryInterface
 {
@@ -27,7 +28,7 @@ class FaqRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Faq::with( 'user', 'category')->find($id);
+        return Faq::with( 'user', 'category','contents')->find($id);
     }
 
     /**
@@ -43,7 +44,7 @@ class FaqRepository implements RepositoryInterface
         $dataObj->user_id = $data['user_id'];
         $dataObj->category_id = $data['category_id'];
         $dataObj->en_title = $data['en_title'];
-        //$dataObj->bn_title = $data['bn_title'];
+        $dataObj->bn_title = $data['bn_title'];
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
         $dataObj->status = $data['status'];
@@ -76,6 +77,17 @@ class FaqRepository implements RepositoryInterface
     {
 
         return Faq::find($id)->delete();
+        $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        if ($contents){
+            foreach ($contents as $content){
+                $content->delete();
+            }
+            Faq::find($id)->delete();
+            return 'content article delete';
+        }else{
+            Faq::find($id)->delete();
+            return 'no content found';
+        }
 
     }
 

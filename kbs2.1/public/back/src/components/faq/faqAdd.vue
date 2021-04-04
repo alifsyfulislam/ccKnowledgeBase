@@ -125,6 +125,10 @@
                                 <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>
                             </div>
                             <div class="modal-body" style="max-height: 450px;overflow-y: auto;">
+                                <div class="d-inline-block">
+                                    <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">
+                                    <label for="checkbox4" class="ml-2">Bangla</label>
+                                </div>
                                 <div class="form-group">
                                     <label>English Body</label>
                                     <input hidden class="form-control" type="text" v-model="contentData.article_id">
@@ -618,6 +622,7 @@
                         article_id      : this.article_id,
                         category_id     : this.selectedCategory,
                         en_title        : this.faqData.en_title,
+                        bn_title        : this.faqData.bn_title,
                         tag             : this.faqData.tag,
                         status          : this.faqData.status,
                     },

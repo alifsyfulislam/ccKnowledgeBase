@@ -136,7 +136,10 @@ class QuizService
 
         try {
 
+            // $result_array =$request->role_id; 
+            // $roleIds =  implode(',',$result_array);
             $input = $request->all();
+            $input['role_id'] = implode(',', $input['role_id']);
             $input['slug'] = Helper::slugify($input['name']);
 
             $this->quizRepository->update($input, $request->id);

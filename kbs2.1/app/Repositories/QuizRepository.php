@@ -52,6 +52,11 @@ class QuizRepository
         $dataObj->total_marks = $data['total_marks'];
         $dataObj->number_of_questions = $data['number_of_questions'];
         $dataObj->status = $data['status'];
+        $dataObj->is_authorized = $data['is_authorized'];
+        if( $dataObj->is_authorized!==0) {
+            $dataObj->role_id = implode(',',$data['role_id']);
+        }
+       
 
         return $dataObj->save();
     }
@@ -63,8 +68,12 @@ class QuizRepository
      * @return mixed
      */
     public function update(array $data, $id)
-    {
+    {   
         return Quiz::find($id)->update($data);
+        // $quiz = Quiz::find($id);
+        // $quiz->role_id = implode(',',$data['role_id']);
+        // return $quiz->update($data);
+
     }
 
 
