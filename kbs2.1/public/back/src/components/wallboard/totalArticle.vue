@@ -37,7 +37,7 @@ export default {
     },
   },
   created() {
-    console.log(this.totalArticle);
+    // console.log(this.totalArticle);
   }
 }
 </script>

@@ -296,7 +296,7 @@
                     },
                     {
                         text: 'Published Date',
-                        value: 'category.created_at',
+                        value: 'created_at',
                         sortable: true
                     },
                     {
@@ -403,9 +403,9 @@
             getAddDataFromChild (status)
             {
                 this.getArticleList();
-                this.success_message = status;
-                this.removingRightSideWrapper();
                 this.setTimeoutElements();
+                this.removingRightSideWrapper();
+                this.success_message = status;
             },
             getEditDataFromChild (status)
             {

@@ -109,6 +109,8 @@ Route::middleware('auth:api')->group(function(){
     Route::get('contents-article-exist/{id}', [ContentController::class, 'checkArticleAvailability']);
     Route::get('contents-faq-exist/{id}', [ContentController::class, 'checkFaqAvailability']);
 
+    Route::post('role-banners', [BannerController::class, 'showLatestBannerList']);
+
     Route::post('logout', [UserController::class, 'logout']);
 
 });

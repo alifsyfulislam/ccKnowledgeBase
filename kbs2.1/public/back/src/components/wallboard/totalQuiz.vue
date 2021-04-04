@@ -38,7 +38,7 @@ export default {
     },
   },
   created() {
-    console.log(this.totalQuiz);
+    // console.log(this.totalQuiz);
   }
 }
 </script>
