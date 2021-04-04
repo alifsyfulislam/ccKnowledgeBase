@@ -158,6 +158,8 @@ export default {
             let _that = this;
             let formData = new FormData();
 
+            console.log(this.logo_file);
+
             formData.append('logo', this.logo_file);
             formData.append('name', this.categoryData.name);
             formData.append('parent_id', this.selectedCategory);

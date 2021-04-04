@@ -158,6 +158,11 @@
                     <span class="menu-sub-title">Roles</span>
                   </router-link>
                 </li>
+                <li v-if="checkPermission('banner-list')">
+                  <router-link :to="{ name: 'bannerList'}">
+                      <span class="menu-sub-title">Banners</span>
+                  </router-link>
+                </li>
                 <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
                   <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
                     <span class="menu-sub-title">Front Page Configuration</span>

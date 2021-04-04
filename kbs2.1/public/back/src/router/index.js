@@ -24,6 +24,11 @@ import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.v
 import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
 
 
+// import bannerAdd from '@/components/banner/bannerAdd'
+// import bannerEdit from '@/components/banner/bannerEdit'
+import bannerList from '@/components/banner/bannerList'
+
+
 Vue.use(Router)
 
 let router =  new Router({
@@ -157,6 +162,14 @@ let router =  new Router({
       }
     },
 
+    {
+      path: '/banner-list',
+      name: 'bannerList',
+      component: bannerList,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ],
   mode: 'history',
   base: 'back'

@@ -10,7 +10,7 @@
             <!-- Content Area -->
             <div class="content-area" >
                 <div class="content-title-wrapper px-15 py-10">
-                    <h2 class="content-title text-uppercase m-0">Category List</h2>
+                    <h2 class="content-title text-uppercase m-0">Banner List</h2>
                 </div>
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
@@ -18,9 +18,9 @@
                         <div class="adding-btn-area d-md-flex align-items-center">
                             <div>
                                 <button class="btn common-gradient-btn ripple-btn new-agent-session right-side-common-form mx-10 m-w-140 px-15 mb-10 mb-md-0"
-                                        @click="isAddCheck=true" v-if="checkPermission('category-create')">
+                                        @click="isAddCheck=true" v-if="checkPermission('banner-create')">
                                     <i class="fas fa-plus"></i>
-                                    Add Category
+                                    Add Banner
                                 </button>
                             </div>
                         </div>
@@ -59,10 +59,7 @@
                                         </v-row>
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
-                                                <v-data-table :headers="headers" :items="categoryList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                                                    <template v-slot:item.parent_recursive="{item}">
-                                                        {{ item.parent_recursive ? item.parent_recursive.name : ''   }}
-                                                    </template>
+                                                <v-data-table :headers="headers" :items="bannerList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
 
                                                     <template v-slot:item.media="{item}">
 
@@ -74,6 +71,7 @@
                                                             <span v-else>
                                                                 <video class="preview" controls>
                                                                     <source :src="a_url.url" type="video/mp4">
+                                                                    <source :src="a_url.url" type="video/ogg">
                                                                 </video>
 
                                                             </span>
@@ -83,11 +81,11 @@
 
                                                     <template v-slot:item.actions="{item}">
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
-                                                                @click="category_id=item.id, isEditCheck=true" v-if="checkPermission('category-edit')">
+                                                                @click="banner_id=item.id, isEditCheck=true" v-if="checkPermission('banner-edit')">
                                                             <i class="fas fa-pen"></i>
                                                         </button>
                                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                                @click="category_id=item.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
+                                                                 @click="banner_id=item.id, isDeleteCheck=true" v-if="checkPermission('banner-delete')">
                                                             <i class="fas fa-trash-restore-alt"></i>
                                                         </button>
                                                     </template>
@@ -128,9 +126,9 @@
                 </button>
             </div>
             <!--            add data-->
-            <CategoryAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @category-slide-close="getAddDataFromChild"></CategoryAdd>
+            <BannerAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @banner-slide-close="getAddDataFromChild"></BannerAdd>
             <!--            edit data-->
-            <CategoryEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="category_id" @category-slide-close="getEditDataFromChild"></CategoryEdit>
+            <BannerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="banner_id" @banner-slide-close="getEditDataFromChild"></BannerEdit>
             <!--            delete data -->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                 <div class="right-sidebar-content-area px-2">
@@ -147,9 +145,9 @@
                                 <figure class="mx-auto text-center">
                                     <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                 </figure>
-                                <p class="text-center"> Confirmation for Deleting Category</p>
+                                <p class="text-center"> Confirmation for Deleting Banner</p>
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteCategory()"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="deleteBanner()"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper(), isDeleteCheck=false"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -162,146 +160,137 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Menu from '@/layouts/common/Menu'
-import Header from '@/layouts/common/Header'
-import CategoryAdd from "@/components/category/categoryAdd";
-import CategoryEdit from "@/components/category/categoryEdit";
-import Loading from "@/components/loader/loading";
+    import axios from 'axios'
+    import Menu from '@/layouts/common/Menu'
+    import Header from '@/layouts/common/Header'
+    import BannerAdd from "@/components/banner/bannerAdd";
+    import BannerEdit from "@/components/banner/bannerEdit";
+    import Loading from "@/components/loader/loading";
 
-import $ from "jquery";
+    import $ from "jquery";
 
-export default {
-    name: "categoryList.vue",
-    components: {
-        Header,
-        Menu,
-        CategoryAdd,
-        CategoryEdit,
-        Loading,
-    },
-
-    data() {
-        return {
-            isLoading           : false,
-            isEditCheck         : false,
-            isAddCheck          : false,
-            isDeleteCheck       : false,
-            isExportCheck        :false,
-            isSearch            : false,
-            category_id         : '',
-            category_parent_id  : '',
-            category_name       : '',
-            success_message     : '',
-            error_message       : '',
-            token               : '',
-            categoryList        : '',
-            userInfo            : '',
-            downloadUrl         : 'categories/export/',
-            user_permissions    : '',
-            mappedPermission    : '',
-            filter      : {
-                isAdmin         : 1,
-                name            : ''
-            },
-            search              :"",
-            pagination  :{
-                current         :1,
-                per_page        : 20,
-                total           : ''
-            },
-            headers: [
-                {
-                    text: 'ID',
-                    value: 'id',
-                },
-                {
-                    text: 'Name',
-                    value: 'name',
-                },
-                {
-                    text: 'Parent Name',
-                    value: 'parent_recursive',
-                },
-                {
-                    text: 'Media',
-                    value: 'media',
-                },
-                {
-                    text: 'Created Date',
-                    value: 'created_at',
-                },
-                {
-                    text: 'Actions',
-                    value: 'actions',
-                    sortable:false
-                },
-                
-                
-            ],
-        }
-    },
-    methods: {
-        removingRightSideWrapper()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-
-            document.body.classList.remove('open-side-slider');
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+    export default {
+        name: "bannerList.vue",
+        components: {
+            Header,
+            Menu,
+            BannerAdd,
+            BannerEdit,
+            Loading,
         },
 
-        clearAllChecker()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-        },
-
-        getAddDataFromChild (status){
-
-            this.success_message = status;
-            this.getCategoryList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-
-        getEditDataFromChild (status)
-        {
-            this.success_message = status;
-            this.getCategoryList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-
-        getCategoryList(pageUrl)
-        {
-            let _that = this;
-            pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
-
-            axios.get(pageUrl+'?page='+this.pagination.current,
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+        data() {
+            return {
+                isLoading           : false,
+                isEditCheck         : false,
+                isAddCheck          : false,
+                isDeleteCheck       : false,
+                isExportCheck        :false,
+                isSearch            : false,
+                banner_id         : '',
+                category_parent_id  : '',
+                category_name       : '',
+                success_message     : '',
+                error_message       : '',
+                token               : '',
+                bannerList        : '',
+                userInfo            : '',
+                downloadUrl         : 'banner/export/',
+                user_permissions    : '',
+                mappedPermission    : '',
+                filter      : {
+                    isAdmin         : 1,
+                    name            : ''
+                },
+                search              :"",
+                pagination  :{
+                    current         :1,
+                    per_page        : 20,
+                    total           : ''
+                },
+                headers: [
+                    {
+                        text: 'ID',
+                        value: 'id',
                     },
-                    params :
-                        {
-                            isAdmin : 1
+                    {
+                        text: 'Title',
+                        value: 'title',
+                    },
+                    {
+                        text: 'Media',
+                        value: 'media',
+                    },
+                    {
+                        text: 'Created Date',
+                        value: 'created_at',
+                    },
+                    {
+                        text: 'Actions',
+                        value: 'actions',
+                        sortable:false
+                    },
+
+
+                ],
+            }
+        },
+        methods: {
+            removingRightSideWrapper()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+
+                document.body.classList.remove('open-side-slider');
+                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            },
+
+            clearAllChecker()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+            },
+
+            getAddDataFromChild (status){
+
+                this.success_message = status;
+                this.getBannerList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+
+            getEditDataFromChild (status)
+            {
+                this.success_message = status;
+                this.getBannerList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+
+            getBannerList(pageUrl)
+            {
+                let _that = this;
+
+                pageUrl = pageUrl == undefined ? 'banners' : pageUrl;
+
+                axios.get(pageUrl+'?page='+this.pagination.current,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
-                }).then(function (response)
+                    }).then(function (response)
                 {
                     if(response.data.status_code === 200)
                     {
-                        console.log(response.data);
-                        _that.pagination.current = response.data.category_list.current_page;
-                        _that.pagination.total = response.data.category_list.last_page;
-                        _that.categoryList      = response.data.category_list.data;
-                        // _that.categoryList      = response.data.category_list.data;
-                        // _that.pagination        = response.data.category_list;
+                        console.log(response.data.banner_list);
+                        _that.pagination.current = response.data.banner_list.current_page;
+                        _that.pagination.total = response.data.banner_list.last_page;
+                        _that.bannerList      = response.data.banner_list.data;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
-                        // console.log(_that.pagination.total);
+
                     }
                     else
                     {
@@ -310,110 +299,110 @@ export default {
                     }
                 });
 
-        },
-        onPageChange() {
-            this.getCategoryList();
-        },
+            },
+            onPageChange() {
+                this.getBannerList();
+            },
 
-        categoryUpdate(categoryId)
-        {
-            let _that = this;
+            categoryUpdate(categoryId)
+            {
+                let _that = this;
 
-            axios.put('categories/update', {
-                    id              : categoryId,
-                    name            : this.category_name,
-                    parent_id       : this.category_parent_id,
-                },
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    }
-                }).then(function (response) {
-                if (response.data.status_code == 200) {
-                    _that.getCategoryList();
-                    _that.selectedCategory      = '';
-                    _that.error_message         = '';
-                    _that.success_message       = response.data.messages;
-
-                }
-                else {
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.error;
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        },
-
-        deleteCategory()
-        {
-            let _that = this;
-            axios.delete('categories/delete',
-                {
-                    data:
-                        {
-                            id      : this.category_id
-                        },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                axios.put('categories/update', {
+                        id              : categoryId,
+                        name            : this.category_name,
+                        parent_id       : this.category_parent_id,
                     },
-                }).then(function (response) {
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if (response.data.status_code == 200) {
+                        _that.getCategoryList();
+                        _that.selectedCategory      = '';
+                        _that.error_message         = '';
+                        _that.success_message       = response.data.messages;
 
-                if (response.data.status_code == 200) {
-                    _that.getCategoryList();
-                    _that.removingRightSideWrapper();
-                    _that.error_message         = '';
-                    _that.success_message       = "Category Deleted Successfully";
-                    _that.setTimeoutElements();
+                    }
+                    else {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
 
+            },
+
+            deleteBanner()
+            {
+                let _that = this;
+                axios.delete('banners/delete',
+                    {
+                        data:
+                            {
+                                id      : _that.banner_id
+                            },
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+
+                    if (response.data.status_code == 200) {
+                        _that.getBannerList();
+                        _that.removingRightSideWrapper();
+                        _that.error_message         = '';
+                        _that.success_message       = "Banner Deleted Successfully";
+                        _that.setTimeoutElements();
+
+                    } else {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                        _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            //alert message remove
+
+            setTimeoutElements()
+            {
+                setTimeout(() => this.success_message = "", 3e3);
+                setTimeout(() => this.error_message = "", 3e3);
+            },
+
+            checkPermission(permissionForCheck)
+            {
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
                 } else {
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.error;
-                    _that.removingRightSideWrapper();
-                    _that.setTimeoutElements();
-
+                    return false;
                 }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            },
+
         },
-
-        //alert message remove
-
-        setTimeoutElements()
+        created()
         {
-            setTimeout(() => this.success_message = "", 3e3);
-            setTimeout(() => this.error_message = "", 3e3);
-        },
-
-        checkPermission(permissionForCheck)
-        {
-            if((this.mappedPermission).includes(permissionForCheck) === true) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-
-    },
-    created()
-    {
-        this.isLoading = true;
-        this.getCategoryList();
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            this.isLoading = true;
+            this.getBannerList();
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        }
     }
-}
 </script>
 
 <style scoped>
-.mhv-100 {
-    min-height: 50vh;
-}
+    .mhv-100 {
+        min-height: 50vh;
+    }
 
-.preview{
-    height: 150px;
-}
+    .preview{
+        height: 150px;
+    }
 </style>
