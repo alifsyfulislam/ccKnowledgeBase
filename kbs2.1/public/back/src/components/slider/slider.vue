@@ -1,11 +1,9 @@
 <template>
     <div class="banner-modal">
         <ul class="bo-slider">
-            <li data-url="https://source.unsplash.com/1600x900/?fitness" data-type="image"></li>
-            <li data-url="https://source.unsplash.com/1600x900/?workout" data-type="image"></li>
-            <li data-url="https://source.unsplash.com/1600x900/?yoga" data-type="image"></li>
-            <li data-url="https://www.w3schools.com/html/mov_bbb.mp4" data-type="video">
-            <li data-url="https://source.unsplash.com/1600x900/?gym" data-type="image"></li>
+            <li v-for="a_banner in all_banners" :key="a_banner.id" :data-url="a_banner.media[0].url" :data-title="a_banner.title" :data-type="(a_banner.media[0].url).match(/\.(jpeg|jpg|gif|png)$/) != null ? 'image' : 'video'">
+<!--                <span>{{a_banner.title}}</span>-->
+            </li>
         </ul>
     </div>
 </template>
@@ -49,6 +47,7 @@ function initSlider(options, element) {
 
         obj['data-url'] = li.attr("data-url");
         obj['data-type'] = li.attr("data-type");
+        obj['data-title'] = li.attr("data-title");
 
         slides.push(obj);
     });
@@ -60,15 +59,17 @@ function initSlider(options, element) {
         for (var i = 0; i < slides.length; i++) {
             var active = i == 0 ? 'active' : '';
             if (slides[i]['data-type'] == "image") { // Template for images
-                elements += "<div class='bo-slide " + options.animation + " " + active +"'>\n";
+                elements += "<div class='bo-slide " + options.animation + " " + active +"' title='"+ slides[i]['data-title'] + "'>\n";
                 elements += "<img src='"+ slides[i]['data-url'] + "' alt='" + slides[i]['data-type'] +"'>\n";
+                elements += "<h4>"+slides[i]['data-title']+"</h4>";
                 elements += "</div>\n";
             } else if (slides[i]['data-type'] == "video") { // Template for videos
-                elements += "<div class='bo-slide "+ options.animation + " " + active +"'>\n";
-                elements += "<video width='100%' height='500px'>\n";
+                elements += "<div class='bo-slide "+ options.animation + " " + active +"' title='"+ slides[i]['data-title'] + "'>\n";
+                elements += "<video width='100%' height='300px'>\n";
                 elements += "<source src='" + slides[i]['data-url'] + "'>\n"
                 elements += "</video>\n";
                 elements += "<span class='play-button'>&#9654;</span>";
+                elements += "<h4>"+slides[i]['data-title']+"</h4>";
                 elements += "</div>\n";
             }
         }
@@ -183,12 +184,22 @@ function Slider(options, slides) {
 import './slider.min.css'
 
 export default {
+    props: ['banner_list'],
+    data(){
+        return {
+            all_banners : ''
+        }
+    },
     mounted() {
         $('.bo-slider').boSlider({
             slideShow: true,
             interval: 10000,
             animation: "slide"
         });
+    },
+    created() {
+        this.all_banners = this.banner_list;
+        console.log(this.all_banners);
     }
 }
 </script>

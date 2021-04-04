@@ -86,9 +86,10 @@ class BannerRepository
     public function getRoleBanners($request){
 
         $banner_list = [];
-        $banners = Banner::all();
+        $banners = Banner::with('media')->get();
 
         foreach ($banners as $banner){
+
             $result_arr = explode(",",$banner->role_id);
             if (in_array($request->role_id,$result_arr)){
                 array_push($banner_list, $banner);
