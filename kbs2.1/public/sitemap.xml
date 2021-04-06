@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="/vendor/sitemap/styles/xml.xsl" type="text/xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/category-list</loc>
+		<priority>2</priority>
+		<lastmod>2012-08-26T10:30:00+00:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/category-article-list</loc>
+		<priority>2</priority>
+		<lastmod>2012-08-26T10:30:00+00:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/article-list</loc>
+		<priority>2</priority>
+		<lastmod>2012-08-26T10:30:00+00:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/article-details/{slug}</loc>
+		<lastmod>2021-04-06T20:21:00+00:00</lastmod>
+	</url>
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/article/category/{slug}</loc>
+		<lastmod>2021-04-06T20:21:00+00:00</lastmod>
+	</url>
+	<url>
+	<loc>http://localhost/ccKnowledgeBase/kbs2.1/public/article/search/{any}</loc>
+		<lastmod>2021-04-06T20:21:00+00:00</lastmod>
+	</url>
+</urlset>
+
