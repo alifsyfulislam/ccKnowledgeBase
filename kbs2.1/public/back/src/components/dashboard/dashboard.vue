@@ -11,12 +11,15 @@
 
       <!-- Content Area -->
       <div class="content-area">
+        <!-- news start -->
+        <BreakingNews />
+        <!-- news end -->
         <div class="content-title-wrapper px-15 py-15">
           <h2 class="content-title text-uppercase m-0">Dashboard</h2>
         </div>
 
         <div class="content-wrapper d-fullscreen">
-          <div class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div v-if="isBannerStatus" class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                   <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
@@ -192,6 +195,8 @@ import TotalFaqs from "../wallboard/totalFaqs";
 import TotalQuiz from "../wallboard/totalQuiz";
 
 import BannerSlider from '../slider/slider'
+import BreakingNews from '../breakingnews/breakingnews'
+import Breakingnews from '../breakingnews/breakingnews.vue';
 
 export default {
   name: "dashboard.vue",
@@ -205,6 +210,8 @@ export default {
     totalUser,
     totalArticle,
     BannerSlider,
+    BreakingNews,
+    Breakingnews,
     // totalFaqs,
     // totalQuiz,
     // PieChart,
