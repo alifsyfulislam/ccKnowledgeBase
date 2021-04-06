@@ -318,6 +318,11 @@ input[type="file"]:focus {
 
 .modal-backdrop {
     z-index: 99 !important;
+    background-color: transparent !important;
+}
+
+.modal-backdrop.show {
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 .main-content-wrapper {
