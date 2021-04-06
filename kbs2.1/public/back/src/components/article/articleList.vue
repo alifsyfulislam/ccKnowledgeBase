@@ -403,9 +403,9 @@
             getAddDataFromChild (status)
             {
                 this.getArticleList();
-                this.success_message = status;
-                this.removingRightSideWrapper();
                 this.setTimeoutElements();
+                this.removingRightSideWrapper();
+                this.success_message = status;
             },
             getEditDataFromChild (status)
             {

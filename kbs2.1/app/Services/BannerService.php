@@ -44,11 +44,13 @@ class BannerService
     {
 
 //        return $request->banner_file;
+//        dd($request->banner_file);
 
         $validator = Validator::make($request->all(),[
 
             'title' => 'required|min:3|max:200',
-            'role_id' => 'required'
+            'role_id' => 'required',
+            'banner_file' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,ogg|max:30720'
 
         ]);
 
@@ -134,7 +136,8 @@ class BannerService
 
         $validator = Validator::make($request->all(),[
             'title' => 'required|min:3|max:200',
-            'role_id' => 'required'
+            'role_id' => 'required',
+            'banner_file' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,ogg|max:30720'
 
         ]);
 
@@ -172,6 +175,15 @@ class BannerService
                     unlink(public_path().'/'.$mediaName );
                     $media->url = Helper::base64PageLogoUpload("banner/files", $request->banner_file);
                     $media->save();
+                }else{
+                    $banner = $this->bannerRepository->get($request->id);
+                    $banner_url  = Helper::base64PageLogoUpload("banner/files", $request->banner_file);
+
+                    $banner->media()->create([
+
+                        'url' => $banner_url
+
+                    ]);
                 }
             }
 

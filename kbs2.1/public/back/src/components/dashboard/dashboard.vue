@@ -16,6 +16,16 @@
         </div>
 
         <div class="content-wrapper d-fullscreen">
+          <div class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                  <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
+                  <div class="modal-body overflow-hidden">
+                      <BannerSlider v-if="isBannerStatus" :banner_list="bannerList"></BannerSlider>
+                  </div>
+                </div>
+            </div>
+          </div>
           <!-- Content Area -->
           <div class="data-content-area pr-15 pb-10">
             <div class="gredient-card-wrapper mb-40">
@@ -181,6 +191,8 @@ import axios from "axios";
 import TotalFaqs from "../wallboard/totalFaqs";
 import TotalQuiz from "../wallboard/totalQuiz";
 
+import BannerSlider from '../slider/slider'
+
 export default {
   name: "dashboard.vue",
   components: {
@@ -192,6 +204,7 @@ export default {
     BarChart,
     totalUser,
     totalArticle,
+    BannerSlider,
     // totalFaqs,
     // totalQuiz,
     // PieChart,
@@ -201,6 +214,7 @@ export default {
 
   data() {
     return {
+      isBannerStatus        : false,
       isArticleList         : false,
       category_parent_id    : '',
       category_name         : '',
@@ -211,6 +225,7 @@ export default {
       articleList           : '',
       userInfo              : '',
       recentArticles        : '',
+      bannerList            : '',
 
       user_info             : '',
       current_user_role_id  : '',
@@ -345,18 +360,31 @@ export default {
 
               })
               .then(function (response) {
-                console.log(response)
-                // if(response.data.status_code === 200){
-                //   _that.totalCountList = response.data.total_count;
-                //   _that.totalUser = _that.totalCountList.total_user
-                // }
-                // else{
-                //   _that.success_message = "";
-                //   _that.error_message   = response.data.error;
-                // }
+
+                _that.isBannerStatus = true;
+                if(response.data.status_code === 200){
+                  console.log(response.data.banner_list)
+                  _that.bannerList = response.data.banner_list;
+                }
+                else{
+                  _that.success_message = "";
+                  _that.error_message   = response.data.error;
+                }
               })
     }
 
+  },
+
+  mounted(){
+    $('.BannerSliderModal').modal({
+      show: true,
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    $('.bannerCloseBtn').on('click', () => {
+        $('.BannerSliderModal').modal('hide');
+    })
   },
 
   created()
@@ -376,5 +404,16 @@ export default {
 </script>
 
 <style scoped>
+.BannerSliderModal .btn-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  color: #000;
+  z-index: 1;
+  border-radius: 50rem;
+}
 
 </style>

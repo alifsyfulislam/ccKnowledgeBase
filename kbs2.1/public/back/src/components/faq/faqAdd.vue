@@ -584,6 +584,8 @@
 
             showServerError(errors){
 
+                console.log(errors)
+
                 $('#enTitleError').html("");
                 $('#categoryIDError').html("");
                 $('#enBodyError').html("");
@@ -593,7 +595,6 @@
                 $('#enTitle').css({'border-color': '#ced4da'});
                 $('#categoryID').css({'border-color': '#ced4da'});
 
-                this.isSummerNoteError = false;
                 errors.forEach(val => {
                     if (val.includes("en title")==true){
                         $('#enTitleError').html(val)
@@ -602,10 +603,6 @@
                     else if (val.includes("category")==true){
                         $('#categoryIDError').html(val)
                         $('#categoryID').css({'border-color': '#FF7B88'});
-                    }
-                    else if (val.includes("en body")==true){
-                        $('#enBodyError').html(val);
-                        this.isSummerNoteError = true;
                     }
                     else if (val.includes("role id")=== true){
                         $('#roleIdError').html(val)
@@ -618,13 +615,6 @@
             faqAdd()
             {
                 let _that           = this;
-                let enBody          = document.getElementById('en_Body').value;
-
-                if (!(document.getElementById('bn_Body'))) {
-                    var bnBody      = '';
-                } else {
-                    bnBody          = document.getElementById('bn_Body').value;
-                }
 
                 axios.post('faqs', {
                     
@@ -634,8 +624,6 @@
                         en_title        : this.faqData.en_title,
                         bn_title        : this.faqData.bn_title,
                         tag             : this.faqData.tag,
-                        en_body         : enBody,
-                        bn_body         : bnBody,
                         status          : this.faqData.status,
                     },
                     {

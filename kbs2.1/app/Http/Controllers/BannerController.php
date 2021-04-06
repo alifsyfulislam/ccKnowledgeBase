@@ -80,6 +80,7 @@ class BannerController extends Controller
      */
     public function update(Request $request)
     {
+//        return $request->all();
 
         if(Auth::user()->can('banner-edit')) {
 
