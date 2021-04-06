@@ -41,7 +41,7 @@ export default {
 <style scoped>
 
 .breaking-news {
-    background-color: #2e9edf;
+    background-color: #ff7b88;
     color: #ffffff;
     border-radius: 0 50px 50px 0;
     padding: 5px 10px;
