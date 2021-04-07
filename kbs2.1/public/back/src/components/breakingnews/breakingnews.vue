@@ -1,12 +1,12 @@
 <template>
-    <div id="breakingNews" class="ticker box bg-white mt-1">
+    <div id="breakingNews" class="ticker box bg-light-blue mt-1">
         <article class="media d-flex align-items-center py-10 pl-15">
             <span class="breaking-news media-left">Breaking News</span>
             <div class="media-content">
                 <transition name="fade" tag="div" mode="out-in">
-                    <a class="news" href="#" v-if="news[0]" key="0">There has been a massive explosion at the cheese factory</a>
-                    <a class="news" href="#" v-if="news[1]" key="1">Bob is on fire</a>
-                    <a class="news" href="#" v-if="news[2]" key="2">Look its Superman!</a>
+                    <a class="news" href="#" v-if="news[0]" key="0"><span class="cat-title">Category One : </span> There has been a massive explosion at the cheese factory</a>
+                    <a class="news" href="#" v-if="news[1]" key="1"><span class="cat-title">Category Two : </span> Bob is on fire</a>
+                    <a class="news" href="#" v-if="news[2]" key="2"><span class="cat-title">Category Three : </span> Look its Superman!</a>
                 </transition>
             </div>
         </article>
@@ -54,8 +54,13 @@ export default {
     overflow: hidden;
 }
 
+.cat-title {
+    color: #fff;
+    font-weight: 500;
+}
+
 .news {
-    color: #666666;
+    color: #fff;
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
