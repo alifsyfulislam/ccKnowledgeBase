@@ -19,7 +19,7 @@
         </div>
 
         <div class="content-wrapper d-fullscreen">
-          <div v-if="isBannerStatus" class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                   <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
@@ -383,15 +383,20 @@ export default {
   },
 
   mounted(){
-    $('.BannerSliderModal').modal({
-      show: true,
-      backdrop: 'static',
-      keyboard: false
-    });
+    // plz set condition here
+    if(this.getBannerList){
+      setTimeout(function(){ 
+        $('.BannerSliderModal').modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+      }, 3000)
+    }
 
-    $('.bannerCloseBtn').on('click', () => {
-        $('.BannerSliderModal').modal('hide');
-    })
+      $('.bannerCloseBtn').on('click', () => {
+          $('.BannerSliderModal').modal('hide');
+      })
   },
 
   created()
@@ -421,6 +426,10 @@ export default {
   color: #000;
   z-index: 1;
   border-radius: 50rem;
+}
+
+.BannerSliderModal .modal-body {
+  min-height: 330px;
 }
 
 </style>
