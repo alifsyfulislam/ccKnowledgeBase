@@ -524,6 +524,39 @@ input[type="file"]:focus {
     background-color: rgba(242, 249, 253, 0.5) !important;
 }
 
+.comment-box .comment-input,
+.reply-box .reply-input {
+    border-radius: 50rem;
+    position: relative;
+    overflow: hidden;
+}
+.comment-box .comment-input .form-control,
+.reply-box .reply-input .form-control {
+    border-radius: 50rem;
+}
+
+.reply-box .reply-text {
+    background: #f0f2f5;
+    border-radius: 10px;
+}
+
+.reply-box .reply-text p {
+    font-size: 16px;
+}
+
+.reply-box .reply-text p:last-of-type {
+    margin-bottom: 0;
+}
+
+.reply-box .reply-input {
+    margin-bottom: 0;
+    height: 43px;
+}
+
+.reply-box .reply-input .form-control {
+    height: 43px;
+}
+
 @keyframes toTopFromBottom {
     49% {
         transform: translateY(-100%);

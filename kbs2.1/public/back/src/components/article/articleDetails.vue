@@ -87,6 +87,63 @@
             </div>
 
             <!-- Content Area End -->
+
+            <!-- Comment Section Start -->
+            <div class="comment-box">
+                <div class="comment-input-box d-flex">
+                    <div class="featured-image avatar mr-10">
+                         <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="comment-input w-100">
+                        <textarea placeholder="Write your comment..." class="form-control px-25 py-10"></textarea>
+                    </div>
+                </div>
+                <div class="replied-btn-wrapper text-right pt-10">
+                    <button class="btn btn-primary common-gradient-btn px-25 py-2 rounded-pill">Submit</button>
+                </div>
+            </div>
+            <!-- Comment Section End -->
+
+            <!-- Reply Section Start -->
+            <div class="reply-box mt-15">
+                <div class="reply-input-box d-flex">
+                    <div class="featured-image avatar mr-10">
+                         <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="reply-text w-100 px-10 py-2">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>
+                    </div>
+                </div>
+                <div class="reply-btn-wrapper ml-60 mt-2 text-right">
+                    <button class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill">Reply</button>
+                </div>
+
+                <div class="replied-box mt-10 ml-60">
+                    <div class="d-flex">
+                      <div class="featured-image avatar mr-10">
+                          <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
+                      </div>
+                      <div class="reply-text w-100 px-10 py-2">
+                          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>
+                      </div>
+                    </div>
+
+                    <div class="replied-input-box">
+                      <div class="d-flex mt-15">
+                        <div class="featured-image avatar mr-10">
+                            <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
+                        </div>
+                        <div class="reply-input w-100">
+                            <input placeholder="Write your comment..." class="form-control px-25 py-10">
+                        </div>
+                      </div>
+                      <div class="reply-btn-wrapper ml-60 mt-2 text-right">
+                        <button class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill">Reply</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- Reply Section End -->
           </div>
         </div>
       </div>
