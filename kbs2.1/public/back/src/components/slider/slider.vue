@@ -1,10 +1,19 @@
 <template>
-    <div class="banner-modal">
-        <ul class="bo-slider">
-            <li v-for="a_banner in all_banners" :key="a_banner.id" :data-url="a_banner.media[0].url" :data-title="a_banner.title" :data-type="(a_banner.media[0].url).match(/\.(jpeg|jpg|gif|png)$/) != null ? 'image' : 'video'">
-<!--                <span>{{a_banner.title}}</span>-->
-            </li>
-        </ul>
+    <div class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
+                <div class="modal-body overflow-hidden">
+                    <div class="banner-modal">
+                        <ul class="bo-slider">
+                            <li v-for="a_banner in all_banners" :key="a_banner.id" :data-url="a_banner.media[0].url" :data-title="a_banner.title" :data-type="(a_banner.media[0].url).match(/\.(jpeg|jpg|gif|png)$/) != null ? 'image' : 'video'">
+                                <!--                <span>{{a_banner.title}}</span>-->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -193,17 +202,59 @@ export default {
     mounted() {
         $('.bo-slider').boSlider({
             slideShow: true,
-            interval: 10000,
+            interval: 6e3,
             animation: "slide"
         });
+
+        // setTimeout(function(){
+        //     $('.BannerSliderModal').modal({
+        //         show: true,
+        //         backdrop: 'static',
+        //         keyboard: false
+        //     });
+        // }, 3000)
+
+
+        $('.bannerCloseBtn').on('click', () => {
+            $('.BannerSliderModal').modal('hide');
+        })
     },
     created() {
         this.all_banners = this.banner_list;
-        console.log(this.all_banners);
+        // console.log(this.all_banners);
+
+        if (this.banner_list.length > 0) {
+            setTimeout(function(){
+                $('.BannerSliderModal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }, 1e3)
+
+
+            $('.bannerCloseBtn').on('click', () => {
+                $('.BannerSliderModal').modal('hide');
+            })
+        }
     }
 }
 </script>
 
 <style scoped>
+    .BannerSliderModal .btn-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        height: 30px;
+        width: 30px;
+        background: #fff;
+        color: #000;
+        z-index: 1;
+        border-radius: 50rem;
+    }
 
+    .BannerSliderModal .modal-body {
+        min-height: 330px;
+    }
 </style>
