@@ -156,7 +156,7 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Article::with('category')
+        return Article::with('category','contents')
             ->where('en_title', 'like', "%{$query}%")
             ->where('status', 'public')
             ->orWhere('tag', 'like', "%{$query}%")

@@ -19,6 +19,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizTakeController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,3 +117,5 @@ Route::middleware('auth:api')->group(function(){
 });
 
 Route::post('login', AuthController::class);
+
+Route::get('genrate-sitemap',[SitemapController::class, 'index']);
