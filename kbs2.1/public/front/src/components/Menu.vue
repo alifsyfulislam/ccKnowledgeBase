@@ -28,6 +28,12 @@
                   <span>FAQ</span>
                 </router-link>
               </li>
+
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'Sitemap'}">
+                  <span>SITEMAP</span>
+                </router-link>
+              </li>
               <!--                <li class="nav-item"><a class="nav-link nav-button bordered" href="#">LOGIN</a></li>-->
 
               <!-- Dropdown -->

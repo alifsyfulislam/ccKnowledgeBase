@@ -10,6 +10,7 @@ import NotFound from "@/views/NotFound";
 import Search from "../views/Search";
 import Quiz from "../views/Quiz";
 import StartExam from "../views/StartExam";
+import Sitemap from "../views/Sitemap";
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -65,6 +66,10 @@ let router =  new Router({
       path: '/search',
       name: 'Search',
       component: Search
+    },{
+      path: '/sitemap',
+      name: 'Sitemap',
+      component: Sitemap
     },
     {
       path: "/:catchAll(.*)",
