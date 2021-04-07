@@ -89,6 +89,7 @@
             <!-- Content Area End -->
 
             <!-- Comment Section Start -->
+            <hr>
             <div class="comment-box">
                 <div class="comment-input-box d-flex">
                     <div class="featured-image avatar mr-10">
