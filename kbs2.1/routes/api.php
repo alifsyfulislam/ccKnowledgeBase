@@ -19,6 +19,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizTakeController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\EmailSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,7 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('quiz-form-fields', QuizFormFieldController::class);
 
     Route::apiResource('pages', PageController::class);
+    Route::apiResource('email-setting', EmailSettingController::class);
     Route::apiResource('permissions', PermissionController::class);
 
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
@@ -95,6 +97,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('change-faq-status', [FaqController::class, 'changeFAQStatus']);
 
     Route::post('pages/update-data', [PageController::class, 'update']);
+    Route::post('email-setting/update', [EmailSettingController::class, 'update']);
 
     Route::post('role/name', [RoleController::class, 'checkRoleNameExist']);
 

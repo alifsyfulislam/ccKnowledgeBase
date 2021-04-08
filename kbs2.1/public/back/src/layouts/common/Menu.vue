@@ -164,10 +164,16 @@
                   </router-link>
                 </li>
                 <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
+                  <a href="#" @click="isEmailConfigurationCheck=true" class="ripple-btn right-side-config-form">
+                    <span class="menu-sub-title">Email Configuration</span>
+                  </a>
+                </li>
+                <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
                   <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
                     <span class="menu-sub-title">Front Page Configuration</span>
                   </a>
                 </li>
+                
               </ul>
             </li>
           </ul>
@@ -180,6 +186,7 @@
           </button>
         </div>
         <pageConfiguration v-if="isConfigurationCheck" :isConfigurationCheck="isConfigurationCheck" @page-config-close="getDataFromChild"></pageConfiguration>
+        <emailConfiguration v-if="isEmailConfigurationCheck" :isEmailConfigurationCheck="isEmailConfigurationCheck" @email-config-close="getDataFromChild"></emailConfiguration>
       </div>
       <div class="action-modal-wraper" v-if="success_message">
         <span>{{ success_message }}</span>
@@ -195,6 +202,7 @@
 
 <script>
 import pageConfiguration from "@/components/settings/pageConfigurationNew";
+import emailConfiguration from "@/components/settings/emailConfiguration";
 import axios from "axios";
 import $ from "jquery";
 
@@ -202,12 +210,14 @@ export default {
     name: "Menu.vue",
 
     components: {
-        pageConfiguration
+        pageConfiguration,
+        emailConfiguration
     },
 
     data() {
         return {
             isConfigurationCheck : false,
+            isEmailConfigurationCheck : false,
             token            : '',
             user_permissions : '',
             mappedPermission : '',
@@ -222,12 +232,14 @@ export default {
         {
             console.log('working')
             this.isConfigurationCheck = false;
+            this.isEmailConfigurationCheck = false;
 
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper.right-side-config-wrapper').toggleClass('right-side-config-form-show');
         },
         getDataFromChild(status)
         {
+          console.log(status);
             this.success_message = status;
             this.setTimeoutElements();
             this.removingRightSideWrapper();
@@ -250,7 +262,8 @@ export default {
 
         clearAllChecker()
         {
-            this.isConfigurationCheck = false;
+            this.isConfigurationCheck      = false;
+            this.isEmailConfigurationCheck = false;
         },
 
         getPageConfigData(newData)

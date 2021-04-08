@@ -22,6 +22,7 @@ import quizEdit from '@/components/quiz/quizEdit.vue'
 
 import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.vue'
 import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
+import emailConfiguration from '@/components/settings/emailConfiguration.vue'
 
 
 // import bannerAdd from '@/components/banner/bannerAdd'
@@ -69,6 +70,15 @@ let router =  new Router({
       path: '/page-configuration',
       name: 'pageConfiguration',
       component: pageConfiguration,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: '/email-configuration',
+      name: 'emailConfiguration',
+      component: emailConfiguration,
       meta: {
         requiresAuth: true
       }

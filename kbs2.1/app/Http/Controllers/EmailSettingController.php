@@ -4,17 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailSetting;
 use Illuminate\Http\Request;
+use App\Services\EmailSettingService;
 
 class EmailSettingController extends Controller
 {
+    private $emailSettingService;
+
+    /**
+     * PermissionController constructor.
+     * @param EmailSettingService $emailSettingService
+     */
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(EmailSettingService $emailSettingService)
+    {
+
+        $this->emailSettingService = $emailSettingService;
+
+    }
+
+
     public function index()
     {
         //
+        return $this->emailSettingService->getAll();
     }
 
     /**
@@ -36,6 +55,7 @@ class EmailSettingController extends Controller
     public function store(Request $request)
     {
         //
+        return $this->emailSettingService->createItem($request);
     }
 
     /**
@@ -67,9 +87,10 @@ class EmailSettingController extends Controller
      * @param  \App\Models\EmailSetting  $emailSetting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EmailSetting $emailSetting)
+    public function update(Request $request)
     {
         //
+        return $this->emailSettingService->updateItem($request);
     }
 
     /**
