@@ -141,34 +141,34 @@
                                     </div>
                                 </div>
 
-                                <div class="replied-box mt-10 ml-60" v-if="a_comment.status==1">
+<!--                                <div class="replied-box mt-10 ml-60" v-if="a_comment.status==1">-->
 
-                                    <div class="replied-input-box">
-                                        <div class="d-flex mt-15">
-                                            <div class="featured-image avatar mr-10">
-                                                <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
-                                            </div>
-                                            <div class="reply-input w-100">
-                                                <input type="hidden" v-model="a_comment.id" class="form-control px-25 py-10">
-                                                <input placeholder="reply..."  class="form-control px-25 py-10">
-                                            </div>
-                                        </div>
-                                        <div class="reply-btn-wrapper ml-60 mt-2 mb-2 text-right">
-                                            <button class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill" @click="addReply(a_comment.id,reply_body,reply_status)">Reply</button>
-                                        </div>
-                                    </div>
+<!--                                    <div class="replied-input-box">-->
+<!--                                        <div class="d-flex mt-15">-->
+<!--                                            <div class="featured-image avatar mr-10">-->
+<!--                                                <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">-->
+<!--                                            </div>-->
+<!--                                            <div class="reply-input w-100">-->
+<!--                                                <input type="hidden" v-model="a_comment.id" class="form-control px-25 py-10">-->
+<!--                                                <input placeholder="reply..."  class="form-control px-25 py-10">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="reply-btn-wrapper ml-60 mt-2 mb-2 text-right">-->
+<!--                                            <button class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill" @click="addReply(a_comment.id,reply_body,reply_status)">Reply</button>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
-                                    <div class="d-flex">
-                                        <div class="featured-image avatar mr-10">
-                                            <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
-                                        </div>
-                                        <div class="reply-text w-100 px-10 py-2">
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                    <div class="d-flex">-->
+<!--                                        <div class="featured-image avatar mr-10">-->
+<!--                                            <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">-->
+<!--                                        </div>-->
+<!--                                        <div class="reply-text w-100 px-10 py-2">-->
+<!--                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
-                            <!--                     Reply Section End-->
+                            <!--Reply Section End-->
                         </div>
                     </div>
                 </div>
