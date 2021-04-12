@@ -121,7 +121,7 @@
 
                             <!-- Reply Section Start -->
                             <div class="reply-box mt-15" v-for="a_comment in comments" :key="a_comment.id">
-                                <div class="reply-input-box d-flex">
+                                <div class="reply-input-box d-flex" v-if="">
                                     <div class="featured-image avatar mr-10">
                                         <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
                                     </div>
@@ -149,7 +149,8 @@
                                                 <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
                                             </div>
                                             <div class="reply-input w-100">
-                                                <input placeholder="reply..." class="form-control px-25 py-10">
+                                                <input type="hidden" v-model="a_comment.id" class="form-control px-25 py-10">
+                                                <input placeholder="reply..."  class="form-control px-25 py-10">
                                             </div>
                                         </div>
                                         <div class="reply-btn-wrapper ml-60 mt-2 mb-2 text-right">
@@ -157,14 +158,14 @@
                                         </div>
                                     </div>
 
-                                    <!--                            <div class="d-flex">-->
-                                    <!--                                <div class="featured-image avatar mr-10">-->
-                                    <!--                                    <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">-->
-                                    <!--                                </div>-->
-                                    <!--                                <div class="reply-text w-100 px-10 py-2">-->
-                                    <!--                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>-->
-                                    <!--                                </div>-->
-                                    <!--                            </div>-->
+                                    <div class="d-flex">
+                                        <div class="featured-image avatar mr-10">
+                                            <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">
+                                        </div>
+                                        <div class="reply-text w-100 px-10 py-2">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!--                     Reply Section End-->

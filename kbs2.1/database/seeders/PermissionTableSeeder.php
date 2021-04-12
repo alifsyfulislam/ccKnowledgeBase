@@ -78,6 +78,12 @@ class PermissionTableSeeder extends Seeder
             'Banner Delete',
 
 
+            'Comment Create',
+            'Comment List',
+            'Comment Edit',
+            'Comment Delete',
+
+
         ];
 
 
