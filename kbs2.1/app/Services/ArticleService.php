@@ -447,4 +447,15 @@ class ArticleService
     }
 
 
+//    public function articleCommentStatusChange($request){
+//        return response()->json([
+//
+//            'status_code'  => 200,
+//            'messages'     => config('status.status_code.200'),
+//            'article_info' => $this->articleRepository->changeArticleCommentStatus($request)
+//
+//        ]);
+//    }
+
+
 }

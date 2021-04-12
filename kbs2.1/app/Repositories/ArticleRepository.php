@@ -74,6 +74,7 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->slug        = Helper::slugify($data['en_title']).$randomString;
 //        $dataObj->en_body     = $data['en_body']? $data['en_body'] : 'n/a';
 //        $dataObj->bn_body     = $data['bn_body']? $data['bn_body'] : 'n/a';
+        $dataObj->commentable_status      = $data['commentable_status'];
         $dataObj->status      = $data['status'] ? $data['status'] :  'draft';
         $dataObj->publish_date = $data['publish_date'];
         $dataObj->en_short_summary = $data['en_short_summary'];
@@ -191,4 +192,12 @@ class ArticleRepository implements RepositoryInterface
         ]);
 
     }
+
+//    public function changeArticleCommentStatus($request){
+//        return Article::where('id', $request->id)->update([
+//
+//            'commentable_status' => $request->commentable_status
+//
+//        ]);
+//    }
 }

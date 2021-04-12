@@ -1,0 +1,31 @@
+<?php
+
+
+namespace App\Repositories;
+
+
+use App\Models\Comment;
+
+class CommentRepository
+{
+    public function create(array $data){
+
+        $dataObj =  new Comment();
+        $dataObj->id = $data['id'];
+        $dataObj->post_id = $data['post_id'];
+        $dataObj->user_id = $data['user_id'];
+        $dataObj->comment_body = $data['comment_body'];
+        $dataObj->status = $data['status'];
+        return $dataObj->save();
+    }
+
+    public  function articleCommentsAll($id){
+        return $comments = Comment::with('user')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
+    }
+
+    public function commentStatus($request){
+        $comment = Comment::find($request->id);
+        $comment->status = $request->status;
+        return $comment->save();
+    }
+}

@@ -59,6 +59,13 @@ class User extends Authenticatable
 
     }
 
+    public function comment()
+    {
+
+        return $this->hasMany(Comment::class);
+
+    }
+
     /**
      * @param $date
      * @return string

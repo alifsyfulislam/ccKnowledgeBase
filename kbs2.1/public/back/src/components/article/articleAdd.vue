@@ -118,6 +118,16 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Commentable</label>
+                            <div>
+                                <label for="cmmnt_active"><input id="cmmnt_active" type="radio" value="1" v-model="articleData.commentable"/> Active</label>
+                                <label for="cmmnt_in_active"><input id="cmmnt_in_active" type="radio" value="0" v-model="articleData.commentable"/> Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Select A Status</label>
                             <select class="form-control" v-model="articleData.status">
                                 <option value="draft">Draft</option>
@@ -277,6 +287,7 @@
                     bn_short_summary    : '',
                     en_body             : '',
                     bn_body             : '',
+                    commentable         : 1,
                     status              : 'draft',
                 },
                 contentData :{
@@ -616,6 +627,7 @@
                 formData.append('tag', this.articleData.tag);
                 formData.append('en_short_summary', this.articleData.en_short_summary);
                 formData.append('bn_short_summary', this.articleData.bn_short_summary);
+                formData.append('commentable_status', this.articleData.commentable);
                 formData.append('status', this.articleData.status);
 
                 axios.post('articles', formData,

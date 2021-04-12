@@ -141,6 +141,16 @@
 
           <div class="col-md-12">
             <div class="form-group">
+              <label>Commentable</label>
+              <div>
+                <label for="cmmnt_active"><input :checked="articleData.commentable === 1" id="cmmnt_active" type="radio" value="1" v-model="articleData.commentable"/> Active</label>
+                <label for="cmmnt_in_active"><input  :checked="articleData.commentable === 0" id="cmmnt_in_active" type="radio" value="0" v-model="articleData.commentable"/> Inactive</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
               <label>Select A Status</label>
               <select class="form-control" v-model="articleData.status">
                 <option value="draft">Draft</option>
@@ -302,6 +312,7 @@
           bn_short_summary        : '',
           en_body                 : '',
           bn_body                 : '',
+          commentable             : '',
           status                  : 'draft',
         },
 
@@ -628,8 +639,7 @@
           $('#categoryIDError').html("category field is required");
         }
 
-        if (this.validation_error.isTitleStatus    === true &&
-                this.validation_error.isCategoryStatus === true ){
+        if (this.validation_error.isTitleStatus    === true && this.validation_error.isCategoryStatus === true ){
           this.articleUpdate();
         }
       },
@@ -694,6 +704,7 @@
         formData.append('bn_short_summary', this.articleData.bn_short_summary);
         formData.append('en_body', enBody);
         formData.append('bn_body', bnBody);
+        formData.append('commentable_status', this.articleData.commentable);
         formData.append('status', this.articleData.status);
         formData.append('previous_file_list', json_arr);
 
@@ -765,22 +776,22 @@
                 })
                 .then(function (response) {
                   if (response.data.status_code === 200) {
-                    _that.articleDetails          = response.data.article_info;
 
-                    _that.articleData.category_id =  _that.articleDetails.category_id;
-
-                    _that.articleData.en_title  =  _that.articleDetails.en_title;
-                    _that.articleData.bn_title  =  _that.articleDetails.bn_title;
-                    _that.articleData.tag       =  _that.articleDetails.tag;
-                    _that.articleData.en_short_summary =  _that.articleDetails.en_short_summary;
-                    _that.articleData.bn_short_summary =  _that.articleDetails.bn_short_summary;
-                    _that.articleData.en_body   =  _that.articleDetails.en_body;
-                    _that.articleData.bn_body   =  _that.articleDetails.bn_body;
-                    _that.articleData.status    =  _that.articleDetails.status;
-
-                    _that.enBodyData  = _that.articleData.en_body;
-                    _that.bnBodyData  = _that.articleData.bn_body;
-                    _that.isMounted   = true;
+                    _that.articleDetails                = response.data.article_info;
+                    _that.articleData.category_id       =  _that.articleDetails.category_id;
+                    _that.articleData.en_title          =  _that.articleDetails.en_title;
+                    _that.articleData.bn_title          =  _that.articleDetails.bn_title;
+                    _that.articleData.tag               =  _that.articleDetails.tag;
+                    _that.articleData.en_short_summary  =  _that.articleDetails.en_short_summary;
+                    _that.articleData.bn_short_summary  =  _that.articleDetails.bn_short_summary;
+                    _that.articleData.en_body           =  _that.articleDetails.en_body;
+                    _that.articleData.bn_body           =  _that.articleDetails.bn_body;
+                    _that.articleData.commentable       =  _that.articleDetails.commentable_status;
+                    _that.articleData.status            =  _that.articleDetails.status;
+                    _that.enBodyData                    = _that.articleData.en_body;
+                    _that.bnBodyData                    = _that.articleData.bn_body;
+                    _that.isMounted                     = true;
+                    console.log(_that.articleDetails)
 
                     if ((_that.articleDetails.media).length >=0){
                       (_that.articleDetails.media).forEach( aMedia => {

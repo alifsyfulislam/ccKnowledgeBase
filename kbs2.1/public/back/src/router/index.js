@@ -151,7 +151,7 @@ let router =  new Router({
       }
     },
     {
-      path: '/article-details/:id',
+      path: '/article-details/:slug',
       name: 'articleDetails',
       component: articleDetails,
       meta: {
@@ -211,8 +211,8 @@ router.beforeEach((to, from, next) => {
       })
     } else {
       next()
-      console.log(getRoutesList(router.options.routes, 'http://localhost:8080/back'));
-      console.log(getRoutesXML());
+      // console.log(getRoutesList(router.options.routes, 'http://localhost:8080/back'));
+      // console.log(getRoutesXML());
     }
   } else {
     next()

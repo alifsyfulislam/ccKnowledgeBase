@@ -20,6 +20,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizTakeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +63,13 @@ Route::post('customer/username', [CustomerController::class, 'checkUserNameExist
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
 
+
+
 Route::middleware('auth:api')->group(function(){
+
+    Route::apiResource('comments', CommentController::class);
+    Route::get('article-comments/{id}', [CommentController::class, 'articleComments']);
+    Route::post('comment-status', [CommentController::class, 'commentStatus']);
 
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('contents', ContentController::class);
@@ -82,6 +89,8 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('pages', PageController::class);
     Route::apiResource('permissions', PermissionController::class);
 
+
+
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
@@ -93,6 +102,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('all-article-list', [ArticleController::class, 'articleAll']);
 
     Route::post('change-article-status', [ArticleController::class, 'changeArticleStatus']);
+    Route::post('change-article-comment-status', [ArticleController::class, 'changeArticleCommentStatus']);
     Route::post('change-faq-status', [FaqController::class, 'changeFAQStatus']);
 
     Route::post('pages/update-data', [PageController::class, 'update']);
