@@ -14,30 +14,35 @@
                                 <option value="smtp">SMTP</option>
                                 <option value="mail">MAIL</option>
                             </select> 
+                            <span id="typeError" class="text-danger small"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="host">Host<span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="configure_data.host" id="host" placeholder="Enter Mail Host" required>
+                            <input class="form-control" type="text" v-model="configure_data.host" id="host" placeholder="Enter Mail Host" @keyup="checkvalidation($event)" required>
+                            <span id="hostError" class="text-danger small"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="port">Port<span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="configure_data.port" id="port" placeholder="Enter Port" required>
+                            <input class="form-control" type="number" v-model="configure_data.port" id="port" placeholder="Enter Port" @keyup="checkvalidation($event)" required>
+                            <span id="portError" class="text-danger small"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="username">Username <span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="configure_data.username" id="username" placeholder="Enter Username" required>
+                            <input class="form-control" type="text" v-model="configure_data.username" id="username" placeholder="Enter Username" @keyup="checkvalidation($event)" required>
+                            <span id="usernameError" class="text-danger small"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password">Password <span class="required">*</span></label>
-                            <input class="form-control" type="password" v-model="configure_data.password" id="password" placeholder="Enter Password" required>
+                            <input class="form-control" type="password" v-model="configure_data.password" id="password" placeholder="Enter Password" @keyup="checkvalidation($event)" required>
+                            <span id="passwordError" class="text-danger small"></span>
                         </div>
                     </div>
 
@@ -55,7 +60,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="primary_email">Primary Email<span class="required">*</span></label>
-                            <input class="form-control" type="text" v-model="configure_data.primary_email" id="primary_email" placeholder="Enter Primary Email" required>
+                            <input class="form-control" type="email" v-model="configure_data.primary_email" id="primary_email" placeholder="Enter Primary Email" @keyup="checkvalidation($event)" required>
+                            <span id="primary_emailError" class="text-danger small"></span>
                         </div>
                     </div>
 
@@ -64,7 +70,7 @@
                 </div>
 
                 <div class="form-group text-right">
-                    <button class="btn common-gradient-btn ripple-btn px-50" @click="saveEmailConfiguration()">Save</button>
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSave()">Save</button>
                 </div>
             </div>
 
@@ -75,7 +81,7 @@
 
 <script>
 import axios from "axios";
-
+import $ from "jquery";
 export default {
     name: "emailConfiguration",
     props: ['isEmailConfigurationCheck'],
@@ -87,7 +93,8 @@ export default {
 
             success_message : '',
             error_message   : '',
-            token : '',
+            token           : '',
+            isvalidate      : true,
 
             is_config_check : false,
 
@@ -111,7 +118,7 @@ export default {
 
 
         getEmailConfiguration(pageUrl) {
-            console.log('ssfsfsdf');
+            
             let _that =this;
 
             pageUrl = pageUrl == undefined ? 'email-setting' : pageUrl;
@@ -158,6 +165,33 @@ export default {
                     }
                 });
 
+        },
+
+        checkvalidation(e) {
+           
+            var id = e.target.id;
+            var value = e.target.value;
+            var errorId = id+"Error";
+            if(!value) {
+                $('#'+id).css({
+                    'border-color': '#FF7B88'
+                });
+                $('#'+errorId).html("*This field is required");
+            } else {
+                $('#'+id).css({
+                    'border-color': ''
+                });
+                $('#'+errorId).html("");
+            }
+        },
+
+         validateAndSave(e) {
+             let _that = this;
+           if(_that.configure_data.type && _that.configure_data.port &&_that.configure_data.host &&_that.configure_data.username &&_that.configure_data.password &&_that.configure_data.primary_email){
+              this.saveEmailConfiguration();
+           }else{
+               console.log("validation Error");
+           }
         },
 
         saveEmailConfiguration() {
