@@ -12,23 +12,16 @@
       <!-- Content Area -->
       <div class="content-area">
         <!-- news start -->
-        <BreakingNews />
+        <BreakingNews v-if="isArticleList" :recent_article="articleList" />
         <!-- news end -->
         <div class="content-title-wrapper px-15 py-15">
           <h2 class="content-title text-uppercase m-0">Dashboard</h2>
         </div>
 
         <div class="content-wrapper d-fullscreen">
-          <div v-if="isBannerStatus" class="modal fade BannerSliderModal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                  <button type="button" class="btn-close bannerCloseBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" /></button>
-                  <div class="modal-body overflow-hidden">
-                      <BannerSlider v-if="isBannerStatus" :banner_list="bannerList"></BannerSlider>
-                  </div>
-                </div>
-            </div>
-          </div>
+
+          <BannerSlider v-if="isBannerStatus" :banner_list="bannerList"></BannerSlider>
+
           <!-- Content Area -->
           <div class="data-content-area pr-15 pb-10">
             <div class="gredient-card-wrapper mb-40">
@@ -69,7 +62,7 @@
                     <div class="box-with-centered-icon position-relative text-center bg-white p-20 my-30">
                       <div class="icon d-inline-flex justify-content-center align-items-center bg-light-blue text-white"><i class="fas fa-headphones-alt"></i></div>
                       <h3 class="my-0 font-16 pt-40 pb-20">Total Quiz</h3>
-<!--                      <div class="counting-number text-light-blue"> {{ totalCountList.total_quiz }} </div>-->
+                      <!--                      <div class="counting-number text-light-blue"> {{ totalCountList.total_quiz }} </div>-->
                       <total-quiz v-if="totalCountList" :totalQuiz="totalCountList.total_quiz"></total-quiz>
 
                       <div class="counting-number text-light-blue" v-else>0</div>
@@ -165,262 +158,244 @@
 
 <script>
 
-import $ from "jquery";
+  import $ from "jquery";
 
-$(document).on('keyup',(e)=> {
-  if (e.keyCode === 27){
-    // $('.content-wrapper').toggleClass('expandable-content-area');
-    $('.content-wrapper.d-fullscreen').removeClass('expandable-content-area');
-  }
-});
-
-
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
-
-import totalUser from "../wallboard/totalUser";
-import totalArticle from "../wallboard/totalArticle";
-import totalFaqs from "../wallboard/totalFaqs";
-import totalQuiz from "../wallboard/totalQuiz";
-
-
-import AreaChart from "../chart/AreaChart";
-import BarChart from "../chart/BarChart.vue";
-// import PieChart from "../chart/PieChart.vue";
-// import LineChart from "../chart/LineChart.vue";
-// import RadarChart from "../chart/RadarChart.vue";
-
-import axios from "axios";
-import TotalFaqs from "../wallboard/totalFaqs";
-import TotalQuiz from "../wallboard/totalQuiz";
-
-import BannerSlider from '../slider/slider'
-import BreakingNews from '../breakingnews/breakingnews'
-import Breakingnews from '../breakingnews/breakingnews.vue';
-
-export default {
-  name: "dashboard.vue",
-  components: {
-    TotalQuiz,
-    TotalFaqs,
-    Header,
-    Menu,
-    AreaChart,
-    BarChart,
-    totalUser,
-    totalArticle,
-    BannerSlider,
-    BreakingNews,
-    Breakingnews,
-    // totalFaqs,
-    // totalQuiz,
-    // PieChart,
-    // LineChart,
-    // RadarChart
-  },
-
-  data() {
-    return {
-      isBannerStatus        : false,
-      isArticleList         : false,
-      category_parent_id    : '',
-      category_name         : '',
-      success_message       : '',
-      error_message         : '',
-      token                 : '',
-      categoryList          : '',
-      articleList           : '',
-      userInfo              : '',
-      recentArticles        : '',
-      bannerList            : '',
-
-      user_info             : '',
-      current_user_role_id  : '',
-      // user_permissions      : '',
-      // mappedPermission      : '',
-
-      filter        : {
-        isAdmin             : 1,
-        category_id         : '',
-        status              : '',
-        en_title            : '',
-        tag                 : '',
-      },
-
-      chartData   : {
-        Books               : 24,
-        Magazine            : 30,
-        Newspapers          : 10
-      },
-
-      totalCountList        : '',
+  $(document).on('keyup',(e)=> {
+    if (e.keyCode === 27){
+      // $('.content-wrapper').toggleClass('expandable-content-area');
+      $('.content-wrapper.d-fullscreen').removeClass('expandable-content-area');
     }
-  },
-  methods: {
-    setTimeoutElements()
-    {
-      setTimeout(() => this.success_message = "", 2e3);
-      setTimeout(() => this.error_message = "", 2e3);
+  });
+
+
+  import Header from "@/layouts/common/Header";
+  import Menu from "@/layouts/common/Menu";
+
+  import totalUser from "../wallboard/totalUser";
+  import totalArticle from "../wallboard/totalArticle";
+  import totalFaqs from "../wallboard/totalFaqs";
+  import totalQuiz from "../wallboard/totalQuiz";
+
+
+  import AreaChart from "../chart/AreaChart";
+  import BarChart from "../chart/BarChart.vue";
+  // import PieChart from "../chart/PieChart.vue";
+  // import LineChart from "../chart/LineChart.vue";
+  // import RadarChart from "../chart/RadarChart.vue";
+
+  import axios from "axios";
+  import TotalFaqs from "../wallboard/totalFaqs";
+  import TotalQuiz from "../wallboard/totalQuiz";
+
+  import BannerSlider from '../slider/slider'
+  import BreakingNews from '../breakingnews/breakingnews'
+  // import Breakingnews from '../breakingnews/breakingnews.vue';
+
+  export default {
+    name: "dashboard.vue",
+    components: {
+      TotalQuiz,
+      TotalFaqs,
+      Header,
+      Menu,
+      AreaChart,
+      BarChart,
+      totalUser,
+      totalArticle,
+      BannerSlider,
+      BreakingNews,
+      // Breakingnews,
+      // totalFaqs,
+      // totalQuiz,
+      // PieChart,
+      // LineChart,
+      // RadarChart
     },
 
-    clearFilter()
-    {
-      this.isArticleList        = false;
-      this.filter.category_id   = "";
-      this.filter.status        = "";
-      this.filter.en_title      = "";
-      this.filter.tag           = "";
-      this.success_message      = "";
-      this.error_message        = "";
-    },
+    data() {
+      return {
+        isBannerStatus        : false,
+        isArticleList         : false,
+        category_parent_id    : '',
+        category_name         : '',
+        success_message       : '',
+        error_message         : '',
+        token                 : '',
+        categoryList          : '',
+        articleList           : '',
+        userInfo              : '',
+        recentArticles        : '',
+        bannerList            : '',
 
-    getCategoryList()
-    {
-      let _that =this;
+        user_info             : '',
+        current_user_role_id  : '',
+        // user_permissions      : '',
+        // mappedPermission      : '',
 
-      axios.get('categories',
-        {
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-          },
-          params :
-            {
-              isAdmin : 1
-            },
-
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.categoryList = response.data.category_list.data;
-          }
-          else{
-            _that.success_message = "";
-            _that.error_message   = response.data.error;
-          }
-        })
-    },
-
-    getArticleList()
-    {
-      let _that =this;
-
-      axios.get('latest-article-list',
-        {
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-          },
-          params :
-            {
-              isAdmin : 1,
-            },
-
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-
-            _that.isArticleList = true;
-            _that.articleList = response.data.article_list;
-          }
-          else{
-            _that.success_message = "";
-            _that.error_message   = response.data.error;
-          }
-        })
-    },
-
-    getAllTotalCount()
-    {
-      let _that =this;
-
-      axios.post('total-count-data',{
-          isAdmin : 1
+        filter        : {
+          isAdmin             : 1,
+          category_id         : '',
+          status              : '',
+          en_title            : '',
+          tag                 : '',
         },
-        {
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-          },
 
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.totalCountList = response.data.total_count;
-            _that.totalUser = _that.totalCountList.total_user
-          }
-          else{
-            _that.success_message = "";
-            _that.error_message   = response.data.error;
-          }
-        })
+        chartData   : {
+          Books               : 24,
+          Magazine            : 30,
+          Newspapers          : 10
+        },
+
+        totalCountList        : '',
+      }
+    },
+    methods: {
+      setTimeoutElements()
+      {
+        setTimeout(() => this.success_message = "", 2e3);
+        setTimeout(() => this.error_message = "", 2e3);
+      },
+
+      clearFilter()
+      {
+        this.isArticleList        = false;
+        this.filter.category_id   = "";
+        this.filter.status        = "";
+        this.filter.en_title      = "";
+        this.filter.tag           = "";
+        this.success_message      = "";
+        this.error_message        = "";
+      },
+
+      getCategoryList()
+      {
+        let _that =this;
+
+        axios.get('categories',
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params :
+                          {
+                            isAdmin : 1
+                          },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.categoryList = response.data.category_list.data;
+                  }
+                  else{
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                  }
+                })
+      },
+
+      getArticleList()
+      {
+        let _that =this;
+
+        axios.get('latest-article-list',
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params :
+                          {
+                            isAdmin : 1,
+                          },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+
+                    _that.isArticleList = true;
+                    _that.articleList = response.data.article_list;
+                  }
+                  else{
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                  }
+                })
+      },
+
+      getAllTotalCount()
+      {
+        let _that =this;
+
+        axios.post('total-count-data',{
+                  isAdmin : 1
+                },
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.totalCountList = response.data.total_count;
+                    _that.totalUser = _that.totalCountList.total_user
+                  }
+                  else{
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                  }
+                })
+      },
+
+      getBannerList(){
+        let _that =this;
+
+        axios.post('role-banners',
+          {
+            role_id : this.current_user_role_id
+          },
+          {
+            headers: {
+              'Authorization': 'Bearer '+localStorage.getItem('authToken')
+            },
+
+          })
+          .then(function (response) {
+
+            _that.isBannerStatus = true;
+            if(response.data.status_code === 200){
+              // console.log(response.data.banner_list)
+              _that.bannerList = response.data.banner_list;
+            }
+            else{
+              _that.success_message = "";
+              _that.error_message   = response.data.error;
+            }
+          })
+      }
+
     },
 
-    getBannerList(){
-      let _that =this;
+    mounted(){
 
-      axios.post('role-banners',
-              {
-                role_id : this.current_user_role_id
-              },
-              {
-                headers: {
-                  'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                },
 
-              })
-              .then(function (response) {
 
-                _that.isBannerStatus = true;
-                if(response.data.status_code === 200){
-                  console.log(response.data.banner_list)
-                  _that.bannerList = response.data.banner_list;
-                }
-                else{
-                  _that.success_message = "";
-                  _that.error_message   = response.data.error;
-                }
-              })
+    },
+
+    created()
+    {
+      this.getArticleList();
+      this.getCategoryList();
+      this.getAllTotalCount();
+      this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
+      // this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
+      // this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
+      this.current_user_role_id = this.user_info.roles[0].id
+      this.getBannerList();
     }
-
-  },
-
-  mounted(){
-    $('.BannerSliderModal').modal({
-      show: true,
-      backdrop: 'static',
-      keyboard: false
-    });
-
-    $('.bannerCloseBtn').on('click', () => {
-        $('.BannerSliderModal').modal('hide');
-    })
-  },
-
-  created()
-  {
-    this.getArticleList();
-    this.getCategoryList();
-    this.getAllTotalCount();
-
-    this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
-    // this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
-    // this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
-
-    this.current_user_role_id = this.user_info.roles[0].id
-    this.getBannerList();
   }
-}
 </script>
 
 <style scoped>
-.BannerSliderModal .btn-close {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  height: 30px;
-  width: 30px;
-  background: #fff;
-  color: #000;
-  z-index: 1;
-  border-radius: 50rem;
-}
+
 
 </style>
