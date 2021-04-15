@@ -20,12 +20,30 @@ class CommentRepository
     }
 
     public  function articleCommentsAll($id){
-        return $comments = Comment::with('user')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
+        return $comments = Comment::with('user','article')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
     }
 
     public function commentStatus($request){
         $comment = Comment::find($request->id);
         $comment->status = $request->status;
         return $comment->save();
+    }
+
+    public function update($request){
+        $comment = Comment::find($request->id);
+        $comment->comment_body = $request->comment_body;
+        $comment->status = 0;
+        return $comment->save();
+    }
+
+    public function delete($id)
+    {
+        return Comment::find($id)->delete();
+    }
+
+    public function getWithPagination(){
+
+        return Comment::with('user','article')->orderBY('created_at','DESC')->paginate(20);
+
     }
 }

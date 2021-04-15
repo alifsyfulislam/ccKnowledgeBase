@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CommentService;
 use Illuminate\Http\Request;
+use Auth;
 
 class CommentController extends Controller
 {
@@ -20,7 +21,15 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->can('comment-list')) {
+
+            return $this->commentService->paginateData();
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
@@ -31,8 +40,15 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request->all();
-        return $this->commentService->createItem($request);
+        if(Auth::user()->can('comment-create')) {
+
+            return $this->commentService->createItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
@@ -53,9 +69,17 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if(Auth::user()->can('comment-edit')) {
+
+            return $this->commentService->updateItem($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     /**
@@ -64,16 +88,42 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if(Auth::user()->can('comment-delete')) {
+
+            return $this->commentService->deleteItem($request->id);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 
     public function articleComments($id){
-        return $this->commentService->getArticleComments($id);
+
+        if(Auth::user()->can('comment-list')) {
+
+            return $this->commentService->getArticleComments($id);
+
+        } else {
+
+            return $this->commentService->getArticleComments($id);
+
+        }
     }
 
     public function commentStatus(Request $request){
-        return $this->commentService->changeCommentStatus($request);
+
+        if(Auth::user()->can('comment-edit')) {
+
+            return $this->commentService->changeCommentStatus($request);
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
     }
 }

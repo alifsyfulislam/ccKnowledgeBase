@@ -24,6 +24,7 @@ import quizFormFieldList from '@/components/quiz-form-fields/quizFormFieldList.v
 import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
 
 import bannerList from '@/components/banner/bannerList'
+import commentList from '@/components/comment/commentList'
 
 
 Vue.use(Router)
@@ -50,6 +51,14 @@ let router =  new Router({
       path: '/user-list',
       name: 'customerList',
       component: customerList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/comment-list',
+      name: 'commentList',
+      component: commentList,
       meta: {
         requiresAuth: true
       }
@@ -133,7 +142,7 @@ let router =  new Router({
     },
 
     {
-      path: '/faq-details/:id',
+      path: '/faq-details/:slug',
       name: 'faqDetails',
       component: faqDetails,
       meta: {

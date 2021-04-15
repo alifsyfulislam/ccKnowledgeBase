@@ -49,6 +49,11 @@ class Article extends Model
 
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'id');
+    }
+
     /**
      * @param $date
      * @return string

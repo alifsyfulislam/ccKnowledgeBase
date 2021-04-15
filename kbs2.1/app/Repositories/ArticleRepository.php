@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Article;
+use App\Models\Comment;
 use App\Models\Content;
 use Illuminate\Support\Str;
 
@@ -17,7 +18,7 @@ class ArticleRepository implements RepositoryInterface
     public function all()
     {
 
-        return Article::orderBy('id', 'DESC')->get();
+        return Article::with('user','category')->orderBy('id', 'DESC')->get();
 
     }
 
@@ -104,17 +105,20 @@ class ArticleRepository implements RepositoryInterface
     {
 
         $contents = Content::where('article_id', $id)->orderBy('created_at', 'desc')->get();
+        $comments = Comment::where('post_id', $id)->orderBy('created_at', 'desc')->get();
         if ($contents){
             foreach ($contents as $content){
                 $content->delete();
             }
-            Article::find($id)->delete();
-            return 'content article delete';
-        }else{
-            Article::find($id)->delete();
-            return 'no content found';
         }
-//        return Article::find($id)->delete();
+
+        if ($comments){
+            foreach ($comments as $comment){
+                $comment->delete();
+            }
+        }
+
+        return Article::find($id)->delete();
     }
 
 

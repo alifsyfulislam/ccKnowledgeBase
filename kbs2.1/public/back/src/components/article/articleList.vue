@@ -332,24 +332,6 @@
                 $('#alertModal').modal('show');
                 localStorage.setItem('article_status', JSON.stringify(selected));
             },
-            // articleCommentStatusRequest(selected){
-            //     console.log(selected.id);
-            //     $('#alertModal').modal('show');
-            //     let formData = new FormData;
-            //     formData.append('id', selected.id);
-            //     formData.append('commentable_status', selected.commentable_status);
-            //     axios.post('change-article-comment-status',formData,{
-            //         headers: {
-            //             'Authorization' : 'Bearer '+localStorage.getItem('authToken')
-            //         }
-            //     }).then(function (response) {
-            //         console.log(response);
-            //         if (response.data.status_code == 200){
-            //             this.success_message = 'Article commentable status changed'
-            //             this.setTimeoutElements();
-            //         }
-            //     })
-            // },
             changeArticleStatus(){
                 this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
                 // alert( this.isArticleStatus.id);
@@ -490,7 +472,7 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            // console.log(response.data);
+                            console.log(response.data.article_list);
                             _that.pagination.current = response.data.article_list.current_page;
                             _that.pagination.total = response.data.article_list.last_page;
                             _that.articleList       = response.data.article_list.data;

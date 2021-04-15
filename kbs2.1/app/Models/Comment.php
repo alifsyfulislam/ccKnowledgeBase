@@ -20,6 +20,11 @@ class Comment extends Model
 
     }
 
+    public function article()
+    {
+        return $this->belongsTo(Article::class,'post_id');
+    }
+
     public function getCreatedAtAttribute($date)
     {
         return date('j M, Y', strtotime($date));

@@ -34,24 +34,24 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Category <span class="required">*</span></label>
+<!--                    <div class="col-md-6">-->
+<!--                        <div class="form-group">-->
+<!--                            <label>Category <span class="required">*</span></label>-->
 
-                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">
-                                <option value="" disabled>Select A Category</option>
-                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
-                                    {{a_category.name}}
-                                </option>
-                            </select>
-                            <span id="categoryIDError" class="text-danger small"></span>
-                        </div>
-                    </div>
+<!--                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">-->
+<!--                                <option value="" disabled>Select A Category</option>-->
+<!--                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">-->
+<!--                                    {{a_category.name}}-->
+<!--                                </option>-->
+<!--                            </select>-->
+<!--                            <span id="categoryIDError" class="text-danger small"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Article <span class="required">*</span></label>
-                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
+                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
                         </div>
                     </div>
 
@@ -63,22 +63,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="col-md-12">
-                        <div class="form-group mb-15">
-                            <label >English Body</label>
-                            <div id="enBodyArea" v-bind:class="{ 'rounded border border-danger': isSummerNoteError }">
-                                <SummernoteEdit v-if="isMounted"   :idFromParent="enBody" :dataFromParent="enBodyData"></SummernoteEdit>
-                            </div>
-                            <span id="enBodyError" class="text-danger small"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" v-if="selected_language==='bangla'">
-                        <div class="form-group mb-15">
-                            <label >Bangla Body</label>
-                            <SummernoteEdit  :idFromParent="bnBody" :dataFromParent="bnBodyData"></SummernoteEdit>
-                        </div>
-                    </div> -->
                     <div class="col-md-12">
                         <div class="text-left">
                         <button @click.prevent class="btn common-gradient-btn ripple-btn px-15 p-2 bg-primary" data-toggle="modal" data-target="#contentModal">
@@ -493,7 +477,8 @@ export default {
                 response.data.article_list.forEach(val => {
                     _that.article_options.push({
                         'id' : val.id,
-                        'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..'
+                        'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..',
+                        'category' : val.category ?  val.category.id : ''
                     })
                 })
             })
@@ -504,8 +489,9 @@ export default {
             _that.article_update_id = val;
             console.log(_that.article_update_id + "oka");
         },
-        mySelectEvent({id, text}){
-            console.log({id, text})
+        mySelectEvent({id, text, category}){
+            console.log({id, text, category})
+            this.selectedCategory = category;
         },
 
 
@@ -645,8 +631,6 @@ export default {
                     en_title        : this.faqData.en_title,
                     bn_title        : this.faqData.bn_title,
                     tag             : this.faqData.tag,
-                    en_body         : enBody,
-                    bn_body         : bnBody,
                     status          : this.faqData.status,
                 },
                 {

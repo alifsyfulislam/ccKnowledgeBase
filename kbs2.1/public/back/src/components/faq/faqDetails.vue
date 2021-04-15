@@ -15,7 +15,7 @@
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10 d-md-flex justify-content-between align-items-center">
                     <h2 class="content-title text-uppercase m-0">FAQ Details</h2>
-                    <router-link :to="{ name: 'faqList'}" class="btn btn-primary btn-xs m-1 px-15 py-2">
+                    <router-link :to="{ name: 'faqList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
                         <i class="fas fa-arrow-left"></i> Back
                     </router-link>
                 </div>
@@ -146,6 +146,7 @@ name: "faqDetails.vue",
   created() {
 
     this.faq_id = this.$route.params.id;
+    this.faq_slug = this.$route.params.slug;
     //console.log(this.faq_id);
     this.getFaqDetails();
      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));

@@ -20,6 +20,17 @@ class CommentService
         $this->commentRepository = $commentRepository;
     }
 
+    public function paginateData(){
+
+        return response()->json([
+
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'comment_list' => $this->commentRepository->getWithPagination()
+
+        ]);
+    }
+
     public function changeCommentStatus($request){
         DB::beginTransaction();
 
@@ -115,6 +126,85 @@ class CommentService
         return response()->json([
             'status_code' => 200,
             'messages'=>config('status.status_code.200'),
+        ]);
+    }
+
+    public function updateItem($request){
+        $validator = Validator::make($request->all(),[
+
+            'comment_body' => "required",
+
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
+        }
+
+//        $input = $request->all();
+//        $input['id'] = time().rand(1000,9000);
+
+        DB::beginTransaction();
+
+        try {
+
+            $this->commentRepository->update($request);
+
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status_code' => 200,
+            'messages'=>config('status.status_code.200'),
+        ]);
+    }
+
+
+    public function deleteItem($id){
+
+        DB::beginTransaction();
+
+        try {
+
+            $this->commentRepository->delete($id);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
+
+        }
+
+        DB::commit();
+
+        return response()->json([
+
+            'status_code' => 200,
+            'messages'    => "Comment Deleted Successfully"
+
         ]);
     }
 }

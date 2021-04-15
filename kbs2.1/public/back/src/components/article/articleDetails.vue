@@ -113,13 +113,13 @@
                                         <input hidden type="radio" checked value="0" v-model="status">
                                     </div>
                                 </div>
-                                <div class="replied-btn-wrapper text-right pt-10">
-                                    <button class="btn btn-primary common-gradient-btn px-25 py-2 rounded-pill" @click="addComment()">Submit</button>
+                                <div class="replied-btn-wrapper pt-10 text-right">
+                                    <button class="btn btn-primary common-gradient-btn px-25 py-2 rounded-pill" @click="addComment()">Add</button>
                                 </div>
                             </div>
                             <!-- Comment Section End -->
 
-                            <!-- Reply Section Start -->
+                            <!-- Comment Read Start -->
                             <div class="reply-box mt-15" v-for="a_comment in comments" :key="a_comment.id">
                                 <div class="reply-input-box d-flex" v-if="">
                                     <div class="featured-image avatar mr-10">
@@ -132,43 +132,29 @@
                                         <div>
                                             <small> Status :
                                                 <input type="hidden" v-model="a_comment.id">
-                                                <label for="status_inactive"><input id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/>Inactive</label>
-                                                <label for="status_active"><input id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/>Active</label>
+                                                <label class="col-form-label" for="status_inactive"><input id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/> Inactive</label>
+                                                <label class="col-form-label" for="status_active"><input id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/> Active</label>
                                             </small>
+
+<!--                                            action-->
+                                            <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="checkPermission('comment-edit') && a_comment.user.id ==userInformation.id"><i class="fas fa-pen"></i></button>
+
+                                            <button  class="btn btn-danger ripple-btn m-1" @click="commentDelete(a_comment.id)" v-if="checkPermission('comment-delete')"><i class="fas fa-trash-restore-alt"></i></button>
                                         </div>
                                         <h6 class="font-weight-bold">{{a_comment.user.first_name ? a_comment.user.first_name+' '+ a_comment.user.last_name : a_comment.user_id}}</h6>
-                                        <p>{{a_comment.comment_body}}</p>
+
+
+                                        <div>
+                                            <p :id="'comment_box_'+a_comment.id" style="display: block">{{a_comment.comment_body}}</p>
+
+                                            <textarea style="display: none" :id="'comment_edit_box_'+a_comment.id" v-model="a_comment.comment_body" placeholder="Write your comment..." class="form-control py-10"></textarea>
+
+                                            <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill m-2">Update</button>
+                                        </div>
                                     </div>
                                 </div>
-
-<!--                                <div class="replied-box mt-10 ml-60" v-if="a_comment.status==1">-->
-
-<!--                                    <div class="replied-input-box">-->
-<!--                                        <div class="d-flex mt-15">-->
-<!--                                            <div class="featured-image avatar mr-10">-->
-<!--                                                <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">-->
-<!--                                            </div>-->
-<!--                                            <div class="reply-input w-100">-->
-<!--                                                <input type="hidden" v-model="a_comment.id" class="form-control px-25 py-10">-->
-<!--                                                <input placeholder="reply..."  class="form-control px-25 py-10">-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="reply-btn-wrapper ml-60 mt-2 mb-2 text-right">-->
-<!--                                            <button class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill" @click="addReply(a_comment.id,reply_body,reply_status)">Reply</button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-
-<!--                                    <div class="d-flex">-->
-<!--                                        <div class="featured-image avatar mr-10">-->
-<!--                                            <img class="img-fluid rounded-circle" src="../../assets/img/avatar.png" style="height: 40px; width: 40px" alt="avatar">-->
-<!--                                        </div>-->
-<!--                                        <div class="reply-text w-100 px-10 py-2">-->
-<!--                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, veniam expedita eaque cumque accusamus nemo dolores saepe dolore nobis itaque dicta nisi ipsum doloremque? Dolorem expedita libero beatae culpa? Consequuntur?</p>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
-                            <!--Reply Section End-->
+                            <!--Comment Read  End-->
                         </div>
                     </div>
                 </div>
@@ -183,6 +169,7 @@
 <script>
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
+    import $ from 'jquery'
     import axios from "axios";
 
     export default {
@@ -202,6 +189,8 @@
 
             return{
 
+                isCommentEdit : false,
+
                 articleID: '',
                 articleSlug: '',
                 aArticle: '',
@@ -217,11 +206,85 @@
                 success_message : '',
                 error_message   : '',
                 comments : '',
+                user_permissions :'',
+                mappedPermission : ''
             }
 
         },
 
         methods: {
+            commentUpdate(data,btnEdit,paraID,textareaID,btnID){
+                let _that = this;
+                $("#"+btnEdit).css({display : 'inline'})
+                $("#"+paraID).css({display : 'inline'})
+                $("#"+textareaID).css({display : 'none'})
+                $("#"+btnID).css({display : 'none'})
+                let updateBody =$("#"+textareaID).val();
+
+                axios.put('comments/update',
+                    {
+                        id            : data.id,
+                        comment_body    : updateBody,
+                    },
+                    {
+                        headers: {
+                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    console.log(response);
+                    if (response.data.status_code === 200){
+                        _that.getCommentListWithArticle();
+                        _that.success_message       = "Comment Updated Successfully";
+                        _that.setTimeoutElements();
+                    }
+                    else if (response.data.status_code === 400){
+                        console.log(response.data.errors);
+                        _that.showServerError(response.data.errors)
+                    }
+                })
+            },
+            commentEdit(btnEdit,paraID,textareaID,btnID){
+              $("#"+btnEdit).css({display : 'none'})
+              $("#"+paraID).css({display : 'none'})
+              $("#"+textareaID).css({display : 'inline'})
+              $("#"+btnID).css({display : 'inline'})
+            },
+            commentDelete(commentID){
+                let _that = this;
+                axios.delete('comments/delete',
+                    {
+                        data    : {
+                            id              : commentID
+                        },
+                        headers : {
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+                    if (response.data.status_code == 200)
+                    {
+                        _that.getCommentListWithArticle();
+                        _that.success_message       = "Comment Deleted Successfully";
+                        _that.setTimeoutElements();
+
+                    }
+                    else
+                    {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            checkPermission(permissionForCheck)
+            {
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             changeCommentStatus(event, commentID){
                 let _that = this;
                 let optionText = event.target.value;
@@ -338,6 +401,8 @@
             this.getRecentArticleList();
             this.getCommentListWithArticle(this.articleID)
             this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
         }
     }
 

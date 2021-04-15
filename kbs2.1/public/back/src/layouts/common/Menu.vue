@@ -163,6 +163,11 @@
                       <span class="menu-sub-title">Banners</span>
                   </router-link>
                 </li>
+                  <li v-if="checkPermission('comment-list')">
+                  <router-link :to="{ name: 'commentList'}">
+                      <span class="menu-sub-title">Comments</span>
+                  </router-link>
+                </li>
                 <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
                   <a href="#" @click="isConfigurationCheck=true" class="ripple-btn right-side-config-form">
                     <span class="menu-sub-title">Front Page Configuration</span>

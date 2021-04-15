@@ -4,11 +4,11 @@
             <span class="breaking-news media-left">Breaking News</span>
             <div class="media-content">
                 <transition name="fade" tag="div" mode="out-in">
-                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[0].slug }}" v-if="news[0]" key="0"><span class="cat-title">{{articles[0].category ? articles[0].category.name : ''}} : </span> {{articles[0].en_title}}</router-link>
-                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[1].slug }}" v-if="news[1]" key="1"><span class="cat-title">{{articles[1].category ? articles[1].category.name : ''}} : </span> {{articles[1].en_title}}</router-link>
-                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[2].slug }}" v-if="news[2]" key="1"><span class="cat-title">{{articles[2].category ? articles[2].category.name : ''}} : </span> {{articles[2].en_title}}</router-link>
-                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[3].slug }}" v-if="news[3]" key="1"><span class="cat-title">{{articles[3].category ? articles[3].category.name : ''}} : </span> {{articles[3].en_title}}</router-link>
-                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[4].slug }}" v-if="news[4]" key="1"><span class="cat-title">{{articles[4].category ? articles[3].category.name : ''}} : </span> {{articles[4].en_title}}</router-link>
+                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[0].id,slug: articles[0].slug }}" v-if="news[0] && articles[0].slug" key="0"><span class="cat-title">{{articles[0].category ? articles[0].category.name : ''}} : </span> {{articles[0].en_title}}</router-link>
+                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[1].id,slug: articles[1].slug }}" v-if="news[1] && articles[1].slug" key="1"><span class="cat-title">{{articles[1].category ? articles[1].category.name : ''}} : </span> {{articles[1].en_title}}</router-link>
+                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[2].id,slug: articles[2].slug }}" v-if="news[2] && articles[2].slug" key="1"><span class="cat-title">{{articles[2].category ? articles[2].category.name : ''}} : </span> {{articles[2].en_title}}</router-link>
+                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[3].id,slug: articles[3].slug }}" v-if="news[3] && articles[3].slug" key="1"><span class="cat-title">{{articles[3].category ? articles[3].category.name : ''}} : </span> {{articles[3].en_title}}</router-link>
+                    <router-link class="news" :to="{ name: 'articleDetails', params: { id: articles[4].id,slug: articles[4].slug }}" v-if="news[4] && articles[4].slug" key="1"><span class="cat-title">{{articles[4].category ? articles[3].category.name : ''}} : </span> {{articles[4].en_title}}</router-link>
                 </transition>
             </div>
         </article>

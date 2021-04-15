@@ -31,30 +31,30 @@
                     <div class="col-md-6" v-if="selected_language==='bangla'">
                         <div class="form-group">
                             <label>Bangla Title </label>
-                            <input class="form-control" type="text" v-model="faqData.bn_title" >
+                            <input placeholder="Enter a title" class="form-control" type="text" v-model="faqData.bn_title" >
                         </div>
                     </div>
 
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Category <span class="required">*</span></label>
+<!--                    <div class="col-md-6">-->
+<!--                        <div class="form-group">-->
+<!--                            <label>Category <span class="required">*</span></label>-->
 
-                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">
-                                <option value="" disabled>Select A Category</option>
-                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
-                                    {{a_category.name}}
-                                </option>
-                            </select>
-                            <span id="categoryIDError" class="text-danger small"></span>
-                        </div>
-                    </div>
+<!--                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">-->
+<!--                                <option value="" disabled>Select A Category</option>-->
+<!--                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">-->
+<!--                                    {{a_category.name}}-->
+<!--                                </option>-->
+<!--                            </select>-->
+<!--                            <span id="categoryIDError" class="text-danger small"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Article <span class="required">*</span></label>
-                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
+                            <select2 id="articleIDError" v-model="article_value" :options="article_options" :settings="{ settingOption: article_value, settingOption: article_value, settingOption: article_value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/>
                         </div>
                     </div>
 
@@ -67,22 +67,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="col-md-12">
-                        <div class="form-group mb-15">
-                            <label >English Body</label>
-                            <div id="enBodyArea" class="border" v-bind:class="{ 'rounded border-danger': isSummerNoteError }">
-                                <Summernote  v-model="faqData.en_body" :idFromParent="enBody"></Summernote>
-                            </div>
-                            <span id="enBodyError" class="text-danger small"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" v-if="selected_language=='bangla'">
-                        <div class="form-group mb-15">
-                            <label >Bangla Body</label>
-                            <Summernote   v-model="faqData.bn_body" :idFromParent="bnBody" ></Summernote>
-                        </div>
-                    </div> -->
                     <div class="col-md-12">
                         <div class="text-left">
                             <button @click.prevent class="btn common-gradient-btn ripple-btn px-15 p-2 bg-primary" data-toggle="modal" data-target="#contentModal">
@@ -479,21 +463,26 @@
                     params : {
                             isAdmin : 1,
                     },}).then(function (response) {
+                        console.log(response.data.article_list)
                     response.data.article_list.forEach(val => {
                         _that.article_options.push({
                             'id' : val.id,
-                            'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..'
+                            'text' : (val.en_title).length < 100 ? val.en_title : (val.en_title).substring(0,100)+'..',
+                            'category' : val.category ?  val.category.id : ''
                         })
                     })
                 })
             },
 
             myChangeEvent(val){
+                console.log(val)
                 let _that = this;
                 _that.article_id = val;
             },
-            mySelectEvent({id, text}){
-                console.log({id, text})
+            mySelectEvent({id, text, category}){
+                console.log({id, text, category})
+                this.selectedCategory = category;
+                console.log(this.selectedCategory);
             },
 
             collectTagList(tagList){

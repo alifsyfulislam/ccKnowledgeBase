@@ -82,7 +82,7 @@
                               </template>
 
                               <template v-slot:item.actions="{item}" >
-                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id }}" class="btn btn-secondary btn-xs m-1">
+                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id, slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                     <i class="fas fa-eye text-white"></i>
                                   </router-link>
                                   <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
@@ -419,7 +419,7 @@ export default {
 
     getAddDataFromChild (status)
     {
-      console.log(status);
+      // console.log(status);
       this.success_message = "FAQ added successfully!";
       this.getFaqList();
       this.removingRightSideWrapper();
