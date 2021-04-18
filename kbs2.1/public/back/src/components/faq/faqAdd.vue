@@ -20,7 +20,7 @@
 
                 <div class="row">
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="enTitle">Title <span class="required">*</span></label>
                             <input placeholder="Enter a title" class="form-control" type="text" v-model="faqData.en_title" id="enTitle" @keyup="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')" required>
@@ -28,7 +28,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" v-if="selected_language==='bangla'">
+                    <div class="col-md-12" v-if="selected_language==='bangla'">
                         <div class="form-group">
                             <label>Bangla Title </label>
                             <input placeholder="Enter a title" class="form-control" type="text" v-model="faqData.bn_title" >
@@ -84,6 +84,16 @@
                                 </div>
                             </li>
                         </ul>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Commentable</label>
+                            <div>
+                                <label for="cmmnt_active"><input id="cmmnt_active" type="radio" value="1" v-model="faqData.commentable"/> Active</label>
+                                <label for="cmmnt_in_active"><input id="cmmnt_in_active" type="radio" value="0" v-model="faqData.commentable"/> Inactive</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
@@ -230,6 +240,7 @@
                 article_options: [],
                 article_id:'',
 
+
                 success_message     : '',
                 error_messages      : '',
                 token               : '',
@@ -264,6 +275,7 @@
                     tag             : '',
                     en_body         : '',
                     bn_body         : '',
+                    commentable : 1,
                     status          : 'draft'
                 },
 
@@ -607,13 +619,14 @@
 
                 axios.post('faqs', {
                     
-                        id              : this.faqData.id,
-                        article_id      : this.article_id,
-                        category_id     : this.selectedCategory,
-                        en_title        : this.faqData.en_title,
-                        bn_title        : this.faqData.bn_title,
-                        tag             : this.faqData.tag,
-                        status          : this.faqData.status,
+                        id                  : this.faqData.id,
+                        article_id          : this.article_id,
+                        category_id         : this.selectedCategory,
+                        en_title            : this.faqData.en_title,
+                        bn_title            : this.faqData.bn_title,
+                        tag                 : this.faqData.tag,
+                        commentable_status  : this.faqData.commentable,
+                        status              : this.faqData.status,
                     },
                     {
                         headers : {

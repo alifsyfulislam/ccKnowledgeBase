@@ -16,7 +16,6 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->uuid('post_id');
-            $table->uuid('parent_id')->default(0);
             $table->uuid('user_id');
             $table->text('comment_body');
             $table->tinyInteger('status')->comment('0 => Inactive, 1 => Active');

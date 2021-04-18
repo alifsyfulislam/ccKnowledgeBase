@@ -68,7 +68,8 @@ Route::post('customer/add',[CustomerController::class, 'store']);
 Route::middleware('auth:api')->group(function(){
 
     Route::apiResource('comments', CommentController::class);
-    Route::get('article-comments/{id}', [CommentController::class, 'articleComments']);
+    Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
+//    Route::get('faq-comments/{id}', [CommentController::class, 'articleComments']);
     Route::post('comment-status', [CommentController::class, 'commentStatus']);
 
     Route::apiResource('articles', ArticleController::class);

@@ -77,7 +77,7 @@
 
                         <br/>
 
-                        <div v-if="aArticle.media.length > 0">
+                        <div class="col-md-12" v-if="aArticle.media.length > 0">
                             <h5 class="mb-0 font-weight-bold pl-2 pb-3">Refferences</h5>
                             <ul class="pl-25 pb-2">
                                 <li v-for="a_file in aArticle.media" :key="a_file.id">
@@ -95,11 +95,11 @@
                             <span>{{ error_message }}</span>
                         </div>
 
-                        <div v-if="aArticle.commentable_status">
+                        <div class="col-md-12" v-if="aArticle.commentable_status">
                             <h5 class=" pl-3 pb-10">Discussions</h5>
                         </div>
 
-                        <div v-if="aArticle.commentable_status">
+                        <div class="col-md-12" v-if="aArticle.commentable_status">
                             <!-- Comment Section Start -->
                             <div class="comment-box">
                                 <div class="comment-input-box d-flex">
@@ -308,7 +308,6 @@
             },
             setTimeoutElements()
             {
-// setTimeout(() => this.isLoading = false, 3e3);
                 setTimeout(() => this.success_message = "", 2e3);
                 setTimeout(() => this.error_message = "", 2e3);
             },
@@ -340,7 +339,7 @@
             getCommentListWithArticle(){
                 let _that = this;
 
-                axios.get('article-comments/'+_that.articleID,{
+                axios.get('post-comments/'+_that.articleID,{
                     headers: {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     }
@@ -399,7 +398,7 @@
             this.articleSearch(this.articleSlug);
             this.getCategoryArticleList();
             this.getRecentArticleList();
-            this.getCommentListWithArticle(this.articleID)
+            this.getCommentListWithArticle()
             this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
             this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
             this.mappedPermission = (this.user_permissions ).map(x => x.slug);

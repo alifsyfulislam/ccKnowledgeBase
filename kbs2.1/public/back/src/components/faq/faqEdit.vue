@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="enTitle">Title <span class="required">*</span></label>
                             <input class="form-control" type="text" v-model="faqData.en_title" id="enTitle" @keyup="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')" required>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" v-if="selected_language==='bangla'">
+                    <div class="col-md-12" v-if="selected_language==='bangla'">
                         <div class="form-group">
                             <label>Bangla Title </label>
                             <input class="form-control" type="text" v-model="faqData.bn_title" >
@@ -81,6 +81,16 @@
                             </div>
                         </li>
                         </ul>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Commentable</label>
+                            <div>
+                                <label for="cmmnt_active"><input :checked="faqData.commentable_status === 1" id="cmmnt_active" type="radio" value="1" v-model="faqData.commentable_status"/> Active</label>
+                                <label for="cmmnt_in_active"><input  :checked="faqData.commentable_status === 0" id="cmmnt_in_active" type="radio" value="0" v-model="faqData.commentable_status"/> Inactive</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
@@ -248,6 +258,7 @@ export default {
                 tag             : '',
                 en_body         : '',
                 bn_body         : '',
+                commentable_status  : '',
                 status          : '',
             },
 
@@ -631,6 +642,7 @@ export default {
                     en_title        : this.faqData.en_title,
                     bn_title        : this.faqData.bn_title,
                     tag             : this.faqData.tag,
+                    commentable_status  : this.faqData.commentable,
                     status          : this.faqData.status,
                 },
                 {
@@ -675,7 +687,7 @@ export default {
                 })
                 .then(function (response) {
                     if (response.data.status_code === 200) {
-                        // console.log(response.data);
+                        console.log(response.data);
 
                         _that.isLoading = true;
 
@@ -687,6 +699,8 @@ export default {
                         _that.faqData.tag           = _that.faqDetails.tag;
                         _that.faqData.en_body       = _that.faqDetails.en_body;
                         _that.faqData.bn_body       = _that.faqDetails.bn_body;
+                        _that.faqData.commentable_status       = _that.faqDetails.commentable_status;
+                        console.log(_that.faqData.commentable_status )
                         _that.faqData.status        = _that.faqDetails.status;
 
                         _that.enBodyData            = _that.faqDetails.en_body;

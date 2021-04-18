@@ -20,7 +20,7 @@ class CommentRepository
     }
 
     public  function articleCommentsAll($id){
-        return $comments = Comment::with('user','article')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
+        return $comments = Comment::with('user','article','faq')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
     }
 
     public function commentStatus($request){
@@ -43,7 +43,7 @@ class CommentRepository
 
     public function getWithPagination(){
 
-        return Comment::with('user','article')->orderBY('created_at','DESC')->paginate(20);
+        return Comment::with('user','article','faq')->orderBY('created_at','DESC')->paginate(20);
 
     }
 }

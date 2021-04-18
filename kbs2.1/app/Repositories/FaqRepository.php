@@ -47,6 +47,7 @@ class FaqRepository implements RepositoryInterface
         $dataObj->bn_title = $data['bn_title']? $data['bn_title'] : 'n/a';
         $dataObj->tag = $data['tag'];
         $dataObj->slug = Helper::slugify($data['en_title']);
+        $dataObj->commentable_status = $data['commentable_status'];
         $dataObj->status = $data['status'];
         $dataObj->publish_date = $data['publish_date'];
 

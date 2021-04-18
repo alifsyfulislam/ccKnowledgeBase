@@ -25,6 +25,11 @@ class Comment extends Model
         return $this->belongsTo(Article::class,'post_id');
     }
 
+    public function faq()
+    {
+        return $this->belongsTo(Faq::class,'post_id');
+    }
+
     public function getCreatedAtAttribute($date)
     {
         return date('j M, Y', strtotime($date));

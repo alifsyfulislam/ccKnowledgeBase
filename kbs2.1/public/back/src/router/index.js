@@ -142,7 +142,7 @@ let router =  new Router({
     },
 
     {
-      path: '/faq-details/:slug',
+      path: '/faq-details/:id/:slug',
       name: 'faqDetails',
       component: faqDetails,
       meta: {
@@ -160,7 +160,7 @@ let router =  new Router({
       }
     },
     {
-      path: '/article-details/:slug',
+      path: '/article-details/:id/:slug',
       name: 'articleDetails',
       component: articleDetails,
       meta: {

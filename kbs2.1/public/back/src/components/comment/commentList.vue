@@ -57,9 +57,15 @@
                                                     </template>
 
                                                     <template v-slot:item.article.en_title="{item}">
-                                                        <router-link :to="{ name: 'articleDetails', params: { id: item.article.id,slug: item.article.slug }}">
+                                                        <router-link v-if="item.article" :to="{ name: 'articleDetails', params: { id: item.article.id,slug: item.article.slug }}">
                                                             <span v-if="(item.article.en_title).length<30"> {{ item.article.en_title }}</span>
                                                             <span v-else> {{ (item.article.en_title).substring(0,30)+"...." }}</span>
+                                                            <i class="fas fa-eye text-secondary"></i>
+                                                        </router-link>
+
+                                                        <router-link v-else :to="{ name: 'faqDetails', params: { id: item.faq.id, slug: item.faq.slug }}">
+                                                            <span v-if="(item.faq.en_title).length<30"> {{ item.faq.en_title }}</span>
+                                                            <span v-else> {{ (item.faq.en_title).substring(0,30)+"...." }}</span>
                                                             <i class="fas fa-eye text-secondary"></i>
                                                         </router-link>
                                                     </template>
@@ -185,7 +191,8 @@
                     {
                         text: 'Author',
                         value: 'user.first_name',
-                    },{
+                    },
+                    {
                         text: 'Post on',
                         value: 'article.en_title',
                     },
