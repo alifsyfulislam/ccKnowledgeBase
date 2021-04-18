@@ -80,4 +80,11 @@ class User extends Authenticatable
         return date('j M, Y', strtotime($date));
 
     }
+
+    public function userRole()
+    {
+
+        return $this->hasOne(UsersRole::class);
+
+    }
 }

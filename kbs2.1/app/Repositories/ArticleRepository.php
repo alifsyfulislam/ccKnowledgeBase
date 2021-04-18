@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Article;
 use App\Models\Content;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class ArticleRepository implements RepositoryInterface
@@ -45,7 +46,18 @@ class ArticleRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return Article::with('user','category','media')->find($id);
+        return Article::with('user','category','media','contents')->find($id);
+        //return Content::select('role_id')->groupBy('role_id')->where('article_id',$id)->get();
+    }
+
+    // public function getArticleContents($id)
+    // {
+    //     return Content::select('role_id')->groupBy('role_id')->where('article_id',$id)->get();
+    // }
+
+    public function getAllUsers()
+    {
+        return User::all();
     }
 
     public function getBySlug($slug)

@@ -5,6 +5,11 @@ namespace App\Helpers;
 
 use Auth;
 use Intervention\Image\Facades\Image as Image;
+use App\Notifications\NewArticleNotify;
+use App\Notifications\UpdateArticleNotify;
+use App\Notifications\DeleteArticleNotify;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Notifications\Notifiable;
 
 
 class Helper
@@ -125,5 +130,41 @@ class Helper
         $file->move(public_path($dir), $fileName );
 
         return url('/').'/'.$dir.$fileName;
+    }
+
+    public static function sendNotification($article, $users, $type) {
+
+
+        $roles = [];
+        $contents = $article->contents;
+        if(!empty( $contents)) {
+            foreach($contents  as $content) {
+                $role_ids = explode(',',$content->role_id);
+                 foreach($role_ids as $role_id) {
+                     if(!in_array($role_id, $roles)) {
+                         array_push($roles, $role_id);
+                     }
+                 }
+             }
+            
+             foreach($users as $user) {
+                if(in_array($user->userRole->role_id, $roles)) {
+                   
+                    if($type=="add") {
+                        // Notification::route('mail', $user->email)->notify(new NewArticleNotify($article));//Sending mail to user
+                        $user->notify(new NewArticleNotify($article, $user));
+                    } else if($type=="update") {
+                        $user->notify(new UpdateArticleNotify($article, $user));
+                    } else if($type=="delete") {
+                        $user->notify(new DeleteArticleNotify($article, $user));
+                        
+                    }
+                }
+            }
+
+        }
+        
+        return null;
+       
     }
 }

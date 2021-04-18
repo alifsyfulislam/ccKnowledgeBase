@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Models\Media;
+use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Notifications\NewArticleNotify;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Notifications\Notifiable;
 
 class ArticleService
 {
@@ -98,7 +102,8 @@ class ArticleService
             $this->articleRepository->create($input);
 
             $article = $this->getItemById($input['id']);
-
+            
+           
             if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
 
                 if (isset($request->uploaded_file)) {
@@ -124,6 +129,11 @@ class ArticleService
 
                 endforeach;
             }
+
+            //notification
+            // $article_contents =  $this->articleRepository->getArticleContents($article->id);
+            $users = $this->articleRepository->getAllUsers();
+            $notifications = Helper::sendNotification($article, $users, 'add');
 
         } catch (Exception $e) {
 
@@ -294,6 +304,9 @@ class ArticleService
 
                 endforeach;
             }
+            $article = $this->getItemById($input['id']);
+            $users = $this->articleRepository->getAllUsers();
+            $notifications = Helper::sendNotification($article, $users, 'update');
 
         } catch (Exception $e) {
 
@@ -325,6 +338,10 @@ class ArticleService
         DB::beginTransaction();
 
         try {
+
+            $article = $this->getItemById($id);
+            $users = $this->articleRepository->getAllUsers();
+            $notifications = Helper::sendNotification($article, $users, 'delete');
 
             $this->articleRepository->delete($id);
 
