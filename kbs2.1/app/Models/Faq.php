@@ -63,4 +63,9 @@ class Faq extends Model
     {
         return date('j M, Y', strtotime($date));
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'id');
+    }
 }

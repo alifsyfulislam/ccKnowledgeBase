@@ -70,6 +70,13 @@
                                                     <template v-slot:item.user.first_name="{item}">
                                                         {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
                                                     </template>
+                                                    <template v-slot:item.commentable_status="{item}">
+<!--                                                        <select class="form-control" v-model="item.commentable_status" @change="articleCommentStatusRequest(item)">-->
+<!--                                                            <option value="0">Inactive</option>-->
+<!--                                                            <option value="1">Active</option>-->
+<!--                                                        </select>-->
+                                                        {{item.commentable_status === 0 ? 'Inactive' : 'Active'}}
+                                                    </template>
                                                     <template v-slot:item.status="{item}">
                                                         <select class="form-control" v-model="item.status" @change="articleStatusRequest(item)">
                                                             <option value="draft">Draft</option>
@@ -79,7 +86,7 @@
                                                         </select>
                                                     </template>
                                                     <template v-slot:item.actions="{item}">
-                                                        <router-link :to="{ name: 'articleDetails', params: { id: item.slug }}" class="btn btn-secondary btn-xs m-1">
+                                                        <router-link :to="{ name: 'articleDetails', params: { id: item.id,slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                                             <i class="fas fa-eye text-white"></i>
                                                         </router-link>
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="article_id=item.id, isEditCheck=true" v-if="checkPermission('article-edit')"><i class="fas fa-pen"></i></button>
@@ -212,7 +219,7 @@
                                 <h5 class="pt-10 pb-15 mb-0">Are you sure to perform this action?</h5>
                                 <div>
                                     <button type="button" id="closeModal" class="btn btn-danger rounded btn-md m-2" data-dismiss="modal" @click="getArticleList()">Close</button>
-                                    <button type="button" class="btn btn-primary rounded btn-md m-2" @click="changeArticleStatus();">Update</button>
+                                    <button type="button" class="btn btn-primary rounded btn-md m-2" @click="changeArticleStatus()">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +227,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Common Right SideBar End -->
     </div>
 </template>
@@ -291,8 +297,12 @@
                         sortable: true
                     },
                     {
-                        text: 'tag',
+                        text: 'Tag',
                         value: 'tag',
+                    },
+                    {
+                        text: 'Commentable Status',
+                        value: 'commentable_status',
                     },
                     {
                         text: 'Published Date',
@@ -462,7 +472,7 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            // console.log(response.data);
+                            console.log(response.data.article_list);
                             _that.pagination.current = response.data.article_list.current_page;
                             _that.pagination.total = response.data.article_list.last_page;
                             _that.articleList       = response.data.article_list.data;

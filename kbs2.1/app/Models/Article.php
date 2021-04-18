@@ -14,7 +14,7 @@ class Article extends Model
      * @var string[]
      */
     protected $fillable = [
-        'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_short_summary', 'bn_short_summary', 'status', 'publish_date'
+        'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_short_summary', 'bn_short_summary', 'commentable_status', 'status', 'publish_date'
     ];
 
     /*public function media()
@@ -47,6 +47,11 @@ class Article extends Model
 
         return $this->belongsTo(Category::class);
 
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'id');
     }
 
     /**

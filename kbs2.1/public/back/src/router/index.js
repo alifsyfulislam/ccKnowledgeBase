@@ -25,6 +25,7 @@ import pageConfiguration from '@/components/settings/pageConfigurationNew.vue'
 import emailConfiguration from '@/components/settings/emailConfiguration.vue'
 
 import bannerList from '@/components/banner/bannerList'
+import commentList from '@/components/comment/commentList'
 
 
 Vue.use(Router)
@@ -51,6 +52,14 @@ let router =  new Router({
       path: '/user-list',
       name: 'customerList',
       component: customerList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/comment-list',
+      name: 'commentList',
+      component: commentList,
       meta: {
         requiresAuth: true
       }
@@ -143,7 +152,7 @@ let router =  new Router({
     },
 
     {
-      path: '/faq-details/:id',
+      path: '/faq-details/:id/:slug',
       name: 'faqDetails',
       component: faqDetails,
       meta: {
@@ -161,7 +170,7 @@ let router =  new Router({
       }
     },
     {
-      path: '/article-details/:id',
+      path: '/article-details/:id/:slug',
       name: 'articleDetails',
       component: articleDetails,
       meta: {
@@ -221,8 +230,8 @@ router.beforeEach((to, from, next) => {
       })
     } else {
       next()
-      console.log(getRoutesList(router.options.routes, 'http://localhost:8080/back'));
-      console.log(getRoutesXML());
+      // console.log(getRoutesList(router.options.routes, 'http://localhost:8080/back'));
+      // console.log(getRoutesXML());
     }
   } else {
     next()

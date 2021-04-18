@@ -166,6 +166,10 @@ class ArticleController extends Controller
 
     }
 
+//    public function changeArticleCommentStatus(Request $request){
+//        return $this->articleService->articleCommentStatusChange($request);
+//    }
+
     public function articleAll(){
         return $this->articleService->getAllArticleList();
     }

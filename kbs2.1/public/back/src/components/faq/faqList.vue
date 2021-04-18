@@ -72,6 +72,10 @@
                                   {{ item.category ? item.category.name : ''  }}
                               </template>
 
+                              <template v-slot:item.commentable_status="{item}">
+                                {{item.commentable_status === 0 ? 'Inactive' : 'Active'}}
+                              </template>
+
                               <template v-slot:item.status="{item}">
                                   <select class="form-control" v-model="item.status" @change="faqStatusRequest(item)">
                                     <option value="draft">Draft</option>
@@ -82,7 +86,7 @@
                               </template>
 
                               <template v-slot:item.actions="{item}" >
-                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id }}" class="btn btn-secondary btn-xs m-1">
+                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id, slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                     <i class="fas fa-eye text-white"></i>
                                   </router-link>
                                   <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
@@ -275,26 +279,7 @@ export default {
       mappedPermission    : '',
       faqList             : '',
       faq_id              : '',
-      // filter      : {
-      //   isAdmin         : 1,
-      //   category_id     : '',
-      //   status          : '',
-      //   en_title        : '',
-      //   tag             : '',
-      // },
 
-      // pagination  : {
-      //   from            : '',
-      //   to              : '',
-      //   first_page_url  : '',
-      //   last_page       : '',
-      //   last_page_url   : '',
-      //   next_page_url   :'',
-      //   prev_page_url   : '',
-      //   path            : '',
-      //   per_page        : 10,
-      //   total           : ''
-      // },
       search              :"",
       pagination          :{
           current         :1,
@@ -325,6 +310,9 @@ export default {
           {
               text: 'Tag',
               value: 'tag',
+          },{
+              text: 'Commentable',
+              value: 'commentable_status',
           },
           {
               text: 'Publish Date',
@@ -419,7 +407,7 @@ export default {
 
     getAddDataFromChild (status)
     {
-      console.log(status);
+      // console.log(status);
       this.success_message = "FAQ added successfully!";
       this.getFaqList();
       this.removingRightSideWrapper();

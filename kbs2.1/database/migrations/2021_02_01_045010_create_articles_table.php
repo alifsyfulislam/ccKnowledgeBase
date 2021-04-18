@@ -24,6 +24,7 @@ class CreateArticlesTable extends Migration
             $table->string('slug');
             $table->text('en_short_summary')->nullable();
             $table->text('bn_short_summary')->nullable();
+            $table->tinyInteger('commentable_status')->comment('0 => Inactive, 1 => Active');
             $table->enum('status', ['draft', 'hide', 'private', 'public']);
             $table->timestamp('publish_date')->nullable();
             $table->timestamps();
