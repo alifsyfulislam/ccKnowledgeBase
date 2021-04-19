@@ -83,6 +83,11 @@ class PermissionTableSeeder extends Seeder
             'Comment Edit',
             'Comment Delete',
 
+            'Email List',
+            'Email Create',
+            'Email Edit',
+            'Email Delete',
+
 
         ];
 

@@ -168,7 +168,7 @@
                       <span class="menu-sub-title">Comments</span>
                   </router-link>
                 </li>
-                <li v-if="checkPermission('page-create') && checkPermission('page-edit')">
+                <li v-if="checkPermission('email-create') && checkPermission('page-edit')">
                   <a href="#" @click="isEmailConfigurationCheck=true" class="ripple-btn right-side-config-form">
                     <span class="menu-sub-title">Email Configuration</span>
                   </a>
