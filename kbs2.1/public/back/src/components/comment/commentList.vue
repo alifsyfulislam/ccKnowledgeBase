@@ -62,13 +62,16 @@
                                                             <span v-else> {{ (item.article.en_title).substring(0,30)+"...." }}</span>
                                                             <i class="fas fa-eye text-secondary"></i>
                                                         </router-link>
+                                                    </template>
 
-                                                        <router-link v-else :to="{ name: 'faqDetails', params: { id: item.faq.id, slug: item.faq.slug }}">
+                                                    <template v-slot:item.faq.en_title="{item}">
+                                                        <router-link v-if="item.faq" :to="{ name: 'faqDetails', params: { id: item.faq.id, slug: item.faq.slug }}">
                                                             <span v-if="(item.faq.en_title).length<30"> {{ item.faq.en_title }}</span>
                                                             <span v-else> {{ (item.faq.en_title).substring(0,30)+"...." }}</span>
                                                             <i class="fas fa-eye text-secondary"></i>
                                                         </router-link>
                                                     </template>
+
 
                                                     <template v-slot:item.status="{item}">
                                                         <span>
@@ -193,8 +196,12 @@
                         value: 'user.first_name',
                     },
                     {
-                        text: 'Post on',
+                        text: 'Post on [ article ]',
                         value: 'article.en_title',
+                    },
+                    {
+                        text: 'Post on [ faq ]',
+                        value: 'faq.en_title',
                     },
 
                     {

@@ -532,6 +532,7 @@ input[type="file"]:focus {
     height: 70px;
     border: 1px solid #ced4da;
 }
+
 .comment-box .comment-input .form-control,
 .reply-box .reply-input .form-control {
     border-radius: 10px;
