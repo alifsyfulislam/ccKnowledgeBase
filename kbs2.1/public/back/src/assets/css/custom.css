@@ -526,10 +526,11 @@ input[type="file"]:focus {
 
 .comment-box .comment-input,
 .reply-box .reply-input {
-    border-radius: 50rem;
+    /*border-radius: 50rem;*/
     position: relative;
     overflow: hidden;
 }
+
 .comment-box .comment-input .form-control,
 .reply-box .reply-input .form-control {
     border-radius: 50rem;
