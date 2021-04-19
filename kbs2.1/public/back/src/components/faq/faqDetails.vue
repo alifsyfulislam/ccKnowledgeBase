@@ -94,7 +94,8 @@
                                     <div class="comment-input w-100">
                                         <input type="hidden" v-model="faqDetails.id">
                                         <input type="hidden" v-model="userInformation.id">
-                                        <textarea v-model="comment_body" placeholder="Write your comment..." class="form-control px-25 py-10"></textarea>
+                                        <textarea id="commentBody" v-model="comment_body" placeholder="Write your comment..." class="form-control px-25 py-10"></textarea>
+<!--                                        <span id="commentBodyError" class="text-danger small ml-3"></span>-->
                                         <input hidden type="radio" checked value="0" v-model="status">
                                     </div>
                                 </div>
@@ -290,13 +291,33 @@
                     headers: {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     }
-                }).then(function (res) {
-                    console.log(res.data.status_code);
-                    if (res.data.status_code == 200){
+                }).then(function (response) {
+                    console.log(response.data.status_code);
+                    if (response.data.status_code == 200){
+                        $('#commentBodyError').html("");
                         _that.getCommentListWithFaq()
                         _that.success_message = "Comment added successfully";
                         _that.comment_body='';
                         _that.setTimeoutElements();
+                    }else {
+                        _that.success_message = "";
+                        _that.error_messages   = response.data.errors;
+                        _that.showServerError(response.data.errors);
+                    }
+                })
+            },
+            showServerError(errors){
+
+                console.log(errors)
+
+                $('#commentBodyError').html("");
+
+                // $('#commentBody').css({'border-color': '#ced4da'});
+
+                errors.forEach(val => {
+                    if (val.includes("comment body")==true){
+                        $('#commentBodyError').html(val)
+                        // $('#commentBody').css({'border-color': '#FF7B88'});
                     }
                 })
             },
@@ -358,5 +379,7 @@
 </script>
 
 <style scoped>
-
+    textarea{
+        resize: none;
+    }
 </style>

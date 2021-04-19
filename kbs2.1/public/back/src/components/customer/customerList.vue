@@ -65,6 +65,9 @@
                                                     <template v-slot:item.roles="{item}">
                                                         {{ ((item.roles).length > 0) ? item.roles[0].name : '' }}
                                                     </template>
+                                                    <template v-slot:item.first_name="{item}">
+                                                        {{ item.first_name+' '+ item.last_name }}
+                                                    </template>
 
                                                     <template v-slot:item.actions="{item}" >
                                                         <button  class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"  @click="customer_id = item.id, isEditCheck=true" v-if="checkPermission('user-edit') && (item.roles).length > 0 && item.roles[0].name!='Super Admin'"><i class="fas fa-pen"></i></button>
@@ -216,12 +219,8 @@
                         value: 'roles[0].name',
                     },
                     {
-                        text: 'First Name',
+                        text: 'Full name',
                         value: 'first_name',
-                    },
-                    {
-                        text: 'last Name',
-                        value: 'last_name',
                     },
                     {
                         text: 'Email',
