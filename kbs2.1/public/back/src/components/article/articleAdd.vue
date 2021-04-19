@@ -177,7 +177,10 @@
 
                             <ul class="list-unstyled permission-list m-0 p-0">
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
+                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+
+                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
+<!--                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
                                 </li>
                             </ul>
                         </div>
@@ -219,7 +222,11 @@
                             <ul class="list-unstyled permission-list m-0 p-0">
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                                     <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2"><input  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>
+                                        <label class="mb-0 ml-2">
+                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                            <input v-else  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                            {{ a_user.name }}
+                                        </label>
                                     </div>
                                     <div v-else class="d-flex align-items-center">
                                         <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
@@ -352,6 +359,10 @@
                 _that.aContent.en_body = enBody;
                 _that.aContent.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
                 collection = _that.roleAccess.join();
+                
+                if (!collection) {
+                    collection = 1;
+                }
 
                 axios.put('contents/update',
                     {
@@ -422,6 +433,9 @@
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
                 _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
+                if (_that.role_id.length ==0){
+                    _that.role_id.push(1);
+                }
                 let formData = new FormData();
                 formData.append('id', _that.contentData.id);
                 formData.append('article_id', _that.contentData.article_id);
