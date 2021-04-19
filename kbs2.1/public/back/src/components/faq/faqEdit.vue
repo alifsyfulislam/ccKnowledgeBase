@@ -34,20 +34,6 @@
                         </div>
                     </div>
 
-<!--                    <div class="col-md-6">-->
-<!--                        <div class="form-group">-->
-<!--                            <label>Category <span class="required">*</span></label>-->
-
-<!--                            <select class="form-control" v-model="selectedCategory" id="categoryID" @change="checkAndValidateSelectType()">-->
-<!--                                <option value="" disabled>Select A Category</option>-->
-<!--                                <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">-->
-<!--                                    {{a_category.name}}-->
-<!--                                </option>-->
-<!--                            </select>-->
-<!--                            <span id="categoryIDError" class="text-danger small"></span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Article <span class="required">*</span></label>
@@ -74,7 +60,7 @@
                     <div class="col-md-12" v-if="contentList">
                         <ul class="mb-0">
                         <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
-                            <span class="text-black font-12" v-if="a_content.en_body">Block {{ index+1 }}</span>
+                            <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                             <div class="action-buttons">
                             <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
                             <i @click="deleteContent(a_content.id)"  class="fa fa-trash d-inline-block text-red font-12"></i>
@@ -144,7 +130,10 @@
 
                     <ul class="list-unstyled permission-list m-0 p-0">
                         <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                        <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>
+                            <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+
+                            <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
+<!--                        <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
                         </li>
                     </ul>
                     </div>
@@ -184,12 +173,15 @@
                     <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
                     <ul class="list-unstyled permission-list m-0 p-0">
                         <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                        <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                            <label class="mb-0 ml-2"><input  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>
-                        </div>
-                        <div v-else class="d-flex align-items-center">
-                            <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
-                        </div>
+                            <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
+                                <label class="mb-0 ml-2">
+                                    <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                    <input v-else  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                    {{ a_user.name }} </label>
+                            </div>
+                            <div v-else class="d-flex align-items-center">
+                                <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
+                            </div>
 
                         </li>
                     </ul>
@@ -316,6 +308,10 @@ export default {
         _that.aContent.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
         collection = _that.roleAccess.join();
 
+          if (!collection) {
+              collection = 1;
+          }
+
         axios.put('contents/update',
                 {
                   id      : _that.aContent.id,
@@ -415,6 +411,9 @@ export default {
         _that.contentData.id = (Math.round((new Date()).getTime()*10));
         _that.contentData.en_body = enBody;
         _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
+          if (_that.role_id.length ==0){
+              _that.role_id.push(1);
+          }
         let formData = new FormData();
         formData.append('id', _that.contentData.id);
         formData.append('article_id', _that.contentData.article_id);
