@@ -132,8 +132,7 @@ class ArticleService
 
             //notification
             // $article_contents =  $this->articleRepository->getArticleContents($article->id);
-            $users = $this->articleRepository->getAllUsers();
-            $notifications = Helper::sendNotification($article, $users, 'add');
+            $articleNotification = $this->sendArticleNotification($article->id , 'add');
 
         } catch (Exception $e) {
 
@@ -304,9 +303,8 @@ class ArticleService
 
                 endforeach;
             }
-            $article = $this->getItemById($input['id']);
-            $users = $this->articleRepository->getAllUsers();
-            $notifications = Helper::sendNotification($article, $users, 'update');
+            //notification
+            $articleNotification = $this->sendArticleNotification($input['id'] , 'update');
 
         } catch (Exception $e) {
 
@@ -339,9 +337,8 @@ class ArticleService
 
         try {
 
-            $article = $this->getItemById($id);
-            $users = $this->articleRepository->getAllUsers();
-            $notifications = Helper::sendNotification($article, $users, 'delete');
+            //notification
+            $articleNotification = $this->sendArticleNotification($id , 'delete');
 
             $this->articleRepository->delete($id);
 
@@ -384,6 +381,13 @@ class ArticleService
 
         ]);
 
+    }
+
+    public function sendArticleNotification($article_id, $type) {
+
+        $article = $this->getItemById($article_id);
+        $users = $this->articleRepository->getAllUsers();
+        return $notifications = Helper::sendNotification($article, $users, $type);
     }
 
     public function searchArticle($searchString)
