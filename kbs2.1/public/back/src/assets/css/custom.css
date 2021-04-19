@@ -511,7 +511,7 @@ input[type="file"]:focus {
     color: #000;
 }
 
-.article-lang-switcher .nav-tabs .nav-link.active, 
+.article-lang-switcher .nav-tabs .nav-link.active,
 .article-lang-switcher .nav-tabs .nav-item.show .nav-link {
     background: #3fc6d4;
     color: #ffffff;
@@ -526,13 +526,19 @@ input[type="file"]:focus {
 
 .comment-box .comment-input,
 .reply-box .reply-input {
-    border-radius: 50rem;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
+    height: 70px;
+    border: 1px solid #ced4da;
 }
 .comment-box .comment-input .form-control,
 .reply-box .reply-input .form-control {
-    border-radius: 50rem;
+    border-radius: 10px;
+    height: 70px;
+    overflow-y: auto;
+    border: 0;
+    box-shadow: inherit;
 }
 
 .reply-box .reply-text {
@@ -541,7 +547,7 @@ input[type="file"]:focus {
 }
 
 .reply-box .reply-text p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .reply-box .reply-text p:last-of-type {
@@ -555,6 +561,30 @@ input[type="file"]:focus {
 
 .reply-box .reply-input .form-control {
     height: 43px;
+}
+
+.reply-box .reply-text .action-button-wrapper {
+    position: absolute;
+    right: 0;
+    top: -15px;
+}
+
+.reply-box .reply-text .action-button-wrapper .btn {
+    padding: 5px 7px;
+    line-height: 1;
+    border-radius: 50rem;
+}
+
+.reply-box .reply-text .action-button-wrapper .btn i {
+  font-size: 12px;
+}
+
+.reply-status-box label > input {
+  margin-top: 2px;
+}
+
+.font-14 {
+  font-size: 14px;
 }
 
 @keyframes toTopFromBottom {
