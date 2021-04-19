@@ -18,7 +18,7 @@ class ArticleRepository implements RepositoryInterface
     public function all()
     {
 
-        return Article::with('user','category')->orderBy('id', 'DESC')->get();
+        return Article::with('user','category','faq')->orderBy('id', 'DESC')->get();
 
     }
 
