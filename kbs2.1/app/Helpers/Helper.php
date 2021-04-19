@@ -8,6 +8,9 @@ use Intervention\Image\Facades\Image as Image;
 use App\Notifications\NewArticleNotify;
 use App\Notifications\UpdateArticleNotify;
 use App\Notifications\DeleteArticleNotify;
+use App\Notifications\NewFaqNotify;
+use App\Notifications\UpdateFaqNotify;
+use App\Notifications\DeleteFaqNotify;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Notifications\Notifiable;
 
@@ -132,7 +135,7 @@ class Helper
         return url('/').'/'.$dir.$fileName;
     }
 
-    public static function sendNotification($article, $users, $type) {
+    public static function sendArticleNotification($article, $users, $type) {
 
 
         $roles = [];
@@ -156,15 +159,42 @@ class Helper
                     } else if($type=="update") {
                         $user->notify(new UpdateArticleNotify($article, $user));
                     } else if($type=="delete") {
-                        $user->notify(new DeleteArticleNotify($article, $user));
-                        
+                        $user->notify(new DeleteArticleNotify($article, $user));    
                     }
                 }
             }
-
         }
-        
-        return null;
-       
+        return null; 
+    }
+    public static function sendFaqNotification($faq, $users, $type) {
+
+
+        $roles = [];
+        $contents = $faq->contents;
+        if(!empty( $contents)) {
+            foreach($contents  as $content) {
+                $role_ids = explode(',',$content->role_id);
+                 foreach($role_ids as $role_id) {
+                     if(!in_array($role_id, $roles)) {
+                         array_push($roles, $role_id);
+                     }
+                 }
+             }
+            
+             foreach($users as $user) {
+                if(in_array($user->userRole->role_id, $roles)) {
+
+                    if($type=="add") {
+                        // Notification::route('mail', $user->email)->notify(new NewArticleNotify($article));//Sending mail to user
+                        $user->notify(new NewFaqNotify($faq, $user));
+                    } else if($type=="update") {
+                        $user->notify(new UpdateFaqNotify($faq, $user));
+                    } else if($type=="delete") {
+                        $user->notify(new DeleteFaqNotify($faq, $user));    
+                    }
+                }
+            }
+        }
+        return null;  
     }
 }

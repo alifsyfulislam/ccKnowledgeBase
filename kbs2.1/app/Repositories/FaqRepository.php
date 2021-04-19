@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Traits\QueryTrait;
 use App\Models\Faq;
 use App\Models\Content;
+use App\Models\User;
 
 class FaqRepository implements RepositoryInterface
 {
@@ -29,6 +30,11 @@ class FaqRepository implements RepositoryInterface
     public function get($id)
     {
         return Faq::with( 'user', 'category','contents')->find($id);
+    }
+
+    public function getAllUsers()
+    {
+        return User::all();
     }
 
     /**

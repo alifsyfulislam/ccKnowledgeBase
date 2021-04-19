@@ -387,7 +387,7 @@ class ArticleService
 
         $article = $this->getItemById($article_id);
         $users = $this->articleRepository->getAllUsers();
-        return $notifications = Helper::sendNotification($article, $users, $type);
+        return $notifications = Helper::sendArticleNotification($article, $users, $type);
     }
 
     public function searchArticle($searchString)

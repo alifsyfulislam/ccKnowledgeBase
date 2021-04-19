@@ -72,6 +72,8 @@ class FaqService
         try {
 
             $this->faqRepository->create($input);
+             //notification
+            $faqNotification = $this->sendFaqNotification( $input['id'] , 'add');
 
         } catch (Exception $e) {
 
@@ -96,6 +98,13 @@ class FaqService
     public function getItemById($id)
     {
         return $this->faqRepository->get($id);
+    }
+
+    public function sendFaqNotification($faq_id, $type) {
+
+        $article = $this->getItemById($faq_id);
+        $users = $this->faqRepository->getAllUsers();
+        return $notifications = Helper::sendFaqNotification($article, $users, $type);
     }
 
     /**
@@ -147,6 +156,8 @@ class FaqService
         try {
 
             $this->faqRepository->update($input, $input['id']);
+            //notification
+            $faqNotification = $this->sendFaqNotification( $input['id'] , 'update');
 
         } catch (Exception $e) {
 
@@ -178,6 +189,9 @@ class FaqService
         DB::beginTransaction();
 
         try {
+
+            //notification
+            $faqNotification = $this->sendFaqNotification( $id, 'delete');
 
             $this->faqRepository->delete($id);
 
