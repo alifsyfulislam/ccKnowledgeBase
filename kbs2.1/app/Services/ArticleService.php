@@ -479,6 +479,14 @@ class ArticleService
 
     public function articleStatusChange($request)
     {
+        $article = $this->getItemById($request->id);
+
+        $article->history()->create([
+            'user_id' => auth()->user()->id,
+            'post_id' => $request->id,
+            'operation_type' => 'status changed'
+        ]);
+
 
         return response()->json([
 

@@ -105,7 +105,7 @@ class FaqRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
 
-        $query = Faq::with( 'user', 'category');
+        $query = Faq::with( 'user', 'category','history');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);

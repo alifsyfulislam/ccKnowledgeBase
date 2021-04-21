@@ -68,4 +68,9 @@ class Faq extends Model
     {
         return $this->hasMany(Comment::class,'id');
     }
+
+    public function history()
+    {
+        return $this->morphMany(CrudHistory::class, 'linkable')->with('user');
+    }
 }

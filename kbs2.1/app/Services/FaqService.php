@@ -75,6 +75,14 @@ class FaqService
              //notification
             $faqNotification = $this->sendFaqNotification( $input['id'] , 'add');
 
+            $faq = $this->getItemById($input['id']);
+
+            $faq->history()->create([
+                'user_id'           => $input['user_id'],
+                'post_id'           => $input['id'],
+                'operation_type'    => $request->route()->getActionMethod()
+            ]);
+
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -156,6 +164,16 @@ class FaqService
         try {
 
             $this->faqRepository->update($input, $input['id']);
+
+            $faq = $this->faqRepository->get($input['id']);
+
+
+            $faq->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $request->id,
+                'operation_type' => $request->route()->getActionMethod()
+            ]);
+
             //notification
             $faqNotification = $this->sendFaqNotification( $input['id'] , 'update');
 
@@ -192,6 +210,14 @@ class FaqService
 
             //notification
             $faqNotification = $this->sendFaqNotification( $id, 'delete');
+
+            $faq = $this->getItemById($id);
+
+            $faq->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $id,
+                'operation_type' => 'delete'
+            ]);
 
             $this->faqRepository->delete($id);
 
@@ -241,6 +267,13 @@ class FaqService
 
     public function faqStatusChange($request)
     {
+        $faq = $this->getItemById($request->id);
+
+        $faq->history()->create([
+            'user_id' => auth()->user()->id,
+            'post_id' => $request->id,
+            'operation_type' => 'status changed'
+        ]);
 
         return response()->json([
 

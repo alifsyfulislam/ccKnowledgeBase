@@ -85,6 +85,16 @@
                                   </select>
                               </template>
 
+                              <template v-slot:item.history="{item}">
+
+                                <button class="btn btn-secondary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, faq_info=item"
+                                      v-if="checkPermission('faq-edit')">
+                                  <i class="fa fa-history text-white"></i>
+                                </button>
+
+
+                            </template>
+
                               <template v-slot:item.actions="{item}" >
                                   <router-link :to="{ name: 'faqDetails', params: { id: item.id, slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                     <i class="fas fa-eye text-white"></i>
@@ -141,6 +151,25 @@
       <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
       <!--            edit-->
       <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id"  @faq-edit-id="getFaqIDFromChild" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
+      <!--history-->
+
+      <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isHistoryCheck">
+        <div class="right-sidebar-content-area px-2">
+
+          <div class="form-wrapper">
+            <h2 class="section-title text-uppercase mb-20">History List</h2>
+
+            <!--                        find category -->
+            <!--                        <small>Last updated: {{category_info.updated_at}}</small>-->
+            <!--                        <h3 class="text-uppercase mb-20">{{category_info.name}}</h3>-->
+            <!--                        <img :src="category_info.media[0].url" style="height:350px; width: auto">-->
+            <!--                        <br/>-->
+
+            <!--                        find history-->
+            <HistoryList v-if="isHistoryCheck" :isHistoryCheck="isHistoryCheck" :postID="faq_info.id"></HistoryList>
+          </div>
+        </div>
+      </div>
       <!--delete-->
       <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
         <div class="right-sidebar-content-area px-2">
@@ -247,6 +276,7 @@ import Menu from "@/layouts/common/Menu";
 import FaqAdd from "@/components/faq/faqAdd";
 import FaqEdit from "@/components/faq/faqEdit";
 import Loading from "@/components/loader/loading";
+import HistoryList from "@/components/history/HistoyList";
 import axios from "axios";
 import $ from "jquery";
 
@@ -257,11 +287,13 @@ export default {
     Menu,
     FaqAdd,
     FaqEdit,
-    Loading
+    Loading,
+    HistoryList
   },
 
   data() {
     return {
+      isHistoryCheck      : false,
       isFaqStatus         : '',
       isLoading           : false,
       isEditCheck         : false,
@@ -279,6 +311,7 @@ export default {
       mappedPermission    : '',
       faqList             : '',
       faq_id              : '',
+      faq_info            : '',
 
       search              :"",
       pagination          :{
@@ -317,6 +350,10 @@ export default {
           {
               text: 'Publish Date',
               value: 'created_at',
+          },
+          {
+            text: 'History',
+            value: 'history',
           },
           {
               text: 'Actions',
@@ -377,15 +414,18 @@ export default {
         _that.isAddCheck         = false;
         _that.isEditCheck        = false;
         _that.isDeleteCheck      = false;
+        _that.isHistoryCheck      = false;
 
+        if (_that.unstoredFaqID){
           axios.get('contents-faq-exist/'+this.unstoredFaqID,{
-              headers: {
-                  'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-              },
+            headers: {
+              'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+            },
           }).then(function (response) {
-              console.log(response);
-              _that.unstoredFaqID = '';
+            console.log(response);
+            _that.unstoredFaqID = '';
           })
+        }
     },
     setTimeoutElements()
     {
@@ -400,6 +440,7 @@ export default {
       this.isEditCheck        = false;
       this.isDeleteCheck      = false;
       this.isSearchCheck      = false;
+      this.isHistoryCheck      = false;
 
       document.body.classList.remove('open-side-slider');
       $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
