@@ -359,10 +359,6 @@ class ArticleService
                 'post_id' => $id,
                 'operation_type' => 'delete'
             ]);
-
-            $users = $this->articleRepository->getAllUsers();
-            $notifications = Helper::sendNotification($article, $users, 'delete');
-
             $this->articleRepository->delete($id);
 
         } catch (Exception $e) {

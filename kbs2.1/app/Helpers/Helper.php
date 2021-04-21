@@ -142,24 +142,27 @@ class Helper
         $contents = $article->contents;
         if(!empty( $contents)) {
             foreach($contents  as $content) {
-                $role_ids = explode(',',$content->role_id);
-                 foreach($role_ids as $role_id) {
-                     if(!in_array($role_id, $roles)) {
-                         array_push($roles, $role_id);
+                $roleIds = explode(',',$content->role_id);
+                 foreach($roleIds as $roleId) {
+                     if(!in_array($roleId, $roles)) {
+                         array_push($roles, $roleId);
                      }
                  }
              }
             
              foreach($users as $user) {
                 if(in_array($user->userRole->role_id, $roles)) {
-                   
-                    if($type=="add") {
-                        // Notification::route('mail', $user->email)->notify(new NewArticleNotify($article));//Sending mail to user
-                        $user->notify(new NewArticleNotify($article, $user));
-                    } else if($type=="update") {
-                        $user->notify(new UpdateArticleNotify($article, $user));
-                    } else if($type=="delete") {
-                        $user->notify(new DeleteArticleNotify($article, $user));    
+
+                    switch($type) {
+                        case "add":
+                            $user->notify(new NewArticleNotify($article, $user));
+                            break;
+                        case "update": 
+                            $user->notify(new UpdateArticleNotify($article, $user));
+                            break;
+                        case "delete": 
+                            $user->notify(new DeleteArticleNotify($article, $user));  
+                            break;         
                     }
                 }
             }
@@ -173,10 +176,10 @@ class Helper
         $contents = $faq->contents;
         if(!empty( $contents)) {
             foreach($contents  as $content) {
-                $role_ids = explode(',',$content->role_id);
-                 foreach($role_ids as $role_id) {
-                     if(!in_array($role_id, $roles)) {
-                         array_push($roles, $role_id);
+                $roleIds = explode(',',$content->role_id);
+                 foreach($roleIds as $roleId) {
+                     if(!in_array($roleId, $roles)) {
+                         array_push($roles, $roleId);
                      }
                  }
              }
@@ -184,13 +187,16 @@ class Helper
              foreach($users as $user) {
                 if(in_array($user->userRole->role_id, $roles)) {
 
-                    if($type=="add") {
-                        // Notification::route('mail', $user->email)->notify(new NewArticleNotify($article));//Sending mail to user
-                        $user->notify(new NewFaqNotify($faq, $user));
-                    } else if($type=="update") {
-                        $user->notify(new UpdateFaqNotify($faq, $user));
-                    } else if($type=="delete") {
-                        $user->notify(new DeleteFaqNotify($faq, $user));    
+                    switch($type) {
+                        case "add":
+                            $user->notify(new NewFaqNotify($faq, $user));
+                            break;
+                        case "update": 
+                            $user->notify(new UpdateFaqNotify($faq, $user));
+                            break;
+                        case "delete": 
+                            $user->notify(new DeleteFaqNotify($faq, $user));
+                            break;         
                     }
                 }
             }
