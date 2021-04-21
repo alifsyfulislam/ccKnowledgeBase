@@ -141,7 +141,7 @@ class ArticleRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
 
-        $query = Article::with('user', 'category');
+        $query = Article::with('user', 'category','history');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList = ['en_title', 'tag'];
         $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);

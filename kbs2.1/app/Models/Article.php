@@ -79,4 +79,9 @@ class Article extends Model
     public function media(){
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    public function history()
+    {
+        return $this->morphMany(CrudHistory::class, 'linkable')->with('user');
+    }
 }

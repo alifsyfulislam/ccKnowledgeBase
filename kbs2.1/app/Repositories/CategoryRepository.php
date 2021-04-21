@@ -52,6 +52,7 @@ class CategoryRepository implements RepositoryInterface
         $dataObj->name = $data['name'];
         $dataObj->slug = Helper::slugify($data['name']);
         $dataObj->parent_id = $data['parent_id'] ?? 0;
+        $dataObj->user_id = $data['user_id'] ?? 0;
 
         return $dataObj->save();
     }
@@ -111,7 +112,7 @@ class CategoryRepository implements RepositoryInterface
 
         }
         else{
-            return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media'])
+            return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media','history'])
                 ->orderBy('id','DESC')
                 ->paginate(20);
         }

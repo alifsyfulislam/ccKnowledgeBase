@@ -102,6 +102,12 @@ class ArticleService
             $this->articleRepository->create($input);
 
             $article = $this->getItemById($input['id']);
+
+            $article->history()->create([
+                'user_id'           => $input['user_id'],
+                'post_id'           => $input['id'],
+                'operation_type'    => $request->route()->getActionMethod()
+            ]);
             
            
             if(isset($request->uploaded_file) && count($request->uploaded_file)>0) {
@@ -240,9 +246,16 @@ class ArticleService
 
         try {
 
-//            $this->articleRepository->update($input, $input['id']);
-
             $this->articleRepository->update($input, $input['id']);
+
+            $article = $this->articleRepository->get($input['id']);
+
+
+            $article->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $request->id,
+                'operation_type' => $request->route()->getActionMethod()
+            ]);
 
             $uploaded_previous_file = json_decode($request->previous_file_list);
 
@@ -339,6 +352,16 @@ class ArticleService
 
             //notification
             $articleNotification = $this->sendArticleNotification($id , 'delete');
+            $article = $this->getItemById($id);
+
+            $article->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $id,
+                'operation_type' => 'delete'
+            ]);
+
+            $users = $this->articleRepository->getAllUsers();
+            $notifications = Helper::sendNotification($article, $users, 'delete');
 
             $this->articleRepository->delete($id);
 

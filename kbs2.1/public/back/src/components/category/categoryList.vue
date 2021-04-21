@@ -81,6 +81,16 @@
 
                                                     </template>
 
+                                                    <template v-slot:item.history="{item}">
+
+                                                        <button class="btn btn-secondary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, category_info=item"
+                                                                 v-if="checkPermission('category-edit')">
+                                                            <i class="fa fa-history text-white"></i>
+                                                        </button>
+
+
+                                                    </template>
+
                                                     <template v-slot:item.actions="{item}">
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
                                                                 @click="category_id=item.id, isEditCheck=true" v-if="checkPermission('category-edit')">
@@ -157,6 +167,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isHistoryCheck">
+                <div class="right-sidebar-content-area px-2">
+
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">History List</h2>
+
+<!--                        find category -->
+<!--                        <small>Last updated: {{category_info.updated_at}}</small>-->
+<!--                        <h3 class="text-uppercase mb-20">{{category_info.name}}</h3>-->
+<!--                        <img :src="category_info.media[0].url" style="height:350px; width: auto">-->
+<!--                        <br/>-->
+
+<!--                        find history-->
+                        <HistoryList v-if="isHistoryCheck" :isHistoryCheck="isHistoryCheck" :postID="category_info.id"></HistoryList>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -168,6 +196,7 @@ import Header from '@/layouts/common/Header'
 import CategoryAdd from "@/components/category/categoryAdd";
 import CategoryEdit from "@/components/category/categoryEdit";
 import Loading from "@/components/loader/loading";
+import HistoryList from "@/components/history/HistoyList";
 
 import $ from "jquery";
 
@@ -179,16 +208,19 @@ export default {
         CategoryAdd,
         CategoryEdit,
         Loading,
+        HistoryList,
     },
 
     data() {
         return {
             isLoading           : false,
+            isHistoryCheck      : false,
             isEditCheck         : false,
             isAddCheck          : false,
             isDeleteCheck       : false,
             isExportCheck        :false,
             isSearch            : false,
+            category_info       : '',
             category_id         : '',
             category_parent_id  : '',
             category_name       : '',
@@ -200,6 +232,7 @@ export default {
             downloadUrl         : 'categories/export/',
             user_permissions    : '',
             mappedPermission    : '',
+
             filter      : {
                 isAdmin         : 1,
                 name            : ''
@@ -232,6 +265,10 @@ export default {
                     value: 'created_at',
                 },
                 {
+                    text: 'History',
+                    value: 'history',
+                },
+                {
                     text: 'Actions',
                     value: 'actions',
                     sortable:false
@@ -247,6 +284,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isHistoryCheck     = false;
 
             document.body.classList.remove('open-side-slider');
             $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
@@ -257,6 +295,7 @@ export default {
             this.isAddCheck         = false;
             this.isEditCheck        = false;
             this.isDeleteCheck      = false;
+            this.isHistoryCheck     = false;
         },
 
         getAddDataFromChild (status){
@@ -293,12 +332,10 @@ export default {
                 {
                     if(response.data.status_code === 200)
                     {
-                        console.log(response.data);
+                        console.log(response.data.category_list.data);
                         _that.pagination.current = response.data.category_list.current_page;
                         _that.pagination.total = response.data.category_list.last_page;
                         _that.categoryList      = response.data.category_list.data;
-                        // _that.categoryList      = response.data.category_list.data;
-                        // _that.pagination        = response.data.category_list;
                         _that.isLoading         = false;
                         _that.isExportCheck     = true;
                         // console.log(_that.pagination.total);

@@ -85,6 +85,15 @@
                                                             <option value="public">Public</option>
                                                         </select>
                                                     </template>
+                                                    <template v-slot:item.history="{item}">
+
+                                                        <button class="btn btn-secondary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, article_info=item"
+                                                                v-if="checkPermission('article-edit')">
+                                                            <i class="fa fa-history text-white"></i>
+                                                        </button>
+
+
+                                                    </template>
                                                     <template v-slot:item.actions="{item}">
                                                         <router-link :to="{ name: 'articleDetails', params: { id: item.id,slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                                             <i class="fas fa-eye text-white"></i>
@@ -134,6 +143,25 @@
             <ArticleAdd v-if="isAddCheck" :isAddCheck= "isAddCheck" @article-id="getArticleIDFromChild" @article-slide-close="getAddDataFromChild"></ArticleAdd>
             <!--edit-->
             <ArticleEdit v-if="isEditCheck" :isEditCheck="isEditCheck" @article-edit-id="getArticleIDFromChild" :articleId="article_id" @article-edit-close="getEditDataFromChild"></ArticleEdit>
+            <!--history-->
+
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isHistoryCheck">
+                <div class="right-sidebar-content-area px-2">
+
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">History List</h2>
+
+                        <!--                        find category -->
+                        <!--                        <small>Last updated: {{category_info.updated_at}}</small>-->
+                        <!--                        <h3 class="text-uppercase mb-20">{{category_info.name}}</h3>-->
+                        <!--                        <img :src="category_info.media[0].url" style="height:350px; width: auto">-->
+                        <!--                        <br/>-->
+
+                        <!--                        find history-->
+                        <HistoryList v-if="isHistoryCheck" :isHistoryCheck="isHistoryCheck" :postID="article_info.id"></HistoryList>
+                    </div>
+                </div>
+            </div>
             <!--delete-->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                 <div class="right-sidebar-content-area px-2">
@@ -237,6 +265,7 @@
     import ArticleAdd from "@/components/article/articleAdd";
     import ArticleEdit from "@/components/article/articleEdit";
     import Loading from "@/components/loader/loading";
+    import HistoryList from "@/components/history/HistoyList";
     import axios from "axios";
     import $ from "jquery";
 
@@ -250,9 +279,11 @@
             ArticleEdit,
             ArticleAdd,
             Loading,
+            HistoryList
         },
         data() {
             return {
+                isHistoryCheck      : false,
                 isArticleStatus     : '',
                 isExportCheck       : false,
                 isLoading           : false,
@@ -266,6 +297,7 @@
                 perPage             :2,
                 currentPage         :1,
                 unstoredArticleID   :'',
+                article_info : '',
 
                 article_id          :'',
                 search              :"",
@@ -308,6 +340,10 @@
                         text: 'Published Date',
                         value: 'created_at',
                         sortable: true
+                    },
+                    {
+                        text: 'History',
+                        value: 'history',
                     },
                     {
                         text: 'Actions',
@@ -384,18 +420,21 @@
                 _that.isAddCheck         = false;
                 _that.isEditCheck        = false;
                 _that.isDeleteCheck      = false;
+                _that.isHistoryCheck      = false;
 
                 console.log("check if"+_that.unstoredArticleID);
 
+                if (_that.unstoredArticleID){
+                    axios.get('contents-article-exist/'+this.unstoredArticleID,{
+                        headers: {
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+                        console.log(response);
+                        _that.unstoredArticleID = '';
+                    })
+                }
 
-                axios.get('contents-article-exist/'+this.unstoredArticleID,{
-                    headers: {
-                        'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-                    },
-                }).then(function (response) {
-                    console.log(response);
-                    _that.unstoredArticleID = '';
-                })
 
             },
             // after crud close
@@ -405,6 +444,7 @@
                 this.isEditCheck        = false;
                 this.isDeleteCheck      = false;
                 this.isSearchCheck      = false;
+                this.isHistoryCheck      = false;
 
                 document.body.classList.remove('open-side-slider');
                 $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
