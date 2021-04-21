@@ -59,6 +59,13 @@ class User extends Authenticatable
 
     }
 
+    public function crudHistory()
+    {
+
+        return $this->hasMany(CrudHistory::class,'id');
+
+    }
+
     public function comments()
     {
 

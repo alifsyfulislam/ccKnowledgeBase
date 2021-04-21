@@ -163,6 +163,7 @@ export default {
             formData.append('logo', this.logo_file);
             formData.append('name', this.categoryData.name);
             formData.append('parent_id', this.selectedCategory);
+            // formData.append('operation_type', 'insert');
 
             axios.post('categories', formData,
                 {

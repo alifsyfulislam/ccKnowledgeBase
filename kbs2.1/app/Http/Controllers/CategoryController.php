@@ -48,7 +48,6 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-
         if(Auth::user()->can('category-create')) {
 
             return $this->categoryService->createItem($request);

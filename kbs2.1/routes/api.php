@@ -22,6 +22,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CrudHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,6 +126,8 @@ Route::middleware('auth:api')->group(function(){
     Route::get('contents-faq-exist/{id}', [ContentController::class, 'checkFaqAvailability']);
 
     Route::post('role-banners', [BannerController::class, 'showLatestBannerList']);
+
+    Route::get('history/{post_id}', [CrudHistoryController::class, 'index']);
 
     Route::post('logout', [UserController::class, 'logout']);
 

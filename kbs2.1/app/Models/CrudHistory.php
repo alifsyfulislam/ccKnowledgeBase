@@ -5,13 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class CrudHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'post_id','user_id','comment_body','status'
-    ];
+    protected $fillable = ['user_id','post_id','operation_type'];
+
+    public function Linkable()
+    {
+
+        return $this->morphTo();
+
+    }
 
     public function user()
     {
@@ -20,24 +25,26 @@ class Comment extends Model
 
     }
 
-    public function article()
-    {
-        return $this->belongsTo(Article::class,'post_id');
-    }
 
-    public function faq()
-    {
-        return $this->belongsTo(Faq::class,'post_id');
-    }
-
+    /**
+     * @param $date
+     * @return string
+     */
     public function getCreatedAtAttribute($date)
     {
+
         return date('j M, Y', strtotime($date));
+
     }
 
-
+    /**
+     * @param $date
+     * @return string
+     */
     public function getUpdatedAtAttribute($date)
     {
+
         return date('j M, Y', strtotime($date));
+
     }
 }

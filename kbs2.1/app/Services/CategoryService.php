@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class CategoryService
 {
@@ -100,7 +101,6 @@ class CategoryService
 
     public function createItem($request)
     {
-
         $validator = Validator::make($request->all(),[
 
             'name' => "required|min:3|max:100|unique:categories,name,$request->id,id",
@@ -116,8 +116,14 @@ class CategoryService
 
         }
 
+
+
         $input = $request->all();
         $input['id'] = time().rand(1000,9000);
+        $input['user_id'] = Auth::user()->id;
+
+
+//        return $input['user_email'];
 
         DB::beginTransaction();
 
@@ -126,6 +132,12 @@ class CategoryService
             $this->categoryRepository->create($input);
 
             $category = $this->categoryRepository->get($input['id']);
+
+            $category->history()->create([
+                'user_id'           => $input['user_id'],
+                'post_id'           => $input['id'],
+                'operation_type'    => $request->route()->getActionMethod()
+            ]);
 
             if($request->hasFile('logo')) {
 
@@ -192,10 +204,16 @@ class CategoryService
 
             ], $request->id);
 
+            $category = $this->categoryRepository->get($input['id']);
 
+            $category->history()->create([
+                'user_id' => Auth::user()->id,
+                'post_id' => $request->id,
+                'operation_type' => $request->route()->getActionMethod()
+            ]);
 
             if($request->hasFile('logo')) {
-                $category = $this->categoryRepository->get($input['id']);
+
 
                 $media= Media::where('mediable_id', $input['id'])->first();
 
@@ -242,6 +260,7 @@ class CategoryService
         DB::beginTransaction();
 
         try {
+
             $childCheck = Category::where('parent_id', $id)->get();
 
             if ($childCheck->isNotEmpty()){
@@ -253,6 +272,13 @@ class CategoryService
                 ]);
 
             }else{
+                $category = $this->categoryRepository->get($id);
+
+                $category->history()->create([
+                    'user_id' => Auth::user()->id,
+                    'post_id' => $id,
+                    'operation_type' => 'delete'
+                ]);
                 $this->categoryRepository->delete($id);
             }
 
