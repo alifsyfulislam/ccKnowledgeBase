@@ -17,6 +17,7 @@ class BannerRepository
         $dataObj =  new Banner();
 
         $dataObj->id = $data['id'];
+        $dataObj->user_id = $data['user_id'];
         $dataObj->title = $data['title'];
         $dataObj->status = $data['status'];
         $dataObj->slug = Helper::slugify($data['title']);
@@ -28,10 +29,11 @@ class BannerRepository
     public function update($input){
 
         $banner = Banner::find($input['id']);
+        $banner->user_id = $input['user_id'];
         $banner->title = $input['title'];
         $banner->slug = Helper::slugify($input['title']);
         $banner->status = $input['status'];
-        $banner->role_id = $input['role_id'];
+//        $banner->role_id = $input['role_id'];
         $banner->save();
         return $banner;
 
@@ -43,17 +45,15 @@ class BannerRepository
         return Banner::with('media')
             ->where('id', $id)
             ->first();
-
-        //return Category::with(['permissions' => function($q) {$q->select('id', 'name');}])->find($id);
-
     }
 
     public function getWithPagination()
     {
 
-        return Banner::with('media')->orderBy('id','DESC')->paginate(20);
+        return Banner::with('media','user','history')->orderBy('id','DESC')->paginate(20);
 
     }
+
 
     public function delete($id){
 

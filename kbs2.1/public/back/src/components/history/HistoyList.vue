@@ -1,6 +1,7 @@
 <template>
     <div v-if="isHistoryCheck">
         <v-app v-if="isLoading">
+            <p class="text-small">Total: {{total_history}}</p>
             <v-main>
                 <v-container class="p-0 position-relative overflow-hidden">
                     <v-row justify="end">
@@ -53,6 +54,7 @@
                   per_page        : 20,
                   total           : ''
               },
+              total_history : '',
               headers: [
                   {
                       text: 'Last Edited',
@@ -83,10 +85,14 @@
                         }
                     }).then(function (response) {
 
-                    _that.history_list = response.data
-                    _that.pagination.current = response.data.current_page;
-                    _that.pagination.total = response.data.last_page;
-                    _that.history_list      = response.data.data;
+                        console.log(response.data)
+
+                       _that.total_history = response.data.history_list.total
+
+                    _that.history_list = response.data.history_list
+                    _that.pagination.current = response.data.history_list.current_page;
+                    _that.pagination.total = response.data.history_list.last_page;
+                    _that.history_list      = response.data.history_list.data;
                     console.log(_that.history_list)
                     _that.isLoading = true;
                 });

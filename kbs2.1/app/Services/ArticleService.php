@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Models\Media;
-use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use App\Notifications\NewArticleNotify;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Notifications\Notifiable;
 
 class ArticleService
 {

@@ -42,10 +42,6 @@ class BannerService
 
     public function createItem($request)
     {
-
-//        return $request->banner_file;
-//        dd($request->banner_file);
-
         $validator = Validator::make($request->all(),[
 
             'title' => 'required|min:3|max:200',
@@ -65,6 +61,7 @@ class BannerService
 
         $input = $request->all();
         $input['id'] = time().rand(1000,9000);
+        $input['user_id'] = auth()->user()->id;
 
         DB::beginTransaction();
 
@@ -80,9 +77,14 @@ class BannerService
                 $this->bannerRepository->create($input);
             }
 
-//            $this->bannerRepository->create($input);
 
             $banner = $this->bannerRepository->get($input['id']);
+
+            $banner->history()->create([
+                'user_id'           => $input['user_id'],
+                'post_id'           => $input['id'],
+                'operation_type'    => $request->route()->getActionMethod()
+            ]);
 
             if($request->hasFile('banner_file')) {
 
@@ -151,6 +153,7 @@ class BannerService
         }
 
         $input = $request->all();
+        $input['user_id'] = auth()->user()->id;
 
         DB::beginTransaction();
 
@@ -165,6 +168,14 @@ class BannerService
                 $input['role_id'] = implode(',',$result_array);
                 $this->bannerRepository->update($input);
             }
+            $banner = $this->bannerRepository->get($input['id']);
+
+
+            $banner->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $request->id,
+                'operation_type' => $request->route()->getActionMethod()
+            ]);
 
             if($request->hasFile('banner_file')) {
 
@@ -207,13 +218,25 @@ class BannerService
         ]);
     }
 
+    public function getItemById($id)
+    {
+
+        return $this->bannerRepository->get($id);
+    }
+
     public function deleteItem($id){
 
         DB::beginTransaction();
 
 
         try {
+            $banner = $this->getItemById($id);
 
+            $banner->history()->create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $id,
+                'operation_type' => 'delete'
+            ]);
             $this->bannerRepository->delete($id);
 
         } catch (Exception $e) {
