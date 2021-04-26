@@ -33,7 +33,7 @@ class BannerRepository
         $banner->title = $input['title'];
         $banner->slug = Helper::slugify($input['title']);
         $banner->status = $input['status'];
-//        $banner->role_id = $input['role_id'];
+        $banner->role_id = $input['role_id'];
         $banner->save();
         return $banner;
 
