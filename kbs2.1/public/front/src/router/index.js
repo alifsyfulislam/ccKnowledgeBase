@@ -49,7 +49,7 @@ let router =  new Router({
       component: CategoryList
     },
     {
-      path: '/article-detail/:articleID',
+      path: '/article-detail/:articleSlug',
       name: 'ArticleDetail',
       component: ArticleDetail
     },

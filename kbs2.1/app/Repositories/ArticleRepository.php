@@ -33,7 +33,7 @@ class ArticleRepository implements RepositoryInterface
 
         } else{
 
-            return Article::with('user','category')
+            return Article::with('user','category','contents')
                 ->where('status', 'public')
                 ->orderBy('created_at', 'DESC')
                 ->take(6)
@@ -186,7 +186,7 @@ class ArticleRepository implements RepositoryInterface
 
     public function searchCategoryArticle($slug = '')
     {
-        $query = Article::with('category')
+        $query = Article::with('category','contents')
                  ->where('status', 'public');
 
         $query = $query->whereHas('category', function ($q) use ($slug) {
