@@ -162,14 +162,12 @@ class FaqRepository implements RepositoryInterface
     public function search(string $query = "")
     {
         return Faq::with('category','contents')
-            ->where('en_title', 'like', "%{$query}%")
-            ->where('status', 'public')
-            ->orWhere('tag', 'like', "%{$query}%")
-//            ->orWhere('contents.en_body', 'like', "%{$query}%")
-                ->whereHas('contents', function ($q) use($query)
-            {
-                $q->where('en_body', "%{$query}%");
+            ->whereHas('contents', function ($q) use ($query){
+                $q->where('en_body', 'like', '%'.$query.'%');
             })
+            ->orWhere('en_title', 'like', "%{$query}%")
+            ->orWhere('tag', 'like', "%{$query}%")
+            ->where('status', 'public')
             ->orderBy('id', 'DESC')->paginate(5);
     }
 

@@ -21,11 +21,8 @@
               </div>
               <div v-if="suggestedArtiles.length" class="search-suggestion" style="left:0; width: 100%">
                 <ul>
-                    <!-- <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title"  @click.prevent="articleSearch(a_suggestion.slug)">
-                        {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
-                    </li> -->
                   <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
-                    
+
                 </ul>
               </div>
             </div>

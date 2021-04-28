@@ -10,7 +10,7 @@
                             <p class="text-white mb-20 mb-md-0">Lorem ipsum dolor sit, Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</p>
                         </div>
                         <div class="col-md-6">
-                            <h2 class="signin-title text-center mb-20 pb-10">Signin</h2>
+                            <h2 class="signin-title text-center mb-20 pb-10">Log In Here!</h2>
 
                             <form action="" method="post">
                                   <div class="form-group mb-20">

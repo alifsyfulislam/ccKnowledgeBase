@@ -174,12 +174,18 @@ class ArticleRepository implements RepositoryInterface
     public function search(string $query = "")
     {
         return Article::with('category','contents')
-            ->where('en_title', 'like', "%{$query}%")
-            ->where('status', 'public')
+            ->whereHas('contents', function ($q) use ($query){
+                $q->where('en_body', 'like', '%'.$query.'%');
+            })
+//            ->whereHas('category', function ($q) use ($query){
+//                $q->where('name', 'like', '%'.$query.'%');
+//            })
+            ->orWhere('en_title', 'like', "%{$query}%")
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
-            ->orWhere('en_body', 'like', "%{$query}%")
-            ->orderBy('id', 'DESC')->paginate(5);
+            ->where('status', 'public')
+            ->orderBy('created_at', 'DESC')->paginate(5);
+
     }
 
 
