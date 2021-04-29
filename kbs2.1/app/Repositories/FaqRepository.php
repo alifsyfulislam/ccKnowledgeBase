@@ -117,7 +117,7 @@ class FaqRepository implements RepositoryInterface
     public function getFaqListForFrontend($request)
     {
 
-        $query = Faq::with( 'user', 'category');
+        $query = Faq::with( 'user', 'category','contents');
         $whereFilterList = ['category_id', 'status'];
         $likeFilterList  = ['en_title', 'tag'];
         $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
@@ -161,11 +161,13 @@ class FaqRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Faq::with('category')
-            ->where('en_title', 'like', "%{$query}%")
-            ->where('status', 'public')
+        return Faq::with('category','contents')
+            ->whereHas('contents', function ($q) use ($query){
+                $q->where('en_body', 'like', '%'.$query.'%');
+            })
+            ->orWhere('en_title', 'like', "%{$query}%")
             ->orWhere('tag', 'like', "%{$query}%")
-            ->orWhere('en_body', 'like', "%{$query}%")
+            ->where('status', 'public')
             ->orderBy('id', 'DESC')->paginate(5);
     }
 

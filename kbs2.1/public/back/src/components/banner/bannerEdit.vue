@@ -69,9 +69,22 @@
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
                             <ul class="list-unstyled permission-list m-0 p-0">
+<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">-->
+<!--                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>-->
+<!--                                    </div>-->
+<!--                                    <div v-else class="d-flex align-items-center">-->
+<!--                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                                    </div>-->
+
+<!--                                </li>-->
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                                     <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>
+                                        <label class="mb-0 ml-2">
+                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                            <input v-else @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
+                                            {{ a_user.name }}
+                                        </label>
                                     </div>
                                     <div v-else class="d-flex align-items-center">
                                         <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
@@ -268,6 +281,8 @@
             {
                 let _that = this;
                 let collection;
+
+                console.log(_that.roleAccess);
 
                 collection = _that.roleAccess.join();
 

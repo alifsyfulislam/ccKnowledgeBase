@@ -11,6 +11,13 @@ class Banner extends Model
 
     protected $fillable = ['title','role_id', 'slug', 'status'];
 
+    public function user()
+    {
+
+        return $this->belongsTo(User::class);
+
+    }
+
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
@@ -21,6 +28,11 @@ class Banner extends Model
 
         return date('j M, Y', strtotime($date));
 
+    }
+
+    public function history()
+    {
+        return $this->morphMany(CrudHistory::class, 'linkable')->with('user');
     }
 
     /**

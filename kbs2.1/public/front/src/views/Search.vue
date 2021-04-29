@@ -24,10 +24,8 @@
 
                 <div v-if="suggestedArtiles.length" class="search-suggestion" style="left:0; width: 100%">
                   <ul>
-                      <!-- <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title" @click="fromData.search = a_suggestion.en_title, searchData()">
-                          {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
-                      </li> -->
-                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
+                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleSlug: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
+<!--                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleSlug: a_suggestion.slug }}">{{a_suggestion.slug}}</router-link></li>-->
                   </ul>
                 </div>
               </div>
@@ -35,7 +33,7 @@
               <div class="breadcrumbs mt-10 mt-sm-0">
                 <ul class="list-inline list-unstyled mb-0">
                   <li class="list-inline-item">
-                    <router-link class="nav-item" :to="{ name: 'Display'}">
+                    <router-link class="nav-item" :to="{ name: 'Home'}">
                       <i class="fa fa-home"></i>
                     </router-link>
                   </li>
@@ -79,9 +77,15 @@
                         <!--                                                <p v-else>{{ a_article.en_short_summary.substring(0,120)+"..."}}</p>-->
                         <!--                                            </div>-->
 
-                        <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">
-                          <div class="article-list-image mb-20 mb-sm-0">
-                            <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                        <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleSlug: a_article.slug }}">
+<!--                          <div class="article-list-image mb-20 mb-sm-0">-->
+<!--                            <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">-->
+<!--                          </div>-->
+
+                          <div v-for="a_content in a_article.contents" :key="a_content.id">
+                            <div class="article-list-image mb-20 mb-sm-0"  v-if="a_content.en_body.match(regexImg)">
+                              <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                            </div>
                           </div>
                           <div class="article-content-list-box pl-0 pl-sm-10">
                             <h3 class="article-list-title mb-0 pb-2 font-20">
@@ -158,7 +162,8 @@ export default {
       isLoading: true,
       query_string:'',
       allArticles:'',
-       suggestedArtiles:[],
+      articleSlug : '',
+      suggestedArtiles:[],
       allSearchQuery:[],
       regexImg                : /(http:\/\/[^">]+)/img,
       static_image : [],
@@ -188,6 +193,7 @@ export default {
       localStorage.setItem("query_string",_that.query_string);
       pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
       axios.get(pageUrl).then((response)=>{
+        console.log(response)
         _that.isLoading= false;
         _that.allArticles = response.data.article_list.data;
         _that.pagination  = response.data.article_list;

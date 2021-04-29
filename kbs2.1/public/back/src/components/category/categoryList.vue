@@ -83,9 +83,9 @@
 
                                                     <template v-slot:item.history="{item}">
 
-                                                        <button class="btn btn-secondary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, category_info=item"
+                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, category_info=item"
                                                                  v-if="checkPermission('category-edit')">
-                                                            <i class="fa fa-history text-white"></i>
+                                                            <i class="fas fa-book text-white"></i>
                                                         </button>
 
 

@@ -24,8 +24,6 @@
                     <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title"  @click.prevent="articleSearch(a_suggestion.slug)">
                         {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
                     </li>
-                  <!-- <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li> -->
-                    
                 </ul>
               </div>
             </div>
@@ -38,7 +36,7 @@
                   </router-link>
                 </li>
                 <li class="list-inline-item">
-                  <router-link :to="{ name: 'CategoryList', params: { categoryID: aArticle.category.slug }}">
+                  <router-link v-if="aArticle.category" :to="{ name: 'CategoryList', params: { categoryID: aArticle.category.slug }}">
                     categories
                   </router-link>
                 </li>
@@ -86,8 +84,8 @@
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.en_title}}</h3>
                   </div>
-                  <div class="ta-content-wrapper">
-                    <div v-html="aArticle.en_body"></div>
+                  <div class="ta-content-wrapper" v-if="aArticle.contents">
+                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.en_body"></div>
                   </div>
                 </div>
 
@@ -112,8 +110,11 @@
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.bn_title}}</h3>
                   </div>
-                  <div class="ta-content-wrapper">
-                    <div v-html="aArticle.bn_body"></div>
+<!--                  <div class="ta-content-wrapper">-->
+<!--                    <div v-html="aArticle.bn_body"></div>-->
+<!--                  </div>-->
+                  <div class="ta-content-wrapper" v-if="aArticle.contents">
+                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>
                   </div>
                 </div>
               </div>
@@ -127,8 +128,11 @@
                     <li class="nav-item" v-for="a_art in allArticle" :key="a_art.id">
                       <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
                         <div class="recent-article-item-wrapper d-flex p-2">
-                          <div class="ra-item-image">
-                            <img  v-if="articleImageArray.indexOf(a_art.id)" class="img-fluid" :src="articleImageArray[a_art.id] ? articleImageArray[a_art.id] : static_image['article'] " alt="no image">
+<!--                          <div v-if="a_art.contents"></div>-->
+                          <div v-for="a_content in a_art.contents" :key="a_content.id">
+                            <div class="ra-item-image" v-if="a_content.en_body.match(regexImg)">
+                              <img class="img-fluid" :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image">
+                            </div>
                           </div>
                           <div class="ra-item-content">
                             <span v-if="(a_art.en_title).length<40"> {{ a_art.en_title }}</span>
@@ -219,9 +223,9 @@ export default {
     return{
       routePath : '',
       isLoading : true,
-      articleID:'',
+      articleSlug:'',
       aArticle:'',
-      articleIDArr:[],
+      articleSlugArr:[],
       suggestedArtiles:[],
       articleCounter:0,
       allCategoryArticle:'',
@@ -232,24 +236,27 @@ export default {
 
       static_image            : [],
       regexImg                : /(http:\/\/[^">]+)/g,
-      articleImageArray       : []
+      // articleImageArray       : []
     }
   },
   methods:{
     articleSearch(v){
       let _that = this;
-      _that.articleID = v;
+      _that.articleSlug = v;
       _that.articleCounter++;
-      let last_history_article = _that.articleIDArr[_that.articleIDArr.length - 1];
+      let last_history_article = _that.articleSlugArr[_that.articleSlugArr.length - 1];
 
-      if (last_history_article != _that.articleID){
-        _that.articleIDArr.push(_that.articleID);
-        axios.get('article-details/'+_that.articleID)
+      if (last_history_article != _that.articleSlug){
+        _that.articleSlugArr.push(_that.articleSlug);
+        axios.get('article-details/'+_that.articleSlug)
           .then(function (response) {
             _that.aArticle = response.data.article_info;
-            _that.$router.push('/article-detail/'+_that.articleID)
+            _that.$router.push('/article-detail/'+_that.articleSlug)
             // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
-            document.getElementById("search-suggestion").style.visibility = "hidden";
+            if (document.getElementById("search-suggestion")){
+              document.getElementById("search-suggestion").style.visibility = "hidden";
+            }
+            // document.getElementById("search-suggestion").style.visibility = "hidden";
           })
       }else{
         console.log(last_history_article);
@@ -290,13 +297,13 @@ export default {
         .then(function (response) {
           _that.allArticle = response.data.article_list;
 
-          response.data.article_list.forEach(val => {
-            if ( val.en_body.includes('<img '))
-            {
-              _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
-            }
-
-          })
+          // response.data.article_list.forEach(val => {
+          //   if ( val.en_body.includes('<img '))
+          //   {
+          //     _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
+          //   }
+          //
+          // })
         })
     },
 
@@ -322,13 +329,13 @@ export default {
 
     dynamicBackFunc() {
       let _that =this;
-      _that.articleIDArr = _that.articleIDArr.slice(0,_that.articleIDArr.length-1);
-      _that.articleID = _that.articleIDArr[_that.articleIDArr.length-1];
-      if (_that.articleID){
-        axios.get('article-details/'+_that.articleID)
+      _that.articleSlugArr = _that.articleSlugArr.slice(0,_that.articleSlugArr.length-1);
+      _that.articleSlug = _that.articleSlugArr[_that.articleSlugArr.length-1];
+      if (_that.articleSlug){
+        axios.get('article-details/'+_that.articleSlug)
           .then(function (response) {
             _that.aArticle = response.data.article_info;
-            _that.$router.push('/article-detail/'+_that.articleID)
+            _that.$router.push('/article-detail/'+_that.articleSlug)
           })
       }
       else{
@@ -344,12 +351,11 @@ export default {
     }
   },
   created() {
-    this.articleID = this.$route.params.articleID;
-    this.articleSearch(this.articleID);
+    this.articleSlug = this.$route.params.articleSlug;
+    this.articleSearch(this.articleSlug);
     this.getCategoryArticleList();
     this.getStaticMedia();
     this.getRecentArticleList();
-    // localStorage.clear();
   }
 }
 </script>

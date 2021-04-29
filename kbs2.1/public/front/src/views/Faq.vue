@@ -42,9 +42,6 @@
                 </ul>
               </div>
 
-
-
-
               <!--                        <button @click="$router.go(-1)" class="btn d-block d-sm-inline-block mt-10 mb-sm-0 btn-primary btn-common-2 position-relative font-18 overflow-hidden ripple-btn text-left py-3 px-30 text-white order-sm-1"><i class="fa fa-angle-double-left"></i> Back</button>-->
             </div>
           </div>
@@ -57,7 +54,7 @@
             <div style="min-height: 350px">
               <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
                 <div class="heading">{{a_faq.en_title}}</div>
-                <div class="contents overflow-hidden" v-html="a_faq.en_body"></div>
+                <div v-for="a_content in a_faq.contents" :key="a_content.id" class="contents overflow-hidden" v-html="a_content.en_body"></div>
               </div>
             </div>
           </div>
@@ -117,6 +114,7 @@ export default {
       let _that = this;
       axios.get('faq-list')
         .then(function (response) {
+          console.log(response.data.faq_list.data);
           _that.isLoading= false;
           _that.all_Faqs = response.data.faq_list.data;
         })

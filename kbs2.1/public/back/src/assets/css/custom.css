@@ -701,3 +701,7 @@ input[type="file"]:focus {
         right: -325px;
     }
 }
+
+.theme--light.v-application{
+    background: none !important;
+}

@@ -55,6 +55,10 @@
                                             <v-col class="customer-data-table-wrapper">
                                                 <v-data-table :headers="headers" :items="bannerList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
 
+                                                    <template v-slot:item.user.first_name="{item}">
+                                                        {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
+                                                    </template>
+
                                                     <template v-slot:item.media="{item}">
 
                                                         <div v-for="a_url in item.media" :key="a_url.id">
@@ -70,6 +74,16 @@
 
                                                             </span>
                                                         </div>
+
+                                                    </template>
+
+                                                    <template v-slot:item.history="{item}">
+
+                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, banner_info=item"
+                                                                v-if="checkPermission('article-edit')">
+                                                            <i class="fas fa-book text-white"></i>
+                                                        </button>
+
 
                                                     </template>
 
@@ -123,6 +137,24 @@
             <BannerAdd v-if="isAddCheck" :isAddCheck="isAddCheck" @banner-slide-close="getAddDataFromChild"></BannerAdd>
             <!--            edit data-->
             <BannerEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :categoryId="banner_id" @banner-slide-close="getEditDataFromChild"></BannerEdit>
+<!--            history-->
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isHistoryCheck">
+                <div class="right-sidebar-content-area px-2">
+
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">History List</h2>
+
+                        <!--                        find category -->
+                        <!--                        <small>Last updated: {{category_info.updated_at}}</small>-->
+                        <!--                        <h3 class="text-uppercase mb-20">{{category_info.name}}</h3>-->
+                        <!--                        <img :src="category_info.media[0].url" style="height:350px; width: auto">-->
+                        <!--                        <br/>-->
+
+                        <!--                        find history-->
+                        <HistoryList v-if="isHistoryCheck" :isHistoryCheck="isHistoryCheck" :postID="banner_info.id"></HistoryList>
+                    </div>
+                </div>
+            </div>
             <!--            delete data -->
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck">
                 <div class="right-sidebar-content-area px-2">
@@ -160,6 +192,7 @@
     import BannerAdd from "@/components/banner/bannerAdd";
     import BannerEdit from "@/components/banner/bannerEdit";
     import Loading from "@/components/loader/loading";
+    import HistoryList from "@/components/history/HistoyList";
 
     import $ from "jquery";
 
@@ -171,10 +204,12 @@
             BannerAdd,
             BannerEdit,
             Loading,
+            HistoryList
         },
 
         data() {
             return {
+                isHistoryCheck      : false,
                 isLoading           : false,
                 isEditCheck         : false,
                 isAddCheck          : false,
@@ -192,6 +227,7 @@
                 downloadUrl         : 'banner/export/',
                 user_permissions    : '',
                 mappedPermission    : '',
+                banner_info         : '',
                 filter      : {
                     isAdmin         : 1,
                     name            : ''
@@ -208,6 +244,10 @@
                         value: 'id',
                     },
                     {
+                        text: 'Author',
+                        value: 'user.first_name',
+                    },
+                    {
                         text: 'Title',
                         value: 'title',
                     },
@@ -218,6 +258,10 @@
                     {
                         text: 'Created Date',
                         value: 'created_at',
+                    },
+                    {
+                        text: 'History',
+                        value: 'history',
                     },
                     {
                         text: 'Actions',
@@ -235,6 +279,7 @@
                 this.isAddCheck         = false;
                 this.isEditCheck        = false;
                 this.isDeleteCheck      = false;
+                this.isHistoryCheck      = false;
 
                 document.body.classList.remove('open-side-slider');
                 $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
@@ -245,6 +290,8 @@
                 this.isAddCheck         = false;
                 this.isEditCheck        = false;
                 this.isDeleteCheck      = false;
+                this.isHistoryCheck      = false;
+                this.getBannerList()
             },
 
             getAddDataFromChild (status){

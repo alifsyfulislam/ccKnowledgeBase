@@ -56,9 +56,11 @@
             <div class="row text-left">
               <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                 <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
-                  <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.slug }}">
-                    <div class="featured-image">
-                      <img :src="((a_latest_art.en_body).match(regexImg) ? (a_latest_art.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                  <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleSlug: a_latest_art.slug }}">
+                    <div v-for="a_content in a_latest_art.contents">
+                      <div class="featured-image" v-if="a_content.en_body.match(regexImg)">
+                        <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                      </div>
                     </div>
                     <div class="featured-content-box p-15 p-md-20">
                       <h4 class="mb-15 font-18" v-if="(a_latest_art.en_title).length<35"> {{ a_latest_art.en_title }}</h4>
@@ -88,7 +90,9 @@
               <div class="col-lg-12" style="min-height: 350px ; ">
                 <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
                   <div class="heading">{{a_faq.en_title}}</div>
-                  <div class="contents overflow-hidden" v-html="a_faq.en_body"></div>
+                  <div class="contents overflow-hidden">
+                    <div v-for="a_content in a_faq.contents" :key="a_content.id" v-html="a_content.en_body"></div>
+                  </div>
                 </div>
               </div>
 
@@ -160,6 +164,7 @@ export default {
       axios.get('article-list')
         .then(function (response) {
           if(response.data.status_code === 200){
+            console.log(response.data.article_list)
             _that.allLatestArticles = response.data.article_list;
           }
         })
@@ -192,6 +197,7 @@ export default {
         },
       })
         .then(function (response) {
+          console.log(response.data.faq_list)
           _that.all_Faqs = response.data.faq_list;
         })
     },
