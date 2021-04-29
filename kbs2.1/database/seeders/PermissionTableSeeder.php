@@ -88,6 +88,12 @@ class PermissionTableSeeder extends Seeder
             'Email Edit',
             'Email Delete',
 
+            'Notification List',
+            'Notification Create',
+            'Notification Edit',
+            'Notification Delete',
+            
+
 
         ];
 

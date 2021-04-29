@@ -23,6 +23,7 @@ use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CrudHistoryController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,7 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('pages', PageController::class);
     Route::apiResource('email-setting', EmailSettingController::class);
     Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('notifications', NotificationController::class);
 
 
 

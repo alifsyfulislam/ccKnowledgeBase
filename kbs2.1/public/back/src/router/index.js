@@ -26,6 +26,7 @@ import emailConfiguration from '@/components/settings/emailConfiguration.vue'
 
 import bannerList from '@/components/banner/bannerList'
 import commentList from '@/components/comment/commentList'
+import notificationList from '@/components/notification/notificationList.vue'
 
 
 Vue.use(Router)
@@ -182,6 +183,14 @@ let router =  new Router({
       path: '/banner-list',
       name: 'bannerList',
       component: bannerList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/notification-list',
+      name: 'notificationList',
+      component: notificationList,
       meta: {
         requiresAuth: true
       }
