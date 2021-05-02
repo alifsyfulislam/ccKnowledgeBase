@@ -44,6 +44,7 @@ let router =  new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
+      beforeEnter : guardMyroute,
       component: dashboard,
       meta: {
         requiresAuth: true
@@ -52,6 +53,7 @@ let router =  new Router({
     {
       path: '/user-list',
       name: 'customerList',
+      beforeEnter : guardMyroute,
       component: customerList,
       meta: {
         requiresAuth: true
@@ -60,6 +62,7 @@ let router =  new Router({
     {
       path: '/comment-list',
       name: 'commentList',
+      beforeEnter : guardMyroute,
       component: commentList,
       meta: {
         requiresAuth: true
@@ -68,6 +71,7 @@ let router =  new Router({
     {
       path: '/category-list',
       name: 'categoryList',
+      beforeEnter : guardMyroute,
       component: categoryList,
       meta: {
         requiresAuth: true
@@ -76,6 +80,7 @@ let router =  new Router({
     {
       path: '/page-configuration',
       name: 'pageConfiguration',
+      beforeEnter : guardMyroute,
       component: pageConfiguration,
       meta: {
         requiresAuth: true
@@ -85,6 +90,7 @@ let router =  new Router({
     {
       path: '/email-configuration',
       name: 'emailConfiguration',
+      beforeEnter : guardMyroute,
       component: emailConfiguration,
       meta: {
         requiresAuth: true
@@ -94,6 +100,7 @@ let router =  new Router({
     {
       path: '/quiz-add',
       name: 'quizAdd',
+      beforeEnter : guardMyroute,
       component: quizAdd,
       meta: {
         requiresAuth: true
@@ -103,6 +110,7 @@ let router =  new Router({
     {
       path: '/quiz-list',
       name: 'quizList',
+      beforeEnter : guardMyroute,
       component: quizList,
       meta: {
         requiresAuth: true
@@ -112,6 +120,7 @@ let router =  new Router({
     {
       path: '/quiz-edit/:id',
       name: 'quizEdit',
+      beforeEnter : guardMyroute,
       component: quizEdit,
       meta: {
         requiresAuth: true
@@ -121,6 +130,7 @@ let router =  new Router({
     {
       path: '/quiz-form-field-list/',
       name: 'quizFormFieldList',
+      beforeEnter : guardMyroute,
       component: quizFormFieldList,
       meta: {
         requiresAuth: true
@@ -130,6 +140,7 @@ let router =  new Router({
     {
       path: '/quiz-form-list',
       name: 'quizFormList',
+      beforeEnter : guardMyroute,
       component: quizFormList,
       meta: {
         requiresAuth: true
@@ -138,6 +149,7 @@ let router =  new Router({
     {
       path: '/role-list',
       name: 'roleList',
+      beforeEnter : guardMyroute,
       component: roleList,
       meta: {
         requiresAuth: true
@@ -146,6 +158,7 @@ let router =  new Router({
     {
       path: '/faq-list',
       name: 'faqList',
+      beforeEnter : guardMyroute,
       component: faqList,
       meta: {
         requiresAuth: true
@@ -155,6 +168,7 @@ let router =  new Router({
     {
       path: '/faq-details/:id/:slug',
       name: 'faqDetails',
+      beforeEnter : guardMyroute,
       component: faqDetails,
       meta: {
         requiresAuth: true
@@ -165,6 +179,7 @@ let router =  new Router({
     {
       path: '/article-list',
       name: 'articleList',
+      beforeEnter : guardMyroute,
       component: articleList,
       meta: {
         requiresAuth: true
@@ -173,6 +188,7 @@ let router =  new Router({
     {
       path: '/article-details/:id/:slug',
       name: 'articleDetails',
+      beforeEnter : guardMyroute,
       component: articleDetails,
       meta: {
         requiresAuth: true
@@ -182,6 +198,7 @@ let router =  new Router({
     {
       path: '/banner-list',
       name: 'bannerList',
+      beforeEnter : guardMyroute,
       component: bannerList,
       meta: {
         requiresAuth: true
@@ -225,26 +242,23 @@ function getRoutesXML() {
   </urlset>`;
 }
 
-
-
-
-
-
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!localStorage.getItem('authToken')) {
-      next({
-        // path: '/',
-        params: {nextUrl: to.fullPath}
-      })
-    } else {
-      next()
-      // console.log(getRoutesList(router.options.routes, 'http://localhost:8080/back'));
-      // console.log(getRoutesXML());
-    }
-  } else {
-    next()
+function guardMyroute(to, from, next)
+{
+  var isAuthenticated= false;
+//this is just an example. You will have to find a better or
+// centralised way to handle you localstorage data handling
+  if(localStorage.getItem('authToken'))
+    isAuthenticated = true;
+  else
+    isAuthenticated= false;
+  if(isAuthenticated)
+  {
+    next(); // allow to enter route
   }
-})
+  else
+  {
+    next('/'); // go to '/login';
+  }
+}
 
 export default router;

@@ -35,20 +35,21 @@
 <!--                </router-link>-->
 <!--              </li>-->
 
-              <li class="nav-item">
+
+
+              <li class="nav-item dropdown" v-if="isAuthinticate">
+                <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
+                <div class="dropdown-menu slideDownIn">
+                  <a class="dropdown-item" href="#">Profile</a>
+                  <a class="dropdown-item" href="#">Logout</a>
+                </div>
+              </li>
+
+              <li class="nav-item" v-else>
                 <router-link class="nav-link" :to="{ name: 'Login'}">
                   <span>LOGIN</span>
                 </router-link>
               </li>
-
-              <!-- Dropdown -->
-              <!--                <li class="nav-item dropdown">-->
-              <!--                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">EN</a>-->
-              <!--                  <div class="dropdown-menu slideDownIn">-->
-              <!--                    <a class="dropdown-item" href="#">EN - English</a>-->
-              <!--                    <a class="dropdown-item" href="#">AR - Arabic</a>-->
-              <!--                  </div>-->
-              <!--                </li>-->
             </ul>
           </div>
         </div>
@@ -99,6 +100,8 @@ export default {
   data(){
     return{
       frontPageData : '',
+      userInformation : '',
+      isAuthinticate : false,
     }
   },
 
@@ -115,6 +118,18 @@ export default {
     }
   },
   created() {
+    // if (localStorage.getItem('userInformation')){
+    //   this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+    //   console.log(this.userInformation);
+    //   if (this.userInformation){
+    //     this.isAuthinticate = true;
+    //   } else{
+    //     this.isAuthinticate = false;
+    //   }
+    // }
+    if (this.$route.params){
+      console.log(this.$route.params)
+    }
     this.getPageDecorationData();
   }
 }

@@ -136,6 +136,8 @@ export default {
       // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
       regexImg                : /(http:\/\/[^">]+)/img,
       all_Faqs                : '',
+        userInformation     : '',
+      isAuthinticate : false,
     }
   },
   methods:{
@@ -204,6 +206,16 @@ export default {
   },
   created()
   {
+    if (localStorage.getItem('userInformation')){
+        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+        console.log(this.userInformation);
+        if (!this.userInformation){
+          this.isAuthinticate = false;
+        } else{
+          this.isAuthinticate = true;
+        }
+    }
+
     this.getStaticMedia()
     this.getPageDecorationData();
     this.getCategoryArticleList();

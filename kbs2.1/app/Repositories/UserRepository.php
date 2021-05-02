@@ -34,8 +34,7 @@ class UserRepository implements RepositoryInterface
         return User::with([ 'media',
             'roles.permissions' => function($query){
                 $query->select('id', 'name', 'slug');
-        }])
-            ->findOrFail($id);
+        }])->findOrFail($id);
 
     }
 

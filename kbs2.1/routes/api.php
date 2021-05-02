@@ -23,7 +23,11 @@ use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CrudHistoryController;
+<<<<<<< HEAD
 use App\Http\Controllers\NotificationController;
+=======
+use App\Http\Controllers\VisitorController;
+>>>>>>> 5fc323e407693aea85d00be6a46df22f94550944
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +69,12 @@ Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 Route::post('customer/username', [CustomerController::class, 'checkUserNameExist']);
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
+
+
+
+Route::post('visitor-login',[VisitorController::class, 'index']);
+
+
 
 
 
