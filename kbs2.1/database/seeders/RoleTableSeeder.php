@@ -23,6 +23,7 @@ class RoleTableSeeder extends Seeder
             'Admin',
             'Moderator',
             'Editor',
+            'Agent'
         ];
 
 

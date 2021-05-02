@@ -47,11 +47,6 @@ class PermissionTableSeeder extends Seeder
             'Faq Edit',
             'Faq Delete',
 
-            'Team List',
-            'Team Create',
-            'Team Edit',
-            'Team Delete',
-
             'Quiz List',
             'Quiz Create',
             'Quiz Edit',
@@ -88,7 +83,7 @@ class PermissionTableSeeder extends Seeder
             'Email Edit',
             'Email Delete',
 
-
+            'Admin Panel'
         ];
 
 

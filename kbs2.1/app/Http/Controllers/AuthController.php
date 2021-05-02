@@ -67,7 +67,15 @@ class AuthController extends Controller
                 $success['token']       = $user->createToken('Knowledge Base')->accessToken;
                 $success['user_info']   = $userInfo;
 
-                return response()->json($success);
+                if (Auth::user()->can('admin-panel')){
+                    return response()->json($success);
+                }else{
+                    $success['status_code'] = 401;
+                    $success['messages'] = config('status.status_code.401');
+                    return response()->json($success);
+                }
+
+
 
             } else {
                 $success['status_code'] = 451;
