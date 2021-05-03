@@ -11,7 +11,6 @@ import Search from "../views/Search";
 import Quiz from "../views/Quiz";
 import StartExam from "../views/StartExam";
 import Sitemap from "../views/Sitemap";
-import Login from "../views/Login";
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -71,11 +70,6 @@ let router =  new Router({
       path: '/sitemap',
       name: 'Sitemap',
       component: Sitemap
-    },
-    {
-      path: "/login",
-      name: 'Login',
-      component: Login
     },
     {
       path: "/:catchAll(.*)",
