@@ -85,16 +85,20 @@
                                                             <option value="public">Public</option>
                                                         </select>
                                                     </template>
-                                                    <template v-slot:item.history="{item}">
+<!--                                                    <template v-slot:item.history="{item}">-->
 
+<!--                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, article_info=item"-->
+<!--                                                                v-if="checkPermission('history-list')">-->
+<!--                                                            <i class="fas fa-book text-white"></i>-->
+<!--                                                        </button>-->
+
+
+<!--                                                    </template>-->
+                                                    <template v-slot:item.actions="{item}">
                                                         <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, article_info=item"
-                                                                v-if="checkPermission('article-edit')">
+                                                                v-if="checkPermission('history-list')">
                                                             <i class="fas fa-book text-white"></i>
                                                         </button>
-
-
-                                                    </template>
-                                                    <template v-slot:item.actions="{item}">
                                                         <router-link :to="{ name: 'articleDetails', params: { id: item.id,slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
                                                             <i class="fas fa-eye text-white"></i>
                                                         </router-link>
@@ -341,10 +345,10 @@
                         value: 'created_at',
                         sortable: true
                     },
-                    {
-                        text: 'History',
-                        value: 'history',
-                    },
+                    // {
+                    //     text: 'History',
+                    //     value: 'history',
+                    // },
                     {
                         text: 'Actions',
                         value: 'actions',

@@ -103,8 +103,7 @@
         },
 
         created() {
-            console.log(this.postID)
-            console.log(this.isHistoryCheck)
+            // console.log(this.$route.params)
             this.getPostHistory();
         }
     }

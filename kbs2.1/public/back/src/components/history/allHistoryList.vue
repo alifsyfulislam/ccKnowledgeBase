@@ -10,7 +10,7 @@
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
-                    <h2 class="content-title text-uppercase m-0">Notification List</h2>
+                    <h2 class="content-title text-uppercase m-0">History List</h2>
                 </div>
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
@@ -37,10 +37,10 @@
                     <!-- list top area end -->
                     <!-- Content Area -->
                     <div class="data-content-area px-15 py-10">
-                        <Loading v-if="isLoading===true"></Loading>
+                        <Loading v-if="isLoading===false"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive" v-if="isLoading===false">
-                            <v-app>
+                        <div class="table-responsive">
+                            <v-app v-if="isLoading">
                                 <v-main>
                                     <v-container class="p-0 position-relative overflow-hidden">
                                         <v-row justify="end">
@@ -50,22 +50,28 @@
                                         </v-row>
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
-                                                <v-data-table :headers="headers" :items="NotificationList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-
+                                                <v-data-table :headers="headers" :items="history_list" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
                                                     <template v-slot:item.user.first_name="{item}">
-                                                        <span>{{item.user.first_name}} {{item.user.last_name}} ({{item.user.email}})</span>
+                                                        {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
                                                     </template>
 
-                                                    <template v-slot:item.data.article_title="{item}">
-                                                        <span>{{item.data.article_title}}  ({{item.data.article_id}})</span>
+                                                    <template v-slot:item.linkable_type="{item}">
+                                                        <!--                                                        {{ item.post_id + '('+item.linkable_type+')' }}-->
+                                                        <span class="text-lowercase"> {{item.linkable_type.substring(11)}}</span>
                                                     </template>
 
-                                                    <template v-slot:item.actions="{item}">
-                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="post_id=item.id, isDeleteCheck=true" v-if="checkPermission('comment-delete')"><i class="fas fa-trash-restore-alt"></i></button>
+                                                    <template v-slot:item.post_id="{item}">
+<!--                                                        {{ item.post_id + '('+item.linkable_type+')' }}-->
+                                                        <span class="text-lowercase"> {{item.post_id}}</span>
                                                     </template>
 
-                                                    
-
+                                                    <template v-slot:item.actions="{item}" >
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
+                                                                 @click="post_id=item.post_id, isDeleteCheck = true"
+                                                                 v-if="checkPermission('history-list') && item.operation_type == 'delete'">
+                                                            <i class="fas fa-trash-restore-alt"></i>
+                                                        </button>
+                                                    </template>
                                                 </v-data-table>
 
                                             </v-col>
@@ -107,16 +113,16 @@
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
                 <div class="right-sidebar-content-area px-2">
                     <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete Comment</h2>
+                        <h2 class="section-title text-uppercase mb-20">Delete History</h2>
                         <div class="row mt-50 mt-md-80">
                             <div class="col-md-12">
                                 <figure class="mx-auto text-center">
                                     <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
                                 </figure>
-                                <p class="text-center"> Confirmation for Deleting Comment</p>
+                                <p class="text-center"> Confirmation for Deleting History</p>
 
                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="notificationDelete(post_id)"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="historyDelete(post_id)"><i class="fas fa-trash"></i> Confirm</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
                                 </div>
                             </div>
@@ -137,7 +143,7 @@
 
 
     export default {
-        name: "notificationList.vue",
+        name: "allHistoryList.vue",
 
         components: {
             Header,
@@ -146,92 +152,115 @@
         },
         data() {
             return {
-                isArticleStatus     : '',
-                isExportCheck       : false,
                 isLoading           : false,
-                isEditCheck         : false,
-                isAddCheck          : false,
                 isDeleteCheck       : false,
-                isSearchCheck       : false,
-                downloadUrl         : 'articles/export/',
+
                 user_permissions    : '',
                 mappedPermission    : '',
-                NotificationList    : '',
-                perPage             :2,
-                currentPage         :1,
-                unstoredArticleID   :'',
 
-                post_id          :'',
-                search              :"",
+                search              : "",
                 pagination  :{
-                    current         :1,
+                    current         : 1,
                     per_page        : 20,
                     total           : ''
                 },
                 headers: [
                     {
-                        text: 'ID',
-                        value: 'id',
+                        text: 'Last Edited',
+                        value: 'updated_at',
                     },
                     {
-                        text: 'Type',
-                        value: 'data.type',
-                    },
-                    {
-                        text: 'Notifiable To',
+                        text: 'Full Name',
                         value: 'user.first_name',
                     },
                     {
-                        text: 'Content Title',
-                        value: 'data.article_title',
+                        text: 'Post',
+                        value: 'linkable_type',
                     },
-
                     {
-                        text: 'Sending date',
-                        value: 'created_at',
+                        text: 'Post ID',
+                        value: 'post_id',
+                    },
+                    {
+                        text: 'Operation',
+                        value: 'operation_type',
                     },
                     {
                         text: 'Actions',
                         value: 'actions',
-                        sortable: false
-
+                        sortable:false
                     },
+
                 ],
+                history_list : '',
 
                 success_message : '',
                 error_message   : '',
             }
         },
         methods: {
-            notificationDelete(commentID){
+            historyDelete(post_id){
+                console.log(post_id);
                 let _that = this;
-                axios.delete('notifications/delete',
+
+                let formData = new FormData();
+
+                formData.append('post_id', post_id);
+
+                axios.post('delete-post-history',formData,
                     {
-                        data    : {
-                            id              : commentID
-                        },
-                        headers : {
-                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
                         },
                     }).then(function (response) {
-                    if (response.data.status_code == 200)
-                    {
-                        _that.getNotificationList();
-                        _that.success_message       = "Notification Deleted Successfully";
-                        _that.setTimeoutElements();
+
+                    if (response.data.status_code == 200) {
+                        _that.getAllHistory();
+                        _that.error_message   = '';
+                        _that.success_message = "Successfully deleted the Quiz";
                         _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
                     }
                     else
                     {
-                        _that.success_message       = "";
-                        _that.error_message         = response.data.error;
+                        _that.success_message = "";
+                        _that.error_message   = response.data.error;
                     }
 
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
-        
+
+            getAllHistory(pageUrl){
+                let _that = this;
+
+                pageUrl = pageUrl == undefined ? 'histories' : pageUrl;
+
+                axios.get(pageUrl+'?page='+this.pagination.current,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+
+                    // console.log(response.data.history_list)
+
+                    // _that.total_history = response.data.history_list.total
+
+                    _that.history_list = response.data.history_list
+                    _that.pagination.current = response.data.history_list.current_page;
+                    _that.pagination.total = response.data.history_list.last_page;
+                    _that.history_list      = response.data.history_list.data;
+                    // console.log(_that.history_list)
+                    _that.isLoading = true;
+                });
+            },
+            onPageChange() {
+                this.getAllHistory();
+            },
+
+
             // acl permission
             checkPermission(permissionForCheck)
             {
@@ -241,7 +270,7 @@
                     return false;
                 }
             },
-            
+
             // slider close
             clearAllChecker()
             {
@@ -263,51 +292,16 @@
                 $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
             },
 
-
-            getNotificationList(pageUrl)
-            {
-                let _that = this;
-
-                pageUrl = pageUrl == undefined ? 'notifications' : pageUrl;
-
-                axios.get(pageUrl+'?page='+this.pagination.current,
-                    {
-                        headers: {
-                            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
-                        },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            console.log(response.data);
-                            _that.pagination.current = response.data.notification_list.current_page;
-                            _that.pagination.total   = response.data.notification_list.last_page;
-                            _that.NotificationList   = response.data.notification_list.data;
-                            _that.isLoading          = false;
-                            _that.setTimeoutElements();
-
-                        }
-                        else{
-                            _that.success_message   = "";
-                            _that.error_message     = response.data.error;
-                        }
-                    })
-            },
-            onPageChange() {
-                this.getNotificationList();
-            },
             setTimeoutElements()
             {
-                // setTimeout(() => this.isLoading = false, 3e3);
                 setTimeout(() => this.success_message = "", 2e3);
                 setTimeout(() => this.error_message = "", 2e3);
             },
         },
         created() {
-            this.isLoading = true;
-            this.getNotificationList();
+            this.getAllHistory();
             this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
             this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-            // this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
         }
     }
 </script>

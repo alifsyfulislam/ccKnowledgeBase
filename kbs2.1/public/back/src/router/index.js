@@ -28,6 +28,8 @@ import bannerList from '@/components/banner/bannerList'
 import commentList from '@/components/comment/commentList'
 import notificationList from '@/components/notification/notificationList.vue'
 
+import allHistoryList from '@/components/history/allHistoryList.vue'
+
 
 Vue.use(Router)
 
@@ -208,6 +210,13 @@ let router =  new Router({
       path: '/notification-list',
       name: 'notificationList',
       component: notificationList,
+      meta: {
+        requiresAuth: true
+      }
+    },{
+      path: '/history-list',
+      name: 'allHistoryList',
+      component: allHistoryList,
       meta: {
         requiresAuth: true
       }

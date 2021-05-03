@@ -77,17 +77,21 @@
 
                                                     </template>
 
-                                                    <template v-slot:item.history="{item}">
+<!--                                                    <template v-slot:item.history="{item}">-->
 
-                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, banner_info=item"
-                                                                v-if="checkPermission('article-edit')">
-                                                            <i class="fas fa-book text-white"></i>
-                                                        </button>
+<!--                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, banner_info=item"-->
+<!--                                                                v-if="checkPermission('article-edit')">-->
+<!--                                                            <i class="fas fa-book text-white"></i>-->
+<!--                                                        </button>-->
 
 
-                                                    </template>
+<!--                                                    </template>-->
 
                                                     <template v-slot:item.actions="{item}">
+                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, banner_info=item"
+                                                                v-if="checkPermission('history-list')">
+                                                            <i class="fas fa-book text-white"></i>
+                                                        </button>
                                                         <button class="btn btn-success ripple-btn right-side-common-form btn-xs mx-1"
                                                                 @click="banner_id=item.id, isEditCheck=true" v-if="checkPermission('banner-edit')">
                                                             <i class="fas fa-pen"></i>
@@ -259,10 +263,10 @@
                         text: 'Created Date',
                         value: 'created_at',
                     },
-                    {
-                        text: 'History',
-                        value: 'history',
-                    },
+                    // {
+                    //     text: 'History',
+                    //     value: 'history',
+                    // },
                     {
                         text: 'Actions',
                         value: 'actions',

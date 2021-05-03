@@ -138,6 +138,8 @@ Route::middleware('auth:api')->group(function(){
 
     Route::post('role-banners', [BannerController::class, 'showLatestBannerList']);
 
+    Route::get('histories', [CrudHistoryController::class, 'showAll']);
+    Route::post('delete-post-history', [CrudHistoryController::class, 'deleteAllHistory']);
     Route::get('history/{post_id}', [CrudHistoryController::class, 'index']);
 
     Route::post('logout', [UserController::class, 'logout']);

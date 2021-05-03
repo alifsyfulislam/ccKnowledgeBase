@@ -13,4 +13,19 @@ class Notification extends DatabaseNotification
     public function user() {
         return $this->belongsTo(User::class,'notifiable_id');
     }
+
+
+    public function getCreatedAtAttribute($date)
+    {
+        return date('j M, Y', strtotime($date));
+    }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    public function getUpdatedAtAttribute($date)
+    {
+        return date('j M, Y', strtotime($date));
+    }
 }
