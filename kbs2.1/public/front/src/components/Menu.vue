@@ -2,7 +2,7 @@
   <div>
     <header class="header">
       <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container">
+        <div class="container position-relative">
           <div class="logo">
             <router-link class="nav-item" :to="{ name: 'Home'}">
               <img :src="frontPageData.logo">
@@ -46,12 +46,16 @@
               </li>
 
               <li class="nav-item" v-else>
-                <router-link class="nav-link" :to="{ name: 'Login'}">
+                <!-- <router-link class="nav-link" :to="{ name: 'Login'}">
                   <span>LOGIN</span>
-                </router-link>
+                </router-link> -->
+                <span v-on:click="isHidden = !isHidden" class="nav-link">
+                  <span>LOGIN</span>
+                </span>
               </li>
             </ul>
           </div>
+          <Login v-if="!isHidden" />
         </div>
       </nav>
     </header>
@@ -63,6 +67,7 @@
 <script>
 import $ from 'jquery'
 import axios from "axios";
+import Login from "@/components/Login";
 
 // window scroll
 $(window).scroll(function() {
@@ -96,12 +101,15 @@ $(document).on('click', '#mainNavigation .nav-link', () => {
 
 export default {
   name: "Menu",
-
+  components : {
+      Login
+  },
   data(){
     return{
       frontPageData : '',
       userInformation : '',
       isAuthinticate : false,
+      isHidden: true,
     }
   },
 
@@ -135,4 +143,8 @@ export default {
 }
 </script>
 <style scoped>
+  .nav-link {
+      cursor: pointer;
+      transition: all 0.4s;
+  }
 </style>
