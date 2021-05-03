@@ -20,7 +20,8 @@
     "vue": "^2.6.12",
     "vue-axios": "^3.2.4",
     "vue-drag-tree": "^1.1.9",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-sessionstorage": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

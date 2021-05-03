@@ -41,7 +41,7 @@
                 <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
                 <div class="dropdown-menu slideDownIn">
                   <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <a class="dropdown-item" href="#" @click.prevent="userLogOff">Logout</a>
                 </div>
               </li>
 
@@ -49,13 +49,13 @@
                 <!-- <router-link class="nav-link" :to="{ name: 'Login'}">
                   <span>LOGIN</span>
                 </router-link> -->
-                <span v-on:click="isHidden = !isHidden" class="nav-link">
+                <span  @click="isHidden = !isHidden" class="nav-link">
                   <span>LOGIN</span>
                 </span>
               </li>
             </ul>
           </div>
-          <Login v-if="!isHidden" />
+          <Login v-if="isHidden" :isHidden="isHidden" @authorised="getDataFromLogin"/>
         </div>
       </nav>
     </header>
@@ -109,11 +109,43 @@ export default {
       frontPageData : '',
       userInformation : '',
       isAuthinticate : false,
-      isHidden: true,
+      isHidden: false,
     }
   },
 
   methods: {
+    userLogOff(){
+      let _that = this;
+      let formData = new FormData();
+      formData.append('id',  sessionStorage.getItem('visitorID'));
+      formData.append('tokenId',  sessionStorage.getItem('visitorToken'));
+
+      axios.post('visitor-logout',formData,
+              {
+                headers: {
+                  'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                }
+              }
+      ).then(function (response) {
+
+        if (response.data.status_code === 200){
+            _that.isAuthinticate = false;
+            localStorage.removeItem("userInformation");
+            localStorage.removeItem("authToken");
+            sessionStorage.removeItem('visitorID')
+            sessionStorage.removeItem('visitorToken')
+          window.location.reload()
+        }else{
+          _that.success_message           = "";
+          _that.error_message             = response.data.message;
+        }
+      });
+    },
+    getDataFromLogin(status){
+      console.log(status);
+      this.isHidden = false;
+      this.isAuthinticate = true;
+    },
     getPageDecorationData()
     {
       let _that =this;
@@ -126,18 +158,6 @@ export default {
     }
   },
   created() {
-    // if (localStorage.getItem('userInformation')){
-    //   this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-    //   console.log(this.userInformation);
-    //   if (this.userInformation){
-    //     this.isAuthinticate = true;
-    //   } else{
-    //     this.isAuthinticate = false;
-    //   }
-    // }
-    if (this.$route.params){
-      console.log(this.$route.params)
-    }
     this.getPageDecorationData();
   }
 }

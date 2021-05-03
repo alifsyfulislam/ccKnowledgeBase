@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 use App\Repositories\UserRepository;
 use Auth;
 
@@ -22,6 +23,24 @@ class VisitorController extends Controller
 
         $this->userRepository = $userRepository;
 
+    }
+
+    public function logout(Request $request) {
+        $user = User::find($request->id);
+        if ($user) {
+            $user->tokens()->delete();
+            return response()->json([
+                'status_code'   => 200,
+                'status'        => config('status.status_code.200'),
+                'message'       => 'Logged out successfully!'
+            ]);
+        }else{
+            return response()->json([
+                'status_code'   => 200,
+                'status'        => config('status.status_code.200'),
+                'message'       => "Could not logout!"
+            ]);
+        }
     }
 
     public function index(Request $request){

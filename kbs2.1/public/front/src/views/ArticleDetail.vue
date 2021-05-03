@@ -85,7 +85,11 @@
                     <h3 class="">{{aArticle.en_title}}</h3>
                   </div>
                   <div class="ta-content-wrapper" v-if="aArticle.contents">
-                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.en_body"></div>
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
+
+                        <div v-if="a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.en_body"></div>
+
+                    </div>
                   </div>
                 </div>
 
@@ -225,6 +229,7 @@ export default {
       isLoading : true,
       articleSlug:'',
       aArticle:'',
+      rolesAccess : [],
       articleSlugArr:[],
       suggestedArtiles:[],
       articleCounter:0,
@@ -351,6 +356,10 @@ export default {
     }
   },
   created() {
+    if (localStorage.getItem('userInformation')){
+      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      console.log(this.userInformation)
+    }
     this.articleSlug = this.$route.params.articleSlug;
     this.articleSearch(this.articleSlug);
     this.getCategoryArticleList();
