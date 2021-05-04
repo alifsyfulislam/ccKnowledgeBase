@@ -134,7 +134,7 @@ export default {
             localStorage.removeItem("authToken");
             sessionStorage.removeItem('visitorID')
             sessionStorage.removeItem('visitorToken')
-          // window.location.reload()
+          location.reload()
           _that.$router.push({name : 'Home'})
         }else{
           _that.success_message           = "";

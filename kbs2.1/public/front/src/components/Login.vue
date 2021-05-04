@@ -46,7 +46,7 @@
                     password          : this.formData.password,
                     // visitor          : this.formData.visitor,
                 }).then(function (response){
-                    // console.log(response.data);
+                    console.log(response.data);
                     if (response.data.status_code ==200){
                         // window.location.reload()
 
@@ -59,8 +59,10 @@
 
                         localStorage.setItem('authToken', response.data.token);
                         localStorage.setItem('userInformation', _that.userInformation);
-                        // window.location.reload()
+                        location.reload()
                         _that.$router.push({name : 'Home'})
+                        // this.$router.go(_that.$router.currentRoute)
+                        // _that.$route.reload();
                     }else{
                         console.log(response.data.messages);
                         $('#loginError').html(response.data.messages)

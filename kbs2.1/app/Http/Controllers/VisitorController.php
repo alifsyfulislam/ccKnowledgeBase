@@ -51,7 +51,7 @@ class VisitorController extends Controller
         if (Auth::attempt(array($fieldType => $request->username, 'password' => $request->password))) {
             $user = Auth::user();
 
-            $userInfo = User::with(['media', 'roles' => function ($query) {
+            $userInfo = User::with(['media','banner.media', 'roles' => function ($query) {
                 $query->select('id', 'name', 'slug');
             }])->findOrFail($user->id);
 
