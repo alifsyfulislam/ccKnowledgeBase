@@ -40,15 +40,12 @@
               <li class="nav-item dropdown" v-if="isAuthinticate">
                 <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
                 <div class="dropdown-menu slideDownIn">
-                  <a class="dropdown-item" href="#">Profile</a>
+                  <span class="dropdown-item profile-view-btn" data-bs-toggle="modal" data-bs-target="#profileDetails">Profile</span>
                   <a class="dropdown-item" href="#" @click.prevent="userLogOff">Logout</a>
                 </div>
               </li>
 
               <li class="nav-item" v-else>
-                <!-- <router-link class="nav-link" :to="{ name: 'Login'}">
-                  <span>LOGIN</span>
-                </router-link> -->
                 <span  @click="isHidden = !isHidden" class="nav-link">
                   <span>LOGIN</span>
                 </span>
@@ -62,12 +59,14 @@
     <div class="totop">
       <i class="fa fa-angle-up" aria-hidden="true"></i>
     </div>
+    <ProfileDetails @authorised="getDataFromLogin" />
   </div>
 </template>
 <script>
 import $ from 'jquery'
 import axios from "axios";
 import Login from "@/components/Login";
+import ProfileDetails from "@/views/ProfileDetails";
 
 // window scroll
 $(window).scroll(function() {
@@ -92,6 +91,12 @@ $(document).on('click', '.totop', function(){
   }, 1000);
 });
 
+$(document).ready(function() {
+    $('.profile-view-btn').on('click', ()=> {
+      $("#profileDetails").modal();
+    });
+});
+
 // Responsive menu
 $(document).on('click', '#mainNavigation .nav-link', () => {
   if($(window).width() < 767){
@@ -102,7 +107,8 @@ $(document).on('click', '#mainNavigation .nav-link', () => {
 export default {
   name: "Menu",
   components : {
-      Login
+      Login,
+      ProfileDetails
   },
   data(){
     return{
@@ -169,7 +175,8 @@ export default {
 }
 </script>
 <style scoped>
-  .nav-link {
+  .nav-link,
+  .profile-view-btn {
       cursor: pointer;
       transition: all 0.4s;
   }
