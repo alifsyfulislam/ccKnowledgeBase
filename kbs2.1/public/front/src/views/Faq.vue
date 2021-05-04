@@ -54,7 +54,14 @@
             <div style="min-height: 350px">
               <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
                 <div class="heading">{{a_faq.en_title}}</div>
-                <div v-for="a_content in a_faq.contents" :key="a_content.id" class="contents overflow-hidden" v-html="a_content.en_body"></div>
+
+                <div v-for="a_content in a_faq.contents" :key="a_content.id" class="contents overflow-hidden">
+                  <div v-if="userInformation!='' && a_content.role_id.includes(userInformation.roles[0].id)">
+                    <div v-if="a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
+                    <div v-if="a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
+                  </div>
+                  <div v-else >No Access!</div>
+                </div>
               </div>
             </div>
           </div>
@@ -85,7 +92,8 @@ export default {
     return{
       isLoading: true,
       all_Faqs:'',
-      faq_query : ''
+      faq_query : '',
+      userInformation : ''
     }
   },
   methods:{
@@ -121,6 +129,12 @@ export default {
     },
   },
   created() {
+    if (localStorage.getItem('userInformation')){
+      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      // console.log(this.userInformation)
+    }else{
+      this.userInformation = '';
+    }
     this.allFaqs();
   }
 }

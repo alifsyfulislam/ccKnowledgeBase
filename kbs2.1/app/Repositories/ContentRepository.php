@@ -15,7 +15,7 @@ class ContentRepository
         $content = new Content();
         $content->id            = $request->id;
         $content->article_id    = $request->article_id;
-        $content->en_body       = $request->en_body;
+        $content->en_body       = $request->en_body!= null ? $request->en_body : 'n/a';
         $content->bn_body       = $request->bn_body!= null ? $request->bn_body : 'n/a';
         $content->role_id       = $request->role_id;
         return $content->save();
@@ -29,7 +29,7 @@ class ContentRepository
 
         $content = Content::find($request->id);
         $content->article_id = $request->article_id;
-        $content->en_body = $request->en_body;
+        $content->en_body = $request->en_body!= null ? $request->en_body : 'n/a';
         $content->bn_body = $request->bn_body != null ? $request->bn_body : 'n/a';
         $content->role_id = $request->role_id;
         return $content->save();

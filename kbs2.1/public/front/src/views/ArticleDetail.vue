@@ -84,13 +84,14 @@
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.en_title}}</h3>
                   </div>
-                  <div class="ta-content-wrapper" v-if="aArticle.contents">
+                  <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                        <div v-if="a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.en_body"></div>
+                        <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
 
                     </div>
                   </div>
+                  <div v-else>Log in read the article.</div>
                 </div>
 
 
@@ -117,9 +118,17 @@
 <!--                  <div class="ta-content-wrapper">-->
 <!--                    <div v-html="aArticle.bn_body"></div>-->
 <!--                  </div>-->
-                  <div class="ta-content-wrapper" v-if="aArticle.contents">
-                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>
+<!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
+<!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
+<!--                  </div>-->
+                  <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
+
+                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
+
+                    </div>
                   </div>
+                  <div v-else>No Access!</div>
                 </div>
               </div>
             </div>
@@ -358,7 +367,9 @@ export default {
   created() {
     if (localStorage.getItem('userInformation')){
       this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-      console.log(this.userInformation)
+      // console.log(this.userInformation)
+    }else{
+      this.userInformation = '';
     }
     this.articleSlug = this.$route.params.articleSlug;
     this.articleSearch(this.articleSlug);

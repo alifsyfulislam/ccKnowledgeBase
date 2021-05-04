@@ -120,7 +120,7 @@ export default {
       formData.append('id',  sessionStorage.getItem('visitorID'));
       formData.append('tokenId',  sessionStorage.getItem('visitorToken'));
 
-      axios.post('visitor-logout',formData,
+      axios.post('logout',formData,
               {
                 headers: {
                   'Authorization': 'Bearer '+localStorage.getItem('authToken')
@@ -134,7 +134,8 @@ export default {
             localStorage.removeItem("authToken");
             sessionStorage.removeItem('visitorID')
             sessionStorage.removeItem('visitorToken')
-          window.location.reload()
+          // window.location.reload()
+          _that.$router.push({name : 'Home'})
         }else{
           _that.success_message           = "";
           _that.error_message             = response.data.message;
@@ -159,6 +160,11 @@ export default {
   },
   created() {
     this.getPageDecorationData();
+    if (sessionStorage.visitorID){
+      console.log(sessionStorage.visitorID);
+      this.isAuthinticate = true;
+    }
+    console.log(this.isAuthinticate);
   }
 }
 </script>

@@ -72,7 +72,8 @@ Route::post('customer/add',[CustomerController::class, 'store']);
 
 
 Route::post('visitor-login',[VisitorController::class, 'index']);
-Route::post('visitor-logout',[VisitorController::class, 'logout']);
+//Route::post('visitor-logout',[VisitorController::class, 'logout']);
+Route::post('logout', [UserController::class, 'logout']);
 
 
 

@@ -59,6 +59,8 @@
 
                         localStorage.setItem('authToken', response.data.token);
                         localStorage.setItem('userInformation', _that.userInformation);
+                        // window.location.reload()
+                        _that.$router.push({name : 'Home'})
                     }else{
                         console.log(response.data.messages);
                         $('#loginError').html(response.data.messages)
