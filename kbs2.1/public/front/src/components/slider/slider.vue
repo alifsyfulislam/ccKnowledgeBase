@@ -141,7 +141,7 @@ function Slider(options, slides) {
         var dots = $('.bo-dots').children();
         if (this.active > this.slides.length-1) {
             this.active = 0;
-        }; 
+        };
         if (this.active < 0) {this.active = this.slides.length-1};
         for (i = 0; i < this.slides.length; i++) {
             if (this.slides[i]['data-type'] == "video") {
@@ -155,7 +155,7 @@ function Slider(options, slides) {
             $(value).removeClass("selected");
         });
 
-        $(this.slides[this.active]['ref']).addClass('active'); 
+        $(this.slides[this.active]['ref']).addClass('active');
         $(dots[this.active]).addClass('selected');
     }
 
@@ -252,6 +252,7 @@ export default {
         color: #000;
         z-index: 1;
         border-radius: 50rem;
+        border: 0;
     }
 
     .BannerSliderModal .modal-body {
