@@ -1,41 +1,59 @@
 <template>
     <div class="modal fade" id="profileDetails" tabindex="-1" aria-labelledby="profileDetailsLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body profile-content p-20">
-                <h4 class="user-title text-center pb-30 my-0">Jhon Doe</h4>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body profile-content p-20">
+                    <h4 class="user-title text-center pb-30 my-0">{{userInformation ? userInformation.first_name+' '+userInformation.last_name : 'Jhon Due'}}'s Profile</h4>
+<!--                    <div class="form-group border-bottom pb-3">-->
+<!--                        <img style="height: 175px; width: auto" src="http://localhost/ccKnowledgeBase/kbs2.1/public/media/user.jpg">-->
+<!--                    </div>-->
+                    <div class="form-group border-bottom pb-3">
+                        <strong>Username:</strong> {{userInformation ? userInformation.username : 'jhon404'}}
+                    </div>
 
-                <div class="form-group border-bottom pb-3">
-                    <strong>Email:</strong> jhondoe@kbs.com
-                </div>
+                    <div class="form-group border-bottom pb-3">
+                        <strong>Email:</strong> {{userInformation ? userInformation.email : 'jhondue@genuity.us'}}
+                    </div>
 
-                <div class="form-group border-bottom pb-3">
-                    <strong>Roles:</strong> User
-                </div>
-
-                <div class="form-group border-bottom pb-3 mb-0">
-                    <strong>Skills:</strong> Joy Bangla, Joy Mama
+                    <div class="form-group border-bottom pb-3">
+                        <strong>Roles:</strong> {{userInformation ? userInformation.roles[0].name : 'Agent'}}
+                    </div>
                 </div>
             </div>
-          </div>
-      </div>
+        </div>
     </div>
 </template>
 
 <script>
-export default {
+    export default {
+        name: "ProfileDetails",
 
-}
+        data(){
+            return{
+                userInformation : ''
+            }
+        },
+        methods:{
+
+        },
+        created() {
+            if (localStorage.getItem('userInformation')) {
+                this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+                console.log(this.userInformation);
+            }
+        }
+    }
 </script>
 
-<style>
-  .header {
-      z-index: 1039;
-  }
 
-  .user-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #000;
-  }
+<style>
+    .header {
+        z-index: 1039;
+    }
+
+    .user-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #000;
+    }
 </style>

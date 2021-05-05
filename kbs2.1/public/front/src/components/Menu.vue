@@ -40,7 +40,7 @@
               <li class="nav-item dropdown" v-if="isAuthinticate">
                 <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
                 <div class="dropdown-menu slideDownIn">
-                  <span class="dropdown-item profile-view-btn" data-bs-toggle="modal" data-bs-target="#profileDetails">Profile</span>
+                  <span class="dropdown-item profile-view-btn" data-bs-toggle="modal" data-bs-target="#profileDetails" @click="isProfile=true">Profile</span>
                   <a class="dropdown-item" href="#" @click.prevent="userLogOff">Logout</a>
                 </div>
               </li>
@@ -59,7 +59,7 @@
     <div class="totop">
       <i class="fa fa-angle-up" aria-hidden="true"></i>
     </div>
-    <ProfileDetails @authorised="getDataFromLogin" />
+    <ProfileDetails v-if="isProfile" @authorised="getDataFromLogin" />
   </div>
 </template>
 <script>
@@ -116,6 +116,7 @@ export default {
       userInformation : '',
       isAuthinticate : false,
       isHidden: false,
+      isProfile : false,
     }
   },
 
