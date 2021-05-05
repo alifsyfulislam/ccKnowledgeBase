@@ -658,6 +658,14 @@ header.fixed-header .navbar .logo img {
   font-size: 45px;
 }
 
+.home.modal-open .header {
+  z-index: 1039;
+}
+
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
 @keyframes toTopFromBottom {
   49% {
     transform: translateY(-100%);
