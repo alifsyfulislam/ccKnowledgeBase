@@ -20,7 +20,7 @@
 
         <section class="topics-area py-50 py-md-60">
           <div class="container">
-            <banner-slider v-if="userInformation!=''" :banner_list="userInformation.banner"/>
+            <banner-slider v-if="bannerInformation!=''" :banner_list="bannerInformation"/>
             <div class="row justify-content-md-center">
               <div class="col-lg-8">
                 <h1 class="section-title bottom-bar text-center mb-10 pb-20">Explore Categories</h1>
@@ -146,6 +146,7 @@ export default {
       regexImg                : /(http:\/\/[^">]+)/img,
       all_Faqs                : '',
         userInformation     : '',
+        bannerInformation     : '',
       isAuthinticate : false,
     }
   },
@@ -217,7 +218,8 @@ export default {
   {
     if (localStorage.getItem('userInformation')){
         this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        console.log(this.userInformation.banner);
+        this.bannerInformation = JSON.parse(localStorage.getItem("bannerInformation"));
+        console.log(this.bannerInformation);
         if (!this.userInformation){
           this.isAuthinticate = false;
         } else{

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -51,14 +52,17 @@ class VisitorController extends Controller
         if (Auth::attempt(array($fieldType => $request->username, 'password' => $request->password))) {
             $user = Auth::user();
 
-            $userInfo = User::with(['media','banner.media', 'roles' => function ($query) {
+            $userInfo = User::with(['media', 'roles' => function ($query) {
                 $query->select('id', 'name', 'slug');
             }])->findOrFail($user->id);
+
+            $banner_info = Banner::with('media')->where('role_id', 'like', '%' . $userInfo->roles[0]->id . '%')->get();
 
             $success['status_code'] = 200;
             $success['messages'] = config('status.status_code.200');
             $success['token'] = $user->createToken('Knowledge Base')->accessToken;
             $success['user_info'] = $userInfo;
+            $success['banner_info'] = $banner_info;
 
             if (Auth::user()) {
                 return response()->json($success);

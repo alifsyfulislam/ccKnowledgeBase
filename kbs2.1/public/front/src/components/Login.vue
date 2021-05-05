@@ -33,6 +33,7 @@
                     // visitor : 1
                 },
                 userInformation : '',
+                bannerInformation : '',
                 isAuthinticate : false
             }
         },
@@ -51,6 +52,7 @@
                         // window.location.reload()
 
                         _that.userInformation = JSON.stringify(response.data.user_info);
+                        _that.bannerInformation = JSON.stringify(response.data.banner_info);
                         _that.$emit('authorised',_that.isHidden)
 
                         sessionStorage.setItem("visitorID", response.data.user_info.id)
@@ -59,6 +61,7 @@
 
                         localStorage.setItem('authToken', response.data.token);
                         localStorage.setItem('userInformation', _that.userInformation);
+                        localStorage.setItem('bannerInformation', _that.bannerInformation);
                         location.reload()
                         _that.$router.push({name : 'Home'})
                         // this.$router.go(_that.$router.currentRoute)
