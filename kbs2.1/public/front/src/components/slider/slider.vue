@@ -221,7 +221,7 @@ export default {
     },
     created() {
         this.all_banners = this.banner_list;
-        // console.log(this.all_banners);
+        console.log(this.all_banners);
 
         if (this.banner_list.length > 0) {
             setTimeout(function(){

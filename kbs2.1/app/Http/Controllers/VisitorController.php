@@ -63,6 +63,10 @@ class VisitorController extends Controller
             if (Auth::user()) {
                 return response()->json($success);
             }
+        } else {
+            $success['status_code'] = 451;
+            $success['messages'] = config('status.status_code.451');
+            return response()->json($success);
         }
     }
 

@@ -20,6 +20,7 @@
 
         <section class="topics-area py-50 py-md-60">
           <div class="container">
+            <banner-slider v-if="userInformation!=''" :banner_list="userInformation.banner"/>
             <div class="row justify-content-md-center">
               <div class="col-lg-8">
                 <h1 class="section-title bottom-bar text-center mb-10 pb-20">Explore Categories</h1>
@@ -115,6 +116,7 @@
 <script>
 import Loader from "@/components/Loader";
 import SearchForm from "@/components/Search";
+import BannerSlider from "@/components/slider/slider";
 
 import $ from 'jquery'
 import axios from "axios";
@@ -129,7 +131,8 @@ export default {
   name: 'Home',
   components : {
     Loader,
-    SearchForm
+    SearchForm,
+    BannerSlider
   },
   data() {
     return {
@@ -214,7 +217,7 @@ export default {
   {
     if (localStorage.getItem('userInformation')){
         this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        console.log(this.userInformation);
+        console.log(this.userInformation.banner);
         if (!this.userInformation){
           this.isAuthinticate = false;
         } else{
