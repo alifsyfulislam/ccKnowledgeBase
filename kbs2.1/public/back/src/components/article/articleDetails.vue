@@ -220,10 +220,7 @@
         methods: {
             commentUpdate(data,btnEdit,paraID,textareaID,btnID){
                 let _that = this;
-                $("#"+btnEdit).css({display : 'inline'})
-                $("#"+paraID).css({display : 'inline'})
-                $("#"+textareaID).css({display : 'none'})
-                $("#"+btnID).css({display : 'none'})
+
                 let updateBody =$("#"+textareaID).val();
 
                 axios.put('comments/update',
@@ -238,6 +235,10 @@
                     }).then(function (response) {
                     console.log(response);
                     if (response.data.status_code === 200){
+                        $("#"+btnEdit).css({display : 'inline'})
+                        $("#"+paraID).css({display : 'inline'})
+                        $("#"+textareaID).css({display : 'none'})
+                        $("#"+btnID).css({display : 'none'})
                         _that.getCommentListWithArticle();
                         _that.success_message       = "Comment Updated Successfully";
                         _that.setTimeoutElements();

@@ -207,4 +207,30 @@ class CommentService
 
         ]);
     }
+
+    public function getVisitorArticleComments($id){
+        DB::beginTransaction();
+
+        try {
+
+            $comments = $this->commentRepository->articleCommentsVisitorAll($id);
+
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
+        }
+
+        DB::commit();
+
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200'),'comments'=>$comments]);
+    }
 }

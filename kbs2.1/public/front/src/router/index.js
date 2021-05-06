@@ -48,7 +48,7 @@ let router =  new Router({
       component: CategoryList
     },
     {
-      path: '/article-detail/:articleSlug',
+      path: '/article-detail/:articleID/:articleSlug',
       name: 'ArticleDetail',
       component: ArticleDetail
     },

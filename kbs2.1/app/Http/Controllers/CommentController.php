@@ -101,7 +101,11 @@ class CommentController extends Controller
         }
     }
 
-    public function articleComments($id){
+    public function articleComments(Request $request,$id){
+
+        if ($request->isVisitor==1){
+            return $this->commentService->getVisitorArticleComments($id);
+        }
 
         if(Auth::user()->can('comment-list')) {
 

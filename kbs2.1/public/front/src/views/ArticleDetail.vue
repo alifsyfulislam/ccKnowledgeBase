@@ -21,9 +21,9 @@
               </div>
               <div v-if="suggestedArtiles.length" class="search-suggestion" id="search-suggestion" style="left:0; width: 100%">
                 <ul>
-                    <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title"  @click.prevent="articleSearch(a_suggestion.slug)">
-                        {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
-                    </li>
+                  <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.en_title"  @click.prevent="articleSearch(a_suggestion.slug)">
+                    {{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -87,7 +87,7 @@
                   <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                        <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
+                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
 
                     </div>
                   </div>
@@ -115,12 +115,12 @@
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.bn_title}}</h3>
                   </div>
-<!--                  <div class="ta-content-wrapper">-->
-<!--                    <div v-html="aArticle.bn_body"></div>-->
-<!--                  </div>-->
-<!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
-<!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
-<!--                  </div>-->
+                  <!--                  <div class="ta-content-wrapper">-->
+                  <!--                    <div v-html="aArticle.bn_body"></div>-->
+                  <!--                  </div>-->
+                  <!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
+                  <!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
+                  <!--                  </div>-->
                   <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
@@ -131,9 +131,81 @@
                   <div v-else>No Access!</div>
                 </div>
               </div>
+<!--              resource block-->
+
+              <div v-if="aArticle.media.length > 0">
+                <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
+                <ul class="pl-15">
+                  <li v-for="a_file in aArticle.media" :key="a_file.id">
+                    <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
+                  </li>
+                </ul>
+              </div>
+
+<!--              comment-block-->
+              <div v-if="aArticle.commentable_status && userInformation!=''">
+                <h5 class="mb-0 font-weight-bold pb-10">Discussions</h5>
+                <!-- Comment Section Start -->
+                <div class="comment-box">
+                  <div class="comment-input-box d-flex">
+                    <div class="featured-image avatar mr-10">
+                      <img class="img-fluid rounded-circle" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="comment-input w-100">
+                      <input type="hidden" v-model="aArticle.id">
+                      <input type="hidden" v-model="userInformation.id">
+                      <textarea v-model="comment_body" placeholder="Write your comment..." class="form-control px-10 py-10"></textarea>
+                      <input hidden type="radio" checked value="0" v-model="status">
+                    </div>
+                  </div>
+                  <div class="replied-btn-wrapper pt-10 text-right">
+                    <button class="btn btn-primary common-gradient-btn px-25 py-2 rounded-pill" @click="addComment()">Add</button>
+                  </div>
+                </div>
+
+                <div class="reply-box mt-30" v-for="a_comment in comments" :key="a_comment.id">
+                  <div class="reply-input-box d-flex" v-if="">
+                    <div class="featured-image avatar mr-10">
+                      <img class="img-fluid rounded-circle" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                    </div>
+                    <div class="reply-text position-relative w-100 px-10 py-3">
+                      <!-- action button start -->
+                      <div class="action-button-wrapper">
+                        <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fas fa-pen"></i></button>
+
+                        <button  class="btn btn-danger ripple-btn m-1" @click="commentDelete(a_comment.id)"><i class="fas fa-trash-restore-alt"></i></button>
+                      </div>
+                      <!-- action button end -->
+                      <!-- reply content box start -->
+                      <div class="reply-content-box-wrap">
+                        <h6 class="font-weight-bold">{{a_comment.user.first_name ? a_comment.user.first_name+' '+ a_comment.user.last_name : a_comment.user_id}}</h6>
+                        <div>
+                          <small><strong>Posted on:</strong> {{a_comment.created_at}}</small>
+                        </div>
+                        <div class="reply-status-box">
+                          <small style="visibility: hidden"><strong>Status : </strong>
+                            <input type="hidden" v-model="a_comment.id">
+                            <label class="col-form-label py-1 mr-2" for="status_inactive"><input class="mr-1" id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/> Inactive</label>
+                            <label class="col-form-label py-1" for="status_active"><input class="mr-1" id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/> Active</label>
+                          </small>
+                        </div>
+
+                        <div class="body-content-box pt-1 mt-1">
+                          <p :id="'comment_box_'+a_comment.id" style="display: block">{{a_comment.comment_body}}</p>
+
+                          <textarea style="display: none" :id="'comment_edit_box_'+a_comment.id" v-model="a_comment.comment_body" placeholder="Write your comment..." class="form-control py-10"></textarea>
+
+                          <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill m-2">Update</button>
+                        </div>
+                      </div>
+                      <!-- reply content box end -->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="col-lg-3 col-md-4">
+            <div class="col-lg-3 col-md-6 col-12">
               <div class="article-sidebar">
                 <div class="menu-wrapper bg-white mb-30">
                   <h3 class="menu-title mb-0 p-15">Recent Articles</h3>
@@ -141,7 +213,7 @@
                     <li class="nav-item" v-for="a_art in allArticle" :key="a_art.id">
                       <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
                         <div class="recent-article-item-wrapper d-flex p-2">
-<!--                          <div v-if="a_art.contents"></div>-->
+                          <!--                          <div v-if="a_art.contents"></div>-->
                           <div v-for="a_content in a_art.contents" :key="a_content.id">
                             <div class="ra-item-image" v-if="a_content.en_body.match(regexImg)">
                               <img class="img-fluid" :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image">
@@ -202,13 +274,20 @@
               </div>
             </div>
 
-            <div class="col-md-9" v-if="aArticle.media.length > 0">
-              <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
-              <ul class="pl-15">
-                <li v-for="a_file in aArticle.media" :key="a_file.id">
-                  <a :href="a_file.url">{{a_file.url | formatFileName }}</a>
-                </li>
-              </ul>
+            <div class="action-modal-wraper" v-if="success_message">
+              <span>{{ success_message }}</span>
+            </div>
+            <div class="action-modal-wraper-error" v-if="error_message">
+              <span>{{ error_message }}</span>
+            </div>
+
+            <div class="col-md-9 col-12" v-if="aArticle.commentable_status">
+
+              <!-- Comment Section End -->
+
+              <!-- Comment Read Start -->
+
+              <!--Comment Read  End-->
             </div>
           </div>
         </div>
@@ -218,81 +297,195 @@
 </template>
 
 <script>
-import Loader from "../components/Loader";
-import axios from 'axios'
-export default {
-  name: "ArticleDetail",
-  components:{
-    Loader,
-  },
-  filters:{
-    formatFileName(fileName){
-      let res;
-      res = fileName.split('/')
-      return res[res.length - 1];;
-    }
-  },
-  data(){
-    return{
-      routePath : '',
-      isLoading : true,
-      articleSlug:'',
-      aArticle:'',
-      rolesAccess : [],
-      articleSlugArr:[],
-      suggestedArtiles:[],
-      articleCounter:0,
-      allCategoryArticle:'',
-      categoryHasArticle:[],
-      allArticle:'',
-      query_string:'',
-
-
-      static_image            : [],
-      regexImg                : /(http:\/\/[^">]+)/g,
-      // articleImageArray       : []
-    }
-  },
-  methods:{
-    articleSearch(v){
-      let _that = this;
-      _that.articleSlug = v;
-      _that.articleCounter++;
-      let last_history_article = _that.articleSlugArr[_that.articleSlugArr.length - 1];
-
-      if (last_history_article != _that.articleSlug){
-        _that.articleSlugArr.push(_that.articleSlug);
-        axios.get('article-details/'+_that.articleSlug)
-          .then(function (response) {
-            _that.aArticle = response.data.article_info;
-            _that.$router.push('/article-detail/'+_that.articleSlug)
-            // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
-            if (document.getElementById("search-suggestion")){
-              document.getElementById("search-suggestion").style.visibility = "hidden";
-            }
-            // document.getElementById("search-suggestion").style.visibility = "hidden";
-          })
-      }else{
-        console.log(last_history_article);
-      }
-
+  import Loader from "../components/Loader";
+  import axios from 'axios'
+  import $ from 'jquery'
+  export default {
+    name: "ArticleDetail",
+    components:{
+      Loader,
     },
-    searchData()
-    {
-      let _that = this;
-      if (localStorage.query_string){
-        localStorage.setItem('query_string','');
-        localStorage.setItem('query_string',this.query_string);
-      }else{
-        localStorage.setItem('query_string',this.query_string);
+    filters:{
+      formatFileName(fileName){
+        let res;
+        res = fileName.split('/')
+        return res[res.length - 1];;
       }
-      _that.$router.push({ name: 'Search'});
     },
+    data(){
+      return{
+        success_message :'',
+        error_message :'',
+        routePath : '',
+        isLoading : true,
+        articleSlug:'',
+        aArticle:'',
+        rolesAccess : [],
+        articleSlugArr:[],
+        suggestedArtiles:[],
+        articleCounter:0,
+        allCategoryArticle:'',
+        categoryHasArticle:[],
+        allArticle:'',
+        query_string:'',
+        comment_body : '',
+        status : 0,
+        comments : '',
 
-    autoSuggetion(e) {
-      let _that = this;
-      _that.suggestedArtiles = [];
-      if(e.target.value.length>3){
+
+        static_image            : [],
+        regexImg                : /(http:\/\/[^">]+)/g,
+        // articleImageArray       : []
+      }
+    },
+    methods:{
+      commentDelete(commentID){
+        let _that = this;
+        axios.delete('comments/delete',
+                {
+                  data    : {
+                    id              : commentID
+                  },
+                  headers : {
+                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                  },
+                }).then(function (response) {
+          if (response.data.status_code == 200)
+          {
+            _that.getCommentListWithArticle();
+            _that.success_message       = "Comment Deleted Successfully";
+            _that.setTimeoutElements();
+
+          }
+          else
+          {
+            _that.success_message       = "";
+            _that.error_message         = response.data.error;
+          }
+
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      setTimeoutElements()
+      {
+        setTimeout(() => this.success_message = "", 2e3);
+        setTimeout(() => this.error_message = "", 2e3);
+      },
+      commentUpdate(data,btnEdit,paraID,textareaID,btnID){
+        let _that = this;
+        let updateBody =$("#"+textareaID).val();
+
+        axios.put('comments/update',
+                {
+                  id            : data.id,
+                  comment_body    : updateBody,
+                },
+                {
+                  headers: {
+                    'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                  }
+                }).then(function (response) {
+          console.log(response);
+          if (response.data.status_code === 200){
+            $("#"+btnEdit).css({display : 'inline'})
+            $("#"+paraID).css({display : 'inline'})
+            $("#"+textareaID).css({display : 'none'})
+            $("#"+btnID).css({display : 'none'})
+            _that.getCommentListWithArticle();
+            _that.success_message       = "Comment Updated Successfully";
+            _that.setTimeoutElements();
+          }
+          else if (response.data.status_code === 400){
+            console.log(response.data.errors);
+            _that.showServerError(response.data.errors)
+          }
+        })
+      },
+      commentEdit(btnEdit,paraID,textareaID,btnID){
+        $("#"+btnEdit).css({display : 'none'})
+        $("#"+paraID).css({display : 'none'})
+        $("#"+textareaID).css({display : 'inline'})
+        $("#"+btnID).css({display : 'inline'})
+      },
+      addComment(){
+        let _that = this;
+
+        let formData = new FormData();
+        formData.append('post_id', _that.aArticle.id);
+        formData.append('user_id', _that.userInformation.id);
+        formData.append('comment_body', _that.comment_body);
+        formData.append('status', _that.status);
+
+        axios.post('comments',formData,{
+          headers: {
+            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+          }
+        }).then(function (res) {
+          console.log(res.data.status_code);
+          if (res.data.status_code == 200){
+            _that.getCommentListWithArticle()
+            _that.success_message = "Comment added successfully";
+            _that.comment_body='';
+            // _that.setTimeoutElements();
+          }
+        })
+      },
+      getCommentListWithArticle(){
+        let _that = this;
+
+        axios.get('post-comments/'+_that.articleID,{
+          params:{
+            isVisitor : 1
+          },
+          headers: {
+            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+          }
+        }).then(function (res) {
+          _that.comments = res.data.comments;
+          console.log(res.data.comments)
+        })
+      },
+      articleSearch(v){
+        let _that = this;
+        _that.articleSlug = v;
+        _that.articleCounter++;
+        let last_history_article = _that.articleSlugArr[_that.articleSlugArr.length - 1];
+
+        if (last_history_article != _that.articleSlug){
+          _that.articleSlugArr.push(_that.articleSlug);
+          axios.get('article-details/'+_that.articleSlug)
+                  .then(function (response) {
+                    _that.aArticle = response.data.article_info;
+                    // _that.$router.push('/article-detail/'+_that.articleSlug)
+                    _that.$router.push('/article-detail/'+_that.articleID+'/'+_that.articleSlug)
+                    // console.log(_that.aArticle.category? _that.aArticle.category.name : '')
+                    if (document.getElementById("search-suggestion")){
+                      document.getElementById("search-suggestion").style.visibility = "hidden";
+                    }
+                    // document.getElementById("search-suggestion").style.visibility = "hidden";
+                  })
+        }else{
+          console.log(last_history_article);
+        }
+
+      },
+      searchData()
+      {
+        let _that = this;
+        if (localStorage.query_string){
+          localStorage.setItem('query_string','');
+          localStorage.setItem('query_string',this.query_string);
+        }else{
+          localStorage.setItem('query_string',this.query_string);
+        }
+        _that.$router.push({ name: 'Search'});
+      },
+
+      autoSuggetion(e) {
+        let _that = this;
+        _that.suggestedArtiles = [];
+        if(e.target.value.length>3){
           setTimeout(()=>{
             axios.get('article/search/'+e.target.value)
                     .then(function (res) {
@@ -300,86 +493,90 @@ export default {
                       // console.log(_that.suggestedArtiles);
                     })
           },500);
+        }
+
+      },
+
+      getRecentArticleList()
+      {
+        let _that = this;
+        axios.get('article-list')
+                .then(function (response) {
+                  _that.allArticle = response.data.article_list;
+
+                  // response.data.article_list.forEach(val => {
+                  //   if ( val.en_body.includes('<img '))
+                  //   {
+                  //     _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
+                  //   }
+                  //
+                  // })
+                })
+      },
+
+
+      getCategoryArticleList()
+      {
+        let _that =this;
+        axios.get('category-article-list', { cache: false })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.isLoading = false;
+                    _that.allCategoryArticle = response.data.category_list;
+                    _that.allCategoryArticle.forEach(val =>{
+                      if (val.article.length!=0){
+                        _that.categoryHasArticle.push(val);
+                      }
+                    })
+                    console.log(_that.categoryHasArticle);
+                  }
+                })
+      },
+
+
+      dynamicBackFunc() {
+        let _that =this;
+        _that.articleSlugArr = _that.articleSlugArr.slice(0,_that.articleSlugArr.length-1);
+        _that.articleSlug = _that.articleSlugArr[_that.articleSlugArr.length-1];
+        if (_that.articleSlug){
+          axios.get('article-details/'+_that.articleSlug)
+                  .then(function (response) {
+                    _that.aArticle = response.data.article_info;
+                    _that.$router.push('/article-detail/'+_that.articleSlug)
+                  })
+        }
+        else{
+          _that.$router.push('/');
+        }
+      },
+
+      getStaticMedia()
+      {
+        this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
       }
-      
     },
-
-    getRecentArticleList()
-    {
-      let _that = this;
-      axios.get('article-list')
-        .then(function (response) {
-          _that.allArticle = response.data.article_list;
-
-          // response.data.article_list.forEach(val => {
-          //   if ( val.en_body.includes('<img '))
-          //   {
-          //     _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
-          //   }
-          //
-          // })
-        })
-    },
-
-
-    getCategoryArticleList()
-    {
-      let _that =this;
-      axios.get('category-article-list', { cache: false })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.isLoading = false;
-            _that.allCategoryArticle = response.data.category_list;
-            _that.allCategoryArticle.forEach(val =>{
-              if (val.article.length!=0){
-                _that.categoryHasArticle.push(val);
-              }
-            })
-            console.log(_that.categoryHasArticle);
-          }
-        })
-    },
-
-
-    dynamicBackFunc() {
-      let _that =this;
-      _that.articleSlugArr = _that.articleSlugArr.slice(0,_that.articleSlugArr.length-1);
-      _that.articleSlug = _that.articleSlugArr[_that.articleSlugArr.length-1];
-      if (_that.articleSlug){
-        axios.get('article-details/'+_that.articleSlug)
-          .then(function (response) {
-            _that.aArticle = response.data.article_info;
-            _that.$router.push('/article-detail/'+_that.articleSlug)
-          })
+    created() {
+      if (localStorage.getItem('userInformation')){
+        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+        // console.log(this.userInformation)
+      }else{
+        this.userInformation = '';
       }
-      else{
-        _that.$router.push('/');
-      }
-    },
-
-    getStaticMedia()
-    {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
+      this.articleSlug = this.$route.params.articleSlug;
+      this.articleID = this.$route.params.articleID;
+      this.articleSearch(this.articleSlug);
+      this.getCategoryArticleList();
+      this.getStaticMedia();
+      this.getRecentArticleList();
+      this.getCommentListWithArticle();
     }
-  },
-  created() {
-    if (localStorage.getItem('userInformation')){
-      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-      // console.log(this.userInformation)
-    }else{
-      this.userInformation = '';
-    }
-    this.articleSlug = this.$route.params.articleSlug;
-    this.articleSearch(this.articleSlug);
-    this.getCategoryArticleList();
-    this.getStaticMedia();
-    this.getRecentArticleList();
   }
-}
 </script>
 
 <style scoped>
-
+  textarea{
+    resize: none !important;
+  }
 </style>
