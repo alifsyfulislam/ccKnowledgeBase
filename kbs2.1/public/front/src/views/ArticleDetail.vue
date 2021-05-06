@@ -173,7 +173,7 @@
                       <div class="action-button-wrapper">
                         <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fas fa-pen"></i></button>
 
-                        <button  class="btn btn-danger ripple-btn m-1" @click="commentDelete(a_comment.id)"><i class="fas fa-trash-restore-alt"></i></button>
+                        <button  class="btn btn-danger ripple-btn m-1" v-if="a_comment.user.id ==userInformation.id" @click="commentDelete(a_comment.id)"><i class="fas fa-trash-restore-alt"></i></button>
                       </div>
                       <!-- action button end -->
                       <!-- reply content box start -->
