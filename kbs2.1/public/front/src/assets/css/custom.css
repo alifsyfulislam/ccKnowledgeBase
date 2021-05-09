@@ -739,6 +739,77 @@ header.fixed-header .navbar .logo img {
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
+.comment-box .comment-input,
+.reply-box .reply-input {
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    height: 70px;
+    border: 1px solid #ced4da;
+}
+
+.comment-box .comment-input .form-control,
+.reply-box .reply-input .form-control {
+    border-radius: 10px;
+    height: 70px;
+    overflow-y: auto;
+    border: 0;
+    box-shadow: inherit;
+}
+
+.reply-box .reply-text {
+    background: #f0f2f5;
+    border-radius: 10px;
+}
+
+.reply-box .reply-text p {
+    font-size: 14px;
+}
+
+.reply-box .reply-text p:last-of-type {
+    margin-bottom: 0;
+}
+
+.reply-box .reply-input {
+    margin-bottom: 0;
+    height: 43px;
+}
+
+.reply-box .reply-input .form-control {
+    height: 43px;
+}
+
+.reply-box .reply-text .action-button-wrapper {
+    position: absolute;
+    right: 0;
+    top: -15px;
+}
+
+.reply-box .reply-text .action-button-wrapper .btn {
+    padding: 5px 7px;
+    line-height: 1;
+    border-radius: 50rem;
+    width: 28px;
+    text-align: center;
+}
+
+.reply-box .reply-text .action-button-wrapper .btn i {
+  font-size: 12px;
+}
+
+.reply-status-box label > input {
+  margin-top: 2px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.btn-danger {
+  background-color: #FF7B88;
+  border-color: #FF7B88;
+}
+
 @keyframes toTopFromBottom {
   49% {
     transform: translateY(-100%);

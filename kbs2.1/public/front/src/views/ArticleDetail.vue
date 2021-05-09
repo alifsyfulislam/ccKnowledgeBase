@@ -159,7 +159,7 @@
                     </div>
                   </div>
                   <div class="replied-btn-wrapper pt-10 text-right">
-                    <button class="btn btn-primary common-gradient-btn px-25 py-2 rounded-pill" @click="addComment()">Add</button>
+                    <button class="btn btn-primary common-gradient-btn text-white px-25 py-2 rounded-pill" @click="addComment()">Add</button>
                   </div>
                 </div>
 
@@ -171,9 +171,9 @@
                     <div class="reply-text position-relative w-100 px-10 py-3">
                       <!-- action button start -->
                       <div class="action-button-wrapper">
-                        <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fas fa-pen"></i></button>
+                        <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fa fa-pencil"></i></button>
 
-                        <button  class="btn btn-danger ripple-btn m-1" v-if="a_comment.user.id ==userInformation.id" @click="commentDelete(a_comment.id)"><i class="fas fa-trash-restore-alt"></i></button>
+                        <button  class="btn btn-danger ripple-btn m-1" v-if="a_comment.user.id ==userInformation.id" @click="commentDelete(a_comment.id)"><i class="fa fa-trash"></i></button>
                       </div>
                       <!-- action button end -->
                       <!-- reply content box start -->
@@ -182,8 +182,8 @@
                         <div>
                           <small><strong>Posted on:</strong> {{a_comment.created_at}}</small>
                         </div>
-                        <div class="reply-status-box">
-                          <small style="visibility: hidden"><strong>Status : </strong>
+                        <div class="reply-status-box d-none">
+                          <small><strong>Status : </strong>
                             <input type="hidden" v-model="a_comment.id">
                             <label class="col-form-label py-1 mr-2" for="status_inactive"><input class="mr-1" id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/> Inactive</label>
                             <label class="col-form-label py-1" for="status_active"><input class="mr-1" id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/> Active</label>
@@ -195,7 +195,7 @@
 
                           <textarea style="display: none" :id="'comment_edit_box_'+a_comment.id" v-model="a_comment.comment_body" placeholder="Write your comment..." class="form-control py-10"></textarea>
 
-                          <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn py-1 px-25 rounded-pill m-2">Update</button>
+                          <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn text-white py-1 px-25 rounded-pill m-2">Update</button>
                         </div>
                       </div>
                       <!-- reply content box end -->
