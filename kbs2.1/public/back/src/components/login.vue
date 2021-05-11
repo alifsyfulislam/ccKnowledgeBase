@@ -233,6 +233,9 @@ export default {
                 }
                 else
                 {
+                    localStorage.removeItem('userInformation');
+                    localStorage.removeItem('userPermissions');
+                    localStorage.removeItem('bannerInformation');
                     _that.success_message = "";
                     if (response.data.errors){
                         _that.showServerError(response.data.errors)
@@ -268,6 +271,7 @@ export default {
         },
     },
     created() {
+        // localStorage.removeItem('query_string');
         this.static_image['dashboard_logo']         = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
         this.static_image['dashboard_sm_logo']      = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
         this.clearanceAll();

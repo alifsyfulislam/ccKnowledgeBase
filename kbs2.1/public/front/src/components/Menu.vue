@@ -114,6 +114,8 @@ export default {
     return{
       frontPageData : '',
       userInformation : '',
+      bannerInformation : '',
+      userToken: '',
       isAuthinticate : false,
       isHidden: false,
       isProfile : false,
@@ -124,23 +126,22 @@ export default {
     userLogOff(){
       let _that = this;
       let formData = new FormData();
-      formData.append('id',  sessionStorage.getItem('visitorID'));
-      formData.append('tokenId',  sessionStorage.getItem('visitorToken'));
+      formData.append('id',  _that.userInformation.id);
+      formData.append('tokenId',  _that.userToken);
 
       axios.post('logout',formData,
               {
                 headers: {
-                  'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  'Authorization': 'Bearer '+_that.userToken
                 }
               }
       ).then(function (response) {
 
         if (response.data.status_code === 200){
             _that.isAuthinticate = false;
-            localStorage.removeItem("userInformation");
-            localStorage.removeItem("authToken");
-            sessionStorage.removeItem('visitorID')
-            sessionStorage.removeItem('visitorToken')
+            sessionStorage.removeItem('userInformation')
+            sessionStorage.removeItem('bannerInformation')
+            sessionStorage.removeItem('userToken')
           location.reload()
           _that.$router.push({name : 'Home'})
         }else{
@@ -150,7 +151,7 @@ export default {
       });
     },
     getDataFromLogin(status){
-      console.log(status);
+      // console.log(status);
       this.isHidden = false;
       this.isAuthinticate = true;
     },
@@ -167,9 +168,12 @@ export default {
   },
   created() {
     this.getPageDecorationData();
-    if (sessionStorage.visitorID){
-      console.log(sessionStorage.visitorID);
+    if (sessionStorage.userInformation){
+      // console.log(sessionStorage.visitorID);
       this.isAuthinticate = true;
+      this.userInformation = JSON.parse(sessionStorage.userInformation);
+      this.bannerInformation = JSON.parse(sessionStorage.userInformation);
+      this.userToken = sessionStorage.userToken;
     }
     console.log(this.isAuthinticate);
   }

@@ -143,8 +143,8 @@ export default {
     },
   },
   created() {
-    if (localStorage.getItem('userInformation')){
-      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+    if (sessionStorage.userInformation){
+      this.userInformation = JSON.parse(sessionStorage.userInformation);
       // console.log(this.userInformation)
     }else{
       this.userInformation = '';

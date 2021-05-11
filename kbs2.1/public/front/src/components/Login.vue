@@ -55,13 +55,12 @@
                         _that.bannerInformation = JSON.stringify(response.data.banner_info);
                         _that.$emit('authorised',_that.isHidden)
 
-                        sessionStorage.setItem("visitorID", response.data.user_info.id)
-                        sessionStorage.setItem("visitorToken", response.data.token)
+
+                        sessionStorage.setItem("userToken", response.data.token)
+                        sessionStorage.setItem("userInformation", _that.userInformation);
+                        sessionStorage.setItem("bannerInformation", _that.bannerInformation);
                         // sessionStorage.setItem("visitorRoles", response.data.user_info.roles[0].id)
 
-                        localStorage.setItem('authToken', response.data.token);
-                        localStorage.setItem('userInformation', _that.userInformation);
-                        localStorage.setItem('bannerInformation', _that.bannerInformation);
                         location.reload()
                         _that.$router.push({name : 'Home'})
                         // this.$router.go(_that.$router.currentRoute)

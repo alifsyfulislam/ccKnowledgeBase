@@ -93,7 +93,7 @@
                   <div class="heading">{{a_faq.en_title}}</div>
                   <div class="contents overflow-hidden">
                     <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                      <div v-if="userInformation!='' && a_content.role_id.includes(userInformation.roles[0].id)">
+                      <div v-if="userInformation && a_content.role_id.includes(userInformation.roles[0].id)">
                         <div v-if="a_content.en_body != 'n/a'" v-html="a_content.en_body"></div>
                         <div v-if="a_content.bn_body != 'n/a'" v-html="a_content.bn_body"></div>
                       </div>
@@ -216,9 +216,10 @@ export default {
   },
   created()
   {
-    if (localStorage.getItem('userInformation')){
-        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        this.bannerInformation = JSON.parse(localStorage.getItem("bannerInformation"));
+    // localStorage.removeItem('query_string');
+    if (sessionStorage.userInformation){
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+        this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);
         console.log(this.bannerInformation);
         if (!this.userInformation){
           this.isAuthinticate = false;

@@ -121,7 +121,7 @@
                   <!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
                   <!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
                   <!--                  </div>-->
-                  <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
+                  <div class="ta-content-wrapper" v-if="userInformation && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
                       <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
@@ -133,7 +133,7 @@
               </div>
 <!--              resource block-->
 
-              <div v-if="aArticle.media.length > 0">
+              <div v-if="aArticle.media.length > 0 && userInformation">
                 <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
                 <ul class="pl-15">
                   <li v-for="a_file in aArticle.media" :key="a_file.id">
@@ -143,7 +143,7 @@
               </div>
 
 <!--              comment-block-->
-              <div v-if="aArticle.commentable_status && userInformation!=''">
+              <div v-if="aArticle.commentable_status && userInformation">
                 <h5 class="mb-0 font-weight-bold pb-10">Discussions</h5>
                 <!-- Comment Section Start -->
                 <div class="comment-box">
@@ -316,6 +316,7 @@
       return{
         success_message :'',
         error_message :'',
+        userToken: '',
         routePath : '',
         isLoading : true,
         articleSlug:'',
@@ -347,7 +348,7 @@
                     id              : commentID
                   },
                   headers : {
-                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                    'Authorization'     : 'Bearer ' +_that.userToken
                   },
                 }).then(function (response) {
           if (response.data.status_code == 200)
@@ -383,7 +384,7 @@
                 },
                 {
                   headers: {
-                    'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                    'Authorization' : 'Bearer '+_that.userToken
                   }
                 }).then(function (response) {
           console.log(response);
@@ -419,7 +420,7 @@
 
         axios.post('comments',formData,{
           headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+            'Authorization' : 'Bearer '+_that.userToken
           }
         }).then(function (res) {
           console.log(res.data.status_code);
@@ -439,7 +440,7 @@
             isVisitor : 1
           },
           headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+            'Authorization' : 'Bearer '+_that.userToken
           }
         }).then(function (res) {
           _that.comments = res.data.comments;
@@ -503,14 +504,6 @@
         axios.get('article-list')
                 .then(function (response) {
                   _that.allArticle = response.data.article_list;
-
-                  // response.data.article_list.forEach(val => {
-                  //   if ( val.en_body.includes('<img '))
-                  //   {
-                  //     _that.articleImageArray[val.id]  = val.en_body.match( _that.regexImg)? val.en_body.match( _that.regexImg)[0] : _that.static_image['article'];
-                  //   }
-                  //
-                  // })
                 })
       },
 
@@ -558,8 +551,9 @@
       }
     },
     created() {
-      if (localStorage.getItem('userInformation')){
-        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      if (sessionStorage.userInformation){
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+        this.userToken = sessionStorage.userToken;
         // console.log(this.userInformation)
       }else{
         this.userInformation = '';
