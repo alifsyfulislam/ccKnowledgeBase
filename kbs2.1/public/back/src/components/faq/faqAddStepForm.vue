@@ -1,7 +1,7 @@
 <template>
     <div class="step-form-wrapper">
         <div v-if="step === 1">
-            <h1 class="mb-20">Select Language</h1>
+            <h1 class="section-title text-uppercase mb-20">Select Language</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-inline-block pr-15">
@@ -19,11 +19,8 @@
         </div>
 
         <div v-if="step === 2">
-            <h1 class="mb-20">Title</h1>
-
-
+            <h1 class="section-title text-uppercase mb-20">Title</h1>
             <div class="row">
-
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="enTitle">Enter Title<span class="required">*</span></label>
@@ -39,16 +36,11 @@
                     </div>
                 </div>
             </div>
-
-
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 3">
-            <h1 class="mb-20">Enter Article</h1>
-
+            <h1 class="section-title text-uppercase mb-20">Enter Article</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -58,31 +50,24 @@
                     </div>
                 </div>
             </div>
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="checkArticleData()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 4">
-            <h1 class="mb-20">Add Tag</h1>
-
+            <h1 class="section-title text-uppercase mb-20">Add Tag</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="tag" class="d-block">Tag <small>(Press enter to add a new tag.)</small></label>
-                        <!-- <input class="form-control" type="text" v-model="faqData.tag" id="tag"> -->
                         <tag-input id="tag" class="tag-input-wrapper" @tag-list="collectTagList"/>
                     </div>
                 </div>
             </div>
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 5">
-            <h1 class="mb-20">Add Content</h1>
-
+            <h1 class="section-title text-uppercase mb-20">Add Content</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-left">
@@ -104,14 +89,11 @@
                     </ul>
                 </div>
             </div>
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 6">
-            <h1 class="mb-20">Commentable Status</h1>
-
+            <h1 class="section-title text-uppercase mb-20">Commentable Status</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -123,14 +105,11 @@
                     </div>
                 </div>
             </div>
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 7">
-            <h1 class="mb-20">Status</h1>
-
+            <h1 class="section-title text-uppercase mb-20">Status</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -146,10 +125,7 @@
                     </div>
                 </div>
             </div>
-
-<!--            <button class="btn common-gradient-btn ripple-btn px-35 mr-10" @click.prevent="prev()"><i class="fas fa-chevron-left"></i> Previous</button>-->
             <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
-<!--            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>-->
         </div>
 
         <div class="modal fade" id="contentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
@@ -180,9 +156,7 @@
                             <ul class="list-unstyled permission-list m-0 p-0">
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                                     <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-
                                     <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-                                    <!--                                            <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
                                 </li>
                             </ul>
                         </div>
@@ -768,5 +742,32 @@
 </script>
 
 <style scoped>
+.font-12 {
+    font-size: 12px;
+}
 
+#contentModal.modal {
+    background: rgba(0,0,0,0.35);
+}
+
+#contentModalEdit.modal{
+    background: rgba(0,0,0,0.35);
+}
+
+.content-list {
+        background: #c5ecff;
+        border-radius: 6px;
+        color: #000;
+        margin-bottom: 5px;
+    transition: all 0.4s;
+    }
+
+.content-list:hover {
+    background: #2e9ce0;
+    color: #fff;
+}
+
+.action-buttons i {
+    cursor: pointer;
+}
 </style>
