@@ -152,7 +152,8 @@
         </button>
       </div>
       <!--            add-->
-      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>
+<!--      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>-->
+      <FaqStepAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqStepAdd>
       <!--            edit-->
       <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id"  @faq-edit-id="getFaqIDFromChild" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
       <!--history-->
@@ -278,6 +279,7 @@
 import Header from "@/layouts/common/Header";
 import Menu from "@/layouts/common/Menu";
 import FaqAdd from "@/components/faq/faqAdd";
+import FaqStepAdd from "@/components/faq/faqAddStepForm";
 import FaqEdit from "@/components/faq/faqEdit";
 import Loading from "@/components/loader/loading";
 import HistoryList from "@/components/history/HistoyList";
@@ -292,7 +294,8 @@ export default {
     FaqAdd,
     FaqEdit,
     Loading,
-    HistoryList
+    HistoryList,
+    FaqStepAdd
   },
 
   data() {
@@ -301,7 +304,7 @@ export default {
       isFaqStatus         : '',
       isLoading           : false,
       isEditCheck         : false,
-      unstoredFaqID       :'',
+      unstoredFaqID       : '',
       isAddCheck          : false,
       isDeleteCheck       : false,
       isSearchCheck       : false,

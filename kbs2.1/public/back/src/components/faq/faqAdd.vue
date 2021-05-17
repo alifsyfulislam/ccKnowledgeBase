@@ -204,7 +204,7 @@
                 </div>
 
                 <div class="form-group text-right">
-                    <button class="btn common-gradient-btn ripple-btn px-50" @click="faqAdd()">Add</button>
+                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                 </div>
             </div>
 
