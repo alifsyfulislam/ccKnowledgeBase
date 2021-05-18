@@ -25,6 +25,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CrudHistoryController;
 
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ResultController;
 
 use App\Http\Controllers\VisitorController;
 
@@ -105,6 +106,7 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('email-setting', EmailSettingController::class);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('notifications', NotificationController::class);
+    Route::apiResource('results', ResultController::class);
 
 
 

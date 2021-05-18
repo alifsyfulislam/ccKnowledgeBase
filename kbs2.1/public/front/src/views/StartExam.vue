@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(), finalizeData()">Finish Exam</button>
+                                        <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(a_form_field.id), finalizeData(), saveResult()">Finish Exam</button>
                                     </div>
                                 </div>
                                 <div class="mt-0 px-15">
@@ -76,7 +76,7 @@
                                             <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                                                 <ul class="pagination">
                                                     <li :class="[{disabled:!pagination.next_page_url},(itemA == 1) ? 'd-none':'']" class="page-item mx-1">
-                                                        <a @click.prevent="checkNextData(),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
+                                                        <a @click.prevent="checkNextData(a_form_field.id),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -114,11 +114,13 @@
                 isFinish: false,
                 isRepeat: true,
                 quizInfo: '',
+                userId  :'',
                 quizFormFieldInfo:'',
                 selectBoxOption:'',
                 itemA : 0,
                 fromData: '',
                 allFromData:[],
+                quesAndAns: [],
                 timeCounter: '',
                 clearCounter:'',
                 markCounter: '',
@@ -160,9 +162,11 @@
                 // console.log(_that.strToArr);
                 _that.fromData = _that.checkBoxDataArr.join();
             },
-            checkNextData(){
+            checkNextData(quesId) {
                 let _that = this;
                 _that.allFromData.push(_that.fromData);
+                _that.quesAndAns[quesId] = _that.fromData;
+                //console.log(_that.quizInfo.id);
                 _that.checkBoxDataArr = [];
                 _that.strToArr = [];
                 if (_that.isRepeat == false ){
@@ -174,8 +178,10 @@
             },
             finalizeData(){
                 let _that = this;
+                
                 _that.checkBoxDataArr = [];
                 _that.isFinish = true;
+
                 clearInterval(_that.clearCounter);
                 if (_that.isRepeat==false){
                     console.log(_that.resultArray);
@@ -191,6 +197,35 @@
                     _that.questionArray = [];
                     // console.log(_that.questionArray);
                 }
+            },
+
+            saveResult() {
+
+                let _that = this;
+                _that.userId= sessionStorage.getItem('visitorID');
+                let ques_and_ans = JSON.stringify({..._that.quesAndAns});
+                console.log('ques and answer',_that.quesAndAns);
+                console.log('ques and answer',ques_and_ans);
+
+                let postData = new FormData();
+                postData.append('user_id', _that.userId);
+                postData.append('quiz_id', _that.quizInfo.id);
+                postData.append('ques_and_ans', ques_and_ans);
+
+                 axios.post('results',postData,
+                    {
+                        headers: {
+                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response){
+                    // console.log(response.data);
+                    if (response.data.status_code ==200){
+                        console.log("Quiz result successfully added")
+                        
+                    } else {
+                        console.log(response.data.messages);
+                    }
+                })
             },
 
             getQuizFormField(pageUrl) {
