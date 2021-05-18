@@ -21,7 +21,7 @@
               </div>
               <div v-if="suggestedArtiles.length" class="search-suggestion" style="left:0; width: 100%">
                 <ul>
-                  <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
+                  <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.id,articleSlug: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
 
                 </ul>
               </div>
@@ -78,10 +78,17 @@
                 <h6 class="heading-thin text-theme-grey font-18 mb-20">Getting Started</h6>
                 <div class="row article-list-items" v-for="(has_article) in selectedCategory" :key="has_article.id">
                   <div class="col-lg-12 mb-15">
-                    <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleSlug: has_article.slug }}">
+                    <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.id,articleSlug: has_article.slug }}">
+                      <div class="article-list-image mb-20 mb-sm-0" v-if="has_article.contents == ''">
+                        <img :src="static_image['article']" alt="no image" class="img-fluid">
+                      </div>
+
                       <div v-for="a_content in has_article.contents" :key="a_content.id">
                         <div class="article-list-image mb-20 mb-sm-0"  v-if="a_content.en_body.match(regexImg)">
                           <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                        </div>
+                        <div class="article-list-image mb-20 mb-sm-0" v-else>
+                          <img :src="static_image['article']" alt="no image" class="img-fluid">
                         </div>
                       </div>
                       <div class="article-content-list-box pl-0 pl-sm-10">
@@ -235,7 +242,9 @@ export default {
       pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
       axios.get(pageUrl)
         .then(function (response) {
+          console.log(response.data.article_list.data);
           _that.selectedCategory = response.data.article_list.data;
+          console.log(_that.selectedCategory);
           _that.pagination = response.data.article_list;
           _that.$router.push('/category-list/'+_that.categoryID)
         })

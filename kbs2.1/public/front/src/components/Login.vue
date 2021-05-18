@@ -33,6 +33,7 @@
                     // visitor : 1
                 },
                 userInformation : '',
+                bannerInformation : '',
                 isAuthinticate : false
             }
         },
@@ -46,21 +47,24 @@
                     password          : this.formData.password,
                     // visitor          : this.formData.visitor,
                 }).then(function (response){
-                    // console.log(response.data);
+                    console.log(response.data);
                     if (response.data.status_code ==200){
                         // window.location.reload()
 
                         _that.userInformation = JSON.stringify(response.data.user_info);
+                        _that.bannerInformation = JSON.stringify(response.data.banner_info);
                         _that.$emit('authorised',_that.isHidden)
 
-                        sessionStorage.setItem("visitorID", response.data.user_info.id)
-                        sessionStorage.setItem("visitorToken", response.data.token)
+
+                        sessionStorage.setItem("userToken", response.data.token)
+                        sessionStorage.setItem("userInformation", _that.userInformation);
+                        sessionStorage.setItem("bannerInformation", _that.bannerInformation);
                         // sessionStorage.setItem("visitorRoles", response.data.user_info.roles[0].id)
 
-                        localStorage.setItem('authToken', response.data.token);
-                        localStorage.setItem('userInformation', _that.userInformation);
-                        // window.location.reload()
+                        location.reload()
                         _that.$router.push({name : 'Home'})
+                        // this.$router.go(_that.$router.currentRoute)
+                        // _that.$route.reload();
                     }else{
                         console.log(response.data.messages);
                         $('#loginError').html(response.data.messages)

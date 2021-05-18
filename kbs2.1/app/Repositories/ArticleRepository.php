@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Content;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class ArticleRepository implements RepositoryInterface
 {
@@ -33,11 +34,16 @@ class ArticleRepository implements RepositoryInterface
 
         } else{
 
-            return Article::with('user','category','contents')
+            $articles = Article::with('user','category','contents')
                 ->where('status', 'public')
                 ->orderBy('created_at', 'DESC')
                 ->take(6)
-                ->get();
+                ->get()
+                ->map(function ($query) {
+                    $query->setRelation('contents', $query->contents->take(1));
+                    return $query;
+                });
+            return $articles;
         }
     }
 
@@ -173,18 +179,63 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-        return Article::with('category','contents')
+//        return Article::with('category','contents')
+//            ->whereHas('contents', function ($q) use ($query){
+//                $q->where('en_body', 'like', '%'.$query.'%');
+//            })
+//            ->orWhere('en_title', 'like', "%{$query}%")
+//            ->orWhere('tag', 'like', "%{$query}%")
+//            ->orWhere('en_short_summary', 'like', "%{$query}%")
+//            ->where('status', 'public')
+//            ->orderBy('created_at', 'DESC')->paginate(5);
+
+
+        $itemsPaginated =  Article::with('category','contents')
             ->whereHas('contents', function ($q) use ($query){
                 $q->where('en_body', 'like', '%'.$query.'%');
             })
-//            ->whereHas('category', function ($q) use ($query){
-//                $q->where('name', 'like', '%'.$query.'%');
-//            })
             ->orWhere('en_title', 'like', "%{$query}%")
             ->orWhere('tag', 'like', "%{$query}%")
             ->orWhere('en_short_summary', 'like', "%{$query}%")
             ->where('status', 'public')
             ->orderBy('created_at', 'DESC')->paginate(5);
+
+        $itemsTransformed = $itemsPaginated
+            ->getCollection()
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'user_id' => $item->user_id,
+                    'category_id' => $item->category_id,
+                    'en_title' => $item->en_title,
+                    'bn_title' => $item->bn_title,
+                    'tag' => $item->tag,
+                    'slug' => $item->slug,
+                    'en_short_summary' => $item->en_short_summary,
+                    'bn_short_summary' => $item->bn_short_summary,
+                    'commentable_status' => $item->commentable_status,
+                    'status' => $item->status,
+                    'publish_date' => $item->publish_date,
+                    'created_at' => $item->created_at,
+                    'updated_at' => $item->updated_at,
+                    'category' => $item->category,
+                    'contents' => $item->contents->take(1),
+                ];
+            })->toArray();
+
+//        return $itemsTransformed;
+
+        return $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $itemsTransformed,
+            $itemsPaginated->total(),
+            $itemsPaginated->perPage(),
+            $itemsPaginated->currentPage(), [
+                'path' => \Request::url(),
+                'query' => [
+                    'page' => $itemsPaginated->currentPage()
+                ]
+            ]
+        );
 
     }
 
@@ -192,16 +243,66 @@ class ArticleRepository implements RepositoryInterface
 
     public function searchCategoryArticle($slug = '')
     {
-        $query = Article::with('category','contents')
-                 ->where('status', 'public');
+        $itemsPaginated = Article::with('category','contents')
+            ->whereHas('category', function ($q) use ($slug){
+                $q->where('slug', $slug);
+            })
+            ->where('status', 'public')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
 
-        $query = $query->whereHas('category', function ($q) use ($slug) {
+        $itemsTransformed = $itemsPaginated
+            ->getCollection()
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'user_id' => $item->user_id,
+                    'category_id' => $item->category_id,
+                    'en_title' => $item->en_title,
+                    'bn_title' => $item->bn_title,
+                    'tag' => $item->tag,
+                    'slug' => $item->slug,
+                    'en_short_summary' => $item->en_short_summary,
+                    'bn_short_summary' => $item->bn_short_summary,
+                    'commentable_status' => $item->commentable_status,
+                    'status' => $item->status,
+                    'publish_date' => $item->publish_date,
+                    'created_at' => $item->created_at,
+                    'updated_at' => $item->updated_at,
+                    'category' => $item->category,
+                    'contents' => $item->contents->take(1),
+                ];
+            })->toArray();
 
-            $q->where('slug', $slug);
+//        return $itemsTransformed;
 
-        });
+        return $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $itemsTransformed,
+            $itemsPaginated->total(),
+            $itemsPaginated->perPage(),
+            $itemsPaginated->currentPage(), [
+                'path' => \Request::url(),
+                'query' => [
+                    'page' => $itemsPaginated->currentPage()
+                ]
+            ]
+        );
 
-        return $query->orderBy('id', 'DESC')->paginate(5);
+
+//            ->map(function ($query) {
+//                $query->setRelation('contents', $query->contents->take(1));
+//                return $query;
+//            });
+
+//        $query = $query->whereHas('category', function ($q) use ($slug) {
+//
+//            $q->where('slug', $slug);
+//
+//        });
+//
+//        return $query->orderBy('id', 'DESC')->paginate(5);
+        return $itemsPaginated;
+
     }
 
 

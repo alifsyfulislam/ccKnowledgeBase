@@ -20,6 +20,7 @@
 
         <section class="topics-area py-50 py-md-60">
           <div class="container">
+            <banner-slider v-if="bannerInformation!=''" :banner_list="bannerInformation"/>
             <div class="row justify-content-md-center">
               <div class="col-lg-8">
                 <h1 class="section-title bottom-bar text-center mb-10 pb-20">Explore Categories</h1>
@@ -56,10 +57,20 @@
             <div class="row text-left">
               <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                 <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
-                  <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleSlug: a_latest_art.slug }}">
-                    <div v-for="a_content in a_latest_art.contents">
+                  <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.id,articleSlug: a_latest_art.slug }}">
+<!--                    <div class="featured-image" v-if="a_content.en_body.match(regexImg)">-->
+<!--                      <img :src="((a_latest_art.contents[0].en_body).match(regexImg) ? (a_latest_art.contents[0].en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">-->
+<!--                    </div>-->
+                    <div class="featured-image" v-if="a_latest_art.contents == ''">
+                      <img :src="static_image['article']" alt="no image" class="img-fluid">
+                    </div>
+                    <div v-for="a_content in a_latest_art.contents" :key="a_content.id">
                       <div class="featured-image" v-if="a_content.en_body.match(regexImg)">
                         <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                      </div>
+
+                      <div class="featured-image" v-else>
+                        <img :src="static_image['article']" alt="no image" class="img-fluid">
                       </div>
                     </div>
                     <div class="featured-content-box p-15 p-md-20">
@@ -91,7 +102,13 @@
                 <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
                   <div class="heading">{{a_faq.en_title}}</div>
                   <div class="contents overflow-hidden">
-                    <div v-for="a_content in a_faq.contents" :key="a_content.id" v-html="a_content.en_body"></div>
+                    <div v-for="a_content in a_faq.contents" :key="a_content.id">
+                      <div v-if="userInformation && a_content.role_id.includes(userInformation.roles[0].id)">
+                        <div v-if="a_content.en_body != 'n/a'" v-html="a_content.en_body"></div>
+                        <div v-if="a_content.bn_body != 'n/a'" v-html="a_content.bn_body"></div>
+                      </div>
+                      <div v-else>No Access</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,6 +126,7 @@
 <script>
 import Loader from "@/components/Loader";
 import SearchForm from "@/components/Search";
+import BannerSlider from "@/components/slider/slider";
 
 import $ from 'jquery'
 import axios from "axios";
@@ -123,7 +141,8 @@ export default {
   name: 'Home',
   components : {
     Loader,
-    SearchForm
+    SearchForm,
+    BannerSlider
   },
   data() {
     return {
@@ -137,6 +156,7 @@ export default {
       regexImg                : /(http:\/\/[^">]+)/img,
       all_Faqs                : '',
         userInformation     : '',
+        bannerInformation     : '',
       isAuthinticate : false,
     }
   },
@@ -206,14 +226,18 @@ export default {
   },
   created()
   {
-    if (localStorage.getItem('userInformation')){
-        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        console.log(this.userInformation);
+    // localStorage.removeItem('query_string');
+    if (sessionStorage.userInformation){
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+        this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);
+        console.log(this.bannerInformation);
         if (!this.userInformation){
           this.isAuthinticate = false;
         } else{
           this.isAuthinticate = true;
         }
+    }else{
+      this.userInformation = '';
     }
 
     this.getStaticMedia()

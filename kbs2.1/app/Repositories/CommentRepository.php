@@ -23,6 +23,10 @@ class CommentRepository
         return $comments = Comment::with('user','article','faq')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
     }
 
+    public function articleCommentsVisitorAll($id){
+        return $comments = Comment::with('user','article','faq')->where('post_id',$id)->where('status',1)->orderBY('created_at','DESC')->take(5)->get();
+    }
+
     public function commentStatus($request){
         $comment = Comment::find($request->id);
         $comment->status = $request->status;

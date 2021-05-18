@@ -14,7 +14,7 @@
           <div class="collapse navbar-collapse" id="mainNavigation">
             <ul class="navbar-nav ml-auto align-items-center">
               <li class="nav-item">
-                <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: 'election' }}">
+                <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: '' }}">
                   <span>CATEGORIES</span>
                 </router-link>
               </li>
@@ -38,17 +38,14 @@
 
 
               <li class="nav-item dropdown" v-if="isAuthinticate">
-                <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-user"></i></a>
                 <div class="dropdown-menu slideDownIn">
-                  <a class="dropdown-item" href="#">Profile</a>
+                  <span class="dropdown-item profile-view-btn" data-bs-toggle="modal" data-bs-target="#profileDetails" @click="isProfile=true">Profile</span>
                   <a class="dropdown-item" href="#" @click.prevent="userLogOff">Logout</a>
                 </div>
               </li>
 
               <li class="nav-item" v-else>
-                <!-- <router-link class="nav-link" :to="{ name: 'Login'}">
-                  <span>LOGIN</span>
-                </router-link> -->
                 <span  @click="isHidden = !isHidden" class="nav-link">
                   <span>LOGIN</span>
                 </span>
@@ -62,12 +59,14 @@
     <div class="totop">
       <i class="fa fa-angle-up" aria-hidden="true"></i>
     </div>
+    <ProfileDetails v-if="isProfile" @authorised="getDataFromLogin" />
   </div>
 </template>
 <script>
 import $ from 'jquery'
 import axios from "axios";
 import Login from "@/components/Login";
+import ProfileDetails from "@/views/ProfileDetails";
 
 // window scroll
 $(window).scroll(function() {
@@ -92,6 +91,12 @@ $(document).on('click', '.totop', function(){
   }, 1000);
 });
 
+$(document).ready(function() {
+    $('.profile-view-btn').on('click', ()=> {
+      $("#profileDetails").modal();
+    });
+});
+
 // Responsive menu
 $(document).on('click', '#mainNavigation .nav-link', () => {
   if($(window).width() < 767){
@@ -102,14 +107,18 @@ $(document).on('click', '#mainNavigation .nav-link', () => {
 export default {
   name: "Menu",
   components : {
-      Login
+      Login,
+      ProfileDetails
   },
   data(){
     return{
       frontPageData : '',
       userInformation : '',
+      bannerInformation : '',
+      userToken: '',
       isAuthinticate : false,
       isHidden: false,
+      isProfile : false,
     }
   },
 
@@ -117,24 +126,23 @@ export default {
     userLogOff(){
       let _that = this;
       let formData = new FormData();
-      formData.append('id',  sessionStorage.getItem('visitorID'));
-      formData.append('tokenId',  sessionStorage.getItem('visitorToken'));
+      formData.append('id',  _that.userInformation.id);
+      formData.append('tokenId',  _that.userToken);
 
       axios.post('logout',formData,
               {
                 headers: {
-                  'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  'Authorization': 'Bearer '+_that.userToken
                 }
               }
       ).then(function (response) {
 
         if (response.data.status_code === 200){
             _that.isAuthinticate = false;
-            localStorage.removeItem("userInformation");
-            localStorage.removeItem("authToken");
-            sessionStorage.removeItem('visitorID')
-            sessionStorage.removeItem('visitorToken')
-          // window.location.reload()
+            sessionStorage.removeItem('userInformation')
+            sessionStorage.removeItem('bannerInformation')
+            sessionStorage.removeItem('userToken')
+          location.reload()
           _that.$router.push({name : 'Home'})
         }else{
           _that.success_message           = "";
@@ -143,7 +151,7 @@ export default {
       });
     },
     getDataFromLogin(status){
-      console.log(status);
+      // console.log(status);
       this.isHidden = false;
       this.isAuthinticate = true;
     },
@@ -160,16 +168,20 @@ export default {
   },
   created() {
     this.getPageDecorationData();
-    if (sessionStorage.visitorID){
-      console.log(sessionStorage.visitorID);
+    if (sessionStorage.userInformation){
+      // console.log(sessionStorage.visitorID);
       this.isAuthinticate = true;
+      this.userInformation = JSON.parse(sessionStorage.userInformation);
+      this.bannerInformation = JSON.parse(sessionStorage.userInformation);
+      this.userToken = sessionStorage.userToken;
     }
     console.log(this.isAuthinticate);
   }
 }
 </script>
 <style scoped>
-  .nav-link {
+  .nav-link,
+  .profile-view-btn {
       cursor: pointer;
       transition: all 0.4s;
   }
