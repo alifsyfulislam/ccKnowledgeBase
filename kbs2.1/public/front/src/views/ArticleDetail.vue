@@ -214,9 +214,17 @@
                       <a class="nav-link px-0 py-0"  href="#" @click.prevent="articleSearch(a_art.slug)">
                         <div class="recent-article-item-wrapper d-flex p-2">
                           <!--                          <div v-if="a_art.contents"></div>-->
+                          <div class="ra-item-image" v-if="a_art.contents == ''">
+                            <img :src="static_image['article']" alt="no image" class="img-fluid">
+                          </div>
+
                           <div v-for="a_content in a_art.contents" :key="a_content.id">
                             <div class="ra-item-image" v-if="a_content.en_body.match(regexImg)">
                               <img class="img-fluid" :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image">
+                            </div>
+
+                            <div class="ra-item-image" v-else>
+                              <img :src="static_image['article']" alt="no image" class="img-fluid">
                             </div>
                           </div>
                           <div class="ra-item-content">

@@ -81,10 +81,17 @@
 <!--                          <div class="article-list-image mb-20 mb-sm-0">-->
 <!--                            <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">-->
 <!--                          </div>-->
+                          <div class="article-list-image mb-20 mb-sm-0" v-if="a_article.contents == ''">
+                            <img :src="static_image['article']" alt="no image" class="img-fluid">
+                          </div>
 
                           <div v-for="a_content in a_article.contents" :key="a_content.id">
                             <div class="article-list-image mb-20 mb-sm-0"  v-if="a_content.en_body.match(regexImg)">
                               <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                            </div>
+
+                            <div class="article-list-image mb-20 mb-sm-0" v-else>
+                                <img :src="static_image['article']" alt="no image" class="img-fluid">
                             </div>
                           </div>
                           <div class="article-content-list-box pl-0 pl-sm-10">
@@ -193,9 +200,10 @@ export default {
       localStorage.setItem("query_string",_that.query_string);
       pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
       axios.get(pageUrl).then((response)=>{
-        console.log(response)
+
         _that.isLoading= false;
         _that.allArticles = response.data.article_list.data;
+          console.log(_that.allArticles)
         _that.pagination  = response.data.article_list;
       })
     },

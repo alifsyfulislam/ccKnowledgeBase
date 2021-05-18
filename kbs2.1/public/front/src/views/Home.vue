@@ -58,9 +58,19 @@
               <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                 <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
                   <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.id,articleSlug: a_latest_art.slug }}">
-                    <div v-for="a_content in a_latest_art.contents">
+<!--                    <div class="featured-image" v-if="a_content.en_body.match(regexImg)">-->
+<!--                      <img :src="((a_latest_art.contents[0].en_body).match(regexImg) ? (a_latest_art.contents[0].en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">-->
+<!--                    </div>-->
+                    <div class="featured-image" v-if="a_latest_art.contents == ''">
+                      <img :src="static_image['article']" alt="no image" class="img-fluid">
+                    </div>
+                    <div v-for="a_content in a_latest_art.contents" :key="a_content.id">
                       <div class="featured-image" v-if="a_content.en_body.match(regexImg)">
                         <img :src="((a_content.en_body).match(regexImg) ? (a_content.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">
+                      </div>
+
+                      <div class="featured-image" v-else>
+                        <img :src="static_image['article']" alt="no image" class="img-fluid">
                       </div>
                     </div>
                     <div class="featured-content-box p-15 p-md-20">
