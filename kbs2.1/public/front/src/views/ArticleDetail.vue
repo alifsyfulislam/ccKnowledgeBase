@@ -163,45 +163,49 @@
                   </div>
                 </div>
 
-                <div class="reply-box mt-30" v-for="a_comment in comments" :key="a_comment.id">
-                  <div class="reply-input-box d-flex" v-if="">
-                    <div class="featured-image avatar mr-10">
-                      <img class="img-fluid rounded-circle" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                    </div>
-                    <div class="reply-text position-relative w-100 px-10 py-3">
-                      <!-- action button start -->
-                      <div class="action-button-wrapper">
-                        <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fa fa-pencil"></i></button>
-
-                        <button  class="btn btn-danger ripple-btn m-1" v-if="a_comment.user.id ==userInformation.id" @click="commentDelete(a_comment.id)"><i class="fa fa-trash"></i></button>
+                <div v-if="comments !=''">
+                  <div class="reply-box mt-30" v-for="a_comment in comments" :key="a_comment.id">
+                    <div class="reply-input-box d-flex">
+                      <div class="featured-image avatar mr-10">
+                        <img class="img-fluid rounded-circle" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
                       </div>
-                      <!-- action button end -->
-                      <!-- reply content box start -->
-                      <div class="reply-content-box-wrap">
-                        <h6 class="font-weight-bold">{{a_comment.user.first_name ? a_comment.user.first_name+' '+ a_comment.user.last_name : a_comment.user_id}}</h6>
-                        <div>
-                          <small><strong>Posted on:</strong> {{a_comment.created_at}}</small>
-                        </div>
-                        <div class="reply-status-box d-none">
-                          <small><strong>Status : </strong>
-                            <input type="hidden" v-model="a_comment.id">
-                            <label class="col-form-label py-1 mr-2" for="status_inactive"><input class="mr-1" id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/> Inactive</label>
-                            <label class="col-form-label py-1" for="status_active"><input class="mr-1" id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/> Active</label>
-                          </small>
-                        </div>
+                      <div class="reply-text position-relative w-100 px-10 py-3">
+                        <!-- action button start -->
+                        <div class="action-button-wrapper">
+                          <button :id="'comment_edit_'+a_comment.id" class="btn btn-success ripple-btn m-1" @click="commentEdit('comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)"  v-if="a_comment.user.id ==userInformation.id"><i class="fa fa-pencil"></i></button>
 
-                        <div class="body-content-box pt-1 mt-1">
-                          <p :id="'comment_box_'+a_comment.id" style="display: block">{{a_comment.comment_body}}</p>
-
-                          <textarea style="display: none" :id="'comment_edit_box_'+a_comment.id" v-model="a_comment.comment_body" placeholder="Write your comment..." class="form-control py-10"></textarea>
-
-                          <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn text-white py-1 px-25 rounded-pill m-2">Update</button>
+                          <button  class="btn btn-danger ripple-btn m-1" v-if="a_comment.user.id ==userInformation.id" @click="commentDelete(a_comment.id)"><i class="fa fa-trash"></i></button>
                         </div>
+                        <!-- action button end -->
+
+                        <!-- reply content box start -->
+                        <div class="reply-content-box-wrap">
+                          <h6 class="font-weight-bold">{{a_comment.user.first_name ? a_comment.user.first_name+' '+ a_comment.user.last_name : a_comment.user_id}}</h6>
+                          <div>
+                            <small><strong>Posted on:</strong> {{a_comment.created_at}}</small>
+                          </div>
+                          <div class="reply-status-box d-none">
+                            <small><strong>Status : </strong>
+                              <input type="hidden" v-model="a_comment.id">
+                              <label class="col-form-label py-1 mr-2" for="status_inactive"><input class="mr-1" id="status_inactive" type="radio" v-model="a_comment.status" value="0" @change="changeCommentStatus($event, a_comment.id)"/> Inactive</label>
+                              <label class="col-form-label py-1" for="status_active"><input class="mr-1" id="status_active" type="radio" v-model="a_comment.status" value="1" @change="changeCommentStatus($event, a_comment.id)"/> Active</label>
+                            </small>
+                          </div>
+
+                          <div class="body-content-box pt-1 mt-1">
+                            <p :id="'comment_box_'+a_comment.id" style="display: block">{{a_comment.comment_body}}</p>
+
+                            <textarea style="display: none" :id="'comment_edit_box_'+a_comment.id" v-model="a_comment.comment_body" placeholder="Write your comment..." class="form-control py-10"></textarea>
+
+                            <button style="display: none" :id="'comment_update_'+a_comment.id" @click="commentUpdate(a_comment,'comment_edit_'+a_comment.id,'comment_box_'+a_comment.id,'comment_edit_box_'+a_comment.id,'comment_update_'+a_comment.id)" class="btn-primary btn common-gradient-btn text-white py-1 px-25 rounded-pill m-2">Update</button>
+                          </div>
+                        </div>
+                        <!-- reply content box end -->
                       </div>
-                      <!-- reply content box end -->
                     </div>
                   </div>
                 </div>
+                <div v-else>No comment!</div>
               </div>
             </div>
 
@@ -444,15 +448,16 @@
         let _that = this;
 
         axios.get('post-comments/'+_that.articleID,{
-          params:{
-            isVisitor : 1
-          },
+          // params:{
+          //   isVisitor : 1
+          // },
           headers: {
             'Authorization' : 'Bearer '+_that.userToken
           }
         }).then(function (res) {
+          console.log(res.data)
           _that.comments = res.data.comments;
-          console.log(res.data.comments)
+          console.log(_that.comments)
         })
       },
       articleSearch(v){
@@ -562,12 +567,13 @@
       if (sessionStorage.userInformation){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
         this.userToken = sessionStorage.userToken;
-        // console.log(this.userInformation)
+        console.log(this.userToken)
       }else{
         this.userInformation = '';
       }
       this.articleSlug = this.$route.params.articleSlug;
       this.articleID = this.$route.params.articleID;
+      console.log(this.articleID);
       this.articleSearch(this.articleSlug);
       this.getCategoryArticleList();
       this.getStaticMedia();

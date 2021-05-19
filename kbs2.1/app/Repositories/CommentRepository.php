@@ -20,10 +20,13 @@ class CommentRepository
     }
 
     public  function articleCommentsAll($id){
-        return $comments = Comment::with('user','article','faq')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
+        $comments = Comment::with('article','faq','user')->where('post_id',$id)->orderBY('created_at','DESC')->take(5)->get();
+//        dd($comments);
+        return $comments;
     }
 
     public function articleCommentsVisitorAll($id){
+//        return $comments = Comment::where('post_id',$id)->where('status',1)->orderBY('created_at','DESC')->get();
         return $comments = Comment::with('user','article','faq')->where('post_id',$id)->where('status',1)->orderBY('created_at','DESC')->take(5)->get();
     }
 

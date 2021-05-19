@@ -346,6 +346,9 @@
                 let _that = this;
 
                 axios.get('post-comments/'+_that.articleID,{
+                    params:{
+                      isAdmin : 1
+                    },
                     headers: {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     }
