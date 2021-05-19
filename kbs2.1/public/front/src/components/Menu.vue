@@ -172,10 +172,10 @@ export default {
       // console.log(sessionStorage.visitorID);
       this.isAuthinticate = true;
       this.userInformation = JSON.parse(sessionStorage.userInformation);
-      this.bannerInformation = JSON.parse(sessionStorage.userInformation);
+      this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);
       this.userToken = sessionStorage.userToken;
     }
-    console.log(this.isAuthinticate);
+    // console.log(this.isAuthinticate);
   }
 }
 </script>
