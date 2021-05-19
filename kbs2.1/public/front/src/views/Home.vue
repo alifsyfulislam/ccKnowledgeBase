@@ -99,15 +99,51 @@
 
             <div class="row">
               <div class="col-lg-12" style="min-height: 350px ; ">
-                <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
-                  <div class="heading">{{a_faq.en_title}}</div>
-                  <div class="contents overflow-hidden">
-                    <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                      <div v-if="userInformation && a_content.role_id.includes(userInformation.roles[0].id)">
-                        <div v-if="a_content.en_body != 'n/a'" v-html="a_content.en_body"></div>
-                        <div v-if="a_content.bn_body != 'n/a'" v-html="a_content.bn_body"></div>
+<!--                <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">-->
+<!--                  <div class="heading">{{a_faq.en_title}}</div>-->
+<!--                  <div class="contents overflow-hidden">-->
+<!--                    <div v-for="a_content in a_faq.contents" :key="a_content.id">-->
+<!--                      <div v-if="userInformation && a_content.role_id.includes(userInformation.roles[0].id)">-->
+<!--                        <div v-if="a_content.en_body != 'n/a'" v-html="a_content.en_body"></div>-->
+<!--                        <div v-if="a_content.bn_body != 'n/a'" v-html="a_content.bn_body"></div>-->
+<!--                      </div>-->
+<!--                      <div v-else>No Access</div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+                <div>
+                  <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
+
+                    <div class="heading">{{a_faq.en_title}} <br/> <span class="font-14" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</span></div>
+
+                    <div class="contents overflow-hidden">
+                      <div v-if="userInformation">
+                        <div v-for="a_content in a_faq.contents" :key="a_content.id" v-if="a_content.en_body !=''">
+                          <div>
+                            <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
+                              <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                              </li>
+                            </ul>
+
+                            <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
+                              <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id">
+                                <div v-if="a_content.en_body != '' && a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.en_body"></div>
+                                <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>
+                              </div>
+
+                              <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
+                                <div v-if="a_content.bn_body != '' && a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.bn_body"></div>
+                                <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div v-else>No Access</div>
+                      <div v-else>Login to read this faq.</div>
                     </div>
                   </div>
                 </div>
@@ -260,4 +296,9 @@ export default {
 .banner-area .section-title:first-letter {
   color: #d84a4f;
 }
+
+.nav-tabs {border-bottom: 0;}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link{padding: 5px 20px;}
 </style>

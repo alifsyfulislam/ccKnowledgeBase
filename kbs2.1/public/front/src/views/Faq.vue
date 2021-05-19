@@ -46,35 +46,46 @@
             </div>
           </div>
         </section>
+
+
         <section class="faq-page-area py-50 py-md-60">
           <div class="container text-left">
             <h1 class="mb-3">FAQ</h1>
             <h6 class="heading-thin text-theme-grey font-18 pb-20">Frequently Asked Questions</h6>
 
             <div style="min-height: 350px">
-<!--              <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">-->
-<!--                <div class="heading">{{a_faq.en_title}}</div>-->
-
-
-
-<!--                <div v-for="a_content in a_faq.contents" :key="a_content.id" class="contents overflow-hidden">-->
-<!--                  <div v-if="userInformation!='' && a_content.role_id.includes(userInformation.roles[0].id)">-->
-<!--                    <div v-if="a_content.en_body!='n/a'" v-html="a_content.en_body"></div>-->
-<!--                    <div v-if="a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>-->
-<!--                  </div>-->
-<!--                  <div v-else >No Access!</div>-->
-<!--                </div>-->
-<!--              </div>-->
               <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
-                <div class="heading">{{a_faq.en_title}}</div>
+
+                <div class="heading">{{a_faq.en_title}} <br/> <span class="font-14" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</span></div>
+
                 <div class="contents overflow-hidden">
-                  <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                    <div v-if="userInformation!='' && a_content.role_id.includes(userInformation.roles[0].id)">
-                      <div v-if="a_content.en_body != 'n/a'" v-html="a_content.en_body"></div>
-                      <div v-if="a_content.bn_body != 'n/a'" v-html="a_content.bn_body"></div>
+                  <div v-if="userInformation">
+                    <div v-for="a_content in a_faq.contents" :key="a_content.id" v-if="a_content.en_body !=''">
+                      <div>
+                        <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
+                          <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                          </li>
+                        </ul>
+
+                        <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
+                          <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id">
+                            <div v-if="a_content.en_body != '' && a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.en_body"></div>
+                            <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>
+                          </div>
+
+                          <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
+                            <div v-if="a_content.bn_body != '' && a_content.role_id.includes(userInformation.roles[0].id)" v-html="a_content.bn_body"></div>
+                            <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div v-else>No Access</div>
                   </div>
+                  <div v-else>Login to read this faq.</div>
                 </div>
               </div>
             </div>
@@ -167,4 +178,8 @@ export default {
   box-shadow: inherit;
   background-color: transparent;
 }
+.nav-tabs {border-bottom: 0;}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link{padding: 5px 20px;}
 </style>
