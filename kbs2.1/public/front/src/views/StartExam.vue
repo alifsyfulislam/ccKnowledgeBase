@@ -117,6 +117,7 @@
                 userId  :'',
                 quizFormFieldInfo:'',
                 selectBoxOption:'',
+                userInformation:'',
                 itemA : 0,
                 fromData: '',
                 allFromData:[],
@@ -202,7 +203,7 @@
             saveResult() {
 
                 let _that = this;
-                _that.userId= sessionStorage.getItem('visitorID');
+                _that.userId= _that.userInformation.id;
                 let ques_and_ans = JSON.stringify({..._that.quesAndAns});
                 console.log('ques and answer',_that.quesAndAns);
                 console.log('ques and answer',ques_and_ans);
@@ -215,7 +216,7 @@
                  axios.post('results',postData,
                     {
                         headers: {
-                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                            'Authorization' : 'Bearer '+sessionStorage.userToken
                         }
                     }).then(function (response){
                     // console.log(response.data);
@@ -355,6 +356,7 @@
 
         created() {
             let _that = this;
+            _that.userInformation = JSON.parse(sessionStorage.userInformation);
             _that.detectTab();
             if (_that.$route.params.quiz_info){
                 _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);

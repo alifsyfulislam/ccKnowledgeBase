@@ -154,11 +154,17 @@
                   </router-link>
                 </li>
 
-                  <li v-if="checkPermission('history-list')">
-                      <router-link :to="{ name: 'allHistoryList'}">
-                          <span class="menu-sub-title">Histories</span>
-                      </router-link>
-                  </li>
+                <li v-if="checkPermission('history-list')">
+                    <router-link :to="{ name: 'allHistoryList'}">
+                        <span class="menu-sub-title">Histories</span>
+                    </router-link>
+                </li>
+
+                <li v-if="checkPermission('result-list')">
+                  <router-link :to="{ name: 'resultList'}">
+                    <span class="menu-sub-title">Results</span>
+                  </router-link>
+                </li>
                 
               </ul>
             </li>

@@ -21,12 +21,12 @@ class ResultService
     }
 
     public function paginateData(){
-
+        
         return response()->json([
 
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'notification_list' => $this->resultRepository->getWithPagination()
+            'result_list' => $this->resultRepository->getWithPagination()
 
         ]);
     }
@@ -69,7 +69,6 @@ class ResultService
                 $this->resultRepository->create($input);
             }
             // $this->resultRepository->create($input);
-            return $attempCount;
 
         } catch (Exception $e) {
 

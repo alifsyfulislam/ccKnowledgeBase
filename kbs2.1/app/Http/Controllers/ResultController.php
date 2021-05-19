@@ -22,9 +22,9 @@ class ResultController extends Controller
     public function index()
     {
         //
-        if(Auth::user()->can('comment-list')) {
+        if(Auth::user()->can('result-list')) {
 
-            return $this->notificationService->paginateData();
+            return $this->resultService->paginateData();
 
         } else {
 

@@ -90,7 +90,12 @@ class PermissionTableSeeder extends Seeder
             'Notification Edit',
             'Notification Delete',
 
-            'Admin Panel'
+            'Admin Panel',
+
+            'Result List',
+            'Result Create',
+            'Result Edit',
+            'Result Delete',
         ];
 
 

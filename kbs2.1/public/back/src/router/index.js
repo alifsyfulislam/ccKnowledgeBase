@@ -29,6 +29,7 @@ import commentList from '@/components/comment/commentList'
 import notificationList from '@/components/notification/notificationList.vue'
 
 import allHistoryList from '@/components/history/allHistoryList.vue'
+import resultList from '@/components/result/resultList.vue'
 
 
 Vue.use(Router)
@@ -213,7 +214,8 @@ let router =  new Router({
       meta: {
         requiresAuth: true
       }
-    },{
+    },
+    {
       path: '/history-list',
       name: 'allHistoryList',
       component: allHistoryList,
@@ -221,6 +223,14 @@ let router =  new Router({
         requiresAuth: true
       }
     },
+    {
+      path: '/result-list',
+      name: 'resultList',
+      component: resultList,
+      meta: {
+        requiresAuth: true
+      }
+    }
   ],
   mode: 'history',
   base: 'back'

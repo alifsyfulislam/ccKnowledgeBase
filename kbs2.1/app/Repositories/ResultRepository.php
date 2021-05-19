@@ -11,7 +11,8 @@ class ResultRepository
     
     public function getWithPagination() {
 
-        return Result::with('user')->orderBY('created_at','DESC')->paginate(20);
+        // return Result::with('user')->orderBY('created_at','DESC')->paginate(20);
+        return Result::with('user')->select('user_id')->distinct()->paginate(20);
 
     }
     public function create(array $data){
