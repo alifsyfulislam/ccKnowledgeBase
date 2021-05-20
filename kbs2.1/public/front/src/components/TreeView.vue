@@ -38,6 +38,7 @@ export default {
       }
     },
     getSelectedArticleList(item){
+      // console.log('hi');
       this.$router.push({ path: `/category-list/${item.slug}` })
       localStorage.setItem('category-article-list', JSON.stringify(item));
     }

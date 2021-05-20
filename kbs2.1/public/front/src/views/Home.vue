@@ -189,6 +189,7 @@ export default {
       frontPageData           : '',
       categoryHasArticle      : [],
       allLatestArticles       : '',
+      countBanner : 0,
       // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
       regexImg                : /(http:\/\/[^">]+)/img,
       all_Faqs                : '',
@@ -263,6 +264,7 @@ export default {
   },
   created()
   {
+    // document.body.classList.add('home');
     // localStorage.removeItem('query_string');
     if (sessionStorage.userInformation){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
@@ -285,10 +287,11 @@ export default {
     localStorage.removeItem('category-article-list');
   },
   mounted () {
-    document.body.classList.add('home')
+    document.body.classList.add('home');
+
   },
   destroyed () {
-    document.body.classList.remove('home')
+     document.body.classList.remove('home')
   },
 }
 </script>

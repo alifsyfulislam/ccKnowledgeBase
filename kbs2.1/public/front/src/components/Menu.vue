@@ -13,8 +13,8 @@
           </button>
           <div class="collapse navbar-collapse" id="mainNavigation">
             <ul class="navbar-nav ml-auto align-items-center">
-              <li class="nav-item">
-                <router-link class="nav-link px-0 py-0"  :to="{ name: 'CategoryList', params: { categoryID: '' }}">
+              <li class="nav-item" v-if="userInformation">
+                <router-link class="nav-link px-0 py-0" :to="{ name: 'CategoryList', params: { categoryID: recentCategory.slug }}">
                   <span>CATEGORIES</span>
                 </router-link>
               </li>
@@ -115,6 +115,7 @@ export default {
       frontPageData : '',
       userInformation : '',
       bannerInformation : '',
+      recentCategory : '',
       userToken: '',
       isAuthinticate : false,
       isHidden: false,
@@ -164,12 +165,24 @@ export default {
             _that.frontPageData = response.data.page_config_info;
           }
         })
+    },
+    getLatestCategory(){
+      let _that = this;
+      axios.get('latest-category', { cache: false })
+              .then(function (response) {
+                if(response.data.status_code === 200){
+                  console.log(response)
+                  _that.recentCategory = response.data.category_info;
+                }
+              })
     }
   },
   created() {
     this.getPageDecorationData();
+
     if (sessionStorage.userInformation){
       // console.log(sessionStorage.visitorID);
+      this.getLatestCategory();
       this.isAuthinticate = true;
       this.userInformation = JSON.parse(sessionStorage.userInformation);
       this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);

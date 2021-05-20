@@ -61,15 +61,9 @@
                 </div>
               </div>
 
-              <!-- <div class="menu-wrapper bg-white mt-30">
-              <h3 class="menu-title mb-20 p-15">Tags</h3>
-              <ul class="list-inline list-unstyled px-15 pb-15 tag-list-wrapper">
-              <li class="d-inline-block"><a href="#">Sports</a></li>
-              <li class="d-inline-block"><a href="#">Reactjs</a></li>
-              <li class="d-inline-block"><a href="#">covid 19</a></li>
-              <li class="d-inline-block"><a href="#">Sci-fi</a></li>
-              </ul>
-              </div>-->
+              <div v-if="selectedCategory">
+                <TagView :selectedCategory="selectedCategory"/>
+              </div>
             </div>
 
             <div class="col-lg-8 col-md-7" v-if="selectedCategory">
@@ -102,10 +96,6 @@
                       </div>
                     </router-link>
                   </div>
-
-<!--                  <div v-else>-->
-<!--                    <h3>No article found!!</h3>-->
-<!--                  </div>-->
                 </div>
 
                 <div class="item-list text-left">
@@ -138,8 +128,6 @@
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </section>
@@ -148,112 +136,114 @@
 </template>
 
 <script>
-import Loader from "../components/Loader";
-import TreeView from "@/components/TreeView";
-import axios from 'axios'
-// import searchform from "@/components/Search";
-export default {
-  name: "CategoryList",
-  components:{
-    Loader,
-    TreeView
-// searchform
-  },
-  watch: {
-    '$route.params': 'functionToRunWhenParamsChange',
-  },
-  data(){
-    return{
-      categoryArticleList : '',
-      routePath : '',
-      isLoading: true,
-      allCategoryArticle:'',
-      categoryHasArticle:[],
-      categoryID:'',
-      suggestedArtiles:[],
-      categoryIDArr:[],
-      selectedCategory:'',
-      selectedCategoryArr : [],
-      query_string:'',
-      regexImg : /(http:\/\/[^">]+)/img,
-      static_image : [],
-      pagination:{
-        from: '',
-        to: '',
-        first_page_url: '',
-        last_page: '',
-        last_page_url: '',
-        next_page_url:'',
-        prev_page_url: '',
-        path: '',
-        per_page: 5,
-        total: ''
+  import Loader from "../components/Loader";
+  import TreeView from "@/components/TreeView";
+  import TagView from "@/components/TagView";
+  import axios from 'axios'
+  // import TagView from "../components/TagView";
+
+  export default {
+    name: "CategoryList",
+    components:{
+      TagView,
+      Loader,
+      TreeView
+    },
+    watch: {
+      '$route.params': 'functionToRunWhenParamsChange',
+    },
+    data(){
+      return{
+        categoryArticleList : '',
+        routePath : '',
+        isLoading: true,
+        allCategoryArticle:'',
+        categoryHasArticle:[],
+        categoryID:'',
+        suggestedArtiles:[],
+        categoryIDArr:[],
+        selectedCategory:'',
+        selectedCategoryArr : [],
+        query_string:'',
+        regexImg : /(http:\/\/[^">]+)/img,
+        static_image : [],
+        pagination:{
+          from: '',
+          to: '',
+          first_page_url: '',
+          last_page: '',
+          last_page_url: '',
+          next_page_url:'',
+          prev_page_url: '',
+          path: '',
+          per_page: 5,
+          total: ''
+        },
+
+      }
+    },
+    methods:{
+      functionToRunWhenParamsChange(){
+        if ((this.$route.fullPath).includes('/category-list')){
+          this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
+          this.changeCategoryArticlePage(this.categoryArticleList.slug);
+          this.categoryID = this.categoryArticleList.slug;
+        }
+
+      },
+      getStaticMedia()
+      {
+        this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
       },
 
-    }
-  },
-  methods:{
-    functionToRunWhenParamsChange(){
-      if ((this.$route.fullPath).includes('/category-list')){
-        this.categoryArticleList = JSON.parse(localStorage.getItem('category-article-list'));
-        this.changeCategoryArticlePage(this.categoryArticleList.slug);
-        this.categoryID = this.categoryArticleList.slug;
-      }
+      searchData(){
+        let _that = this;
+        if (localStorage.query_string){
+          localStorage.setItem('query_string','');
+          localStorage.setItem('query_string',this.query_string);
+        }else{
+          localStorage.setItem('query_string',this.query_string);
+        }
+        _that.$router.push({ name: 'Search'});
+      },
+      getCategoryArticleList()
+      {
+        let _that =this;
+        axios.get('category-article-list', { cache: false })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.isLoading = false;
+                    _that.allCategoryArticle = response.data.category_list;
+                    _that.allCategoryArticle.forEach(val =>{
+                      if (val.article.length!=0){
+                        _that.categoryHasArticle.push(val);
+                      }
+                    })
+                  }
+                })
+      },
 
-    },
-    getStaticMedia()
-    {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.jpg';
-    },
+      categorySearch(v) {
+        let _that = this;
+        _that.categoryID = v;
+        let pageUrl;
+        pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
+        axios.get(pageUrl)
+                .then(function (response) {
+                  console.log(response.data.article_list.data);
+                  _that.selectedCategory = response.data.article_list.data;
+                  console.log(_that.selectedCategory);
+                  _that.pagination = response.data.article_list;
+                  _that.$router.push('/category-list/'+_that.categoryID)
+                })
+      },
 
-    searchData(){
-      let _that = this;
-      if (localStorage.query_string){
-        localStorage.setItem('query_string','');
-        localStorage.setItem('query_string',this.query_string);
-      }else{
-        localStorage.setItem('query_string',this.query_string);
-      }
-      _that.$router.push({ name: 'Search'});
-    },
-    getCategoryArticleList()
-    {
-      let _that =this;
-      axios.get('category-article-list', { cache: false })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.isLoading = false;
-            _that.allCategoryArticle = response.data.category_list;
-            _that.allCategoryArticle.forEach(val =>{
-              if (val.article.length!=0){
-                _that.categoryHasArticle.push(val);
-              }
-            })
-          }
-        })
-    },
-
-    categorySearch(v) {
-      let _that = this;
-      _that.categoryID = v;
-      let pageUrl;
-      pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-      axios.get(pageUrl)
-        .then(function (response) {
-          console.log(response.data.article_list.data);
-          _that.selectedCategory = response.data.article_list.data;
-          console.log(_that.selectedCategory);
-          _that.pagination = response.data.article_list;
-          _that.$router.push('/category-list/'+_that.categoryID)
-        })
-    },
-
-    autoSuggetion(e) {
-      let _that = this;
-      _that.suggestedArtiles = [];
-      if(e.target.value.length>3){
+      autoSuggetion(e) {
+        let _that = this;
+        _that.suggestedArtiles = [];
+        if(e.target.value.length>3){
           setTimeout(()=>{
             axios.get('article/search/'+e.target.value)
                     .then(function (res) {
@@ -261,50 +251,27 @@ export default {
                       console.log(_that.suggestedArtiles);
                     })
           },500);
-      }
-      
+        }
+
+      },
+
+      changeCategoryArticlePage(categoryID,pageUrl){
+        window.scrollTo(0, 0);
+        let _that = this;
+        pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
+        axios.get(pageUrl)
+                .then(function (response) {
+                  _that.selectedCategory = response.data.article_list.data;
+                  _that.pagination = response.data.article_list;
+                  _that.$router.push('/category-list/'+_that.categoryID)
+                })
+      },
     },
-
-    changeCategoryArticlePage(categoryID,pageUrl){
-      window.scrollTo(0, 0);
-      let _that = this;
-      pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
-// console.log(pageUrl);
-
-      axios.get(pageUrl)
-        .then(function (response) {
-          _that.selectedCategory = response.data.article_list.data;
-          _that.pagination = response.data.article_list;
-          _that.$router.push('/category-list/'+_that.categoryID)
-        })
-    },
-
-// dynamicBackFunc(){
-// let _that = this;
-//
-// that.selectedCategoryArr = that.selectedCategoryArr.slice(0,_that.selectedCategoryArr.length-1);
-//
-// that.categoryID = that.selectedCategoryArr[_that.selectedCategoryArr.length-1]
-//
-// let pageUrl;
-// pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-//
-// if (_that.categoryID){
-// axios.get(pageUrl)
-// .then(function (response) {
-// _that.selectedCategory = response.data.article_list.data;
-// _that.pagination = response.data.article_list;
-// })
-// }else{
-// _that.$router.push('/');
-// }
-// }
-  },
-  created() {
-    this.categoryID = this.$route.params.categoryID;
-    this.getCategoryArticleList();
-    this.categorySearch(this.categoryID);
-    this.getStaticMedia();
+    created() {
+      this.categoryID = this.$route.params.categoryID;
+      this.getCategoryArticleList();
+      this.categorySearch(this.categoryID);
+      this.getStaticMedia();
+    }
   }
-}
 </script>

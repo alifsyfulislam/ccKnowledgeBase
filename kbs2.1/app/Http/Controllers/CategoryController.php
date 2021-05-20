@@ -124,6 +124,10 @@ class CategoryController extends Controller
 
     }
 
+    public function latestCategory(){
+        return $this->categoryService->getLatestCategory();
+    }
+
 
     public function categoryArticleList()
     {
