@@ -10,7 +10,7 @@
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
-                    <h2 class="content-title text-uppercase m-0">Result List</h2>
+                    <h2 class="content-title text-uppercase m-0">User Quiz Result List</h2>
                 </div>
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
@@ -50,14 +50,13 @@
                                         </v-row>
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
-                                                <v-data-table :headers="headers" :items="resultList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                                                    <template v-slot:item.user.first_name="{item}">
-                                                        <span>{{item.user.first_name}} {{item.user.last_name}}</span>
-                                                    </template>
-
+                                                <v-data-table :headers="headers" :items="userQuizResultList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                                                  
                                                     <template v-slot:item.actions="{item}">
-                                                        <router-link :to="{ name: 'userQuizList', params: { userId: item.user_id }}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fas fa-eye text-white"></i> View Perform Details</router-link>
-                                                    </template>
+                                                        <!-- <router-link :to="{ name: 'userQuizResultList', params: { userId: item.user_id, quizId:item.quiz_id }}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fas fa-eye text-white"></i> Show All</router-link> -->
+
+                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="post_id=item.id, isDeleteCheck=true" v-if="checkPermission('comment-delete')"><i class="fas fa-trash-restore-alt"></i></button>
+                                                    </template>  
 
                                                 </v-data-table>
 
@@ -89,6 +88,35 @@
         <div class="action-modal-wraper-error" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
+
+        <div class="right-sidebar-wrapper with-upper-shape fixed-top px-20 pb-30 pb-md-40 pt-70">
+            <div class="close-bar d-flex align-items-center justify-content-end">
+                <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
+                    <img src="../../assets/img/cancel.svg" alt="cancel">
+                </button>
+            </div>
+
+            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
+                <div class="right-sidebar-content-area px-2">
+                    <div class="form-wrapper">
+                        <h2 class="section-title text-uppercase mb-20">Delete Comment</h2>
+                        <div class="row mt-50 mt-md-80">
+                            <div class="col-md-12">
+                                <figure class="mx-auto text-center">
+                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
+                                </figure>
+                                <p class="text-center"> Confirmation for Deleting Comment</p>
+
+                                <div class="form-group d-flex justify-content-center align-items-center">
+                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="quizResultDelete(post_id)"><i class="fas fa-trash"></i> Confirm</button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -101,7 +129,7 @@
 
 
     export default {
-        name: "resultList.vue",
+        name: "userQuizResultList.vue",
 
         components: {
             Header,
@@ -120,12 +148,13 @@
                 downloadUrl         : 'articles/export/',
                 user_permissions    : '',
                 mappedPermission    : '',
-                resultList    : '',
+                userQuizResultList    : '',
                 perPage             :2,
                 currentPage         :1,
                 unstoredArticleID   :'',
-
                 post_id          :'',
+                userID          :'',
+                quizID          :'',
                 search           :"",
                 pagination  :{
                     current         :1,
@@ -135,15 +164,26 @@
                 headers: [
 
                     {
-                        text: 'User ID',
-                        value: 'user_id',
+                        text: 'Quiz ID',
+                        value: 'quiz_id',
                     },
                     {
-                        text: 'Username',
-                        value: 'user.first_name',
+                        text: 'Quiz Name',
+                        value: 'quiz.name',
                     },
-        
-                    
+
+                    {
+                        text: 'Attempt',
+                        value: 'attempt',
+                    },
+                    {
+                        text: 'Performed Date',
+                        value: 'created_at',
+                    },
+                    {
+                        text: 'Result',
+                        value: 'answer',
+                    },
                     {
                         text: 'Actions',
                         value: 'actions',
@@ -157,6 +197,35 @@
             }
         },
         methods: {
+            quizResultDelete(commentID){
+                let _that = this;
+                axios.delete('notifications/delete',
+                    {
+                        data    : {
+                            id              : commentID
+                        },
+                        headers : {
+                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+                    if (response.data.status_code == 200)
+                    {
+                        _that.getNotificationList();
+                        _that.success_message       = "Notification Deleted Successfully";
+                        _that.setTimeoutElements();
+                        _that.removingRightSideWrapper();
+                    }
+                    else
+                    {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+        
             // acl permission
             checkPermission(permissionForCheck)
             {
@@ -189,24 +258,29 @@
             },
 
 
-            getResultList(pageUrl)
+            getUserQuizResultList(pageUrl)
             {
                 let _that = this;
 
-                pageUrl = pageUrl == undefined ? 'results' : pageUrl;
+                pageUrl = pageUrl == undefined ? 'user-quiz-result-list' : pageUrl;
 
-                axios.get(pageUrl+'?page='+this.pagination.current,
+                axios.get(pageUrl,
                     {
                         headers: {
                             'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                         },
+                        params: {
+                            userId: _that.userID,
+                            quizId:_that.quizID,
+                            page: _that.pagination.current
+                        }
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
                             console.log(response.data);
-                            _that.pagination.current = response.data.result_list.current_page;
-                            _that.pagination.total   = response.data.result_list.last_page;
-                            _that.resultList   = response.data.result_list.data;
+                            _that.pagination.current = response.data.user_quiz_result_list.current_page;
+                            _that.pagination.total   = response.data.user_quiz_result_list.last_page;
+                            _that.userQuizResultList   = response.data.user_quiz_result_list.data;
                             _that.isLoading          = false;
                             _that.setTimeoutElements();
 
@@ -218,7 +292,7 @@
                     })
             },
             onPageChange() {
-                this.getResultList();
+                this.getUserQuizResultList();
             },
             setTimeoutElements()
             {
@@ -229,10 +303,14 @@
         },
         created() {
             this.isLoading = true;
-            this.getResultList();
+            this.userID = this.$route.params.userId;
+            this.quizID = this.$route.params.quizId;
+            console.log( this.userID, this.quizID);
+            this.getUserQuizResultList();
             this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
             this.mappedPermission = (this.user_permissions ).map(x => x.slug);
             // this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            
         }
     }
 </script>

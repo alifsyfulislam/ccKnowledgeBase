@@ -15,6 +15,17 @@ class ResultRepository
         return Result::with('user')->select('user_id')->distinct()->paginate(20);
 
     }
+
+    public function UserQuizList($request) {
+        return Result::with('user','quiz')->where('user_id',$request->userId)->groupby('quiz_id')->orderby('id','DESC')->paginate(20);
+    }
+
+    public function UserQuizResultList($request) {
+        return Result::with('user','quiz')->where(['user_id'=>$request->userId,'quiz_id'=>$request->quizId])
+        ->groupby('attempt')->orderby('id','DESC')->paginate(20);
+    }
+    
+
     public function create(array $data){
 
         $dataObj =  new Result();

@@ -28,6 +28,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ResultController;
 
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\UserQuizListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +79,9 @@ Route::post('logout', [UserController::class, 'logout']);
 
 
 
-
+// Route::get('results/user-quiz-list', function(){
+//     return 'hi';
+// });
 
 Route::middleware('auth:api')->group(function(){
 
@@ -109,7 +112,8 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('results', ResultController::class);
 
 
-
+    
+   
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
@@ -145,7 +149,9 @@ Route::middleware('auth:api')->group(function(){
     Route::get('histories', [CrudHistoryController::class, 'showAll']);
     Route::post('delete-post-history', [CrudHistoryController::class, 'deleteAllHistory']);
     Route::get('history/{post_id}', [CrudHistoryController::class, 'index']);
-
+    
+    Route::get('user-quiz-list', [UserQuizListController::class, 'index']);
+    Route::get('user-quiz-result-list', [UserQuizListController::class, 'getQuizResultList']);
     Route::post('logout', [UserController::class, 'logout']);
 
 });

@@ -30,6 +30,8 @@ import notificationList from '@/components/notification/notificationList.vue'
 
 import allHistoryList from '@/components/history/allHistoryList.vue'
 import resultList from '@/components/result/resultList.vue'
+import userQuizList from '@/components/result/userQuizList.vue'
+import userQuizResultList from '@/components/result/userQuizResultList.vue'
 
 
 Vue.use(Router)
@@ -227,6 +229,22 @@ let router =  new Router({
       path: '/result-list',
       name: 'resultList',
       component: resultList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/user-quiz-list/:userId',
+      name: 'userQuizList',
+      component: userQuizList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/user-quiz-result-list/:userId/:quizId',
+      name: 'userQuizResultList',
+      component: userQuizResultList,
       meta: {
         requiresAuth: true
       }

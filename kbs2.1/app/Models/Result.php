@@ -14,4 +14,23 @@ class Result extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function quiz() {
+        return $this->belongsTo(Quiz::class,'quiz_id');
+    }
+
+
+    public function getCreatedAtAttribute($date)
+    {
+        return date('j M, Y', strtotime($date));
+    }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    public function getUpdatedAtAttribute($date)
+    {
+        return date('j M, Y', strtotime($date));
+    }
+
 }

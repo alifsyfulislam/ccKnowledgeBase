@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ResultService;
 use Auth;
-class ResultController extends Controller
+
+class UserQuizListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,12 +20,28 @@ class ResultController extends Controller
         $this->resultService = $resultService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         //
         if(Auth::user()->can('result-list')) {
 
-            return $this->resultService->paginateData();
+            return $this->resultService->getUserQuizList($request);
+            // return $userId;
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+    }
+
+    public function getQuizResultList(Request $request)
+    {
+        //
+        if(Auth::user()->can('result-list')) {
+
+            return $this->resultService->getUserQuizResultList($request);
+            // return $userId;
 
         } else {
 
@@ -48,6 +65,11 @@ class ResultController extends Controller
         //  foreach($arr as $key=>$value) {
         //      return $value;
         //  }
+    }
+
+    public function userQuizList() {
+        // return $this->resultService->paginateData();
+         return "hello";
     }
 
     /**

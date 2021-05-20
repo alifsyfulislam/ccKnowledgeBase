@@ -31,6 +31,28 @@ class ResultService
         ]);
     }
 
+    public function getUserQuizList($request){
+        
+        return response()->json([
+
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'user_quiz_list' => $this->resultRepository->userQuizList($request)
+
+        ]);
+    }
+
+    public function getUserQuizResultList($request){
+        
+        return response()->json([
+
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'user_quiz_result_list' => $this->resultRepository->userQuizResultList($request)
+
+        ]);
+    }
+
     public function createItem($request){
         $validator = Validator::make($request->all(),[
 
