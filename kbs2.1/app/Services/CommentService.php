@@ -209,6 +209,7 @@ class CommentService
     }
 
     public function getVisitorArticleComments($id){
+//        return $id;
         DB::beginTransaction();
 
         try {

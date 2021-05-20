@@ -25,6 +25,12 @@ class CategoryRepository implements RepositoryInterface
 
     }
 
+    public function latestCategory(){
+        return Category::with('childrenRecursive','media')
+            ->where('parent_id', '=', 0)
+            ->latest()->first();
+    }
+
     /**
      * @param $id
      * @return mixed

@@ -96,6 +96,7 @@ class PermissionTableSeeder extends Seeder
             'Result Create',
             'Result Edit',
             'Result Delete',
+            'User Panel',
         ];
 
 

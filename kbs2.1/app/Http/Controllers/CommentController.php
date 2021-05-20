@@ -103,19 +103,18 @@ class CommentController extends Controller
 
     public function articleComments(Request $request,$id){
 
-        if ($request->isVisitor==1){
+        if ($request->isAdmin==1){
+//            return $this->commentService->getVisitorArticleComments($id);
+            if(Auth::user()->can('comment-list')) {
+
+                return $this->commentService->getArticleComments($id);
+
+            }
+        }else{
             return $this->commentService->getVisitorArticleComments($id);
         }
 
-        if(Auth::user()->can('comment-list')) {
 
-            return $this->commentService->getArticleComments($id);
-
-        } else {
-
-            return $this->commentService->getArticleComments($id);
-
-        }
     }
 
     public function commentStatus(Request $request){

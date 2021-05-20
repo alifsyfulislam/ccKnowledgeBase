@@ -55,8 +55,9 @@
                                 <div class="tab-pane fade active show" id="tabEnglish" v-if="aArticle">
                                     <div class="ta-content-wrapper">
                                         <h3 class="pb-10">{{aArticle.en_title}}</h3>
+                                        <p class="pb-10" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                                     </div>
-                                    <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
+                                    <div class="ta-content-wrapper pb-10" v-for="a_article_content in aArticle.contents">
                                         <div v-if="a_article_content.en_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.en_body"></div>
                                     </div>
                                 </div>
@@ -66,8 +67,9 @@
                                 <div class="tab-pane fade" id="tabBangla" v-if="aArticle.contents.bn_title != 'n/a'">
                                     <div class="ta-content-wrapper">
                                         <h3 class="pb-10">{{aArticle.bn_title}}</h3>
+                                        <p class="pb-10" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                                     </div>
-                                    <div class="ta-content-wrapper" v-for="a_article_content in aArticle.contents">
+                                    <div class="ta-content-wrapper pb-10" v-for="a_article_content in aArticle.contents">
                                         <div v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
                                     </div>
                                 </div>
@@ -346,6 +348,9 @@
                 let _that = this;
 
                 axios.get('post-comments/'+_that.articleID,{
+                    params:{
+                      isAdmin : 1
+                    },
                     headers: {
                         'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                     }

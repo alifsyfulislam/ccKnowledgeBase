@@ -54,6 +54,7 @@ Route::get('front-page-config', [PageController::class, 'index']);
 
 Route::get('category-list', [CategoryController::class, 'categoryList']);
 Route::get('category-article-list', [CategoryController::class, 'categoryArticleList']);
+Route::get('latest-category', [CategoryController::class, 'latestCategory']);
 
 
 Route::get('article-list', [ArticleController::class, 'articleList']);
@@ -70,6 +71,7 @@ Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 Route::post('customer/username', [CustomerController::class, 'checkUserNameExist']);
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
+//Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
 
 
 
