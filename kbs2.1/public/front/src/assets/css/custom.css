@@ -6,7 +6,7 @@ html, body {
 
 .action-modal-wraper {
   position: fixed;
-  top: 10px;
+  top: 30px;
   right: 50%;
   transform: translate(50%, 0);
   z-index: 9;
@@ -16,7 +16,7 @@ html, body {
   border-radius: 6px;
   padding: 5px 30px 5px 20px;
   max-width: 1100px;
-  z-index: 99;
+  z-index: 10000;
   transition: all 0.4s;
 }
 

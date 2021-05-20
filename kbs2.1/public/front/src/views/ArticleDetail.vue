@@ -53,36 +53,43 @@
         <div class="container">
           <div class="row" v-if="aArticle">
             <div class="col-md-12">
-              <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'n/a'">
-                <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
-                </li>
-              </ul>
+              <div>
+                <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
+
+                <div class="ta-wrapper d-flex align-items-center py-10 my-40">
+                  <div class="avatar mr-10">
+                    <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
+                  </div>
+                  <div class="tc-wrapper">
+                    <h5 v-cloak v-if="aArticle.user" class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                    <p class="mb-0">Post on: {{aArticle.created_at}}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
+                </div>
+                <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+              </div>
+
+              <div class="pb-10">
+                <ul class="nav nav-tabs" id="myTab" v-if="aArticle.bn_title != 'n/a'">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#tabEnglish">English</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tabBangla">Bangla</a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div class="col-md-9 col-md-8">
               <div class="tab-content pt-3" id="myTabContent">
                 <div class="tab-pane fade active show" id="tabEnglish">
-                  <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
-                  <div>
-                    <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
-                  </div>
-                  <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-                  <div class="ta-wrapper d-flex align-items-center py-10 my-40">
-                    <div class="avatar mr-10">
-                      <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                    </div>
-                    <div class="tc-wrapper">
-                      <h5 v-cloak v-if="aArticle.user" class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                      <p class="mb-0">Post on: {{aArticle.created_at}}</p>
-                    </div>
-                  </div>
-
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.en_title}}</h3>
+                    <p class="" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                   </div>
                   <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
@@ -97,23 +104,9 @@
 
                 <!--                                bangla-->
                 <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
-                  <h1 class="mb-0 font-weight-bold">Articles Details Page</h1>
-                  <div>
-                    <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
-                  </div>
-                  <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
-                  <div class="ta-wrapper d-flex align-items-center py-10 my-40">
-                    <div class="avatar mr-10">
-                      <img class="img-fluid" src="../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
-                    </div>
-                    <div class="tc-wrapper">
-                      <h5 v-cloak class="my-0 pb-1" v-if="aArticle.user">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
-                      <p class="mb-0">Post on: {{aArticle.created_at}}</p>
-                    </div>
-                  </div>
-
                   <div class="ta-content-wrapper">
                     <h3 class="">{{aArticle.bn_title}}</h3>
+                    <p class="" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                   </div>
                   <!--                  <div class="ta-content-wrapper">-->
                   <!--                    <div v-html="aArticle.bn_body"></div>-->
@@ -121,19 +114,19 @@
                   <!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
                   <!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
                   <!--                  </div>-->
-                  <div class="ta-content-wrapper" v-if="userInformation && aArticle.contents">
+                  <div class="ta-content-wrapper pb-10" v-if="userInformation && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
                       <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
 
                     </div>
                   </div>
-                  <div v-else>No Access!</div>
+                  <div v-else>Log in read the article.</div>
                 </div>
               </div>
 <!--              resource block-->
 
-              <div v-if="aArticle.media.length > 0 && userInformation">
+              <div class="pb-10" v-if="aArticle.media.length > 0 && userInformation">
                 <h5 class="mb-0 font-weight-bold pb-2">Download Resources</h5>
                 <ul class="pl-15">
                   <li v-for="a_file in aArticle.media" :key="a_file.id">
@@ -205,7 +198,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-else>No comment!</div>
+                <div v-else>No comment yet!</div>
               </div>
             </div>
 
@@ -260,29 +253,6 @@
                     </ul>
                   </div>
                 </div>
-
-                <!-- <div class="sidebar-content">
-                  <ul class="recent-articles list-unstyled">
-                    <li v-for="a_art in allArticle" :key="a_art.id">
-                      <a class="recent-article-title" href="#" @click.prevent="articleSearch(a_art.slug)">
-                          <span v-if="(a_art.en_title).length<30"> {{ a_art.en_title }}</span>
-                          <span v-else> {{ (a_art.en_title).substring(0,30)+"..." }}</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div> -->
-                <!-- <div class="sidebar-title">
-                  <h3>Categories</h3>
-                </div>
-                <div class="sidebar-content">
-                  <ul class="recent-articles list-unstyled">
-                    <li v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
-                      <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.id }}">
-                        <h6 class="m-0 p-1">{{a_cate_art.name}}</h6>
-                      </router-link>
-                    </li>
-                  </ul>
-                </div> -->
               </div>
             </div>
 
@@ -406,7 +376,7 @@
             $("#"+textareaID).css({display : 'none'})
             $("#"+btnID).css({display : 'none'})
             _that.getCommentListWithArticle();
-            _that.success_message       = "Comment Updated Successfully";
+            _that.success_message       = "Comment pending wait for admin approval!";
             _that.setTimeoutElements();
           }
           else if (response.data.status_code === 400){
@@ -438,9 +408,9 @@
           console.log(res.data.status_code);
           if (res.data.status_code == 200){
             _that.getCommentListWithArticle()
-            _that.success_message = "Comment added successfully";
+            _that.success_message = "Comment pending wait for admin approval!";
             _that.comment_body='';
-            // _that.setTimeoutElements();
+            _that.setTimeoutElements();
           }
         })
       },

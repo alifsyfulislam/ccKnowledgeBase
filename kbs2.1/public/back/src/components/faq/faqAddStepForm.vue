@@ -1,7 +1,7 @@
 <template>
     <div class="step-form-wrapper">
         <div v-if="step === 1">
-            <h1 class="section-title text-uppercase mb-20">Select Language</h1>
+            <h1 class="section-title text-uppercase mb-20">Title Page</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-inline-block pr-15">
@@ -15,11 +15,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
-        </div>
 
-        <div v-if="step === 2">
-            <h1 class="section-title text-uppercase mb-20">Title</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -39,7 +35,8 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click="checkAndChangeValidation(faqData.en_title, '#enTitle', '#enTitleError', '*title')">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div v-if="step === 3">
+
+        <div v-if="step === 2">
             <h1 class="section-title text-uppercase mb-20">Enter Article</h1>
             <div class="row">
                 <div class="col-md-12">
@@ -53,7 +50,7 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="checkArticleData()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div v-if="step === 4">
+        <div v-if="step === 3">
             <h1 class="section-title text-uppercase mb-20">Add Tag</h1>
             <div class="row">
                 <div class="col-md-12">
@@ -66,19 +63,49 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div v-if="step === 5">
+        <div v-if="step === 4">
             <h1 class="section-title text-uppercase mb-20">Add Content</h1>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="text-left">
-                        <button @click.prevent class="btn common-gradient-btn ripple-btn px-15 p-2 bg-primary" data-toggle="modal" data-target="#contentModal">
-                            <i class="fa fa-plus text-white"></i> Add Content
-                        </button>
+<!--                    <div class="text-left">-->
+<!--                        <button @click.prevent class="btn common-gradient-btn ripple-btn px-15 p-2 bg-primary" data-toggle="modal" data-target="#contentModal">-->
+<!--                            <i class="fa fa-plus text-white"></i> Add Content-->
+<!--                        </button>-->
+<!--                    </div>-->
+                    <div class="d-inline-block">
+                        <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">
+                        <label for="checkbox4" class="ml-2">Bangla</label>
                     </div>
+                    <div class="form-group">
+                        <label>English Body</label>
+                        <input hidden class="form-control" type="text" v-model="contentData.article_id">
+                        <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>
+                    </div>
+
+                    <div class="form-group mb-2" v-if="selected_language=='bangla'">
+                        <label >Bangla Body</label>
+                        <Summernote  v-model="contentData.en_body" :idFromParent="bnBody"></Summernote>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
+
+                        <ul class="list-unstyled permission-list m-0 p-0">
+                            <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+                                <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
+                            </li>
+                        </ul>
+                    </div>
+
+<!--                    <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>-->
+<!--                    <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="addContentData()">Add</button>-->
+
+
                 </div>
 
                 <div class="col-md-12">
-                    <ul v-if="contentList" class="mb-0">
+                    <ul v-if="contentList" class="mb-10">
                         <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
                             <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                             <div class="action-buttons">
@@ -89,10 +116,10 @@
                     </ul>
                 </div>
             </div>
-            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
+            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="addContentData()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div v-if="step === 6">
+        <div v-if="step === 5">
             <h1 class="section-title text-uppercase mb-20">Commentable Status</h1>
             <div class="row">
                 <div class="col-md-12">
@@ -108,7 +135,7 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div v-if="step === 7">
+        <div v-if="step === 6">
             <h1 class="section-title text-uppercase mb-20">Status</h1>
             <div class="row">
                 <div class="col-md-12">
@@ -128,46 +155,46 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
         </div>
 
-        <div class="modal fade" id="contentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>
-                    </div>
-                    <div class="modal-body" style="max-height: 450px;overflow-y: auto;">
-                        <div class="d-inline-block">
-                            <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">
-                            <label for="checkbox4" class="ml-2">Bangla</label>
-                        </div>
-                        <div class="form-group">
-                            <label>English Body</label>
-                            <input hidden class="form-control" type="text" v-model="contentData.article_id">
-                            <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>
-                        </div>
+<!--        <div class="modal fade" id="contentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-lg">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body" style="max-height: 450px;overflow-y: auto;">-->
+<!--                        <div class="d-inline-block">-->
+<!--                            <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">-->
+<!--                            <label for="checkbox4" class="ml-2">Bangla</label>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label>English Body</label>-->
+<!--                            <input hidden class="form-control" type="text" v-model="contentData.article_id">-->
+<!--                            <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>-->
+<!--                        </div>-->
 
-                        <div class="form-group mb-2" v-if="selected_language=='bangla'">
-                            <label >Bangla Body</label>
-                            <Summernote  v-model="contentData.en_body" :idFromParent="bnBody"></Summernote>
-                        </div>
+<!--                        <div class="form-group mb-2" v-if="selected_language=='bangla'">-->
+<!--                            <label >Bangla Body</label>-->
+<!--                            <Summernote  v-model="contentData.en_body" :idFromParent="bnBody"></Summernote>-->
+<!--                        </div>-->
 
-                        <div class="form-group mb-2">
-                            <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
+<!--                        <div class="form-group mb-2">-->
+<!--                            <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>-->
 
-                            <ul class="list-unstyled permission-list m-0 p-0">
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>
-                        <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="addContentData()">Add</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--                            <ul class="list-unstyled permission-list m-0 p-0">-->
+<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
+<!--                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>-->
+<!--                        <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="addContentData()">Add</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="modal fade" id="contentModalEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -176,10 +203,10 @@
                         <h5 class="modal-title" id="contentModalLabel_2">Edit New Content</h5>
                     </div>
                     <div class="modal-body">
-                        <!--                        <div class="d-inline-block">-->
-                        <!--                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
-                        <!--                            <label for="checkbox3" class="ml-2">Bangla</label>-->
-                        <!--                        </div>-->
+                        <div class="d-inline-block">
+                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">
+                            <label for="checkbox3" class="ml-2">Bangla</label>
+                        </div>
 
                         <div class="form-group">
                             <label>English Body</label>
@@ -429,7 +456,7 @@
             },
             addContentData(){
                 let _that = this
-                let enBody      = $('#en_Body').val();
+                let enBody      = $('#en_Body').val() ? $('#en_Body').val() : 'n/a';
                 let bnBody      = $('#bn_Body').val();
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
@@ -459,6 +486,7 @@
                         _that.success_message = "Content added successfully";
                         _that.setTimeoutElements();
                         _that.unSelectAll();
+                        _that.next();
                     }
 
                     else if (response.data.status_code === 400){

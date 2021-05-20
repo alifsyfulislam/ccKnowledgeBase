@@ -114,10 +114,11 @@
                 <div>
                   <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
 
-                    <div class="heading">{{a_faq.en_title}} <br/> <span class="font-14" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</span></div>
+                    <div class="heading">{{a_faq.en_title}}</div>
 
                     <div class="contents overflow-hidden">
                       <div v-if="userInformation">
+                        <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
                         <div v-for="a_content in a_faq.contents" :key="a_content.id">
                           <div v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
                             <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
