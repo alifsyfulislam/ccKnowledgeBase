@@ -177,7 +177,7 @@ class ContentService
             if (in_array('1',$result_array)){
                 $this->contentRepository->update($request);
             }else{
-                array_push($result_array,'1');
+                array_push($result_array,1);
                 $request->role_id = implode(',',$result_array);
                 $this->contentRepository->update($request);
             }
@@ -245,7 +245,7 @@ class ContentService
             if (in_array('1',$result_array)){
                 $this->contentRepository->create($request);
             }else{
-                array_push($result_array,'1');
+                array_push($result_array,1);
                 $request->role_id = implode(',',$result_array);
                 $this->contentRepository->create($request);
             }
