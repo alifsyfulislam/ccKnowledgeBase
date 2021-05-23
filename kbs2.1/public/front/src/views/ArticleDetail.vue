@@ -91,28 +91,28 @@
                     <h3 class="">{{aArticle.en_title}}</h3>
                     <p class="" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                   </div>
-                  <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
+                  <div class="ta-content-wrapper pb-10 d-block" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
+                      <div class="pb-0" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
 
                     </div>
                   </div>
 
 
-                  <div v-else-if="userInformation == '' && aArticle.contents">
+                  <div class="ta-content-wrapper pb-10 d-block" v-else-if="userInformation == '' && aArticle.contents">
 
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.en_body!='n/a'">
 
-                      <div  v-html="a_content.en_body"></div>
+                      <div class="pb-0" v-html="a_content.en_body"></div>
 
                     </div>
-                    <div>Log in read the article.</div>
+                    <div><u class="text-primary">Log in read the article.</u></div>
 
                   </div>
 
 
-                  <div v-else>Log in read the article.</div>
+                  <div v-else><u class="text-primary">Log in read the article.</u></div>
                 </div>
 
 
@@ -123,15 +123,26 @@
                     <p class="" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                   </div>
 
-                  <div class="ta-content-wrapper pb-10" v-if="userInformation && aArticle.contents">
+                  <div class="ta-content-wrapper pb-10 d-block" v-if="userInformation && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
+                      <div class="pb-5" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
 
                     </div>
                   </div>
 
-                  <div v-else>Log in read the article.</div>
+                  <div class="ta-content-wrapper pb-10 d-block" v-else-if="userInformation == '' && aArticle.contents">
+
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.bn_body!='n/a'">
+
+                      <div class="pb-0"  v-html="a_content.bn_body"></div>
+
+                    </div>
+                    <div><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
+
+                  </div>
+
+                  <div v-else><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
                 </div>
               </div>
 <!--              resource block-->
@@ -544,7 +555,9 @@
       }
     },
     created() {
-      if (sessionStorage.userInformation){
+      this.articleSlug = this.$route.params.articleSlug;
+      this.articleID = this.$route.params.articleID;
+      if (sessionStorage.userInformation != ''){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
         this.userToken = sessionStorage.userToken;
         this.getCommentListWithArticle();
@@ -552,9 +565,7 @@
       }else{
         this.userInformation = '';
       }
-      this.articleSlug = this.$route.params.articleSlug;
-      this.articleID = this.$route.params.articleID;
-      console.log(this.articleID);
+      // console.log(this.articleID);
       this.articleSearch(this.articleSlug);
       this.getCategoryArticleList();
       this.getStaticMedia();

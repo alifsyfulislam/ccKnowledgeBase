@@ -129,6 +129,12 @@
                     <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
                     <ul class="list-unstyled permission-list m-0 p-0">
+                        <li class="text-left pb-2">
+
+                            <label class="mb-0 ml-2">
+                                <input type="checkbox" v-model="role_id" value="0"> All
+                            </label>
+                        </li>
                         <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                             <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
 
@@ -153,10 +159,10 @@
                     <h5 class="modal-title" id="contentModalLabel_2">Edit New Content</h5>
                 </div>
                 <div class="modal-body">
-                    <!--                        <div class="d-inline-block">-->
-                    <!--                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
-                    <!--                            <label for="checkbox3" class="ml-2">Bangla</label>-->
-                    <!--                        </div>-->
+                    <div class="d-inline-block">
+                        <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">
+                        <label for="checkbox3" class="ml-2">Bangla</label>
+                    </div>
 
                     <div class="form-group">
                     <label>English Body</label>
@@ -172,6 +178,20 @@
                     <div class="form-group mb-0">
                     <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
                     <ul class="list-unstyled permission-list m-0 p-0">
+                        <li class="text-left pb-2">
+                            <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
+                                <label class="mb-0 ml-2">
+                                    <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
+                                </label>
+                            </div>
+
+                            <div v-else class="d-flex align-items-center">
+                                <label class="mb-0 ml-2">
+                                    <input type="checkbox" v-model="roleAccess" :value="0"> All
+                                </label>
+                            </div>
+                        </li>
+
                         <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                             <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
                                 <label class="mb-0 ml-2">

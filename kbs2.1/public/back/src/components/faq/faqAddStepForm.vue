@@ -91,6 +91,12 @@
                         <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
                         <ul class="list-unstyled permission-list m-0 p-0">
+                            <li class="text-left pb-2">
+
+                                <label class="mb-0 ml-2">
+                                    <input type="checkbox" v-model="role_id" value="0"> All
+                                </label>
+                            </li>
                             <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                                 <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
                                 <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
@@ -116,7 +122,8 @@
                     </ul>
                 </div>
             </div>
-            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="addContentData()">Next <i class="fas fa-chevron-right"></i></button>
+            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="addContentData()">Add More <i class="fa fa-plus"></i></button>
+            <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="isNextStep = true,addContentData()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div v-if="step === 5">
@@ -222,6 +229,20 @@
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
                             <ul class="list-unstyled permission-list m-0 p-0">
+                                <li class="text-left pb-2">
+                                    <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2">
+                                            <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
+                                        </label>
+                                    </div>
+
+                                    <div v-else class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2">
+                                            <input type="checkbox" v-model="roleAccess" :value="0"> All
+                                        </label>
+                                    </div>
+                                </li>
+
                                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                                     <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
                                         <label class="mb-0 ml-2">
@@ -268,6 +289,7 @@
         data() {
             return {
                 step:1,
+                isNextStep : false,
                 isToogleModal       : false,
                 isStep :false,
                 isMounted           : false,
@@ -486,7 +508,9 @@
                         _that.success_message = "Content added successfully";
                         _that.setTimeoutElements();
                         _that.unSelectAll();
-                        _that.next();
+                        if (_that.isNextStep===true){
+                            _that.next();
+                        }
                     }
 
                     else if (response.data.status_code === 400){
@@ -757,6 +781,7 @@
             },
         },
         created() {
+            this.isNextStep = false;
             this.faqData.id = (Math.round((new Date()).getTime()*10));
             this.contentData.article_id = (Math.round((new Date()).getTime()*10));
             this.getCategoryList();
