@@ -461,6 +461,7 @@
           _that.articleSlugArr.push(_that.articleSlug);
           axios.get('article-details/'+_that.articleSlug)
                   .then(function (response) {
+                    console.log(response)
                     _that.aArticle = response.data.article_info;
                     // _that.$router.push('/article-detail/'+_that.articleSlug)
                     _that.$router.push('/article-detail/'+_that.articleID+'/'+_that.articleSlug)
@@ -540,6 +541,7 @@
                   .then(function (response) {
                     _that.aArticle = response.data.article_info;
                     _that.$router.push('/article-detail/'+_that.articleSlug)
+                    console.log(_that.aArticle)
                   })
         }
         else{
@@ -557,15 +559,13 @@
     created() {
       this.articleSlug = this.$route.params.articleSlug;
       this.articleID = this.$route.params.articleID;
-      if (sessionStorage.userInformation != ''){
+      if (sessionStorage.userInformation){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
         this.userToken = sessionStorage.userToken;
         this.getCommentListWithArticle();
-        console.log(this.userToken)
       }else{
         this.userInformation = '';
       }
-      // console.log(this.articleID);
       this.articleSearch(this.articleSlug);
       this.getCategoryArticleList();
       this.getStaticMedia();
