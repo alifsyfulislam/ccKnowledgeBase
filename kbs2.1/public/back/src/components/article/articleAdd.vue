@@ -176,11 +176,16 @@
                             <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
                             <ul class="list-unstyled permission-list m-0 p-0">
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+                                <li class="text-left pb-2">
 
+                                    <label class="mb-0 ml-2">
+                                        <input type="checkbox" v-model="role_id" value="0"> All
+                                    </label>
+                                </li>
+
+                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                    <label v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
                                     <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-<!--                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
                                 </li>
                             </ul>
                         </div>
@@ -220,7 +225,22 @@
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
                             <ul class="list-unstyled permission-list m-0 p-0">
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
+                                <li class="text-left pb-2">
+                                    <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2">
+                                            <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
+                                        </label>
+                                    </div>
+
+                                    <div v-else class="d-flex align-items-center">
+                                        <label class="mb-0 ml-2">
+                                            <input type="checkbox" v-model="roleAccess" :value="0"> All
+                                        </label>
+                                    </div>
+                                </li>
+
+
+                                <li v-for="a_user in user_roles" class="text-left pb-2">
                                     <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
                                         <label class="mb-0 ml-2">
                                             <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
@@ -229,9 +249,10 @@
                                         </label>
                                     </div>
                                     <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
+                                        <label class="mb-0 ml-2">
+                                            <input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }}
+                                        </label>
                                     </div>
-
                                 </li>
                             </ul>
                         </div>
@@ -266,7 +287,7 @@
         data() {
             return {
                 isMounted               : false,
-                checked                 :true,
+                checked                 : true,
                 enBody                  : "en_Body",
                 enBodyEdit              : "en_Body_edit",
                 bnBodyEdit              : "bn_Body_edit",
@@ -279,7 +300,7 @@
                 selectedCategory        : '',
                 userInfo                : '',
                 user_roles              : '',
-                contentList                : '',
+                contentList             : '',
                 enBodyData              : '',
                 bnBodyData              : '',
                 aContent                : '',
@@ -324,6 +345,25 @@
             }
         },
         methods: {
+            // removePublicAccess(){
+            //     console.log(event.target.value, event.target.checked)
+            //     if (this.roleAccess.includes(0)){
+            //         let index = this.roleAccess.indexOf(0);
+            //         if (index !== -1) {
+            //             this.roleAccess.splice(index, 1);
+            //         }
+            //         console.log(this.roleAccess)
+            //     } else{
+            //         this.roleAccess.push(0)
+            //         console.log(this.roleAccess)
+            //     }
+            // },
+            // updateStatus(e){
+            //     if(e.target.checked){
+            //         console.log(this.public_id)
+            //         this.role_id.push(this.public_id)
+            //     }
+            // },
             deleteContent(content_id){
                 let _that = this;
 
@@ -358,8 +398,9 @@
                 let bnBody      = $('#bn_Body_edit').val();
                 _that.aContent.en_body = enBody;
                 _that.aContent.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
+
                 collection = _that.roleAccess.join();
-                
+
                 if (!collection) {
                     collection = 1;
                 }
@@ -402,13 +443,12 @@
                     _that.aContent = response.data.content_info;
                     _that.enBodyData  = _that.aContent.en_body;
                     _that.bnBodyData  = _that.aContent.bn_body;
-                    console.log(_that.bnBodyData);
                     if ((_that.aContent.role_id).includes(',')) {
                         _that.roleAccess = (_that.aContent.role_id).split(',');
                         _that.roleAccess = _that.roleAccess.map(i=>Number(i))
                         console.log(_that.roleAccess);
                     }else{
-                        _that.roleAccess.push(_that.aContent.role_id);
+                        _that.roleAccess.push(Number(_that.aContent.role_id));
                     }
                 })
 
@@ -432,6 +472,7 @@
                 let bnBody      = $('#bn_Body').val();
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
+                console.log(this.public_id);
                 _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
                 if (_that.role_id.length ==0){
                     _that.role_id.push(1);
@@ -475,9 +516,12 @@
                 $('.note-editable').html('');
                 this.role_id = [];
                 let items=document.querySelectorAll('.check-role');
+                console.log(items[1].value);
                 for(let i=0; i<items.length; i++){
                     if(items[i].type=='checkbox'){
-                        items[i].checked=false;
+                        if (items[i].value !=1){
+                            items[i].checked=false;
+                        }
                     }
 
                 }

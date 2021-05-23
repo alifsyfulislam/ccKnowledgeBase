@@ -98,6 +98,20 @@
 
                     </div>
                   </div>
+
+
+                  <div v-else-if="userInformation == '' && aArticle.contents">
+
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.en_body!='n/a'">
+
+                      <div  v-html="a_content.en_body"></div>
+
+                    </div>
+                    <div>Log in read the article.</div>
+
+                  </div>
+
+
                   <div v-else>Log in read the article.</div>
                 </div>
 
@@ -108,12 +122,7 @@
                     <h3 class="">{{aArticle.bn_title}}</h3>
                     <p class="" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                   </div>
-                  <!--                  <div class="ta-content-wrapper">-->
-                  <!--                    <div v-html="aArticle.bn_body"></div>-->
-                  <!--                  </div>-->
-                  <!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
-                  <!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
-                  <!--                  </div>-->
+
                   <div class="ta-content-wrapper pb-10" v-if="userInformation && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
@@ -121,6 +130,7 @@
 
                     </div>
                   </div>
+
                   <div v-else>Log in read the article.</div>
                 </div>
               </div>
@@ -136,7 +146,7 @@
               </div>
 
 <!--              comment-block-->
-              <div v-if="aArticle.commentable_status && userInformation">
+              <div v-if="aArticle.commentable_status && userInformation !=''">
                 <h5 class="mb-0 font-weight-bold pb-10">Discussions</h5>
                 <!-- Comment Section Start -->
                 <div class="comment-box">
@@ -156,7 +166,7 @@
                   </div>
                 </div>
 
-                <div v-if="comments !=''">
+                <div v-if="comments !='' && userInformation !=''">
                   <div class="reply-box mt-30" v-for="a_comment in comments" :key="a_comment.id">
                     <div class="reply-input-box d-flex">
                       <div class="featured-image avatar mr-10">
@@ -537,6 +547,7 @@
       if (sessionStorage.userInformation){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
         this.userToken = sessionStorage.userToken;
+        this.getCommentListWithArticle();
         console.log(this.userToken)
       }else{
         this.userInformation = '';
@@ -548,7 +559,6 @@
       this.getCategoryArticleList();
       this.getStaticMedia();
       this.getRecentArticleList();
-      this.getCommentListWithArticle();
     }
   }
 </script>

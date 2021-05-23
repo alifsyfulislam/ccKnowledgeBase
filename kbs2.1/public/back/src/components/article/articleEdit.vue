@@ -199,6 +199,12 @@
               <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
               <ul class="list-unstyled permission-list m-0 p-0">
+                <li class="text-left pb-2">
+                  <label class="mb-0 ml-2">
+                    <input type="checkbox" v-model="role_id" value="0"> All
+                  </label>
+                </li>
+
                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                   <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
 
@@ -242,6 +248,20 @@
             <div class="form-group mb-0">
               <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
               <ul class="list-unstyled permission-list m-0 p-0">
+                <li class="text-left pb-2">
+                  <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
+                    <label class="mb-0 ml-2">
+                      <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
+                    </label>
+                  </div>
+
+                  <div v-else class="d-flex align-items-center">
+                    <label class="mb-0 ml-2">
+                      <input type="checkbox" v-model="roleAccess" :value="0"> All
+                    </label>
+                  </div>
+                </li>
+
                 <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
                   <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
                     <label class="mb-0 ml-2">
@@ -350,6 +370,7 @@
         },
         user_roles                :'',
         role_id                   : [],
+        public_id               : 0,
         contentList               : '',
 
         aContent                  : '',
@@ -361,6 +382,15 @@
     },
 
     methods: {
+      updateStatus(e){
+        if(e.target.checked){
+          console.log(this.public_id)
+          this.role_id.push(this.public_id)
+        }
+        // else{
+        //     console.log(this.public_id)
+        // }
+      },
       deleteContent(content_id){
         let _that = this;
 
@@ -423,9 +453,10 @@
         let items=document.querySelectorAll('.check-role');
         for(let i=0; i<items.length; i++){
           if(items[i].type=='checkbox'){
-            items[i].checked=false;
+            if (items[i].value !=1){
+              items[i].checked=false;
+            }
           }
-
         }
         $('#roleIdError').html("");
         $('#roleIdError_2').html("");
@@ -456,7 +487,7 @@
             _that.roleAccess        = (_that.aContent.role_id).split(',');
             _that.roleAccess        = _that.roleAccess.map(i=>Number(i))
           }else{
-            _that.roleAccess.push(_that.aContent.role_id);
+            _that.roleAccess.push(Number(_that.aContent.role_id));
           }
         })
 
