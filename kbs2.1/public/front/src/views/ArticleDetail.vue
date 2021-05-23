@@ -94,7 +94,7 @@
                   <div class="ta-content-wrapper pb-10 d-block" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                      <div class="pb-0" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
+                      <div class="pb-5" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
 
                     </div>
                   </div>
@@ -104,7 +104,7 @@
 
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.en_body!='n/a'">
 
-                      <div class="pb-0" v-html="a_content.en_body"></div>
+                      <div class="pb-5" v-html="a_content.en_body"></div>
 
                     </div>
                     <div><u class="text-primary">Log in read the article.</u></div>
@@ -135,7 +135,7 @@
 
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.bn_body!='n/a'">
 
-                      <div class="pb-0"  v-html="a_content.bn_body"></div>
+                      <div class="pb-5"  v-html="a_content.bn_body"></div>
 
                     </div>
                     <div><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
