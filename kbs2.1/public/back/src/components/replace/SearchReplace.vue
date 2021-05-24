@@ -1,12 +1,14 @@
 <template>
     <div v-if="post_id">
         <div>
-            <input type="text" v-if="!isSearch" placeholder="seach" id="text-search" v-model="search_word">
-            <input type="text" v-if="isSearch" placeholder="replace" v-model="replace_word">
-<!--            <button v-if="!isSearch" type="button" class="btn btn-primary" @click="isSearch=true">Search</button>-->
-<!--            <button v-if="isSearch" type="button" class="btn btn-primary" @click="isSearch=false"><i class="fa fa-search text-white"></i></button>-->
-            <button type="button" class="btn btn-secondary" v-if="!isSearch" @click="searchArticleData()"><i class="fa fa-search text-white"></i></button>
-            <button type="button" class="btn btn-primary" v-if="isSearch" @click="replaceArticleData()"><i class="fa fa-search text-white"></i></button>
+            <div class="form-group" v-if="!isSearch">
+                <input class="form-control" type="text" placeholder="Search" id="text-search" v-model="search_word">
+            </div>
+            <div class="form-group" v-if="isSearch">
+                <input type="text" class="form-control" placeholder="replace" v-model="replace_word">
+            </div>
+            <button type="button" class="btn btn-primary text-white" v-if="!isSearch" @click="searchArticleData()">Search</button>
+            <button type="button" class="btn btn-primary text-white" data-dismiss="modal" v-if="isSearch" @click="replaceArticleData()">Replace</button>
         </div>
 
         <div class="action-modal-wraper" v-if="success_message">

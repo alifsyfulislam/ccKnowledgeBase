@@ -14,16 +14,36 @@
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10 d-md-flex justify-content-between align-items-center">
                     <h2 class="content-title text-uppercase m-0">Article Details</h2>
-                    <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </router-link>
+                    <div class="button-group">
+                        <div class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2" data-toggle="modal" data-target="#searchReplaceModal">
+                            <i class="fas fa-search"></i> Search & Replace
+                        </div>
+                        <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </router-link>
+                    </div>
                 </div>
+
+                <!-- search & replace modal -->
+                <div class="modal fade" id="searchReplaceModal" tabindex="-1" aria-labelledby="searchReplaceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchReplaceModalLabel">Search & Replace</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <search-replace v-if="aArticle" :post_id="aArticle.id" @replace="getReplacedData"></search-replace>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- search & replace modal end -->
 
 
                 <div class="content-wrapper bg-white" v-if="aArticle">
-
-                    <search-replace v-if="aArticle" :post_id="aArticle.id" @replace="getReplacedData"></search-replace>
-
                     <div class="data-content-area px-15 py-10">
                         <h3 class="font-weight-bold">Articles Details Page</h3>
                         <div>
