@@ -91,14 +91,28 @@
                     <h3 class="">{{aArticle.en_title}}</h3>
                     <p class="" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                   </div>
-                  <div class="ta-content-wrapper" v-if="userInformation != '' && aArticle.contents">
+                  <div class="ta-content-wrapper pb-10 d-block" v-if="userInformation != '' && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
+                      <div class="pb-5" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.en_body!='n/a'" v-html="a_content.en_body"></div>
 
                     </div>
                   </div>
-                  <div v-else>Log in read the article.</div>
+
+
+                  <div class="ta-content-wrapper pb-10 d-block" v-else-if="userInformation == '' && aArticle.contents">
+
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.en_body!='n/a'">
+
+                      <div class="pb-5" v-html="a_content.en_body"></div>
+
+                    </div>
+                    <div><u class="text-primary">Log in read the article.</u></div>
+
+                  </div>
+
+
+                  <div v-else><u class="text-primary">Log in read the article.</u></div>
                 </div>
 
 
@@ -108,20 +122,27 @@
                     <h3 class="">{{aArticle.bn_title}}</h3>
                     <p class="" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                   </div>
-                  <!--                  <div class="ta-content-wrapper">-->
-                  <!--                    <div v-html="aArticle.bn_body"></div>-->
-                  <!--                  </div>-->
-                  <!--                  <div class="ta-content-wrapper" v-if="aArticle.contents">-->
-                  <!--                    <div v-for="a_content in aArticle.contents" :key="a_content.id" v-html="a_content.bn_body"></div>-->
-                  <!--                  </div>-->
-                  <div class="ta-content-wrapper pb-10" v-if="userInformation && aArticle.contents">
+
+                  <div class="ta-content-wrapper pb-10 d-block" v-if="userInformation && aArticle.contents">
                     <div v-for="(a_content) in aArticle.contents" :key="a_content.id">
 
-                      <div v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
+                      <div class="pb-5" v-if="a_content.role_id.includes(userInformation.roles[0].id) && a_content.bn_body!='n/a'" v-html="a_content.bn_body"></div>
 
                     </div>
                   </div>
-                  <div v-else>Log in read the article.</div>
+
+                  <div class="ta-content-wrapper pb-10 d-block" v-else-if="userInformation == '' && aArticle.contents">
+
+                    <div v-for="(a_content) in aArticle.contents" :key="a_content.id" v-if="a_content.role_id.includes('0') && a_content.bn_body!='n/a'">
+
+                      <div class="pb-5"  v-html="a_content.bn_body"></div>
+
+                    </div>
+                    <div><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
+
+                  </div>
+
+                  <div v-else><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
                 </div>
               </div>
 <!--              resource block-->
@@ -136,7 +157,7 @@
               </div>
 
 <!--              comment-block-->
-              <div v-if="aArticle.commentable_status && userInformation">
+              <div v-if="aArticle.commentable_status && userInformation !=''">
                 <h5 class="mb-0 font-weight-bold pb-10">Discussions</h5>
                 <!-- Comment Section Start -->
                 <div class="comment-box">
@@ -156,7 +177,7 @@
                   </div>
                 </div>
 
-                <div v-if="comments !=''">
+                <div v-if="comments !='' && userInformation !=''">
                   <div class="reply-box mt-30" v-for="a_comment in comments" :key="a_comment.id">
                     <div class="reply-input-box d-flex">
                       <div class="featured-image avatar mr-10">
@@ -440,6 +461,7 @@
           _that.articleSlugArr.push(_that.articleSlug);
           axios.get('article-details/'+_that.articleSlug)
                   .then(function (response) {
+                    console.log(response)
                     _that.aArticle = response.data.article_info;
                     // _that.$router.push('/article-detail/'+_that.articleSlug)
                     _that.$router.push('/article-detail/'+_that.articleID+'/'+_that.articleSlug)
@@ -519,6 +541,7 @@
                   .then(function (response) {
                     _that.aArticle = response.data.article_info;
                     _that.$router.push('/article-detail/'+_that.articleSlug)
+                    console.log(_that.aArticle)
                   })
         }
         else{
@@ -534,21 +557,19 @@
       }
     },
     created() {
+      this.articleSlug = this.$route.params.articleSlug;
+      this.articleID = this.$route.params.articleID;
       if (sessionStorage.userInformation){
         this.userInformation = JSON.parse(sessionStorage.userInformation);
         this.userToken = sessionStorage.userToken;
-        console.log(this.userToken)
+        this.getCommentListWithArticle();
       }else{
         this.userInformation = '';
       }
-      this.articleSlug = this.$route.params.articleSlug;
-      this.articleID = this.$route.params.articleID;
-      console.log(this.articleID);
       this.articleSearch(this.articleSlug);
       this.getCategoryArticleList();
       this.getStaticMedia();
       this.getRecentArticleList();
-      this.getCommentListWithArticle();
     }
   }
 </script>

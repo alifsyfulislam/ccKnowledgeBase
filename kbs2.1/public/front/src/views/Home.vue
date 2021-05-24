@@ -145,6 +145,31 @@
                           </div>
                         </div>
                       </div>
+                      <div v-else-if="userInformation == ''">
+                        <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
+                        <div v-for="a_content in a_faq.contents" :key="a_content.id">
+                          <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.role_id.includes(0)">
+
+                            <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                            </li>
+                            <li class="nav-item" v-if="a_content.bn_body !='n/a'">
+                              <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                            </li>
+                          </ul>
+
+                          <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
+                            <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(0)">
+                              <div v-html="a_content.en_body"></div>
+                            </div>
+
+                            <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(0)">
+                              <div v-html="a_content.bn_body"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div><u class="text-primary">Login to read this faq.</u></div>
+                      </div>
                       <div v-else>Login to read this faq.</div>
                     </div>
                   </div>

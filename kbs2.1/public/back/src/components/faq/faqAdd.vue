@@ -161,10 +161,10 @@
                                 <h5 class="modal-title" id="contentModalLabel_2">Edit New Content</h5>
                             </div>
                             <div class="modal-body">
-        <!--                        <div class="d-inline-block">-->
-        <!--                            <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
-        <!--                            <label for="checkbox3" class="ml-2">Bangla</label>-->
-        <!--                        </div>-->
+<!--                                <div class="d-inline-block">-->
+<!--                                    <input type="checkbox" id="checkbox3" v-model="bangla_checkbox" @change="changeCheckBox()">-->
+<!--                                    <label for="checkbox3" class="ml-2">Bangla</label>-->
+<!--                                </div>-->
 
                                 <div class="form-group">
                                     <label>English Body</label>
