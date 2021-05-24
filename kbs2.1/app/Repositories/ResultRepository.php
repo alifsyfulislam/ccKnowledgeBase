@@ -24,6 +24,12 @@ class ResultRepository
         return Result::with('user','quiz')->where(['user_id'=>$request->userId,'quiz_id'=>$request->quizId])
         ->groupby('attempt')->orderby('id','DESC')->paginate(20);
     }
+
+
+    public function getResultData($quizResult) {
+        return Result::with('user','quiz','question')->where(['user_id'=>$quizResult->user_id,'quiz_id'=>$quizResult->quiz_id,'attempt'=>$quizResult->attempt])
+        ->get();
+    }
     
 
     public function create(array $data){

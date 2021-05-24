@@ -154,6 +154,7 @@ Route::middleware('auth:api')->group(function(){
     
     Route::get('user-quiz-list', [UserQuizListController::class, 'index']);
     Route::get('user-quiz-result-list', [UserQuizListController::class, 'getQuizResultList']);
+    Route::get('result-details', [UserQuizListController::class, 'getQuizResultDetails']);
     Route::post('logout', [UserController::class, 'logout']);
 
 });

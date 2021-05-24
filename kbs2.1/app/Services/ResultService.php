@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-
+use App\Helpers\Helper;
 class ResultService
 {
 
@@ -44,11 +44,30 @@ class ResultService
 
     public function getUserQuizResultList($request){
         
+        $quizResultList = $this->resultRepository->userQuizResultList($request);
+        foreach($quizResultList as $key=>$quizResult) {
+            $resultData = $this->resultRepository->getResultData($quizResult);
+            $quizResultList[$key]->result = Helper::calculateResult($quizResult->quiz->total_marks, $quizResult->quiz->number_of_questions, $resultData);     
+        }
         return response()->json([
 
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'user_quiz_result_list' => $this->resultRepository->userQuizResultList($request)
+            'user_quiz_result_list' => $quizResultList
+
+        ]);
+    }
+
+    public function getUserQuizResultDetails($request){
+        
+            $quizResultDetails = $this->resultRepository->getResultData($request);
+            $quizResultDetails[0]->result = Helper::calculateResult( $quizResultDetails[0]->quiz->total_marks, $quizResultDetails[0]->quiz->number_of_questions, $quizResultDetails);     
+       
+        return response()->json([
+
+            'status_code'  => 200,
+            'messages'     => config('status.status_code.200'),
+            'result_details' => $quizResultDetails
 
         ]);
     }
@@ -83,7 +102,12 @@ class ResultService
             }
             foreach($quesAndAns as $key=>$value) {
                 $input['id'] = time().rand(1000,9000);
-                $input['user_id'] = $request->user_id;
+                if(!$request->user_id) {
+                    $input['user_id'] = Helper::getClientIpAddress();
+                } else {
+                    $input['user_id'] = $request->user_id;
+                }
+               
                 $input['quiz_id'] = $request->quiz_id;
                 $input['question_id'] = $key;
                 $input['answer'] = $value;

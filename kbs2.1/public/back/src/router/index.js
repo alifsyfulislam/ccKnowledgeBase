@@ -32,6 +32,7 @@ import allHistoryList from '@/components/history/allHistoryList.vue'
 import resultList from '@/components/result/resultList.vue'
 import userQuizList from '@/components/result/userQuizList.vue'
 import userQuizResultList from '@/components/result/userQuizResultList.vue'
+import resultDetails from '@/components/result/resultDetails.vue'
 
 
 Vue.use(Router)
@@ -245,6 +246,14 @@ let router =  new Router({
       path: '/user-quiz-result-list/:userId/:quizId',
       name: 'userQuizResultList',
       component: userQuizResultList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/result-details/:userId/:quizId/:attempt',
+      name: 'resultDetails',
+      component: resultDetails,
       meta: {
         requiresAuth: true
       }

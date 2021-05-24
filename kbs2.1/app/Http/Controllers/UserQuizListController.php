@@ -50,6 +50,21 @@ class UserQuizListController extends Controller
         }
     }
 
+    public function getQuizResultDetails(Request $request)
+    {   
+        //
+        if(Auth::user()->can('result-list')) {
+
+            return $this->resultService->getUserQuizResultDetails($request);
+            // return $userId;
+
+        } else {
+
+            return response()->json(['status_code' => 424, 'messages'=>'User does not have the right permissions']);
+
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
