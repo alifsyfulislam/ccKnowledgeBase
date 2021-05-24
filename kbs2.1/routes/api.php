@@ -29,6 +29,7 @@ use App\Http\Controllers\ResultController;
 
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\UserQuizListController;
+use App\Http\Controllers\SearchReplaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +72,7 @@ Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 Route::post('customer/username', [CustomerController::class, 'checkUserNameExist']);
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
-//Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
+//Route::get('replace', [SearchReplaceController::class, 'searchText']);
 
 
 
@@ -80,12 +81,16 @@ Route::post('visitor-login',[VisitorController::class, 'index']);
 Route::post('logout', [UserController::class, 'logout']);
 
 
-
 // Route::get('results/user-quiz-list', function(){
 //     return 'hi';
 // });
 
 Route::middleware('auth:api')->group(function(){
+
+    Route::get('replace/{id}/{any}',[SearchReplaceController::class,'searchText']);
+    Route::post('replace/{id}/{any}',[SearchReplaceController::class,'replaceText']);
+
+
 
     Route::apiResource('comments', CommentController::class);
     Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);

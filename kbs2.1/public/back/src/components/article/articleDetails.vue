@@ -21,6 +21,9 @@
 
 
                 <div class="content-wrapper bg-white" v-if="aArticle">
+
+                    <search-replace v-if="aArticle" :post_id="aArticle.id" @replace="getReplacedData"></search-replace>
+
                     <div class="data-content-area px-15 py-10">
                         <h3 class="font-weight-bold">Articles Details Page</h3>
                         <div>
@@ -176,6 +179,7 @@
 <script>
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
+    import SearchReplace from "../replace/SearchReplace";
     import $ from 'jquery'
     import axios from "axios";
 
@@ -183,7 +187,8 @@
         name: "articleDetails.vue",
         components: {
             Header,
-            Menu
+            Menu,
+            SearchReplace
         },
         filters:{
             formatFileName(fileName){
@@ -220,6 +225,10 @@
         },
 
         methods: {
+            getReplacedData(status){
+                console.log(status);
+                this.articleSearch(this.articleSlug);
+            },
             commentUpdate(data,btnEdit,paraID,textareaID,btnID){
                 let _that = this;
 
