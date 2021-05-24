@@ -18,6 +18,9 @@ class Result extends Model
         return $this->belongsTo(Quiz::class,'quiz_id');
     }
 
+    public function question() {
+        return $this->belongsTo(QuizFormField::class,'question_id');
+    }
 
     public function getCreatedAtAttribute($date)
     {

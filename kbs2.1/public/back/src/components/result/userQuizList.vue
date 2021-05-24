@@ -54,8 +54,6 @@
                                                   
                                                     <template v-slot:item.actions="{item}">
                                                         <router-link :to="{ name: 'userQuizResultList', params: { userId: item.user_id, quizId:item.quiz_id }}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fas fa-eye text-white"></i> Show All</router-link>
-
-                                                        <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1" @click="post_id=item.id, isDeleteCheck=true" v-if="checkPermission('comment-delete')"><i class="fas fa-trash-restore-alt"></i></button>
                                                     </template>  
 
                                                 </v-data-table>
@@ -94,27 +92,6 @@
                 <button class="right-side-close-btn ripple-btn-danger" @click="clearAllChecker">
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
-            </div>
-
-            <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isDeleteCheck===true">
-                <div class="right-sidebar-content-area px-2">
-                    <div class="form-wrapper">
-                        <h2 class="section-title text-uppercase mb-20">Delete Comment</h2>
-                        <div class="row mt-50 mt-md-80">
-                            <div class="col-md-12">
-                                <figure class="mx-auto text-center">
-                                    <img class="img-fluid mxw-100" src="../../assets/img/delete-big-icon.svg" alt="delete-big">
-                                </figure>
-                                <p class="text-center"> Confirmation for Deleting Comment</p>
-
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn btn-danger text-white rounded-pill ripple-btn px-30 mx-2" @click="quizResultDelete(post_id)"><i class="fas fa-trash"></i> Confirm</button>
-                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-30 mx-2" @click="removingRightSideWrapper()"><i class="fas fa-times-circle" ></i> Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

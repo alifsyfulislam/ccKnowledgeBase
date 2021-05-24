@@ -44,10 +44,6 @@ class ResultController extends Controller
         //
         //
         return $this->resultService->createItem($request);
-        //  $arr = json_decode($request->ques_and_ans,true);
-        //  foreach($arr as $key=>$value) {
-        //      return $value;
-        //  }
     }
 
     /**

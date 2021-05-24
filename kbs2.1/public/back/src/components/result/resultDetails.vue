@@ -10,7 +10,7 @@
             <!-- Content Area -->
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10">
-                    <h2 class="content-title text-uppercase m-0">User Quiz Result List</h2>
+                    <h2 class="content-title text-uppercase m-0">Details Result</h2>
                 </div>
                 <div class="content-wrapper bg-white">
                     <!-- list top area -->
@@ -40,36 +40,54 @@
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
                         <div class="table-responsive" v-if="isLoading===false">
-                            <v-app>
-                                <v-main>
-                                    <v-container class="p-0 position-relative overflow-hidden">
-                                        <v-row justify="end">
-                                            <v-col md="3" class="customer-search-wrapper">
-                                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col class="customer-data-table-wrapper">
-                                                <v-data-table :headers="headers" :items="userQuizResultList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                                                  
-                                                    <template v-slot:item.actions="{item}">
-                                                        <router-link :to="{ name: 'resultDetails', params: { userId: item.user_id, quizId:item.quiz_id,attempt:item.attempt }}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fas fa-eye text-white"></i> View Result</router-link>
+                            <div class="d-flex p-3">
+                                <div class="col-md-6">
+                                    <div>
+                                         <strong>Quiz Title: </strong>{{resultDetails[0].quiz.name}}
+                                    </div>
+                                    <div>
+                                         <strong>Performed Date: </strong>{{resultDetails[0].created_at}}
+                                    </div>
+                                    
+                                     
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Total marks </strong>:{{resultDetails[0].quiz.total_marks}}
+                                    <div>
+                                         <strong>Obtained score: </strong>{{(resultDetails[0].result)}}
+                                    </div>
+                                </div>
+                            </div>
 
-                                                    </template>  
-
-                                                </v-data-table>
-
-                                            </v-col>
-                                        </v-row>
-                                        <v-row justify="end" class="pagination-wrapper">
-                                            <v-col>
-                                                <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
-                                                </v-pagination>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-main>
-                            </v-app>
+                            <div class=" p-3 ">
+                                <ol class="ml-20">
+                                    <li v-for="item in resultDetails" :key="item.id">
+                                        <label class=""> <b>{{item.question.f_label}}</b> </label>
+                                        <div v-if="item.question.f_option_value">
+                                            <ol class="ml-30" type="A">
+                                                <li v-for="option in item.question.f_option_value.split(',')" :key="option">
+                                                    <label v-if="option==item.answer">
+                                                        <span v-if="item.answer == item.question.f_default_value" class="text-success">{{option}}</span>  
+                                                        <span v-else class="text-danger"> {{option}}</span>  
+                                                    </label>
+                                                    <label v-else>  {{option}}</label>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <div v-else>
+                                            <label >
+                                                Your Answer:
+                                                <span v-if="item.answer == item.question.f_default_value" class="text-success"> {{item.answer}}</span>
+                                                <span v-else class="text-danger"> {{item.answer}}</span>
+                                            </label>    
+                                        </div>
+                                        <p class=""> <b>Correct Answer: </b>{{item.question.f_default_value}} </p>
+                                    </li>
+                                </ol>
+                            </div>
+                            
+                            
+                           
                         </div>
                         <!-- Table Data End -->
 
@@ -94,7 +112,6 @@
                     <img src="../../assets/img/cancel.svg" alt="cancel">
                 </button>
             </div>
-
         </div>
     </div>
 </template>
@@ -108,7 +125,7 @@
 
 
     export default {
-        name: "userQuizResultList.vue",
+        name: "resultDetails.vue",
 
         components: {
             Header,
@@ -127,84 +144,23 @@
                 downloadUrl         : 'articles/export/',
                 user_permissions    : '',
                 mappedPermission    : '',
-                userQuizResultList    : '',
+                resultDetails       : '',
                 perPage             :2,
                 currentPage         :1,
                 unstoredArticleID   :'',
                 post_id          :'',
-                userID          :'',
-                quizID          :'',
+                userID           :'',
+                quizID           :'',
+                attempt          :'',
                 search           :"",
-                pagination  :{
-                    current         :1,
-                    per_page        : 20,
-                    total           : ''
-                },
-                headers: [
-
-                    {
-                        text: 'Quiz ID',
-                        value: 'quiz_id',
-                    },
-                    {
-                        text: 'Quiz Name',
-                        value: 'quiz.name',
-                    },
-
-                    {
-                        text: 'Attempt',
-                        value: 'attempt',
-                    },
-                    {
-                        text: 'Performed Date',
-                        value: 'created_at',
-                    },
-                    {
-                        text: 'Result',
-                        value: 'result',
-                    },
-                    {
-                        text: 'Actions',
-                        value: 'actions',
-                        sortable: false
-
-                    },
-                ],
-
+                counter          :0,
+        
                 success_message : '',
                 error_message   : '',
             }
         },
         methods: {
-            quizResultDelete(commentID){
-                let _that = this;
-                axios.delete('notifications/delete',
-                    {
-                        data    : {
-                            id              : commentID
-                        },
-                        headers : {
-                            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-                        },
-                    }).then(function (response) {
-                    if (response.data.status_code == 200)
-                    {
-                        _that.getNotificationList();
-                        _that.success_message       = "Notification Deleted Successfully";
-                        _that.setTimeoutElements();
-                        _that.removingRightSideWrapper();
-                    }
-                    else
-                    {
-                        _that.success_message       = "";
-                        _that.error_message         = response.data.error;
-                    }
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
-        
+          
             // acl permission
             checkPermission(permissionForCheck)
             {
@@ -214,7 +170,9 @@
                     return false;
                 }
             },
-            
+            splitJoin(data) {
+                return data.split(',');
+            },
             // slider close
             clearAllChecker()
             {
@@ -237,11 +195,11 @@
             },
 
 
-            getUserQuizResultList(pageUrl)
+            getResultDetails(pageUrl)
             {
                 let _that = this;
 
-                pageUrl = pageUrl == undefined ? 'user-quiz-result-list' : pageUrl;
+                pageUrl = pageUrl == undefined ? 'result-details' : pageUrl;
 
                 axios.get(pageUrl,
                     {
@@ -249,17 +207,16 @@
                             'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
                         },
                         params: {
-                            userId: _that.userID,
-                            quizId:_that.quizID,
-                            page: _that.pagination.current
+                            user_id: _that.userID,
+                            quiz_id:_that.quizID,
+                            attempt:_that.attempt
                         }
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
                             console.log(response.data);
-                            _that.pagination.current = response.data.user_quiz_result_list.current_page;
-                            _that.pagination.total   = response.data.user_quiz_result_list.last_page;
-                            _that.userQuizResultList   = response.data.user_quiz_result_list.data;
+                            _that.resultDetails   = response.data.result_details;
+                            // alert(_that.resultDetails)
                             _that.isLoading          = false;
                             _that.setTimeoutElements();
 
@@ -269,9 +226,6 @@
                             _that.error_message     = response.data.error;
                         }
                     })
-            },
-            onPageChange() {
-                this.getUserQuizResultList();
             },
             setTimeoutElements()
             {
@@ -284,8 +238,9 @@
             this.isLoading = true;
             this.userID = this.$route.params.userId;
             this.quizID = this.$route.params.quizId;
-            console.log( this.userID, this.quizID);
-            this.getUserQuizResultList();
+            this.attempt = this.$route.params.attempt;
+            // console.log( this.userID, this.attempt);
+            this.getResultDetails();
             this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
             this.mappedPermission = (this.user_permissions ).map(x => x.slug);
             // this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;

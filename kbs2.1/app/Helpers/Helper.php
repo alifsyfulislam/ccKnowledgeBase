@@ -203,4 +203,34 @@ class Helper
         }
         return null;  
     }
+
+    public static function calculateResult($totalMarks, $numberOfQuestions, $resultData) {
+        $score = 0;
+        $numberOfCorrectAnswer = 0;
+        $perQuestionmark = $totalMarks/$numberOfQuestions;
+        foreach($resultData as $data) {
+         if($data->question->f_default_value == $data->answer)   
+            $numberOfCorrectAnswer++;
+        }
+        return  $score = $numberOfCorrectAnswer*$perQuestionmark;
+    }
+
+    public static function getClientIpAddress() {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+        return $ipaddress;
+    }
 }
