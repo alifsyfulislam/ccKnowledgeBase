@@ -41,6 +41,12 @@
                     </div>
                 </div>
                 <!-- search & replace modal end -->
+                <div class="action-modal-wraper" v-if="success_message">
+                    <span>{{ success_message }}</span>
+                </div>
+                <div class="action-modal-wraper-error" v-if="error_message">
+                    <span>{{ error_message }}</span>
+                </div>
 
 
                 <div class="content-wrapper bg-white" v-if="aArticle">
@@ -248,6 +254,18 @@
             getReplacedData(status){
                 console.log(status);
                 this.articleSearch(this.articleSlug);
+                if (status=='search field empty!'){
+                    this.error_message = status;
+                    this.setTimeoutElements();
+                }
+                if (status=='replace field empty!'){
+                    this.error_message = status;
+                    this.setTimeoutElements();
+                }
+                if (status=='word replaced!'){
+                    this.success_message = status;
+                    this.setTimeoutElements();
+                }
             },
             commentUpdate(data,btnEdit,paraID,textareaID,btnID){
                 let _that = this;

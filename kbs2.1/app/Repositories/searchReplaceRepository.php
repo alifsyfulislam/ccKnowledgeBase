@@ -29,7 +29,7 @@ class searchReplaceRepository
             ->orderBy('created_at', 'DESC')
             ->first();
 
-        return $article;
+        return $article ? $article : '';
     }
 
 
@@ -49,6 +49,7 @@ class searchReplaceRepository
             ->where('id',$post_id)
             ->orderBy('created_at', 'DESC')
             ->first();
+//        return $article;
 
         $article->en_title = str_replace($search,$request->replace_word, $article->en_title);
         $article->bn_title = str_replace($search,$request->replace_word, $article->bn_title);
@@ -70,7 +71,7 @@ class searchReplaceRepository
         }
         $article->save();
 
-        return $article;
+        return $article? $article : '';
     }
 
 }

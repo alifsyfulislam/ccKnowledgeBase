@@ -1,22 +1,22 @@
 <template>
     <div v-if="post_id">
         <div>
-            <div class="form-group" v-if="!isSearch">
+            <div class="form-group">
                 <input class="form-control" type="text" placeholder="Search" id="text-search" v-model="search_word">
             </div>
-            <div class="form-group" v-if="isSearch">
+            <div class="form-group">
                 <input type="text" class="form-control" placeholder="replace" v-model="replace_word">
             </div>
-            <button type="button" class="btn btn-primary text-white" v-if="!isSearch" @click="searchArticleData()">Search</button>
-            <button type="button" class="btn btn-primary text-white" data-dismiss="modal" v-if="isSearch" @click="replaceArticleData()">Replace</button>
+<!--            <button type="button" class="btn btn-primary text-white" v-if="!isSearch" @click="searchArticleData()">Search</button>-->
+            <button type="button" class="btn btn-primary text-white" data-dismiss="modal" @click="replaceArticleData()">Replace</button>
         </div>
 
-        <div class="action-modal-wraper" v-if="success_message">
-            <span>{{ success_message }}</span>
-        </div>
-        <div class="action-modal-wraper-error" v-if="error_message">
-            <span>{{ error_message }}</span>
-        </div>
+<!--        <div class="action-modal-wraper" v-if="success_message">-->
+<!--            <span>{{ success_message }}</span>-->
+<!--        </div>-->
+<!--        <div class="action-modal-wraper-error" v-if="error_message">-->
+<!--            <span>{{ error_message }}</span>-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -49,12 +49,13 @@
                 let _that = this;
 
 
-                axios.get('replace/'+_that.post_id+'/'+_that.search_word,
-                    {
-                        headers: {
-                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
+                if (_that.search_word !=''){
+                    axios.get('replace/'+_that.post_id+'/'+_that.search_word,
+                        {
+                            headers: {
+                                'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                            }
+                        }).then(function (response) {
                         if (response.data.status_code==200 && response.data.article != ''){
                             console.log(response)
                             // _that.search_word = '';
@@ -63,11 +64,16 @@
                             _that.$emit('replace',_that.search_word);
                             _that.setTimeoutElements();
                             // $( "div:contains(sear)" ).css( "text-decoration", "underline" );
-                        } else{
-                            _that.error_message = 'No data found!'
+                        } else if (response.data.status_code==200 && response.data.article == '') {
+                            // _that.error_message = 'No data found!'
+                            _that.setTimeoutElements();
+                        }
+                        else {
+                            // _that.error_message = 'No data found!'
                             _that.setTimeoutElements();
                         }
                     })
+                }
 
 
             },
@@ -76,23 +82,37 @@
 
                 _that.isSearch = !_that.isSearch;
 
-                axios.post('replace/'+_that.post_id+'/'+_that.search_word,
-                    {
-                        'replace_word' : _that.replace_word
-                    },
-                    {
-                        headers: {
-                            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
-                        if (response.data.status_code == 200){
-                            console.log(response.data)
-                            _that.search_word = '';
-                            _that.replace_word = '';
-                            _that.success_message = 'word replaced!'
-                            _that.$emit('replace',_that.success_message);
-                        }
-                    })
+                if (this.search_word){
+                    if (this.replace_word){
+                        axios.post('replace/'+_that.post_id+'/'+_that.search_word,
+                            {
+                                'replace_word' : _that.replace_word
+                            },
+                            {
+                                headers: {
+                                    'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                                }
+                            }).then(function (response) {
+                            if (response.data.status_code == 200){
+                                console.log(response.data)
+                                _that.search_word = '';
+                                _that.replace_word = '';
+                                _that.success_message = 'word replaced!';
+                                _that.$emit('replace',_that.success_message);
+                            }
+                        })
+                    }else {
+                        _that.search_word = '';
+                        _that.replace_word = '';
+                        _that.$emit('replace','replace field empty!');
+                    }
+                } else{
+                    _that.search_word = '';
+                    _that.replace_word = '';
+                    _that.$emit('replace','search field empty!');
+                }
+
+
 
 
             }
