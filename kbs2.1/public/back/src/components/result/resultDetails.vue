@@ -39,7 +39,7 @@
                     <div class="data-content-area px-15 py-10">
                         <Loading v-if="isLoading===true"></Loading>
                         <!-- Table Data -->
-                        <div class="table-responsive" v-if="isLoading===false">
+                        <div class="content-box" v-if="isLoading===false">
                             <div class="d-flex p-3">
                                 <div class="col-md-6">
                                     <div>
@@ -60,30 +60,33 @@
                             </div>
 
                             <div class=" p-3 ">
-                                <ol class="ml-20">
-                                    <li v-for="item in resultDetails" :key="item.id">
-                                        <label class=""> <b>{{item.question.f_label}}</b> </label>
-                                        <div v-if="item.question.f_option_value">
-                                            <ol class="ml-30" type="A">
-                                                <li v-for="option in item.question.f_option_value.split(',')" :key="option">
-                                                    <label v-if="option==item.answer">
-                                                        <span v-if="item.answer == item.question.f_default_value" class="text-success">{{option}}</span>  
-                                                        <span v-else class="text-danger"> {{option}}</span>  
-                                                    </label>
-                                                    <label v-else>  {{option}}</label>
-                                                </li>
-                                            </ol>
+                                <ul class="result-items-wrapper list-inline list-unstyled">
+                                    <!-- {{resultDetails}} -->
+                                    <li v-for="(item, index) in resultDetails" :key="item.id">
+                                        <div class="q-box">
+                                            <label class=""><b><span>{{index + 1}}.</span> {{item.question.f_label}}</b> </label>
+                                            <div v-if="item.question.f_option_value">
+                                                <ol class="ml-30" type="A">
+                                                    <li v-for="option in item.question.f_option_value.split(',')" :key="option">
+                                                        <label v-if="option==item.answer">
+                                                            <span v-if="item.answer == item.question.f_default_value" class="text-success">{{option}}</span>  
+                                                            <span v-else class="text-danger"> {{option}}</span>  
+                                                        </label>
+                                                        <label v-else>  {{option}}</label>
+                                                    </li>
+                                                </ol>
+                                            </div>
+                                            <div v-else>
+                                                <label >
+                                                    Your Answer:
+                                                    <span v-if="item.answer == item.question.f_default_value" class="text-success"> {{item.answer}}</span>
+                                                    <span v-else class="text-danger"> {{item.answer}}</span>
+                                                </label>    
+                                            </div>
+                                            <p class="mb-0"> <b>Correct Answer: </b>{{item.question.f_default_value}} </p>
                                         </div>
-                                        <div v-else>
-                                            <label >
-                                                Your Answer:
-                                                <span v-if="item.answer == item.question.f_default_value" class="text-success"> {{item.answer}}</span>
-                                                <span v-else class="text-danger"> {{item.answer}}</span>
-                                            </label>    
-                                        </div>
-                                        <p class=""> <b>Correct Answer: </b>{{item.question.f_default_value}} </p>
                                     </li>
-                                </ol>
+                                </ul>
                             </div>
                             
                             
@@ -252,5 +255,33 @@
 <style scoped>
     .mhv-100 {
         min-height: 50vh;
+    }
+
+    .result-items-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+    }
+
+    .result-items-wrapper > li {
+        width: 50%;
+        max-width: 0 0 50%;
+        padding: 10px 15px;
+    }
+
+    .result-items-wrapper > li .q-box {
+        background: #f1f1f1;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        height: 100%;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    }
+
+    @media screen and (max-width: 767px) {
+        .result-items-wrapper > li {
+            width: 100%;
+            max-width: 0 0 100%;
+        }
     }
 </style>
