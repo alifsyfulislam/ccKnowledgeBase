@@ -35,7 +35,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <search-replace v-if="aArticle" :post_id="aArticle.id" @replace="getReplacedData"></search-replace>
+                                <search-replace v-if="aArticle" :post_slug="aArticle.slug" :post_id="aArticle.id" @keyword-search="findKeyword" @replace="getReplacedData"></search-replace>
                             </div>
                         </div>
                     </div>
@@ -49,20 +49,20 @@
                 </div>
 
 
-                <div class="content-wrapper bg-white" v-if="aArticle">
-                    <div class="data-content-area px-15 py-10">
+                <div class="content-wrapper bg-white">
+                    <div class="data-content-area px-15 py-10" v-if="aArticle">
                         <h3 class="font-weight-bold">Articles Details Page</h3>
                         <div>
                             <small class="font-16"><strong>Category: </strong>{{aArticle.category ? aArticle.category.name : 'N/A'}}</small>
                         </div>
-                        <p class="font-16"><strong>Tags: </strong>{{aArticle.tag}}</p>
+                        <p class="font-16" :id="'article_keyword_tag_'+aArticle.id"><strong>Tags: </strong>{{aArticle.tag}}</p>
 
                         <div class="ta-wrapper d-flex align-items-center py-10 my-15">
                             <div class="avatar mr-10">
                                 <img class="img-fluid" src="../../assets/img/avatar.png" style="height: 50px; width: 50px" alt="avatar">
                             </div>
                             <div class="tc-wrapper">
-                                <h5 v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
+                                <h5 v-if="aArticle.user" v-cloak class="my-0 pb-1">{{aArticle.user.first_name}} {{aArticle.user.last_name}}</h5>
                                 <p class="mb-0">Post on: {{aArticle.created_at}}</p>
                             </div>
                         </div>
@@ -83,23 +83,23 @@
                             <div class="tab-content pt-3" id="myTabContent">
                                 <div class="tab-pane fade active show" id="tabEnglish" v-if="aArticle">
                                     <div class="ta-content-wrapper">
-                                        <h3 class="pb-10">{{aArticle.en_title}}</h3>
-                                        <p class="pb-10" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
+                                        <h3 :id="'article_keyword_en_title_'+aArticle.id" class="pb-10">{{aArticle.en_title}}</h3>
+                                        <p :id="'article_keyword_en_short_summary_'+aArticle.id" class="pb-10" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
                                     </div>
                                     <div class="ta-content-wrapper pb-10" v-for="a_article_content in aArticle.contents">
-                                        <div v-if="a_article_content.en_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.en_body"></div>
+                                        <div :id="'article_keyword_en_body_'+a_article_content.id" v-if="a_article_content.en_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.en_body"></div>
                                     </div>
                                 </div>
 
 
                                 <!--bangla-->
-                                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.contents.bn_title != 'n/a'">
+                                <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
                                     <div class="ta-content-wrapper">
-                                        <h3 class="pb-10">{{aArticle.bn_title}}</h3>
-                                        <p class="pb-10" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
+                                        <h3 :id="'article_keyword_bn_title_'+aArticle.id" class="pb-10">{{aArticle.bn_title}}</h3>
+                                        <p :id="'article_keyword_bn_short_summary_'+aArticle.id" class="pb-10 article_keyword" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                                     </div>
                                     <div class="ta-content-wrapper pb-10" v-for="a_article_content in aArticle.contents">
-                                        <div v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
+                                        <div :id="'article_keyword_bn_body_'+a_article_content.id" v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
                                     </div>
                                 </div>
                             </div>
@@ -251,9 +251,122 @@
         },
 
         methods: {
-            getReplacedData(status){
+            findKeyword(keyword){
+                // this.articleSearch(this.articleSlug);
+                this.color_word_tag('article_keyword_tag_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_en_title('article_keyword_en_title_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_bn_title('article_keyword_bn_title_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_en_short_summary('article_keyword_en_short_summary_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_bn_short_summary('article_keyword_bn_short_summary_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_en_body('article_keyword_en_body_',keyword, 'hotpink')
+                this.color_word_bn_body('article_keyword_bn_body_',keyword, 'hotpink')
+            },
+
+            color_word_bn_body(text_id,word, color){
+                let nodes = $('[id^='+text_id+']');
+                // let rex = /(<([^>]+)>)/ig;
+                let contents = [];
+
+                for(let i=0;i<nodes.length; i++){
+                    // .replace(rex , "")
+
+                    contents[i] =$('#'+ nodes[i].id).html();
+                    // console.log(contents[i]);
+                    if (contents[i].includes(word)){
+
+                        let tags = contents[i].split(' ');
+                        // console.log(contents[i])
+                        tags = tags.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                        contents[i] = tags.join(' ');
+                        console.log(contents[i])
+                        console.log('<br/>')
+                        $('#'+ nodes[i].id).html(contents[i])
+
+                    }
+
+                }
+
+                // $('#' + text_id).html(new_words);
+                // console.log(new_words)
+
+            },
+
+            color_word_en_body(text_id,word, color){
+                let nodes = $('[id^='+text_id+']');
+                // let rex = /(<([^>]+)>)/ig;
+                let contents = [];
+
+                for(let i=0;i<nodes.length; i++){
+                    // .replace(rex , "")
+
+                    contents[i] =$('#'+ nodes[i].id).html();
+                    // console.log(contents[i]);
+                    if (contents[i].includes(word)){
+
+                        let tags = contents[i].split(' ');
+                        // console.log(contents[i])
+                        tags = tags.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                        contents[i] = tags.join(' ');
+                        console.log(contents[i])
+                        console.log('<br/>')
+                        $('#'+ nodes[i].id).html(contents[i])
+
+                    }
+
+                }
+
+                // $('#' + text_id).html(new_words);
+                // console.log(new_words)
+
+            },
+
+            color_word_en_title(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+            color_word_bn_title(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+
+            color_word_en_short_summary(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+
+            color_word_bn_short_summary(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+
+            color_word_tag(text_id,word, color) {
+                let words = $("#" + text_id).text().split(' ');
+
+                for(let i =0 ; i< words.length ; i++){
+                    if (words[i].includes(',')){
+                        let tags = words[i].split(',');
+                        tags = tags.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                        words[i] = tags.join(',');
+                    }else{
+                        words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                    }
+
+                }
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+
+            getReplacedData(status,data){
                 console.log(status);
-                this.articleSearch(this.articleSlug);
+
                 if (status=='search field empty!'){
                     this.error_message = status;
                     this.setTimeoutElements();
@@ -264,8 +377,14 @@
                 }
                 if (status=='word replaced!'){
                     this.success_message = status;
+                    this.aArticle = data;
                     this.setTimeoutElements();
                 }
+                if (status=='Not found!'){
+                    this.error_message = status;
+                    this.setTimeoutElements();
+                }
+                this.articleSearch(this.articleSlug);
             },
             commentUpdate(data,btnEdit,paraID,textareaID,btnID){
                 let _that = this;
@@ -415,6 +534,7 @@
                     .then(function (response) {
                         _that.aArticle = response.data.article_info;
                         console.log(_that.aArticle);
+                        // location.reload()
                     })
             },
 
