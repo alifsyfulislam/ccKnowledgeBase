@@ -14,9 +14,38 @@
             <div class="content-area">
                 <div class="content-title-wrapper px-15 py-10 d-md-flex justify-content-between align-items-center">
                     <h2 class="content-title text-uppercase m-0">Article Details</h2>
-                    <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </router-link>
+                    <div class="button-group">
+                        <div class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2" data-toggle="modal" data-target="#searchReplaceModal">
+                            <i class="fas fa-search"></i> Search & Replace
+                        </div>
+                        <router-link :to="{ name: 'articleList'}" class="btn common-gradient-btn ripple-btn btn-xs m-1 px-15 py-2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </router-link>
+                    </div>
+                </div>
+
+                <!-- search & replace modal -->
+                <div class="modal fade" id="searchReplaceModal" tabindex="-1" aria-labelledby="searchReplaceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="searchReplaceModalLabel">Search & Replace</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <search-replace v-if="aArticle" :post_id="aArticle.id" @replace="getReplacedData"></search-replace>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- search & replace modal end -->
+                <div class="action-modal-wraper" v-if="success_message">
+                    <span>{{ success_message }}</span>
+                </div>
+                <div class="action-modal-wraper-error" v-if="error_message">
+                    <span>{{ error_message }}</span>
                 </div>
 
 
@@ -176,6 +205,7 @@
 <script>
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
+    import SearchReplace from "../replace/SearchReplace";
     import $ from 'jquery'
     import axios from "axios";
 
@@ -183,7 +213,8 @@
         name: "articleDetails.vue",
         components: {
             Header,
-            Menu
+            Menu,
+            SearchReplace
         },
         filters:{
             formatFileName(fileName){
@@ -220,6 +251,22 @@
         },
 
         methods: {
+            getReplacedData(status){
+                console.log(status);
+                this.articleSearch(this.articleSlug);
+                if (status=='search field empty!'){
+                    this.error_message = status;
+                    this.setTimeoutElements();
+                }
+                if (status=='replace field empty!'){
+                    this.error_message = status;
+                    this.setTimeoutElements();
+                }
+                if (status=='word replaced!'){
+                    this.success_message = status;
+                    this.setTimeoutElements();
+                }
+            },
             commentUpdate(data,btnEdit,paraID,textareaID,btnID){
                 let _that = this;
 
