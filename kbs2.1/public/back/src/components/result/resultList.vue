@@ -51,8 +51,9 @@
                                         <v-row>
                                             <v-col class="customer-data-table-wrapper">
                                                 <v-data-table :headers="headers" :items="resultList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                                                    <template v-slot:item.user.first_name="{item}">
-                                                        <span>{{item.user.first_name}} {{item.user.last_name}}</span>
+                                                    <template v-slot:item.username="{item}">
+                                                        <span v-if="item.user">{{item.user.first_name}} {{item.user.last_name}}</span>
+                                                        <span v-else>Unknown</span>
                                                     </template>
 
                                                     <template v-slot:item.actions="{item}">
@@ -140,7 +141,7 @@
                     },
                     {
                         text: 'Username',
-                        value: 'user.first_name',
+                        value: 'username',
                     },
         
                     

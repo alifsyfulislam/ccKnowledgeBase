@@ -173,9 +173,6 @@
                 if (_that.isRepeat == false ){
                     _that.finalizeData();
                 }
-                else{
-                    _that.fromData = '';
-                }
             },
             finalizeData(){
                 let _that = this;
@@ -203,7 +200,11 @@
             saveResult() {
 
                 let _that = this;
-                _that.userId= _that.userInformation.id;
+                if(_that.userInformation) {
+                     _that.userId= _that.userInformation.id;
+                } else{
+                    _that.userId ='';
+                }
                 let ques_and_ans = JSON.stringify({..._that.quesAndAns});
                 console.log('ques and answer',_that.quesAndAns);
                 console.log('ques and answer',ques_and_ans);
@@ -213,12 +214,7 @@
                 postData.append('quiz_id', _that.quizInfo.id);
                 postData.append('ques_and_ans', ques_and_ans);
 
-                 axios.post('results',postData,
-                    {
-                        headers: {
-                            'Authorization' : 'Bearer '+sessionStorage.userToken
-                        }
-                    }).then(function (response){
+                 axios.post('result-create',postData).then(function (response){
                     // console.log(response.data);
                     if (response.data.status_code ==200){
                         console.log("Quiz result successfully added")
@@ -356,7 +352,9 @@
 
         created() {
             let _that = this;
-            _that.userInformation = JSON.parse(sessionStorage.userInformation);
+            if(sessionStorage.userInformation) {
+                _that.userInformation = JSON.parse(sessionStorage.userInformation);
+            }
             _that.detectTab();
             if (_that.$route.params.quiz_info){
                 _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);

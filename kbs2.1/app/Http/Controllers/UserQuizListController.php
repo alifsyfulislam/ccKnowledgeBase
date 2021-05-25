@@ -71,21 +71,22 @@ class UserQuizListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function storeResult(Request $request)
+    {
+        return $this->resultService->createItem($request);
+
+    }
+    
     public function store(Request $request)
     {
-        //
-        //
-        return $this->resultService->createItem($request);
-        //  $arr = json_decode($request->ques_and_ans,true);
-        //  foreach($arr as $key=>$value) {
-        //      return $value;
-        //  }
+
+        // return $this->resultService->createItem($request);
+        
     }
 
-    public function userQuizList() {
-        // return $this->resultService->paginateData();
-         return "hello";
-    }
+    
+
 
     /**
      * Display the specified resource.

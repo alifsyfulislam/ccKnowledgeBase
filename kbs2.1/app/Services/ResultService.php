@@ -75,7 +75,6 @@ class ResultService
     public function createItem($request){
         $validator = Validator::make($request->all(),[
 
-            'user_id' => "required",
             'quiz_id' => "required",
 
         ]);
@@ -107,7 +106,6 @@ class ResultService
                 } else {
                     $input['user_id'] = $request->user_id;
                 }
-               
                 $input['quiz_id'] = $request->quiz_id;
                 $input['question_id'] = $key;
                 $input['answer'] = $value;

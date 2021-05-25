@@ -71,6 +71,7 @@ Route::get('quiz-form/field-list/{id}',[QuizTakeController::class, 'index']);
 Route::post('customer/username', [CustomerController::class, 'checkUserNameExist']);
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
+Route::post('result-create',[UserQuizListController::class, 'storeResult']);
 //Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
 
 
