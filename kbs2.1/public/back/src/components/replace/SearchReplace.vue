@@ -2,7 +2,7 @@
     <div v-if="post_id">
         <div>
             <div class="form-group">
-                <input class="form-control" type="text" placeholder="Search" id="text-search" v-model="search_word">
+                <input class="form-control" type="text" placeholder="Search" id="text-search" v-model="search_word" @keyup="getHighlightWord()">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="replace" v-model="replace_word">
@@ -24,10 +24,11 @@
     import $ from 'jquery'
     import axios from "axios";
 
+
     export default {
         name: "SearchReplace",
 
-        props : ['post_id'],
+        props : ['post_id','post_slug'],
 
         data(){
             return{
@@ -35,10 +36,17 @@
                 search_word : '',
                 replace_word : '',
                 success_message: '',
-                error_message : ''
+                error_message : '',
+                aArticle:'',
+                articleID :  '',
+                articleSlug :  '',
             }
         },
         methods:{
+            getHighlightWord(){
+              // console.log(this.search_word);
+              this.$emit('keyword-search', this.search_word);
+            },
             setTimeoutElements()
             {
                 setTimeout(() => this.success_message = "", 2e3);
@@ -56,20 +64,20 @@
                                 'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                             }
                         }).then(function (response) {
-                        if (response.data.status_code==200 && response.data.article != ''){
+                        if (response.data.status_code==200 && response.data.article != 'Not found!') {
                             console.log(response)
-                            // _that.search_word = '';
                             _that.success_message = 'Search found!';
                             _that.isSearch = !_that.isSearch;
-                            _that.$emit('replace',_that.search_word);
+                            _that.$emit('replace', _that.search_word);
                             _that.setTimeoutElements();
                             // $( "div:contains(sear)" ).css( "text-decoration", "underline" );
-                        } else if (response.data.status_code==200 && response.data.article == '') {
-                            // _that.error_message = 'No data found!'
-                            _that.setTimeoutElements();
                         }
                         else {
                             // _that.error_message = 'No data found!'
+                            _that.search_word = '';
+                            _that.replace_word = '';
+                            _that.error_message = 'Not found!';
+                            _that.$emit('replace',_that.error_message);
                             _that.setTimeoutElements();
                         }
                     })
@@ -93,12 +101,18 @@
                                     'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                                 }
                             }).then(function (response) {
-                            if (response.data.status_code == 200){
+                            if (response.data.status_code == 200 && response.data.article != 'Not found!'){
                                 console.log(response.data)
                                 _that.search_word = '';
                                 _that.replace_word = '';
                                 _that.success_message = 'word replaced!';
-                                _that.$emit('replace',_that.success_message);
+                                _that.articleSearch(_that.articleSlug)
+                                _that.$emit('replace',_that.success_message, _that.aArticle);
+                            }else{
+                                _that.search_word = '';
+                                _that.replace_word = '';
+                                _that.error_message = 'Not found!';
+                                _that.$emit('replace',_that.error_message);
                             }
                         })
                     }else {
@@ -115,28 +129,41 @@
 
 
 
-            }
+            },
+
+            articleSearch(v){
+                let _that = this;
+                console.log(v);
+                let articleSlug = v;
+                axios.get('article-details/'+this.post_slug)
+                    .then(function (response) {
+                        _that.aArticle = response.data.article_info;
+                        console.log(_that.aArticle);
+                        // location.reload()
+                    })
+            },
 
         },
         created() {
-            console.log(this.post_id)
+            this.articleID = this.post_id;
+            this.articleSlug = this.post_slug;
         }
     }
 </script>
 
 <style scoped>
-    .highlight {
-        background-color: #fff34d;
-        -moz-border-radius: 5px; /* FF1+ */
-        -webkit-border-radius: 5px; /* Saf3-4 */
-        border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
-        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* FF3.5+ */
-        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Saf3.0+, Chrome */
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Opera 10.5+, IE 9.0 */
-    }
+    /*.highlight {*/
+    /*    background-color: #fff34d;*/
+    /*    -moz-border-radius: 5px; !* FF1+ *!*/
+    /*    -webkit-border-radius: 5px; !* Saf3-4 *!*/
+    /*    border-radius: 5px; !* Opera 10.5, IE 9, Saf5, Chrome *!*/
+    /*    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); !* FF3.5+ *!*/
+    /*    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); !* Saf3.0+, Chrome *!*/
+    /*    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); !* Opera 10.5+, IE 9.0 *!*/
+    /*}*/
 
-    .highlight {
-        padding:1px 4px;
-        margin:0 -4px;
-    }
+    /*.highlight {*/
+    /*    padding:1px 4px;*/
+    /*    margin:0 -4px;*/
+    /*}*/
 </style>

@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Repositories\searchReplaceRepository;
+use Illuminate\Support\Facades\Validator;
 use Nyholm\Psr7\Request;
 
 class SearchReplaceService
@@ -28,6 +29,19 @@ class SearchReplaceService
     }
 
     public function getReplaceResult($post_id,$search,$request){
+        $validator = Validator::make($request->all(),[
+            'replace_word'    => 'required',
+        ]);
+
+        if($validator->fails()) {
+
+            return response()->json([
+                'status_code' => 400,
+                'messages'    => config('status.status_code.400'),
+                'errors'      => $validator->errors()->all()
+            ]);
+
+        }
         return response()->json([
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
