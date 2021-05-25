@@ -95,11 +95,11 @@
                                 <!--bangla-->
                                 <div class="tab-pane fade" id="tabBangla" v-if="aArticle.bn_title != 'n/a'">
                                     <div class="ta-content-wrapper">
-                                        <h3 class="pb-10 article_keyword">{{aArticle.bn_title}}</h3>
-                                        <p class="pb-10 article_keyword" v-if="aArticle.en_short_summary != ''">{{aArticle.en_short_summary}}</p>
+                                        <h3 :id="'article_keyword_bn_title_'+aArticle.id" class="pb-10">{{aArticle.bn_title}}</h3>
+                                        <p :id="'article_keyword_bn_short_summary_'+aArticle.id" class="pb-10 article_keyword" v-if="aArticle.bn_short_summary != ''">{{aArticle.bn_short_summary}}</p>
                                     </div>
                                     <div class="ta-content-wrapper pb-10" v-for="a_article_content in aArticle.contents">
-                                        <div class="article_keyword" v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
+                                        <div :id="'article_keyword_bn_body_'+a_article_content.id" v-if="a_article_content.bn_body != 'n/a' && a_article_content.role_id.includes(userInformation.roles[0].id)" v-html="a_article_content.bn_body"></div>
                                     </div>
                                 </div>
                             </div>
@@ -255,9 +255,42 @@
                 // this.articleSearch(this.articleSlug);
                 this.color_word_tag('article_keyword_tag_'+this.aArticle.id,keyword, 'hotpink')
                 this.color_word_en_title('article_keyword_en_title_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_bn_title('article_keyword_bn_title_'+this.aArticle.id,keyword, 'hotpink')
                 this.color_word_en_short_summary('article_keyword_en_short_summary_'+this.aArticle.id,keyword, 'hotpink')
+                this.color_word_bn_short_summary('article_keyword_bn_short_summary_'+this.aArticle.id,keyword, 'hotpink')
                 this.color_word_en_body('article_keyword_en_body_',keyword, 'hotpink')
+                this.color_word_bn_body('article_keyword_bn_body_',keyword, 'hotpink')
             },
+
+            color_word_bn_body(text_id,word, color){
+                let nodes = $('[id^='+text_id+']');
+                // let rex = /(<([^>]+)>)/ig;
+                let contents = [];
+
+                for(let i=0;i<nodes.length; i++){
+                    // .replace(rex , "")
+
+                    contents[i] =$('#'+ nodes[i].id).html();
+                    // console.log(contents[i]);
+                    if (contents[i].includes(word)){
+
+                        let tags = contents[i].split(' ');
+                        // console.log(contents[i])
+                        tags = tags.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                        contents[i] = tags.join(' ');
+                        console.log(contents[i])
+                        console.log('<br/>')
+                        $('#'+ nodes[i].id).html(contents[i])
+
+                    }
+
+                }
+
+                // $('#' + text_id).html(new_words);
+                // console.log(new_words)
+
+            },
+
             color_word_en_body(text_id,word, color){
                 let nodes = $('[id^='+text_id+']');
                 // let rex = /(<([^>]+)>)/ig;
@@ -293,8 +326,21 @@
                 let new_words = words.join(' ');
                 $('#' + text_id).html(new_words);
             },
+            color_word_bn_title(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
 
             color_word_en_short_summary(text_id,word, color){
+                let words = $("#" + text_id).text().split(' ');
+                words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
+                let new_words = words.join(' ');
+                $('#' + text_id).html(new_words);
+            },
+
+            color_word_bn_short_summary(text_id,word, color){
                 let words = $("#" + text_id).text().split(' ');
                 words = words.map(function(item) { return item == word ? "<span style='color: " + color + "'>" + word + '</span>' : item });
                 let new_words = words.join(' ');
