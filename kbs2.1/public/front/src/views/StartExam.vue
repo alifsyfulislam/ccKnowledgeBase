@@ -7,7 +7,7 @@
         <div class="container">
             <div v-if="isFinish">
                 <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
-                <div class="text-center">
+                <div class="text-center" v-if="!userInformation">
                     <router-link  v-if="showResult>=passMark" class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
                   Register Now</router-link>
                 </div>

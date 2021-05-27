@@ -55,6 +55,8 @@ class QuizRepository
         $dataObj->is_authorized = $data['is_authorized'];
         if( $dataObj->is_authorized!==0) {
             $dataObj->role_id = implode(',',$data['role_id']);
+        }else{
+            $dataObj->role_id = 0;
         }
        
 

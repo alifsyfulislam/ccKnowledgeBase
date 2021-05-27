@@ -102,7 +102,7 @@
                     email               : '',
                     password            : '',
                     confirm_password    : '',
-                    roles               : '10',
+                    roles               : '5',
                     status              : 1,
                     quizId              :'',
                     quizScore           : '',

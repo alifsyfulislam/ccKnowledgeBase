@@ -15,8 +15,7 @@
                 <div class="row">
                     <div class="col-md-12 p-3 m-3">
                         <h2 class="text-center font-weight-bold pb-20 pb-md-40">Quiz List</h2>
-
-                        <div class="quiz-item mb-20" v-for="a_quiz in allQuizzes" :key="a_quiz.id">
+                        <div class="quiz-item mb-20" v-for="a_quiz in allQuizzes" :key="a_quiz.id" v-if="userInformation.roles ? a_quiz.role_id.includes(userInformation.roles[0].id) : a_quiz.role_id.includes(0)">
                             <div class="q-featured-caption">
                                 <div class="q-icon">
                                     <i class="fa fa-desktop" aria-hidden="true"></i>
@@ -65,7 +64,12 @@
                                 <button class="btn btn-common btn-primary px-25 text-white font-16" @click="quizStart(a_quiz)"><span>Start</span></button>
                             </div>
                         </div>
+
+<!--                        <h4 v-else class="text-center">No quiz available right now!</h4>-->
+
                     </div>
+
+
                 </div>
             </div>
         </section>
@@ -81,7 +85,8 @@
             return{
                 isLoading: true,
                 itemA: '0' ,
-                allQuizzes : ''
+                allQuizzes : '',
+                userInformation : ''
             }
         },
         components:{
@@ -112,6 +117,17 @@
             }
         },
         created(){
+            if (sessionStorage.userInformation){
+                this.userInformation = JSON.parse(sessionStorage.userInformation);
+                // console.log(this.userInformation.roles[0].id);
+                if (!this.userInformation){
+                    this.isAuthinticate = false;
+                } else{
+                    this.isAuthinticate = true;
+                }
+            }else{
+                this.userInformation = '';
+            }
             this.getQuizList();
         }
     }
