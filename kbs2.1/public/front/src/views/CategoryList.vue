@@ -1,7 +1,9 @@
 <template>
+
   <div v-if="isLoading">
     <Loader></Loader>
   </div>
+
   <div v-else v-cloak class="min-height-wrapper">
     <main>
       <section class="inner-search-area py-20">
@@ -49,6 +51,7 @@
       <section class="category-page-area py-50 py-md-60">
         <div class="container">
           <div class="row">
+
             <div class="col-lg-4 col-md-5 text-left">
               <div class="menu-wrapper cat-menu-wrapper bg-white mb-50" v-if="categoryHasArticle">
                 <h3 class="menu-title mb-20 p-15">Categories</h3>
@@ -130,7 +133,6 @@
     },
     methods:{
       getCategorySlugFromChild(status){
-        console.log(status)
         this.categorySearch(status);
       },
       getStaticMedia()

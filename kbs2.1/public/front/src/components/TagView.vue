@@ -37,7 +37,6 @@
         created() {
             this.articleList = this.selectedCategory;
             this.articleList.forEach(val => {
-                console.log(val.tag);
                 if (val.tag.includes(',')){
                     let res = val.tag.split(',');
                      res.forEach(single =>{

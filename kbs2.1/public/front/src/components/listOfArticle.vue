@@ -109,7 +109,6 @@
         created() {
             this.selectedCategory = this.selected_category;
             this.getStaticMedia();
-            console.log(this.selectedCategory)
         }
     }
 </script>
