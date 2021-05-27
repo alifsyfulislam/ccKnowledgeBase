@@ -251,8 +251,9 @@ header.fixed-header .navbar .logo img {
 }
 
 .menu-wrapper.cat-menu-wrapper ul li .nav-link:hover {
-  background: #3fc6d4;
-  color: #ffffff;
+  /*background: #3fc6d4;*/
+  background: rgba(63, 198, 212, 0.12);
+  color: #000 !important;
 }
 
 .menu-wrapper.cat-menu-wrapper ul li .nav-link:hover ~ .cat-expand {

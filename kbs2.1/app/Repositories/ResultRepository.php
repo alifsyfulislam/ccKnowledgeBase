@@ -45,7 +45,7 @@ class ResultRepository
     }
 
     public function checkAttempt($userId, $quizId) {
-        $attemptDetails = Result::where(['user_id'=>$userId, 'quiz_id'=>$quizId])->orderby('id','DESC')->first();
+        $attemptDetails = Result::where(['user_id'=>$userId, 'quiz_id'=>$quizId])->orderby('created_at','DESC')->first();
         return $attemptDetails;
     }
     public function delete($id) {

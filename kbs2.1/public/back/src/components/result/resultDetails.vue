@@ -52,9 +52,9 @@
                                      
                                 </div>
                                 <div class="col-md-6">
-                                    <strong>Total marks </strong>:{{resultDetails[0].quiz.total_marks}}
+                                    <strong>Total marks </strong>: {{resultDetails[0].quiz.total_marks}}
                                     <div>
-                                         <strong>Obtained score: </strong>{{(resultDetails[0].result)}}
+                                         <strong>Obtained marks: </strong>{{(resultDetails[0].result)}}
                                     </div>
                                 </div>
                             </div>

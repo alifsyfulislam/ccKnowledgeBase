@@ -93,7 +93,15 @@ class ResultService
         DB::beginTransaction();
 
         try {
+
+            if(!$request->user_id) {
+                $MAC = exec('getmac');
+                $mac_address = strtok($MAC, ' ');
+                $request->user_id = $mac_address ? $mac_address : Helper::getClientIpAddress();
+            }
             $attempDetails =  $this->resultRepository->checkAttempt($request->user_id, $request->quiz_id);
+
+
             if($attempDetails) {
               $attempCount =  $attempDetails->attempt+1;
             } else {
@@ -101,11 +109,7 @@ class ResultService
             }
             foreach($quesAndAns as $key=>$value) {
                 $input['id'] = time().rand(1000,9000);
-                if(!$request->user_id) {
-                    $input['user_id'] = Helper::getClientIpAddress();
-                } else {
-                    $input['user_id'] = $request->user_id;
-                }
+                $input['user_id'] = $request->user_id;
                 $input['quiz_id'] = $request->quiz_id;
                 $input['question_id'] = $key;
                 $input['answer'] = $value;

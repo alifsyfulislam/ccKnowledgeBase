@@ -2,7 +2,7 @@
   <li class="nav-item">
     <!--            :id="'treeLevel'+item.id"-->
     <div :class="{bold: isFolder}" class="d-flex justify-content-between cat-expand-menu-item">
-      <a class="nav-link d-block w-100" href="#" @click.prevent="getSelectedArticleList(item)">{{ item.name }}</a>
+      <a class="nav-link d-block w-100" :class="item.slug == router_path ? 'active' : ''" href="#" @click.prevent="getSelectedArticleList(item)">{{ item.name }}</a>
       <span class="cat-expand" v-if="isFolder" @click="toggle">{{ isOpen ? '−' : '+' }}</span>
     </div>
     <ul class="list-unstyled list-inline mb-0 pl-10" v-show="isOpen" v-if="isFolder">
@@ -39,13 +39,15 @@ export default {
     },
     getSelectedArticleList(item){
       // console.log('hi');
-      this.$router.push({ path: `/category-list/${item.slug}` })
-      localStorage.setItem('category-article-list', JSON.stringify(item));
+      // this.$router.push({ path: `/category-list/${item.slug}` })
+      // localStorage.setItem('category-article-list', JSON.stringify(item));
+      this.$emit('category-slug',item.slug);
     }
   },
   created() {
     // $('#treeLevel404').trigger('click');
-    // console.log(this.categorySlug);
+    console.log(this.router_path);
+    console.log(this.item.name);
   }
 }
 </script>

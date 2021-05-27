@@ -47,7 +47,7 @@
                     this.tagList.push(val.tag);
                 }
             })
-            console.log(this.tagList);
+            this.tagList = this.tagList.filter((v, i, a) => a.indexOf(v) === i);
         }
     }
 </script>
