@@ -41,6 +41,8 @@
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> <span class="text-uppercase" v-if="userInformation"> {{userInformation.username}} </span> <i class="fa fa-user"></i></a>
                 <div class="dropdown-menu slideDownIn">
                   <span class="dropdown-item profile-view-btn" data-bs-toggle="modal" data-bs-target="#profileDetails" @click="isProfile=true">Profile</span>
+
+                  <span class="dropdown-item profile-view-btn"> <router-link :to="{ name: 'quizHistory'}"><span style="color:#868e96">Quiz Histories</span></router-link></span>
                   <a class="dropdown-item" href="#" @click.prevent="userLogOff">Logout</a>
                 </div>
               </li>

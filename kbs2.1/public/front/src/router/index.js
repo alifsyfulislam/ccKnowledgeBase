@@ -11,6 +11,10 @@ import Search from "../views/Search";
 import Quiz from "../views/Quiz";
 import StartExam from "../views/StartExam";
 import Sitemap from "../views/Sitemap";
+import quizHistory from "../views/quizHistory/UserQuizHistory";
+import quizResultList from "../views/quizHistory/UserQuizResultList";
+import detailsResult from "../views/quizHistory/DetailsResult";
+
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -72,10 +76,38 @@ let router =  new Router({
       component: Sitemap
     },
     {
+      path: '/quiz-history',
+      name: 'quizHistory',
+      beforeEnter : guardMyroute,
+      component: quizHistory,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/quiz-result-list/:quiz_id',
+      name: 'quizResultList',
+      beforeEnter : guardMyroute,
+      component: quizResultList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/details-result/:quiz_id/:attempt',
+      name: 'detailsResult',
+      beforeEnter : guardMyroute,
+      component: detailsResult,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: "/:catchAll(.*)",
       name: 'NotFound',
       component: NotFound
     }
+    
   ],
   mode : 'history',
   base : 'kbs'
@@ -86,6 +118,25 @@ router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0);
   next();
 });
+
+function guardMyroute(to, from, next)
+{
+  var isAuthenticated= false;
+//this is just an example. You will have to find a better or
+// centralised way to handle you localstorage data handling
+  if(sessionStorage.getItem('userToken'))
+    isAuthenticated = true;
+  else
+    isAuthenticated= false;
+  if(isAuthenticated)
+  {
+    next(); // allow to enter route
+  }
+  else
+  {
+    next('/'); // go to '/login';
+  }
+}
 
 export default router;
 
