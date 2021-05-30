@@ -75,6 +75,7 @@ class QuizService
     public function createItem($request)
     {
         $validator = Validator::make($request->all(),[
+            'article_id' => 'required',
             'quiz_form_id' => 'required',
             'name' => 'required|unique:quizzes,name',
             'duration' => 'required',
@@ -96,7 +97,30 @@ class QuizService
         $input['slug'] = Helper::slugify($input['name']);
         $input['id']   = time().rand(1000,9000);
 
-        $this->quizRepository->create($input);
+//        return  $input['article_id'];
+        $selectedArticleID = array();
+
+
+        foreach ($input['article_id'] as $articleID){
+//            $articleID.implode(',','')
+            if ($articleID["id"] != ''){
+                array_push($selectedArticleID,$articleID['id'].'/'.$articleID['slug']);
+
+            }
+
+
+        }
+
+        $list_article_id = join(",",$selectedArticleID);
+
+//        return $list_article_id;
+
+
+
+
+
+
+        $this->quizRepository->create($input,$list_article_id);
 
         return response()->json([
             'status_code' => 201,
@@ -115,6 +139,7 @@ class QuizService
 
         $validator = Validator::make($request->all(),[
             'quiz_form_id' => 'required',
+            'article_id' => 'required',
             'name' => 'required',
             'duration' => 'required',
             'total_marks' => 'required',
@@ -142,7 +167,19 @@ class QuizService
             $input['role_id'] = implode(',', $input['role_id']);
             $input['slug'] = Helper::slugify($input['name']);
 
-            $this->quizRepository->update($input, $request->id);
+            $selectedArticleID = array();
+
+            foreach ($input['article_id'] as $articleID){
+                if ($articleID["id"] != ''){
+                    array_push($selectedArticleID,$articleID['id'].'/'.$articleID['slug']);
+                }
+
+
+            }
+
+            $list_article_id = join(",",$selectedArticleID);
+
+            $this->quizRepository->update($input, $request->id, $list_article_id);
 
         } catch (Exception $e) {
 

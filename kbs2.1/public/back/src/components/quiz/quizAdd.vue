@@ -18,7 +18,30 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Select Quiz Form</label>
+                            <label>Select Articles <span class="required">*</span></label>
+
+                            <multiselect
+                                    v-model="article_value"
+                                    tag-placeholder="Add this article!"
+                                    placeholder="Select articles!"
+                                    label="en_title"
+                                    track-by="id"
+                                    :options="article_options"
+                                    :multiple="true"
+                                    :taggable="true"
+                            >
+                                <!--                                @tag="addTag"-->
+
+                            </multiselect>
+                            <span id="articleIDError" class="text-danger small"></span>
+                            <!--                            <pre class="language-json"><code>{{ value  }}</code></pre>-->
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select Quiz Form <span class="required">*</span></label>
 
                             <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType(), checkTotalQuestions(quizData.quiz_form_id)" >
                                 <option value="" disabled>Select A Quiz Form</option>
@@ -106,12 +129,14 @@
 
 import axios from "axios";
 import $ from "jquery";
- import Select2 from 'v-select2-component';
+import Multiselect from 'vue-multiselect'
+
+
 export default {
     name: "quizAdd",
     props: ['isAddCheck'],
     components: {
-         Select2
+        Multiselect
     },
 
     data() {
@@ -144,9 +169,44 @@ export default {
                 isTotalMarksStatus : false,
                 isNumberOfQuestionStatus : false,
             },
+
+            article_value: [],
+            article_options: [],
         }
     },
     methods: {
+        // addTag (newTag) {
+        //     const tag = {
+        //         name: newTag,
+        //         code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        //     }
+        //     this.article_options.push(tag)
+        //     this.article_value.push(tag)
+        // },
+        getAllArticleList()
+        {
+            let _that = this;
+            axios.get('all-article-list', {
+                headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                },
+                params : {
+                    isAdmin : 1,
+                },}).then(function (response) {
+                    console.log(response.data.article_list)
+                response.data.article_list.forEach(val => {
+                    _that.article_options.push({
+
+                        'id' : val.id,
+                        'en_title' : (val.en_title).length < 50 ? val.en_title : (val.en_title).substring(0,50)+'..',
+                        'slug' : val.slug
+                    });
+                })
+
+
+            })
+        },
+
         checkValidMarks(val){
             if (val <= 0){
                 this.validation_error.isTotalMarksStatus = false;
@@ -380,6 +440,9 @@ export default {
                     $('#numberOfQuestionsError').html(val)
                     $('#numberOfQuestions').css({'border-color': '#FF7B88'});
                 }
+                else if(val.includes("article id")){
+                    $('#articleIDError').html(val)
+                }
             })
         },
 
@@ -389,9 +452,18 @@ export default {
             if(this.isAuthorized == 1) {
                 this.role_id.push(1);
             }
+
+            // _that.article_options.forEach(val=>{
+            //     console.log(val);
+            // })
+
+
+
+
             axios.post('quizzes',
                 {
                     name                    : this.quizData.name,
+                    article_id              : this.article_value,
                     quiz_form_id            : this.quizData.quiz_form_id,
                     duration                : this.quizData.duration,
                     total_marks             : this.quizData.total_marks,
@@ -489,13 +561,7 @@ export default {
                     }
                 })
         },
-        // myChangeEvent(val){
-        //     let _that = this;
-        //     _that.roles = val;
-        // },
-        // mySelectEvent({id, text}){
-        //     console.log({id, text})
-        // },
+
 
         getQuizFormFieldDetails(quizFormID)
         {
@@ -524,10 +590,13 @@ export default {
       /*  this.isAdd = this.isAddCheck;*/
         this.getQuizFormList();
         this.getUserRoles();
+        this.getAllArticleList();
     }
 }
 </script>
 
-<style scoped>
+<!--<style scoped>-->
 
-</style>
+<!--</style>-->
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

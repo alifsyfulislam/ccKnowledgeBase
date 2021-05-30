@@ -65,6 +65,8 @@ class QuizController extends Controller
     public function store(Request $request)
     {
 
+//        return $request->all();
+
         if(Auth::user()->can('quiz-create')) {
 
             return $this->quizService->createItem($request);
