@@ -54,6 +54,11 @@ class Article extends Model
         return $this->hasMany(Comment::class,'id');
     }
 
+//    public function quiz()
+//    {
+//        return $this->belongsTo(Article::class,'article_id');
+//    }
+
     /**
      * @param $date
      * @return string

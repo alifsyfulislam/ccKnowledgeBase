@@ -36,6 +36,11 @@ class Quiz extends Model
 
     }
 
+//    public function articles()
+//    {
+//        return $this->hasMany(Quiz::class,'id');
+//    }
+
     /**
      * @param $date
      * @return false|string

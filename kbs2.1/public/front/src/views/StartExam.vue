@@ -7,10 +7,23 @@
         <div class="container">
             <div v-if="isFinish">
                 <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
-                <div class="text-center" v-if="!userInformation">
-                    <router-link  v-if="showResult>=passMark" class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
-                  Register Now</router-link>
+
+                <div class="pt-3 pb-3" v-if="!(showResult>=passMark)">
+                    <h3 class="pb-5">Please read below articles to improve your knowledge!</h3>
+                    <ul class="text-left">
+                        <li class="text-left" v-for="a_article in article_list" :key="a_article">
+                            <a href="#" @click.prevent="articleDetails(a_article)">{{a_article.split('/')[1]}}</a>
+                        </li>
+                    </ul>
                 </div>
+
+                <div class="text-center" v-if="!userInformation && showResult>=passMark">
+                    <router-link  class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
+                        Register Now
+                    </router-link>
+                </div>
+
+
                 
             </div>
             <div v-else>
@@ -144,10 +157,15 @@
                     per_page: 1,
                     total: ''
                 },
+
+                article_list : ''
             }
         },
 
         methods:{
+            articleDetails(url){
+              this.$router.push('/article-detail/'+url);
+            },
             checkTextAreaData(){
                 this.fromData = this.fromData.replace("\n", "");
 
@@ -358,6 +376,9 @@
             _that.detectTab();
             if (_that.$route.params.quiz_info){
                 _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);
+
+                _that.article_list = _that.quizInfo.article_id.split(',');
+                console.log(_that.article_list)
                 _that.passMark =  ( _that.quizInfo.total_marks*40 )/100;
                 let timer = _that.quizInfo.duration*60;
                 _that.printTimer(timer);//total time

@@ -18,6 +18,29 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Select Articles <span class="required">*</span></label>
+
+                            <multiselect
+                                    v-model="article_value"
+                                    tag-placeholder="Add this article!"
+                                    placeholder="Select articles!"
+                                    label="en_title"
+                                    track-by="id"
+                                    :options="article_options"
+                                    :multiple="true"
+                                    :taggable="true"
+                            >
+                                <!--                                @tag="addTag"-->
+
+                            </multiselect>
+                            <span id="articleIDError" class="text-danger small"></span>
+                            <!--                            <pre class="language-json"><code>{{ value  }}</code></pre>-->
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Select Quiz Form</label>
 
                             <select class="form-control" id="quizForm" v-model="quizData.quiz_form_id" @change="checkAndValidateSelectType(), checkTotalQuestions(quizData.quiz_form_id)">
@@ -103,11 +126,16 @@
 <script>
 
 import axios from "axios";
+import Multiselect from 'vue-multiselect'
 import $ from "jquery";
 
 export default {
     name: "quizEdit",
     props: ['isEditCheck', 'quizId'],
+
+    components: {
+        Multiselect
+    },
 
     data() {
         return {
@@ -141,10 +169,39 @@ export default {
                 isTotalMarksStatus : true,
                 isNumberOfQuestionStatus : true,
             },
+
+            article_value: [],
+            article_options: [],
+            previous_included_list : ''
         }
     },
 
     methods: {
+        getAllArticleList()
+        {
+            let _that = this;
+            axios.get('all-article-list', {
+                headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                },
+                params : {
+                    isAdmin : 1,
+                },}).then(function (response) {
+                console.log(response.data.article_list);
+                response.data.article_list.forEach(val => {
+
+                    _that.article_options.push({
+
+                        'id' : val.id,
+                        'en_title' : (val.en_title).length < 50 ? val.en_title : (val.en_title).substring(0,50)+'..',
+                    });
+
+
+                })
+
+
+            })
+        },
         checkTotalQuestions(quizFormID){
             this.getQuizFormFieldDetails(quizFormID);
         },
@@ -373,6 +430,7 @@ export default {
             $('#durationError').html("");
             $('#totalMarksError').html("");
             $('#numberOfQuestionsError').html("");
+            $('#articleIDError').html("");
 
             $('#title').css({'border-color': '#ced4da'});
             $('#quizForm').css({'border-color': '#ced4da'});
@@ -401,6 +459,8 @@ export default {
                 }else if(val.includes("number of questions") === true){
                     $('#numberOfQuestionsError').html(val)
                     $('#numberOfQuestions').css({'border-color': '#FF7B88'});
+                }else if(val.includes("article id")){
+                    $('#articleIDError').html(val)
                 }
 
 
@@ -420,6 +480,7 @@ export default {
                 {
                     id            : quizID,
                     name          : this.quizData.name,
+                    article_id    : this.article_value,
                     quiz_form_id  : this.quizData.quiz_form_id,
                     duration      : this.quizData.duration,
                     total_marks   : this.quizData.total_marks,
@@ -458,7 +519,7 @@ export default {
 
         },
 
-         getUserRoles()
+        getUserRoles()
         {
             let _that =this;
             axios.get('roles',
@@ -509,22 +570,22 @@ export default {
                         _that.quizDetails    = response.data.quiz_info;
 
                         _that.quizData.name = _that.quizDetails.name;
-                        //  _that.quizData.article_id = _that.quizDetails.article_id;
+                        _that.quizData.article_id = _that.quizDetails.article_id;
                         _that.quizData.quiz_form_id = _that.quizDetails.quiz_form_id;
                         _that.quizData.duration = _that.quizDetails.duration;
                         _that.quizData.total_marks = _that.quizDetails.total_marks;
                         _that.quizData.status = _that.quizDetails.status;
                         _that.quizData.number_of_questions = _that.quizDetails.number_of_questions;
                         _that.isAuthorized = _that.quizDetails.is_authorized;
+                        // _that.findArticleInfo(_that.quizData.article_id)
 
                         if(_that.quizDetails.role_id!==null) {
                             if ((_that.quizDetails.role_id).includes(',')) {
                                 _that.role_id = (_that.quizDetails.role_id).split(',');
                                 _that.role_id = _that.role_id.map(i=>Number(i))
-                                console.log(_that.role_id);
+
                             }else {
                                 _that.role_id.push(_that.quizDetails.role_id);
-                                console.log(_that.role_id)
                             }
 
                         } else {
@@ -590,6 +651,8 @@ export default {
 
         this.quiz_id = this.quizId;
         this.getQuizDetails();
+        this.getAllArticleList();
+
         this.getArticleList();
         this.getQuizFormList();
         this.getUserRoles();
@@ -597,6 +660,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!--<style scoped>-->
 
-</style>
+<!--</style>-->
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

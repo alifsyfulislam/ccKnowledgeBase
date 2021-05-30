@@ -40,7 +40,6 @@ class QuizRepository
      */
     public function create(array $data)
     {
-
         $dataObj =  new Quiz;
 
         $dataObj->id  = $data['id'];
