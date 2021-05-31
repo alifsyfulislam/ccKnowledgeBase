@@ -23,6 +23,7 @@ class UserQuizListController extends Controller
     public function index(Request $request)
     {
         //
+//        return $this->resultService->getUserQuizList($request);
         if(Auth::user()->can('result-list')) {
 
             return $this->resultService->getUserQuizList($request);

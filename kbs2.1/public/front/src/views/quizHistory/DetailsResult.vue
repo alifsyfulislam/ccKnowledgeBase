@@ -98,7 +98,7 @@
                 axios.get(pageUrl,
                     {
                         headers: {
-                            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                            'Authorization'     : 'Bearer '+sessionStorage.userToken
                         },
                         params : {
                             user_id: _that.userInformation.id,
