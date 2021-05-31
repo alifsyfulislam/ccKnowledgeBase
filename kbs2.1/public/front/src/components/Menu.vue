@@ -5,7 +5,9 @@
         <div class="container position-relative">
           <div class="logo">
             <router-link class="nav-item" :to="{ name: 'Home'}">
+
               <img :src="frontPageData ? frontPageData.logo : this.static_image['newlogo']">
+
             </router-link>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
