@@ -595,8 +595,9 @@ export default {
 }
 </script>
 
-<!--<style scoped>-->
-
-<!--</style>-->
-
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style scoped>
+    .multiselect__tags {
+        background: transparent !important;
+    }
+</style>

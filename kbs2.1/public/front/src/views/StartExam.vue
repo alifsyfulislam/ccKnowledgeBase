@@ -10,8 +10,8 @@
 
                 <div class="pt-3 pb-3" v-if="!(showResult>=passMark)">
                     <h3 class="pb-5">Please read below articles to improve your knowledge!</h3>
-                    <ul class="text-left">
-                        <li class="text-left" v-for="a_article in article_list" :key="a_article">
+                    <ul class="list-group text-left">
+                        <li class="list-group-item list-group-item-action" v-for="a_article in article_list" :key="a_article">
                             <a href="#" @click.prevent="articleDetails(a_article)">{{a_article.split('/')[1]}}</a>
                         </li>
                     </ul>

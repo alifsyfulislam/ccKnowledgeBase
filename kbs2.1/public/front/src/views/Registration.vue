@@ -1,10 +1,10 @@
 <template>
     <div>
-        <section class="">
+        <section class="py-30 py-md-60 min-height-wrapper">
             <div class="container">
                 <div class="row">
                     <div class="">
-                        <h3 class="">Register Here</h3>
+                        <h2 class="text-center font-weight-bold pb-20 pb-md-40">Register Here</h2>
                         <div v-if="success_message" class="alert alert-success alert-dismissible fade show text-center" role="alert">
                             {{success_message}}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -69,7 +69,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group text-right">
-                                    <button class="btn btn-success common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Submit</button>
+                                    <button class="btn btn-common btn-primary px-50 text-white font-16" @click="validateAndSubmit()">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -443,5 +443,7 @@
 </script>
 
 <style scoped>
-
+    span.required {
+        color: red;
+    }
 </style>
