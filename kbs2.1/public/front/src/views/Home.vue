@@ -7,11 +7,11 @@
 
     <div v-cloak v-else class="display min-height-wrapper">
       <main>
-        <section class="banner-area d-flex align-items-center py-70 py-md-150" :style="{ backgroundImage: 'url(' + (frontPageData.banner ? frontPageData.banner : static_image['banner']) + ')' }">
+        <section class="banner-area d-flex align-items-center py-70 py-md-150" :style="{ backgroundImage: 'url(' + (frontPageData ? frontPageData.banner : static_image['banner']) + ')' }">
           <div class="container d-flex justify-content-center justify-content-md-start">
             <div class="search-wrapper position-relative">
-              <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData ? frontPageData.title : 'n/a' }}</h1>
-              <p class="text-center">{{ frontPageData ? frontPageData.description : 'n/a' }}</p>
+              <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData ? frontPageData.title : 'Knowledge Based System' }}</h1>
+              <p class="text-center">{{ frontPageData ? frontPageData.description : 'A knowledge-based system is a computer program that reasons and uses a knowledge base to solve complex problems.' }}</p>
 <!--              display search form-->
               <search-form/>
             </div>

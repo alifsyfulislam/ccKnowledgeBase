@@ -5,7 +5,7 @@
         <div class="container position-relative">
           <div class="logo">
             <router-link class="nav-item" :to="{ name: 'Home'}">
-              <img :src="frontPageData.logo">
+              <img :src="frontPageData ? frontPageData.logo : this.static_image['newlogo']">
             </router-link>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,6 +122,7 @@ export default {
       isAuthinticate : false,
       isHidden: false,
       isProfile : false,
+      static_image : []
     }
   },
 
@@ -177,10 +178,19 @@ export default {
                   _that.recentCategory = response.data.category_info;
                 }
               })
-    }
+    },
+    getStaticMedia()
+    {
+      // this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      // this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+      // this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.png';
+      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
+      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
+    },
   },
   created() {
     this.getPageDecorationData();
+    this.getStaticMedia();
 
     if (sessionStorage.userInformation){
       // console.log(sessionStorage.visitorID);
