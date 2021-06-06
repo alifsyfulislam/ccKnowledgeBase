@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <div v-if="isLoading">
       <Loader/>
     </div>
@@ -76,12 +76,12 @@
                         <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
                           <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
                             <div v-html="a_content.en_body"></div>
-<!--                            <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
+                            <!--                            <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
                           </div>
 
                           <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
                             <div v-html="a_content.bn_body"></div>
-<!--                            <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
+                            <!--                            <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
                           </div>
                         </div>
                       </div>
@@ -126,89 +126,89 @@
 </template>
 
 <script>
-import Loader from "../components/Loader";
-import axios from 'axios'
+  import Loader from "../components/Loader";
+  import axios from 'axios'
 
-// import $ from 'jquery'
-// $(document).on('click','.custom-accordion .heading', function () {
-//   $(this).toggleClass("active").next().slideToggle();
-//   $(".contents").not($(this).next()).slideUp(200);
-//   $(this).siblings().removeClass("active");
-// });
+  // import $ from 'jquery'
+  // $(document).on('click','.custom-accordion .heading', function () {
+  //   $(this).toggleClass("active").next().slideToggle();
+  //   $(".contents").not($(this).next()).slideUp(200);
+  //   $(this).siblings().removeClass("active");
+  // });
 
 
-export default {
-  name: "Faq",
-  components:{
-    Loader
-  },
-  data(){
-    return{
-      isLoading: true,
-      all_Faqs:'',
-      faq_query : '',
-      userInformation : ''
-    }
-  },
-  methods:{
-    clearFilter(){
+  export default {
+    name: "Faq",
+    components:{
+      Loader
+    },
+    data(){
+      return{
+        isLoading: true,
+        all_Faqs:'',
+        faq_query : '',
+        userInformation : ''
+      }
+    },
+    methods:{
+      clearFilter(){
 
-      localStorage.clear('faq_query');
+        localStorage.clear('faq_query');
 
-      let _that = this;
-      _that.faq_query = '';
-      axios.get('faq-list')
-        .then(function (response) {
-          _that.isLoading= false;
+        let _that = this;
+        _that.faq_query = '';
+        axios.get('faq-list')
+                .then(function (response) {
+                  _that.isLoading= false;
+                  _that.all_Faqs = response.data.faq_list.data;
+                })
+
+      },
+      searchData(pageUrl){
+        let _that = this;
+        pageUrl = pageUrl == undefined ? 'faq/search/'+_that.faq_query+'?page=1' : pageUrl;
+        axios.get(pageUrl).then((response)=>{
           _that.all_Faqs = response.data.faq_list.data;
+          _that.pagination  = response.data.faq_list;
         })
-
+      },
+      allFaqs(){
+        let _that = this;
+        axios.get('faq-list')
+                .then(function (response) {
+                  console.log(response.data.faq_list.data);
+                  _that.isLoading= false;
+                  _that.all_Faqs = response.data.faq_list.data;
+                })
+      },
     },
-    searchData(pageUrl){
-      let _that = this;
-      pageUrl = pageUrl == undefined ? 'faq/search/'+_that.faq_query+'?page=1' : pageUrl;
-      axios.get(pageUrl).then((response)=>{
-        _that.all_Faqs = response.data.faq_list.data;
-        _that.pagination  = response.data.faq_list;
-      })
-    },
-    allFaqs(){
-      let _that = this;
-      axios.get('faq-list')
-        .then(function (response) {
-          console.log(response.data.faq_list.data);
-          _that.isLoading= false;
-          _that.all_Faqs = response.data.faq_list.data;
-        })
-    },
-  },
-  created() {
-    if (sessionStorage.userInformation){
-      this.userInformation = JSON.parse(sessionStorage.userInformation);
-      // console.log(this.userInformation)
-    }else{
-      this.userInformation = '';
+    created() {
+      if (sessionStorage.userInformation){
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+        // console.log(this.userInformation)
+      }else{
+        this.userInformation = '';
+      }
+      this.allFaqs();
     }
-    this.allFaqs();
   }
-}
 </script>
 
 <style scoped>
-.inner-search-area .search-input-wrapper .input-group,
-.inner-search-area .search-input-wrapper .input-group.focused,
-.inner-search-area .search-input-wrapper .input-group.filled {
-  max-width: 100%;
-}
+  .inner-search-area .search-input-wrapper .input-group,
+  .inner-search-area .search-input-wrapper .input-group.focused,
+  .inner-search-area .search-input-wrapper .input-group.filled {
+    max-width: 100%;
+  }
 
-.inner-search-area .search-input-wrapper .btn.btn-outline-primary,
-.inner-search-area .search-input-wrapper .btn.btn-outline-primary:focus {
-  border-color: transparent !important;
-  box-shadow: inherit;
-  background-color: transparent;
-}
-.nav-tabs {border-bottom: 0;}
-.nav-tabs .nav-link.active,
-.nav-tabs .nav-item.show .nav-link,
-.nav-tabs .nav-link{padding: 5px 20px;}
+  .inner-search-area .search-input-wrapper .btn.btn-outline-primary,
+  .inner-search-area .search-input-wrapper .btn.btn-outline-primary:focus {
+    border-color: transparent !important;
+    box-shadow: inherit;
+    background-color: transparent;
+  }
+  .nav-tabs {border-bottom: 0;}
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .nav-link{padding: 5px 20px;}
 </style>

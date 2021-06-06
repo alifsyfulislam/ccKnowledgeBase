@@ -4,6 +4,10 @@ html, body {
   margin: 0;
 }
 
+.page-wrapper{
+  min-height: calc(100vh - 150px);
+}
+
 .action-modal-wraper {
   position: fixed;
   top: 30px;
@@ -917,5 +921,10 @@ header.fixed-header .navbar .logo img {
 
   .search-wrapper p {
     font-size: 18px;
+  }
+
+  .font-size-250{
+    padding: 100px 0 0 0 !important;
+    font-size: 100px !important;
   }
 }

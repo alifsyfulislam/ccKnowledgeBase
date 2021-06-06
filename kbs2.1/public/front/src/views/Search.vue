@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <div v-if="isLoading">
       <Loader/>
     </div>
@@ -24,7 +24,7 @@
 
                 <div v-if="suggestedArtiles.length" class="search-suggestion" style="left:0; width: 100%">
                   <ul>
-                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_article.id,articleSlug: a_suggestion.slug }}">{{a_suggestion.en_title.length < 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
+                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleID: a_article.id,articleSlug: a_suggestion.slug }}">{{a_suggestion.en_title.length == 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}</router-link></li>
 <!--                      <li  v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id"><router-link class="" :to="{ name: 'ArticleDetail', params: { articleSlug: a_suggestion.slug }}">{{a_suggestion.slug}}</router-link></li>-->
                   </ul>
                 </div>
@@ -43,7 +43,7 @@
 
                   <li class="list-inline-item">
 <!--                    {{query_string}}-->
-                    {{query_string < 50 ? query_string : (query_string).substring(0,50)+"..."}}
+                    {{query_string == 50 ? query_string : (query_string).substring(0,50)+"..."}}
                   </li>
                 </ul>
               </div>
@@ -64,18 +64,7 @@
                   <div class="topics-category-items">
                     <ul>
                       <li v-for="a_article in allArticles" :key="a_article.id">
-                        <!--                      <a href="#" style="font-size: 18px; color: #2bb3c1">{{a_article.en_title}}</a>-->
-                        <!--                                            <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_article.slug }}">-->
-                        <!--                                                {{a_article.en_title}}-->
-                        <!--                                            </router-link>-->
-                        <!--                                            <div>-->
-                        <!--                                                <div class="featured-image">-->
-                        <!--                                                    <img :src="((a_article.en_body).match(regexImg) ? (a_article.en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" height="25">-->
-                        <!--                                                </div>-->
-                        <!--                                                <small style="font-size: 12px;">Post on: {{a_article.created_at}}</small>-->
-                        <!--                                                <p v-if="a_article.en_short_summary.length < 120">{{ a_article.en_short_summary }}</p>-->
-                        <!--                                                <p v-else>{{ a_article.en_short_summary.substring(0,120)+"..."}}</p>-->
-                        <!--                                            </div>-->
+
 
                         <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_article.id,articleSlug: a_article.slug }}">
 <!--                          <div class="article-list-image mb-20 mb-sm-0">-->

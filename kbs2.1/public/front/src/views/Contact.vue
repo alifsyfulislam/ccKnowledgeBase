@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <div v-if="isLoading">
       <Loader/>
     </div>

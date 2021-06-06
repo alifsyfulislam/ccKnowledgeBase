@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <section class="">
+    <div class="page-wrapper">
+        <section class="py-50">
             <div class="container">
                 <div class="row">
-                    <div class="">
+                    <div class="col-md-12 py-50">
                         <h3 class="">Register Here</h3>
                         <div v-if="success_message" class="alert alert-success alert-dismissible fade show text-center" role="alert">
                             {{success_message}}
@@ -83,13 +83,13 @@
 
 <script>
     import axios from 'axios'
-    import Loader from "../components/Loader";
+    // import Loader from "../components/Loader";
     import $ from 'jquery'
     export default {
         name: "Registration",
 
         components:{
-            Loader,
+            // Loader,
         },
         data() {
             return {

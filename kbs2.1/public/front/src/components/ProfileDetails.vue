@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="profileDetails" tabindex="-1" aria-labelledby="profileDetailsLabel" aria-hidden="true">
+    <div class="modal fade" id="profileDetails" tabindex="-1" aria-labelledby="profileDetailsLabel" aria-hidden="true" @click="toggoleProfile">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body profile-content p-20">
@@ -34,7 +34,9 @@
             }
         },
         methods:{
-
+            toggoleProfile(){
+                this.$emit('close-profile',false)
+            }
         },
         created() {
             if (sessionStorage.userInformation) {

@@ -1,18 +1,19 @@
 <template>
-    <div v-if="isLoading">
-        <Loader></Loader>
-    </div>
+    <div class="page-wrapper">
+        <div v-if="isLoading">
+            <Loader></Loader>
+        </div>
 
-    <div v-else  v-cloak class="min-height-wrapper">
-        <h2 class="text-center font-weight-bold pb-5 pb-md-10">Quiz Result List</h2>
-        <section class="py-50 py-md-60">
-            <div class="container">
-                <div class="row">
-                     <div class="col-md-12 p-3 m-3">
-                         <!-- {{userQuizList}} -->
-                         
-                         <table class="table border">
-                            <thead>
+        <div v-else  v-cloak class="min-height-wrapper">
+            <h2 class="text-center font-weight-bold pb-5 pb-md-10">Quiz Result List</h2>
+            <section class="py-50 py-md-60">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 p-3 m-3">
+                            <!-- {{userQuizList}} -->
+
+                            <table class="table border">
+                                <thead>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Quiz Title</th>
@@ -21,23 +22,24 @@
                                     <th scope="col">Result</th>
                                     <th scope="col">Action</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr v-for="(item,i) in quizResultList" :key="item.id">
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{item.quiz.name}}</td>
                                     <td>{{item.attempt}}</td>
                                     <td>{{item.created_at}}</td>
                                     <td>{{item.result}}</td>
-                                    <td><router-link :to="{ name: 'detailsResult', params: { quiz_id:item.quiz_id, attempt:item.attempt}}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fa fa-eye text-white"></i> Details Result</router-link></td>
+                                    <td><router-link :to="{ name: 'DetailsResult', params: { quiz_id:item.quiz_id, attempt:item.attempt}}" class="btn btn-info btn-xs m-1" tag="button" ><i class="fa fa-eye text-white"></i> Details Result</router-link></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                     </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-        
+            </section>
+
+        </div>
     </div>
 </template>
 

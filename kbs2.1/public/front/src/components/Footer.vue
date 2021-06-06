@@ -3,18 +3,13 @@
     <footer class="footer-area py-15 border-top border-gray">
       <div class="container">
         <div class="row">
-          <div class="col-sm-6 order-sm-2 text-sm-right text-center mb-10 mb-sm-0">
+          <div class="col-sm-6 order-sm-2 text-sm-right text-center">
             <ul class="list-inline mb-0">
               <li class="list-inline-item">
                 <router-link class="nav-link" :to="{ name: 'Sitemap'}">
                   <span>SITEMAP</span>
                 </router-link>
               </li>
-<!--              <li class="list-inline-item">-->
-<!--                <router-link class="nav-item" :to="{ name: 'Faq'}">-->
-<!--                  <span>Faq</span>-->
-<!--                </router-link>-->
-<!--              </li>-->
               <li class="list-inline-item">
                 <router-link class="nav-item" :to="{ name: 'Contact'}">
                   <span>CONTACT</span>
@@ -38,5 +33,11 @@ export default {
 </script>
 
 <style scoped>
+  .nav-link{
+    padding: 0 1rem;
+  }
 
+  .nav-link:active{
+    color: #3fc6d4;
+  }
 </style>

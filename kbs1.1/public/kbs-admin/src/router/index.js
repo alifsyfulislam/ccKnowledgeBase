@@ -191,7 +191,7 @@ let router = createRouter({
 
     ],
     mode: `history`,
-    base: "kbs-admin",
+    base: "front-admin",
 });
 
 router.beforeEach((to, from, next) => {

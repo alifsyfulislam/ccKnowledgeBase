@@ -64,7 +64,7 @@ let router = createRouter({
         },
     ],
     mode: 'history',
-    base:'kbs'
+    base:'front'
 });
 
 router.beforeEach((to, from, next) => {

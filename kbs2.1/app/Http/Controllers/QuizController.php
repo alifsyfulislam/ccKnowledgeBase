@@ -41,9 +41,14 @@ class QuizController extends Controller
 
     }
 
-    public function getQuizList()
+    public function getQuizList(Request $request)
     {
-        return $this->quizService->getAll();
+        if ($request->isAuthorised && $request->isRoleID){
+            return $this->quizService->getAuthorisedQuiz($request->isRoleID);
+        }else{
+            return $this->quizService->getUnauthorisedQuiz();
+        }
+
     }
 
 

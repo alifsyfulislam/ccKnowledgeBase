@@ -44,6 +44,22 @@ class QuizService
         ]);
     }
 
+    public function getUnauthorisedQuiz(){
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'quiz_form_list' => $this->quizRepository->allWithZero()
+        ]);
+    }
+
+    public function getAuthorisedQuiz($role){
+        return response()->json([
+            'status_code' => 200,
+            'messages'    => config('status.status_code.200'),
+            'quiz_form_list' => $this->quizRepository->selfWithZero($role)
+        ]);
+    }
+
 
     /**
      * @param $id

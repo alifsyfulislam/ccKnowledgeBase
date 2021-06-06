@@ -17,9 +17,36 @@ class QuizRepository
     public function all()
     {
 
-        return Quiz::with('QuizForm')
+        $quizzes =  Quiz::with('QuizForm')
             ->orderBy('created_at', 'DESC')
             ->get();
+
+        return $quizzes;
+
+    }
+
+    public function allWithZero()
+    {
+
+        $quizzes =  Quiz::with('QuizForm')
+            ->where('role_id','LIKE','%0%')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return $quizzes;
+
+    }
+
+    public function selfWithZero($role)
+    {
+
+        $quizzes =  Quiz::with('QuizForm')
+            ->where('role_id','LIKE','%'.$role.'%')
+            ->orWhere('role_id','LIKE','%0%')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return $quizzes;
 
     }
 

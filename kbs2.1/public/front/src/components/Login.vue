@@ -28,8 +28,8 @@
         data() {
             return {
                 formData: {
-                    username : '',
-                    password : '',
+                    username : 'admin',
+                    password : '123456',
                     // visitor : 1
                 },
                 userInformation : '',
@@ -62,7 +62,7 @@
                         // sessionStorage.setItem("visitorRoles", response.data.user_info.roles[0].id)
 
                         location.reload()
-                        _that.$router.push({name : 'Home'})
+                        _that.$router.push({name : 'Home'}).catch(() => {});
                         // this.$router.go(_that.$router.currentRoute)
                         // _that.$route.reload();
                     }else{

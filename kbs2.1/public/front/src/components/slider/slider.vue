@@ -30,7 +30,7 @@
     // Plugin definition.
     $.fn.boSlider = function( options ) {
         // Merging options
-        var options = $.extend({}, defaultOpt, options);
+        options = $.extend({}, defaultOpt, options);
 
         // Initializing slider
         initSlider(options, this);
@@ -65,7 +65,7 @@
         $(element[0]).replaceWith(function () {
             var i;
             var elements = "";
-            for (var i = 0; i < slides.length; i++) {
+            for (i = 0; i < slides.length; i++) {
                 var active = i == 0 ? 'active' : '';
                 if (slides[i]['data-type'] == "image") { // Template for images
                     elements += "<div class='bo-slide " + options.animation + " " + active +"' title='"+ slides[i]['data-title'] + "'>\n";
@@ -88,8 +88,8 @@
             var list = "<div class='bo-slider'>" + elements + '</div>\n';
             // Navigation dots
             list += "<div class='bo-dots'>\n";
-            for (var i = 0; i < slides.length; i++) {
-                var active = i == 0 ? 'selected' : '';
+            for (i = 0; i < slides.length; i++) {
+                active = i == 0 ? 'selected' : '';
                 list += "<span class='bo-dot " + active + "' data-bo-dot-index='"+ i +"'></span>\n"
             }
             list += "</div>";
@@ -141,8 +141,8 @@
             var dots = $('.bo-dots').children();
             if (this.active > this.slides.length-1) {
                 this.active = 0;
-            };
-            if (this.active < 0) {this.active = this.slides.length-1};
+            }
+            if (this.active < 0) {this.active = this.slides.length-1}
             for (i = 0; i < this.slides.length; i++) {
                 if (this.slides[i]['data-type'] == "video") {
                     $(this.slides[i]['ref']).find("video")[0].pause();
