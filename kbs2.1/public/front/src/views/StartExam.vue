@@ -1,5 +1,4 @@
 <template>
-
     <div class="page-wrapper">
         <div v-if="isLoading">
             <Loader></Loader>
@@ -17,92 +16,111 @@
                             </li>
                         </ul>
                     </div>
-
-                    <div class="text-center" v-if="!userInformation && showResult>=passMark">
-                        <router-link  class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
-                            Register Now
-                        </router-link>
+                    <div v-if="isLoading">
+                        <Loader></Loader>
                     </div>
+                    <div v-else v-cloak class="py-30 py-md-60 min-height-wrapper">
+                        <div class="container">
+                            <div v-if="isFinish">
+                                <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
 
-
-
-                </div>
-                <div v-else>
-                    <div v-if="quizInfo">
-                        <div class="exam-wrapper border rounded-lg mb-30">
-                            <div class="row">
-                                <div class="col-md-4 order-md-2">
-                                    <div class="mt-wrapper p-15 h-100">
-                                        <div class="time-left pt-0 pt-md-2"><strong>Time Left: </strong>{{timeCounter}}</div>
-                                        <div class="answer-mark"><strong>Marks: </strong>{{ markCounter.toFixed(2) }}</div>
-                                    </div>
+                                <div class="pt-3 pb-3" v-if="!(showResult>=passMark)">
+                                    <h3 class="pb-5">Please read below articles to improve your knowledge!</h3>
+                                    <ul class="list-group text-left">
+                                        <li class="list-group-item list-group-item-action" v-for="a_article in article_list" :key="a_article">
+                                            <a href="#" @click.prevent="articleDetails(a_article)">{{a_article.split('/')[1]}}</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="col-md-8 order-md-1 mb-15">
-                                    <div class="qa-wrapper p-15" v-for="a_form_field in quizFormFieldInfo" :key="a_form_field.id">
-                                        <h3 class="my-0 pb-10 question-title">{{a_form_field.f_label}}</h3>
-                                        <div v-if="a_form_field.f_type === 'Text'">
-                                            <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
-                                        </div>
 
-                                        <div v-if="a_form_field.f_type === 'Email'">
-                                            <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
-                                        </div>
+                                <div class="text-center" v-if="!userInformation && showResult>=passMark">
+                                    <router-link  class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
+                                        Register Now
+                                    </router-link>
+                                </div>
 
-                                        <div v-if="a_form_field.f_type === 'Select/Dropdown'">
-                                            <select class="form-control" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)">
-                                                <option value="" disabled>Select one</option>
-                                                <option v-for="(a_val) in selectBoxOption" :key="a_val" :value="a_val">{{a_val}}</option>
-                                            </select>
-                                        </div>
 
-                                        <div v-if="a_form_field.f_type === 'Radio'">
-                                            <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
-                                                <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
-                                                <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
+
+                            </div>
+                            <div v-else>
+                                <div v-if="quizInfo">
+                                    <div class="exam-wrapper border rounded-lg mb-30">
+                                        <div class="row">
+                                            <div class="col-md-4 order-md-2">
+                                                <div class="mt-wrapper p-15 h-100">
+                                                    <div class="time-left pt-0 pt-md-2"><strong>Time Left: </strong>{{timeCounter}}</div>
+                                                    <div class="answer-mark"><strong>Marks: </strong>{{ markCounter.toFixed(2) }}</div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="col-md-8 order-md-1 mb-15">
+                                                <div class="qa-wrapper p-15" v-for="a_form_field in quizFormFieldInfo" :key="a_form_field.id">
+                                                    <h3 class="my-0 pb-10 question-title">{{a_form_field.f_label}}</h3>
+                                                    <div v-if="a_form_field.f_type === 'Text'">
+                                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                                    </div>
 
-                                        <div v-if="a_form_field.f_type === 'Number'">
-                                            <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
-                                        </div>
+                                                    <div v-if="a_form_field.f_type === 'Email'">
+                                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                                    </div>
 
-                                        <div v-if="a_form_field.f_type === 'Textarea'">
-                                            <textarea class="form-control" rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkTextAreaData(),checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
-                                        </div>
+                                                    <div v-if="a_form_field.f_type === 'Select/Dropdown'">
+                                                        <select class="form-control" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)">
+                                                            <option value="" disabled>Select one</option>
+                                                            <option v-for="(a_val) in selectBoxOption" :key="a_val" :value="a_val">{{a_val}}</option>
+                                                        </select>
+                                                    </div>
 
-                                        <div v-if="a_form_field.f_type === 'Password'">
-                                            <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
-                                        </div>
+                                                    <div v-if="a_form_field.f_type === 'Radio'">
+                                                        <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
+                                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                                            <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
+                                                        </div>
+                                                    </div>
 
-                                        <div v-if="a_form_field.f_type === 'Checkbox'">
-                                            <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
-                                                <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChangeCheck(a_val)"/>
-                                                <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(a_form_field.id), finalizeData(), saveResult()">Finish Exam</button>
-                                        </div>
-                                    </div>
-                                    <div class="mt-0 px-15">
-                                        <div v-for="a_form_field in quizFormFieldInfo" :key="a_form_field.id">
-                                            <div>
-                                                <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
-                                                    <ul class="pagination">
-                                                        <li :class="[{disabled:!pagination.next_page_url},(itemA == 1) ? 'd-none':'']" class="page-item mx-1">
-                                                            <a @click.prevent="checkNextData(a_form_field.id),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
-                                                        </li>
-                                                    </ul>
+                                                    <div v-if="a_form_field.f_type === 'Number'">
+                                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                                    </div>
+
+                                                    <div v-if="a_form_field.f_type === 'Textarea'">
+                                                        <textarea class="form-control" rows="5" :max="a_form_field.f_max_value" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData" v-on:keyup.enter="checkTextAreaData(),checkNextData(),getQuizFormField(pagination.next_page_url)"></textarea>
+                                                    </div>
+
+                                                    <div v-if="a_form_field.f_type === 'Password'">
+                                                        <input class="form-control" :max="a_form_field.f_max_value" :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id" :required="a_form_field.f_required==0? false: true" v-model="fromData"  v-on:keyup.enter="checkNextData(),getQuizFormField(pagination.next_page_url)"/>
+                                                    </div>
+
+                                                    <div v-if="a_form_field.f_type === 'Checkbox'">
+                                                        <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
+                                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChangeCheck(a_val)"/>
+                                                            <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(a_form_field.id), finalizeData(), saveResult()">Finish Exam</button>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-0 px-15">
+                                                    <div v-for="a_form_field in quizFormFieldInfo" :key="a_form_field.id">
+                                                        <div>
+                                                            <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
+                                                                <ul class="pagination">
+                                                                    <li :class="[{disabled:!pagination.next_page_url},(itemA == 1) ? 'd-none':'']" class="page-item mx-1">
+                                                                        <a @click.prevent="checkNextData(a_form_field.id),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div v-else>
+                                    go back to quiz page
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div v-else>
-                        go back to quiz page
                     </div>
                 </div>
             </div>
@@ -166,7 +184,7 @@
 
         methods:{
             articleDetails(url){
-              this.$router.push('/article-detail/'+url);
+                this.$router.push('/article-detail/'+url);
             },
             checkTextAreaData(){
                 this.fromData = this.fromData.replace("\n", "");
@@ -196,7 +214,7 @@
             },
             finalizeData(){
                 let _that = this;
-                
+
                 _that.checkBoxDataArr = [];
                 _that.isFinish = true;
 
@@ -221,7 +239,7 @@
 
                 let _that = this;
                 if(_that.userInformation) {
-                     _that.userId= _that.userInformation.id;
+                    _that.userId= _that.userInformation.id;
                 } else{
                     _that.userId ='';
                 }
@@ -234,11 +252,11 @@
                 postData.append('quiz_id', _that.quizInfo.id);
                 postData.append('ques_and_ans', ques_and_ans);
 
-                 axios.post('result-create',postData).then(function (response){
+                axios.post('result-create',postData).then(function (response){
                     // console.log(response.data);
                     if (response.data.status_code ==200){
                         console.log("Quiz result successfully added")
-                        
+
                     } else {
                         console.log(response.data.messages);
                     }

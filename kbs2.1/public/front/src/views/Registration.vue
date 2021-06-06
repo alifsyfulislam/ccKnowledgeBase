@@ -1,83 +1,95 @@
 <template>
+
     <div class="page-wrapper">
         <section class="py-50">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 py-50">
                         <h3 class="">Register Here</h3>
-                        <div v-if="success_message" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                            {{success_message}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div v-if="error_message" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            {{success_message}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="firstName">First Name <span class="required">*</span></label>
-                                    <input class="form-control" type="text" v-model="userData.first_name" id="firstName" @keyup="checkAndChangeValidation(userData.first_name, '#firstName', '#firstNameError', '*first name')" placeholder="Enter first name here!!" required >
-                                    <span id="firstNameError" class="text-danger small"> </span>
-                                </div>
-                            </div>
+                        <div>
+                            <section class="py-30 py-md-60 min-height-wrapper">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="">
+                                            <h2 class="text-center font-weight-bold pb-20 pb-md-40">Register Here</h2>
+                                            <div v-if="success_message" class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                                {{success_message}}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div v-if="error_message" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                                {{success_message}}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="lastName">Last Name <span class="required">*</span></label>
-                                    <input class="form-control" type="text" v-model="userData.last_name" id="lastName"  placeholder="Enter last name here!!" @keyup="checkAndChangeValidation(userData.last_name, '#lastName', '#lastNameError', '*last name')" required>
-                                    <span id="lastNameError" class="text-danger small"> </span>
-                                </div>
-                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="firstName">First Name <span class="required">*</span></label>
+                                                        <input class="form-control" type="text" v-model="userData.first_name" id="firstName" @keyup="checkAndChangeValidation(userData.first_name, '#firstName', '#firstNameError', '*first name')" placeholder="Enter first name here!!" required >
+                                                        <span id="firstNameError" class="text-danger small"> </span>
+                                                    </div>
+                                                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="userName">Username <span class="required">*</span></label>
-                                    <input class="form-control" type="text" v-model="userData.username" id="userName" placeholder="Enter username here!!" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" @focus="checkUserNameExist(userData.username)" @change="checkUserNameExist(userData.username)" required>
-                                    <span id="userNameError" class="text-danger small"> </span>
-                                </div>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="lastName">Last Name <span class="required">*</span></label>
+                                                        <input class="form-control" type="text" v-model="userData.last_name" id="lastName"  placeholder="Enter last name here!!" @keyup="checkAndChangeValidation(userData.last_name, '#lastName', '#lastNameError', '*last name')" required>
+                                                        <span id="lastNameError" class="text-danger small"> </span>
+                                                    </div>
+                                                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="email">Email <span class="required">*</span></label>
-                                    <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter valid email here!!" @keyup="checkAndValidateEmail()" @change="checkUserEmailExist(userData.email)" required>
-                                    <span id="emailError" class="text-danger small"> </span>
-                                </div>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="userName">Username <span class="required">*</span></label>
+                                                        <input class="form-control" type="text" v-model="userData.username" id="userName" placeholder="Enter username here!!" @keyup="checkAndChangeValidation(userData.username, '#userName', '#userNameError', '*user name')" @focus="checkUserNameExist(userData.username)" @change="checkUserNameExist(userData.username)" required>
+                                                        <span id="userNameError" class="text-danger small"> </span>
+                                                    </div>
+                                                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="password">Password <span class="required">*</span></label>
-                                    <input class="form-control" type="password" v-model="userData.password" id="Password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
-                                    <span id="PasswordError" class="text-danger small"> </span>
-                                </div>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Email <span class="required">*</span></label>
+                                                        <input class="form-control" type="email" v-model="userData.email" id="email" placeholder="Enter valid email here!!" @keyup="checkAndValidateEmail()" @change="checkUserEmailExist(userData.email)" required>
+                                                        <span id="emailError" class="text-danger small"> </span>
+                                                    </div>
+                                                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                                    <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="ConfirmPassword" placeholder="Enter password again!!" required>
-                                    <span id="ConfirmPasswordError" class="small"> </span>
-                                </div>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password">Password <span class="required">*</span></label>
+                                                        <input class="form-control" type="password" v-model="userData.password" id="Password" @keyup="checkAndValidatePassword()" placeholder="Enter password here!!" required>
+                                                        <span id="PasswordError" class="text-danger small"> </span>
+                                                    </div>
+                                                </div>
 
-                            <div class="col-md-12">
-                                <div class="form-group text-right">
-                                    <button class="btn btn-success common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Submit</button>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                                                        <input class="form-control" type="password" v-on:keyup="checkPasswordMatch()" v-model="userData.confirm_password" id="ConfirmPassword" placeholder="Enter password again!!" required>
+                                                        <span id="ConfirmPasswordError" class="small"> </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group text-right">
+                                                        <button class="btn btn-common btn-primary px-50 text-white font-16" @click="validateAndSubmit()">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </section>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        
     </div>
 </template>
 
@@ -203,7 +215,7 @@
                         {
                             email            : this.userData.email,
                         },
-                        ).then(function (response) {
+                    ).then(function (response) {
                         console.log(response)
                         if(response.data.status_code === 400)
                         {
@@ -228,8 +240,8 @@
                         {
                             username            : this.userData.username,
                         },
-                        ).then(function (response) {
-                            console.log(response);
+                    ).then(function (response) {
+                        console.log(response);
                         if(response.data.status_code === 400)
                         {
                             _that.success_message           = "";
@@ -443,5 +455,7 @@
 </script>
 
 <style scoped>
-
+    span.required {
+        color: red;
+    }
 </style>
