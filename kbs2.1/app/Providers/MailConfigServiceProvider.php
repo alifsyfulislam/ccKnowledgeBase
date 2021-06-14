@@ -5,6 +5,7 @@ namespace App\Providers;
 use Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class MailConfigServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (\Schema::hasTable('email_settings')) {
+        if (Schema::hasTable('email_settings')) {
             $mail = DB::table('email_settings')->first();
             if ($mail) //checking if table is not empty
             {
