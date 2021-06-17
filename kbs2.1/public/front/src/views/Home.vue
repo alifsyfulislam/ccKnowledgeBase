@@ -100,66 +100,36 @@
 
               <div class="row">
                 <div class="col-lg-12" style="min-height: 350px ; ">
-                  <div>
-                    <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
-
+                  <div v-for="a_faq in all_Faqs" :key="a_faq.id">
+                    <!--                    remove those faqs that has no content-->
+                    <div class="custom-accordion" v-if="a_faq.contents[0].en_body !='n/a' && a_faq.contents[0].bn_body !='n/a'">
                       <div class="heading">{{a_faq.en_title}}</div>
+                      <!--                      unknown-->
+                      <div v-if="userInformation == ''" class="contents overflow-hidden">
+                        <span>{{a_faq.bn_title}}</span>
+                        <div v-for="a_content in a_faq.contents" :key="a_content.id">
+                          <!--                          bangla body-->
+                          <ul class="nav nav-tabs pt-1 pb-2" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title !='n/a' && a_content.bn_body !='n/a' && a_content.role_id.includes(0)">
+                            <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                            </li>
+                            <li class="nav-item" v-if="a_content.bn_body !='n/a'">
+                              <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                            </li>
+                          </ul>
 
-                      <div class="contents overflow-hidden">
-                        <div v-if="userInformation">
-                          <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
-                          <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                            <div v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
-                              <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a'">
 
-                                <li class="nav-item">
-                                  <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
-                                </li>
-                                <li class="nav-item" v-if="a_content.bn_body !='n/a'">
-                                  <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
-                                </li>
-                              </ul>
+                          <div class="tab-content pt-2" :id="'myTabContent_'+a_content.id">
+                            <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(0)">
+                              <div v-html="a_content.en_body"></div>
+                            </div>
 
-                              <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
-                                <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
-                                  <div v-html="a_content.en_body"></div>
-                                  <!--                            <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
-                                </div>
-
-                                <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
-                                  <div v-html="a_content.bn_body"></div>
-                                  <!--                            <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
-                                </div>
-                              </div>
+                            <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(0)">
+                              <div v-html="a_content.bn_body"></div>
                             </div>
                           </div>
+
                         </div>
-                        <div v-else-if="userInformation == ''">
-                          <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
-                          <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                            <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.role_id.includes(0)">
-
-                              <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
-                              </li>
-                              <li class="nav-item" v-if="a_content.bn_body !='n/a'">
-                                <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
-                              </li>
-                            </ul>
-
-                            <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
-                              <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(0)">
-                                <div v-html="a_content.en_body"></div>
-                              </div>
-
-                              <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(0)">
-                                <div v-html="a_content.bn_body"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div><u class="text-primary">Login to read this faq.</u></div>
-                        </div>
-                        <div v-else>Login to read this faq.</div>
                       </div>
                     </div>
                   </div>
@@ -178,137 +148,137 @@
 
 <script>
 
-import Loader from "@/components/Loader";
-import SearchForm from "@/components/Search";
-import BannerSlider from "@/components/slider/slider";
+  import Loader from "@/components/Loader";
+  import SearchForm from "@/components/Search";
+  import BannerSlider from "@/components/slider/slider";
 
-import $ from 'jquery'
-import axios from "axios";
+  import $ from 'jquery'
+  import axios from "axios";
 
-$(document).on('click','.custom-accordion .heading', function () {
-  $(this).toggleClass("active").next().slideToggle();
-  $(".contents").not($(this).next()).slideUp(200);
-  $(this).siblings().removeClass("active");
-});
+  $(document).on('click','.custom-accordion .heading', function () {
+    $(this).toggleClass("active").next().slideToggle();
+    $(".contents").not($(this).next()).slideUp(200);
+    $(this).siblings().removeClass("active");
+  });
 
-export default {
-  name: 'Home',
-  components: {
-    Loader,
-    SearchForm,
-    BannerSlider
-  },
-  data() {
-    return {
-      static_image            : [],
-      isLoading               : true,
-      allCategoryArticle      : '',
-      frontPageData           : '',
-      categoryHasArticle      : [],
-      allLatestArticles       : '',
-      countBanner : 0,
-      // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-      regexImg                : /(http:\/\/[^">]+)/img,
-      all_Faqs                : '',
-      userInformation     : '',
-      bannerInformation     : '',
-      isAuthinticate : false,
-    }
-  },
-  methods:{
-    getCategoryArticleList()
-    {
-      let _that =this;
-      axios.get('category-article-list', { cache: false })
-              .then(function (response) {
-                if(response.data.status_code === 200){
-                  _that.isLoading = false;
-                  _that.allCategoryArticle = response.data.category_list;
-                  _that.allCategoryArticle.forEach(val =>{
-                    if (val.article.length!=0){
-                      if (_that.categoryHasArticle.length <6){
-                        _that.categoryHasArticle.push(val);
-                      }
-                    }
-                  })
-                }
-              })
+  export default {
+    name: 'Home',
+    components: {
+      Loader,
+      SearchForm,
+      BannerSlider
     },
-    getLatestArticleList()
-    {
-      let _that =this;
-
-      axios.get('article-list')
-              .then(function (response) {
-                if(response.data.status_code === 200){
-                  console.log(response.data.article_list)
-                  _that.allLatestArticles = response.data.article_list;
-                }
-              })
-    },
-    getPageDecorationData()
-    {
-      let _that =this;
-      axios.get('front-page-config', { cache: false })
-              .then(function (response) {
-                if(response.data.status_code === 200){
-                  _that.frontPageData = response.data.page_config_info;
-                }
-              })
-    },
-
-    getStaticMedia()
-    {
-      this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
-      this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.png';
-      this.static_image['newlogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
-      this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
-    },
-
-    allFaqs(){
-      let _that = this;
-      axios.get('faq-list',{
-        params : {
-          isLatest : 1
-        },
-      })
-              .then(function (response) {
-                console.log(response.data.faq_list)
-                _that.all_Faqs = response.data.faq_list;
-              })
-    },
-  },
-  created()
-  {
-    if (sessionStorage.userInformation){
-      this.userInformation = JSON.parse(sessionStorage.userInformation);
-      this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);
-      console.log(this.bannerInformation);
-      if (!this.userInformation){
-        this.isAuthinticate = false;
-      } else{
-        this.isAuthinticate = true;
+    data() {
+      return {
+        static_image            : [],
+        isLoading               : true,
+        allCategoryArticle      : '',
+        frontPageData           : '',
+        categoryHasArticle      : [],
+        allLatestArticles       : '',
+        countBanner : 0,
+        // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
+        regexImg                : /(http:\/\/[^">]+)/img,
+        all_Faqs                : '',
+        userInformation     : '',
+        bannerInformation     : '',
+        isAuthinticate : false,
       }
-    }else{
-      this.userInformation = '';
+    },
+    methods:{
+      getCategoryArticleList()
+      {
+        let _that =this;
+        axios.get('category-article-list', { cache: false })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.isLoading = false;
+                    _that.allCategoryArticle = response.data.category_list;
+                    _that.allCategoryArticle.forEach(val =>{
+                      if (val.article.length!=0){
+                        if (_that.categoryHasArticle.length <6){
+                          _that.categoryHasArticle.push(val);
+                        }
+                      }
+                    })
+                  }
+                })
+      },
+      getLatestArticleList()
+      {
+        let _that =this;
+
+        axios.get('article-list')
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    console.log(response.data.article_list)
+                    _that.allLatestArticles = response.data.article_list;
+                  }
+                })
+      },
+      getPageDecorationData()
+      {
+        let _that =this;
+        axios.get('front-page-config', { cache: false })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.frontPageData = response.data.page_config_info;
+                  }
+                })
+      },
+
+      getStaticMedia()
+      {
+        this.static_image['category'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['article'] = axios.defaults.baseURL.replace('api/','')+'static_media/no-image.png';
+        this.static_image['banner'] = axios.defaults.baseURL.replace('api/','')+'static_media/banner.png';
+        this.static_image['newlogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/new-logo.png';
+        this.static_image['smalllogo'] = axios.defaults.baseURL.replace('api/','')+'static_media/small-logo.png';
+      },
+
+      allFaqs(){
+        let _that = this;
+        axios.get('faq-list',{
+          params : {
+            isLatest : 1
+          },
+        })
+                .then(function (response) {
+                  console.log(response.data.faq_list)
+                  _that.all_Faqs = response.data.faq_list;
+                })
+      },
+    },
+    created()
+    {
+      if (sessionStorage.userInformation){
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+        this.bannerInformation = JSON.parse(sessionStorage.bannerInformation);
+        console.log(this.bannerInformation);
+        if (!this.userInformation){
+          this.isAuthinticate = false;
+        } else{
+          this.isAuthinticate = true;
+        }
+      }else{
+        this.userInformation = '';
+      }
+
+      this.getStaticMedia()
+      this.getPageDecorationData();
+      this.getCategoryArticleList();
+      this.getLatestArticleList();
+      this.allFaqs();
+      localStorage.removeItem('category-article-list');
+    },
+    mounted () {
+      document.body.classList.add('home');
+
+    },
+    destroyed () {
+      document.body.classList.remove('home')
     }
-
-    this.getStaticMedia()
-    this.getPageDecorationData();
-    this.getCategoryArticleList();
-    this.getLatestArticleList();
-    this.allFaqs();
-    localStorage.removeItem('category-article-list');
-  },
-  mounted () {
-    document.body.classList.add('home');
-
-  },
-  destroyed () {
-    document.body.classList.remove('home')
   }
-}
 </script>
 
 <style scoped>

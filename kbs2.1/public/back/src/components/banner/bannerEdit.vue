@@ -68,30 +68,25 @@
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
-                            <ul class="list-unstyled permission-list m-0 p-0">
+
+
+<!--                            <ul class="list-unstyled permission-list m-0 p-0">-->
 <!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
 <!--                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">-->
-<!--                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>-->
+<!--                                        <label class="mb-0 ml-2">-->
+<!--                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">-->
+<!--                                            <input v-else @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">-->
+<!--                                            {{ a_user.name }}-->
+<!--                                        </label>-->
 <!--                                    </div>-->
 <!--                                    <div v-else class="d-flex align-items-center">-->
 <!--                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>-->
 <!--                                    </div>-->
 
 <!--                                </li>-->
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            <input v-else @click="checkRoleData(a_user.id)"  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            {{ a_user.name }}
-                                        </label>
-                                    </div>
-                                    <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2"><input @click="checkRoleData(a_user.id)" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
-                                    </div>
+<!--                            </ul>-->
 
-                                </li>
-                            </ul>
+                            <CustomRoleEdit v-if="user_roles && aBanner" :userRoles="user_roles" :banneRoleAccess="aBanner.role_id" @granted-roles="getPermissionGrantedAccess"/>
                         </div>
                     </div>
 
@@ -108,6 +103,8 @@
 
 <script>
 
+    import CustomRoleEdit from './../custom-role/CustomRoleEdit'
+
     import axios from "axios";
     import $ from "jquery";
 
@@ -115,6 +112,10 @@
 
         name: "bannerEdit.vue",
         props: ['isEditCheck', 'categoryId'],
+
+        components:{
+            CustomRoleEdit
+        },
 
         data() {
             return {
@@ -141,6 +142,10 @@
         },
 
         methods: {
+            getPermissionGrantedAccess(status){
+                console.log(status)
+                this.roleAccess = status.split(',');
+            },
             checkFileValid(){
                 let file = $('#files')[0].files[0];
 
@@ -282,7 +287,7 @@
                 let _that = this;
                 let collection;
 
-                console.log(_that.roleAccess);
+                // console.log(_that.roleAccess);
 
                 collection = _that.roleAccess.join();
 
@@ -352,7 +357,7 @@
 
                             _that.aBanner         = response.data.banner_info;
 
-                            console.log(_that.aBanner);
+                            // console.log(_that.aBanner);
 
                             if ((_that.aBanner.role_id).includes(',')) {
 
@@ -387,7 +392,7 @@
                         if(response.data.status_code === 200){
 
                             _that.user_roles = response.data.role_list;
-                            console.log(_that.user_roles)
+                            // console.log(_that.user_roles)
 
                         }
                         else{

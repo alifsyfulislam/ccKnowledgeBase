@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="d-block">Image or Video</label>
-                            <input type="file" id="files" accept="audio/*,video/*,image/*" refs="files" @change="onMediaFileChange" >
+                            <input type="file" id="files" accept="audio/*,video/*,image/*" required refs="files" @change="onMediaFileChange" >
                             <div class="m-0 p-0">
                                 <span id="fileError" class="small text-danger banner_name" role="alert"></span>
                             </div>
@@ -40,24 +40,20 @@
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
-                            <ul class="list-unstyled permission-list m-0 p-0">
-<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
-<!--                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">-->
-<!--                                        <label class="mb-0 ml-2"><input  checked type="checkbox" :value="a_user.id"  v-model="roleAccess"> {{ a_user.name }} </label>-->
-<!--                                    </div>-->
-<!--                                    <div v-else class="d-flex align-items-center">-->
-<!--                                        <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>-->
-<!--                                    </div>-->
+<!--                            <ul class="list-unstyled permission-list m-0 p-0">-->
 
+<!--                                <li class="text-left pb-2">-->
+<!--                                    <label class="pl-2 mb-0"><input class="check-role-all" type="checkbox" v-model="roleAccess" :value="0" @click="allCheck()"> All </label>-->
 <!--                                </li>-->
 
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="roleAccess.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
+<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="roleAccess.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
 
-                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
-                                    <!--                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
-                                </li>
-                            </ul>
+<!--                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                                    &lt;!&ndash;                                    <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>&ndash;&gt;-->
+<!--                                </li>-->
+<!--                            </ul>-->
+                            <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>
                         </div>
                     </div>
 
@@ -81,38 +77,43 @@
 </template>
 
 <script>
+    import CustomRoleAdd from '../custom-role/CustomRoleAdd'
     import axios from 'axios'
     import $ from "jquery";
 
     export default {
 
         name: "bannerAdd",
+        components:{
+            CustomRoleAdd
+        },
         props: ['isAddCheck'],
         data() {
             return {
-                success_message  : '',
-                error_messages   : [],
-
-                bannerData : {
-                    title : '',
-                    status: 1
+                success_message             : '',
+                error_messages              : [],
+                bannerData          : {
+                    title                   : '',
+                    status                  : 1
                 },
-
-                logo_file        : '',
-                logo_url         : '',
-                user_roles : '',
-                roleAccess          : [],
-
-                validation_error : {
-                    isTitleStatus       : false,
-                    isRoleStatus        : false,
-                    isFileStatus        :false,
+                logo_file                   : '',
+                logo_url                    : '',
+                user_roles                  : '',
+                roleAccess                  : [],
+                validation_error    : {
+                    isTitleStatus           : false,
+                    isRoleStatus            : false,
+                    isFileStatus            :false,
                 },
-
             }
         },
         methods: {
-            checkFileValid(){
+            getPermissionGrantedAccess(status)
+            {
+                this.roleAccess = status.split(',');
+            },
+            checkFileValid()
+            {
                 let file = $('#files')[0].files[0];
 
                 if (!file) {
@@ -129,19 +130,14 @@
 
                 else{
                     this.validation_error.isFileStatus = true;
+                    $('#fileError').html("");
                 }
             },
 
             validateAndSubmit(){
-
-                // this.checkFileValid();
-
                 if (this.roleAccess.length > 0){
                     $('#roleIdError').html("");
                 }
-
-
-
 
                 if (!this.bannerData.title){
                     $('#bannerTitle').css({
@@ -150,12 +146,15 @@
                     $('#bannerTitleError').html("*title field is required");
                 }
 
+                this.checkFileValid();
 
-                if (this.roleAccess.length == 0){
-                    $('#roleIdError').html("role field is required");
-                }
 
-                if (this.validation_error.isTitleStatus    === true){
+                // if (this.roleAccess.length == 0){
+                //     $('#roleIdError').html("role field is required");
+                // }
+
+                if (this.validation_error.isTitleStatus    === true &&
+                    this.validation_error.isFileStatus    === true){
                     this.bannerAdd();
                 }
             },
@@ -256,6 +255,8 @@
             },
 
             onMediaFileChange(e) {
+                this.checkFileValid();
+                console.log(event.target.files);
                 this.logo_file = e.target.files[0];
                 this.logo_url = URL.createObjectURL(this.logo_file);
                 console.log(this.logo_url);
@@ -270,7 +271,7 @@
                 if (_that.roleAccess.length ==0){
                     _that.roleAccess.push(1);
                 }
-                console.log(_that.roleAccess);
+                // console.log(_that.roleAccess);
                 let formData = new FormData();
 
                 formData.append('banner_file', _that.logo_file);
@@ -278,15 +279,18 @@
                 formData.append('role_id', _that.roleAccess);
                 formData.append('status', _that.bannerData.status);
 
-                console.log(this.logo_file);
+                // console.log(_that.roleAccess);
 
-                axios.post('banners', formData,
-                    {
-                        headers: {
-                            'Content-Type'  : 'multipart/form-data',
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        }
-                    }).then(function (response) {
+                console.log(_that.logo_file)
+
+                if (_that.logo_file !=''){
+                    axios.post('banners', formData,
+                        {
+                            headers: {
+                                'Content-Type'  : 'multipart/form-data',
+                                'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                            }
+                        }).then(function (response) {
                         console.log(response)
                         if (response.data.status_code === 200){
 
@@ -305,9 +309,10 @@
                             _that.success_message       = "";
                             _that.error_message         = response.data.message;
                         }
-                }).catch(errors => console.log(errors));
-
-
+                    }).catch(errors => console.log(errors));
+                } else{
+                    $('#fileError').html('*file not found!')
+                }
 
             },
         },

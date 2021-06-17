@@ -845,8 +845,8 @@ header.fixed-header .navbar .logo img {
 
 @media screen and (min-width: 1600px) {
   .search-input-wrapper .input-group {
-    max-width: 50%;
-    width: 50%;
+    max-width: 70%;
+    width: 70%;
   }
 }
 
