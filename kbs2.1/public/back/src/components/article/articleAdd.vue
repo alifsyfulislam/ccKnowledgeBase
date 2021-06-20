@@ -84,7 +84,7 @@
                             <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
                                 <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                                 <div class="action-buttons">
-                                    <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
+                                    <i @click="getContentDetails(a_content.id), unSelectAll()" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
                                     <i @click="deleteContent(a_content.id)"  class="fa fa-trash d-inline-block text-red font-12"></i>
                                 </div>
                             </li>
@@ -175,19 +175,21 @@
                         <div class="form-group mb-2">
                             <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
-                            <ul class="list-unstyled permission-list m-0 p-0">
-                                <li class="text-left pb-2">
 
-                                    <label class="mb-0 ml-2">
-                                        <input type="checkbox" v-model="role_id" value="0"> All
-                                    </label>
-                                </li>
+                            <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>
+<!--                            <ul class="list-unstyled permission-list m-0 p-0">-->
+<!--                                <li class="text-left pb-2">-->
 
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <label v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-                                </li>
-                            </ul>
+<!--                                    <label class="mb-0 ml-2">-->
+<!--                                        <input type="checkbox" v-model="role_id" value="0"> All-->
+<!--                                    </label>-->
+<!--                                </li>-->
+
+<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                    <label v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
+<!--                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                                </li>-->
+<!--                            </ul>-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -224,37 +226,9 @@
 
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
-                            <ul class="list-unstyled permission-list m-0 p-0">
-                                <li class="text-left pb-2">
-                                    <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
-                                        </label>
-                                    </div>
 
-                                    <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input type="checkbox" v-model="roleAccess" :value="0"> All
-                                        </label>
-                                    </div>
-                                </li>
+                            <CustomRoleEdit v-if="user_roles && aContent" :userRoles="user_roles" :banneRoleAccess="aContent.role_id" @granted-roles="getPermissionGrantedAccess"/>
 
-
-                                <li v-for="a_user in user_roles" class="text-left pb-2">
-                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            <input v-else  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            {{ a_user.name }}
-                                        </label>
-                                    </div>
-                                    <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }}
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -272,7 +246,12 @@
     import Summernote from "@/components/summer-note/summernote";
     import SummernoteEdit from "@/components/summer-note/summernote-edit";
     import TagInput from "../tag/TagComponent";
+    import CustomRoleAdd from '../custom-role/CustomRoleAdd'
+    import CustomRoleEdit from '../custom-role/CustomRoleEdit'
     import $ from "jquery";
+
+
+
 
 
     export default {
@@ -282,6 +261,8 @@
             Summernote,
             SummernoteEdit,
             TagInput,
+            CustomRoleAdd,
+            CustomRoleEdit
             // Select2
         },
         data() {
@@ -325,46 +306,29 @@
                     bn_body             : '',
 
                 },
-                role_id               : [],
+                role_id                 : [],
                 userInformation         : '',
-
-
-
                 validation_error : {
                     isTitleStatus       : false,
                     isCategoryStatus    : false,
                 },
-
-                selected_checkbox    : 1,
-                bangla_checkbox      : '',
-
-                fileUrl       : [],
-                article_files : [],
-                url           : '',
-                video_files   : ''
+                selected_checkbox       : 1,
+                bangla_checkbox         : '',
+                fileUrl                 : [],
+                article_files           : [],
+                url                     : '',
+                video_files             : ''
             }
         },
         methods: {
-            // removePublicAccess(){
-            //     console.log(event.target.value, event.target.checked)
-            //     if (this.roleAccess.includes(0)){
-            //         let index = this.roleAccess.indexOf(0);
-            //         if (index !== -1) {
-            //             this.roleAccess.splice(index, 1);
-            //         }
-            //         console.log(this.roleAccess)
-            //     } else{
-            //         this.roleAccess.push(0)
-            //         console.log(this.roleAccess)
-            //     }
-            // },
-            // updateStatus(e){
-            //     if(e.target.checked){
-            //         console.log(this.public_id)
-            //         this.role_id.push(this.public_id)
-            //     }
-            // },
-            deleteContent(content_id){
+            getPermissionGrantedAccess(status)
+            {
+                this.roleAccess = status.split(',');
+
+                // this.getUserRoles();
+            },
+            deleteContent(content_id)
+            {
                 let _that = this;
 
                 axios.delete('contents/delete',{
@@ -381,7 +345,8 @@
 
                 })
             },
-            clearAll(){
+            clearAll()
+            {
                 let _that = this;
                 _that.isMounted  = false;
                 _that.enBodyData = '';
@@ -390,7 +355,8 @@
                 $('#roleIdError').html("");
                 $('#roleIdError_2').html("");
             },
-            updateContentData(content_id){
+            updateContentData(content_id)
+            {
 
                 let _that = this;
                 let collection;
@@ -417,11 +383,12 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                        console.log(response);
                         if (response.data.status_code === 200){
                             _that.getCategoryList(_that.aContent.article_id);
+                            _that.isMounted = false;
                             $('#closeModal_3').click();
                             $('#roleIdError_2').html("");
+                            _that.unSelectAll();
                         }
                         else if (response.data.status_code === 400){
                             console.log(response.data.errors);
@@ -429,7 +396,8 @@
                         }
                     })
             },
-            getContentDetails(content_id){
+            getContentDetails(content_id)
+            {
 
                 let _that = this;
 
@@ -438,22 +406,27 @@
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-                    console.log(response.data);
-                    _that.isMounted =true;
-                    _that.aContent = response.data.content_info;
-                    _that.enBodyData  = _that.aContent.en_body;
-                    _that.bnBodyData  = _that.aContent.bn_body;
-                    if ((_that.aContent.role_id).includes(',')) {
-                        _that.roleAccess = (_that.aContent.role_id).split(',');
-                        _that.roleAccess = _that.roleAccess.map(i=>Number(i))
-                        console.log(_that.roleAccess);
-                    }else{
-                        _that.roleAccess.push(Number(_that.aContent.role_id));
+                    // console.log(response.data)
+                    if (response.data.status_code == 200){
+                        _that.isMounted         = true;
+                        _that.aContent          = response.data.content_info;
+                        _that.enBodyData        = _that.aContent.en_body;
+                        _that.bnBodyData        = _that.aContent.bn_body;
+                        if ((_that.aContent.role_id).includes(',')) {
+                            _that.roleAccess    = (_that.aContent.role_id).split(',');
+                            _that.roleAccess    = _that.roleAccess.map(i=>Number(i))
+                        }else{
+                            _that.roleAccess.push(Number(_that.aContent.role_id));
+                        }
+
                     }
+
                 })
 
             },
-            getContentList(articleID){
+
+            getContentList(articleID)
+            {
                 let _that = this;
                 // console.log(articleID);
 
@@ -462,27 +435,34 @@
                         'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
                     },
                 }).then(function (response) {
-                    // console.log(response.data)
+                    // console.log(response.data.content_list[0].en_body)
                     _that.contentList = response.data.content_list;
                 })
             },
-            addContentData(){
-                let _that = this
+            addContentData()
+            {
+                let _that = this;
+                let collection;
                 let enBody      = $('#en_Body').val();
                 let bnBody      = $('#bn_Body').val();
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
-                console.log(this.public_id);
                 _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
-                if (_that.role_id.length ==0){
-                    _that.role_id.push(1);
+                // if (_that.role_id.length ==0){
+                //     _that.role_id.push(1);
+                // }
+                if (_that.roleAccess.length == 0){
+                    _that.roleAccess.push(1);
                 }
+                collection = _that.roleAccess.join();
+
+
                 let formData = new FormData();
                 formData.append('id', _that.contentData.id);
                 formData.append('article_id', _that.contentData.article_id);
                 formData.append('en_body', _that.contentData.en_body);
                 formData.append('bn_body', _that.contentData.bn_body);
-                formData.append('role_id', _that.role_id);
+                formData.append('role_id', collection);
 
 
                 axios.post('contents',formData,
@@ -511,22 +491,15 @@
                     console.log(error);
                 });
             },
-
-            unSelectAll(){
+            unSelectAll()
+            {
+                let _that = this;
                 $('.note-editable').html('');
-                this.role_id = [];
-                let items=document.querySelectorAll('.check-role');
-                console.log(items[1].value);
-                for(let i=0; i<items.length; i++){
-                    if(items[i].type=='checkbox'){
-                        if (items[i].value !=1){
-                            items[i].checked=false;
-                        }
-                    }
-
-                }
                 $('#roleIdError').html("");
                 $('#roleIdError_2').html("");
+                _that.roleAccess = [];
+                _that.user_roles = '';
+                _that.getUserRoles()
             },
             setTimeoutElements()
             {
@@ -534,13 +507,13 @@
                 setTimeout(() => this.success_message = "", 2e3);
                 setTimeout(() => this.error_message = "", 2e3);
             },
-
-            deleteUploadedFile(index){
+            deleteUploadedFile(index)
+            {
                 document.getElementById('files').value= "";
                 (this.article_files).splice(index, 1);
             },
-
-            fileUploadChange(e) {
+            fileUploadChange(e)
+            {
                 let _that = this;
                 const selectedFiles = e.target.files;
 
@@ -550,18 +523,17 @@
                 }
 
             },
-
-            collectArticleList(tagList){
+            collectArticleList(tagList)
+            {
                 this.articleData.tag = tagList.join();
             },
-
-            changeCheckBox() {
+            changeCheckBox()
+            {
                 if (this.bangla_checkbox === true)
                     this.selected_language = 'bangla';
                 else
                     this.selected_language = 'english';
             },
-
             checkAndValidateSelectType()
             {
                 if (!this.selectedCategory) {
@@ -579,7 +551,6 @@
                     this.validation_error.isCategoryStatus = true;
                 }
             },
-
             checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
             {
 
@@ -614,8 +585,8 @@
                     }
                 }
             },
-
-            validateAndSubmit(){
+            validateAndSubmit()
+            {
 
                 if (!this.articleData.en_title){
                     $('#enTitle').css({
@@ -636,7 +607,6 @@
                     this.articleAdd();
                 }
             },
-
             showServerError(errors)
             {
                 $('#enTitleError').html("");
@@ -665,7 +635,6 @@
 
                 })
             },
-
             articleAdd()
             {
 
@@ -715,7 +684,6 @@
                     console.log(error);
                 });
             },
-
             getCategoryList()
             {
                 let _that =this;
@@ -743,11 +711,13 @@
                         }
                     })
             },
-            myChangeEvent(val){
+            myChangeEvent(val)
+            {
                 let _that = this;
                 _that.article_id = val;
             },
-            mySelectEvent({id, text}){
+            mySelectEvent({id, text})
+            {
                 console.log({id, text})
             },
             getUserRoles()
@@ -781,13 +751,11 @@
         {
             this.articleData.id = (Math.round((new Date()).getTime()*10));
             this.contentData.article_id = (Math.round((new Date()).getTime()*10));
-            // this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-
             this.getCategoryList();
             this.getUserRoles();
             this.getContentList(this.articleData.id);
             this.$emit('article-id', this.articleData.id);
-            console.log('from child'+this.articleData.id);
+            // console.log('from child'+this.articleData.id);
             this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
         }
     }

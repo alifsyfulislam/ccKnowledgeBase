@@ -15,8 +15,8 @@ class AddAuthorizedRoleToQuizTable extends Migration
     {
         Schema::table('quizzes', function (Blueprint $table) {
             //
-            $table->tinyInteger('is_authorized')->default('0');
-            $table->string('role_id')->nullable();
+//            $table->tinyInteger('is_authorized')->default('0');
+//            $table->string('role_id')->nullable();
         });
     }
 
@@ -28,7 +28,7 @@ class AddAuthorizedRoleToQuizTable extends Migration
     public function down()
     {
         Schema::table('quizzes', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_authorized');
         });
     }
 }

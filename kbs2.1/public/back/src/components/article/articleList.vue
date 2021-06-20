@@ -365,7 +365,7 @@
         },
         methods: {
             getArticleIDFromChild(article_id){
-                console.log(article_id);
+                // console.log(article_id);
                 this.unstoredArticleID = article_id;
             },
             articleStatusRequest(selected){
@@ -516,7 +516,7 @@
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data.article_list);
+                            // console.log(response.data.article_list);
                             _that.pagination.current = response.data.article_list.current_page;
                             _that.pagination.total = response.data.article_list.last_page;
                             _that.articleList       = response.data.article_list.data;

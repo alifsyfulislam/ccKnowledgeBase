@@ -222,19 +222,21 @@ class ContentService
     }
 
     public function createItem($request){
-        $validator = Validator::make($request->all(),[
-            'role_id' => 'required',
-        ]);
+//        $validator = Validator::make($request->all(),[
+//            'role_id' => 'required',
+//        ]);
+//
+//        if($validator->fails()) {
+//
+//            return response()->json([
+//                'status_code' => 400,
+//                'messages'    => config('status.status_code.400'),
+//                'errors'      => $validator->errors()->all()
+//            ]);
+//
+//        }
 
-        if($validator->fails()) {
-
-            return response()->json([
-                'status_code' => 400,
-                'messages'    => config('status.status_code.400'),
-                'errors'      => $validator->errors()->all()
-            ]);
-
-        }
+//        return $request->all();
 
         DB::beginTransaction();
 

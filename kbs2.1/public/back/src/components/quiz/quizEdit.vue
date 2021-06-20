@@ -79,23 +79,25 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label> Is Authorized? <input type="checkbox" v-model="isAuthorized" :value="1"></label> 
-                            <div v-if="isAuthorized">
-                                <!-- <label>User Groups <span class="required">*</span></label>
-                                <select2 id="articleIDError" v-model="roles" :options="userRoles" :settings="{ settingOption: roles, settingOption: roles,multiple: true}" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/> -->
-                                <div class="form-group mb-2">
-                                    <label>User Groups <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
+<!--                            <label> Is Authorized? <input type="checkbox" v-model="isAuthorized" :value="1"></label> -->
+<!--                            <div v-if="isAuthorized">-->
+<!--                                &lt;!&ndash; <label>User Groups <span class="required">*</span></label>-->
+<!--                                <select2 id="articleIDError" v-model="roles" :options="userRoles" :settings="{ settingOption: roles, settingOption: roles,multiple: true}" @change="myChangeEvent($event)" @select="mySelectEvent($event)"/> &ndash;&gt;-->
+<!--                                <div class="form-group mb-2">-->
+<!--                                    <label>User Groups <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>-->
 
-                                    <ul class="list-unstyled permission-list m-0 p-0">
-                                        <li v-for="a_user in userRoles" :key="a_user.id" class="text-left pb-2">
-                                            <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-                                            
-                                            <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-                                        </li>
-                                    </ul>
-                                </div>
+<!--                                    <ul class="list-unstyled permission-list m-0 p-0">-->
+<!--                                        <li v-for="a_user in userRoles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                            <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
+<!--                                            -->
+<!--                                            <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
 
-                            </div>     
+<!--                            </div>     -->
+                            <CustomRoleEdit v-if="user_roles && quizData" :userRoles="user_roles" :banneRoleAccess="quizData.role_id" @granted-roles="getPermissionGrantedAccess"/>
+
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -127,6 +129,7 @@
 
 import axios from "axios";
 import Multiselect from 'vue-multiselect'
+import CustomRoleEdit from '../custom-role/CustomRoleEdit'
 import $ from "jquery";
 
 export default {
@@ -134,7 +137,8 @@ export default {
     props: ['isEditCheck', 'quizId'],
 
     components: {
-        Multiselect
+        Multiselect,
+        CustomRoleEdit
     },
 
     data() {
@@ -145,6 +149,8 @@ export default {
             articleList     : '',
             quizformList    : '',
             quizTotalQuestion : '',
+            user_roles      : '',
+            roleAccess : [],
 
             quiz_id         : '',
             quizDetails     : '',
@@ -177,6 +183,10 @@ export default {
     },
 
     methods: {
+        getPermissionGrantedAccess(status){
+            console.log(status)
+            this.roleAccess = status.split(',');
+        },
         getAllArticleList()
         {
             let _that = this;
@@ -263,7 +273,8 @@ export default {
             }
         },
 
-        checkMaxQuestionAvailability(val){
+        checkMaxQuestionAvailability(val)
+        {
             if (this.quizTotalQuestion < val){
                 // error
                 console.log('error');
@@ -302,7 +313,8 @@ export default {
             }
         },
 
-        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name) {
+        checkAndChangeValidation(selected_data, selected_id, selected_error_id, selected_name)
+        {
 
             if (selected_data.length >0) {
                 if (selected_name === "*title"){
@@ -360,7 +372,8 @@ export default {
             }
         },
 
-        checkAndValidateSelectType(){
+        checkAndValidateSelectType()
+        {
 
             if (!this.quizData.quiz_form_id) {
                 $('#quizForm').css({
@@ -378,7 +391,8 @@ export default {
             }
         },
 
-        validateAndSubmit(){
+        validateAndSubmit()
+        {
 
             if (!this.quizData.name){
                 $('#title').css({
@@ -423,7 +437,8 @@ export default {
             }
         },
 
-        showServerError(errors){
+        showServerError(errors)
+        {
 
             $('#titleError').html("");
             $('#quizFormError').html("");
@@ -467,50 +482,45 @@ export default {
             })
         },
 
-        quizUpdate() {
+        quizUpdate()
+        {
 
-            let _that = this;
-            let quizID = this.quiz_id;
-            if(this.isAuthorized == 1 && this.role_id['0']==null) {
-                this.role_id.push(1);
-            }
-            
-            console.log(this.role_id);
+            let _that           = this;
+            let quizID          = this.quiz_id;
+            let collection;
+            collection          = _that.roleAccess.join();
+
             axios.put('quizzes/update',
                 {
-                    id            : quizID,
-                    name          : this.quizData.name,
-                    article_id    : this.article_value,
-                    quiz_form_id  : this.quizData.quiz_form_id,
-                    duration      : this.quizData.duration,
-                    total_marks   : this.quizData.total_marks,
-                    status        : this.quizData.status,
+                    id                  : quizID,
+                    name                : this.quizData.name,
+                    article_id          : this.article_value,
+                    quiz_form_id        : this.quizData.quiz_form_id,
+                    duration            : this.quizData.duration,
+                    total_marks         : this.quizData.total_marks,
+                    status              : this.quizData.status,
                     number_of_questions : this.quizData.number_of_questions,
-                    is_authorized : this.isAuthorized,
-                    role_id       : this.role_id,
+                    role_id             : collection,
                 },
                 {
                     headers: {
-                        'Authorization': 'Bearer '+ localStorage.getItem('authToken')
+                        'Authorization' : 'Bearer '+ localStorage.getItem('authToken')
                     }
-                }).then(function (response) {
+                }).then(function (response){
+                    if (response.data.status_code === 200) {
+                    _that.quizData          = '';
+                    _that.error_message     = '';
 
-                if (response.data.status_code === 200) {
-                    _that.quizData         = '';
-                    _that.error_message    = '';
-
-                    _that.success_message  = "Quiz updated successfully";
+                    _that.success_message   = "Quiz updated successfully";
                     _that.$emit('quiz-slide-close', _that.success_message);
-
                 } else if(response.data.status_code === 400){
 
-                    _that.success_message = "";
-                    _that.error_message   = "";
+                    _that.success_message   = "";
+                    _that.error_message     = "";
                     _that.showServerError(response.data.errors);
-
                 }else{
-                    _that.success_message  = "";
-                    _that.error_message    = response.data.message;
+                    _that.success_message   = "";
+                    _that.error_message     = response.data.message;
                 }
 
             }).catch(function (error) {
@@ -534,7 +544,7 @@ export default {
                 })
                 .then(function (response) {
                     if(response.data.status_code === 200){
-                        _that.userRoles = response.data.role_list;
+                        _that.user_roles = response.data.role_list;
 
                         // response.data.role_list.forEach(val => {
                         //     _that.userRoles.push({
@@ -566,36 +576,25 @@ export default {
                 })
                 .then(function (response) {
                     if (response.data.status_code === 200) {
-                        console.log(response.data);
-                        _that.quizDetails    = response.data.quiz_info;
+                        _that.quizDetails                   = response.data.quiz_info;
+                        _that.quizData.name                 = _that.quizDetails.name;
+                        _that.quizData.article_id           = _that.quizDetails.article_id;
+                        _that.quizData.quiz_form_id         = _that.quizDetails.quiz_form_id;
+                        _that.quizData.duration             = _that.quizDetails.duration;
+                        _that.quizData.total_marks          = _that.quizDetails.total_marks;
+                        _that.quizData.status               = _that.quizDetails.status;
+                        _that.quizData.number_of_questions  = _that.quizDetails.number_of_questions;
+                        _that.quizData.role_id              = _that.quizDetails.role_id;
+                        if ((_that.quizData.role_id).includes(',')) {
 
-                        _that.quizData.name = _that.quizDetails.name;
-                        _that.quizData.article_id = _that.quizDetails.article_id;
-                        _that.quizData.quiz_form_id = _that.quizDetails.quiz_form_id;
-                        _that.quizData.duration = _that.quizDetails.duration;
-                        _that.quizData.total_marks = _that.quizDetails.total_marks;
-                        _that.quizData.status = _that.quizDetails.status;
-                        _that.quizData.number_of_questions = _that.quizDetails.number_of_questions;
-                        _that.isAuthorized = _that.quizDetails.is_authorized;
-                        // _that.findArticleInfo(_that.quizData.article_id)
-
-                        if(_that.quizDetails.role_id!==null) {
-                            if ((_that.quizDetails.role_id).includes(',')) {
-                                _that.role_id = (_that.quizDetails.role_id).split(',');
-                                _that.role_id = _that.role_id.map(i=>Number(i))
-
-                            }else {
-                                _that.role_id.push(_that.quizDetails.role_id);
-                            }
-
-                        } else {
-                             _that.role_id = [];
+                            _that.roleAccess                = (_that.quizData.role_id).split(',');
+                            _that.roleAccess                = _that.roleAccess.map(i=>Number(i))
+                        }else{
+                            _that.roleAccess.push(_that.quizData.role_id);
                         }
-
-
                     } else {
-                        _that.success_message = "";
-                        _that.error_message = response.data.error;
+                        _that.success_message               = "";
+                        _that.error_message                 = response.data.error;
                     }
                 })
         },

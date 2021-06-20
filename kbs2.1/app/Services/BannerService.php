@@ -45,7 +45,6 @@ class BannerService
         $validator = Validator::make($request->all(),[
 
             'title' => 'required|min:3|max:200',
-            'role_id' => 'required',
             'banner_file' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,ogg|max:30720'
 
         ]);
@@ -138,7 +137,6 @@ class BannerService
 
         $validator = Validator::make($request->all(),[
             'title' => 'required|min:3|max:200',
-            'role_id' => 'required',
             'banner_file' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,ogg|max:30720'
 
         ]);

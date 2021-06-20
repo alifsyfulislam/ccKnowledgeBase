@@ -197,21 +197,7 @@
 
             <div class="form-group mb-2">
               <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
-
-              <ul class="list-unstyled permission-list m-0 p-0">
-                <li class="text-left pb-2">
-                  <label class="mb-0 ml-2">
-                    <input type="checkbox" v-model="role_id" value="0"> All
-                  </label>
-                </li>
-
-                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                  <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-
-                  <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-<!--                  <label class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id" v-bind:id="a_user.id" > {{ a_user.name }} </label>-->
-                </li>
-              </ul>
+              <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>
             </div>
           </div>
           <div class="modal-footer">
@@ -247,38 +233,11 @@
 
             <div class="form-group mb-0">
               <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
-              <ul class="list-unstyled permission-list m-0 p-0">
-                <li class="text-left pb-2">
-                  <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
-                    <label class="mb-0 ml-2">
-                      <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
-                    </label>
-                  </div>
-
-                  <div v-else class="d-flex align-items-center">
-                    <label class="mb-0 ml-2">
-                      <input type="checkbox" v-model="roleAccess" :value="0"> All
-                    </label>
-                  </div>
-                </li>
-
-                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                  <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                    <label class="mb-0 ml-2">
-                      <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                      <input v-else  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                      {{ a_user.name }} </label>
-                  </div>
-                  <div v-else class="d-flex align-items-center">
-                    <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
-                  </div>
-
-                </li>
-              </ul>
+              <CustomRoleEdit v-if="user_roles && aContent" :userRoles="user_roles" :banneRoleAccess="aContent.role_id" @granted-roles="getPermissionGrantedAccess"/>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" id="closeModal_3" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="clearAll()">Close</button>
+            <button type="button" id="closeModal_3" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="clearAll(),unSelectAll()">Close</button>
             <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="updateContentData(aContent.id)">Update</button>
           </div>
         </div>
@@ -296,6 +255,8 @@
   import Summernote from "@/components/summer-note/summernote";
   import SummernoteEdit from "@/components/summer-note/summernote-edit";
   import TagInputEdit from "../tag/TagEditComponent";
+  import CustomRoleAdd from  '../custom-role/CustomRoleAdd'
+  import CustomRoleEdit from  '../custom-role/CustomRoleEdit'
   import $ from "jquery";
 
   export default {
@@ -304,7 +265,9 @@
     components: {
       SummernoteEdit,
       TagInputEdit,
-      Summernote
+      Summernote,
+      CustomRoleAdd,
+      CustomRoleEdit
     },
     props: ['isEditCheck', 'articleId'],
 
@@ -327,7 +290,6 @@
         enBodyData                : '',
         bnBodyData                : '',
         userInformation           : '',
-
         articleData       : {
           category_id             : '',
           id                      :  '',
@@ -341,27 +303,22 @@
           commentable             : '',
           status                  : 'draft',
         },
-
         validation_error: {
           isTitleStatus           : true,
           isCategoryStatus        : true,
         } ,
-
         selected_checkbox         : 1,
         bangla_checkbox           : '',
-
         fileUrl                   : [],
         article_files             : [],
         video_files               : '',
         images                    : [],
         files                     : [],
         url                       : '',
-
         filter      : {
           isAdmin                 : 1
         },
         previous_media_list       : [],
-
         contentData :{
           id                      : '',
           article_id              : '',
@@ -370,28 +327,31 @@
         },
         user_roles                :'',
         role_id                   : [],
-        public_id               : 0,
+        public_id                 : 0,
         contentList               : '',
-
         aContent                  : '',
-        roleAccess                : [1],
-
+        roleAccess                : [],
         enBodyEdit                : "en_Body_edit",
         bnBodyEdit                : "bn_Body_edit",
       }
     },
 
     methods: {
-      updateStatus(e){
+      getPermissionGrantedAccess(status)
+      {
+        this.roleAccess = status.split(',');
+
+        // this.getUserRoles();
+      },
+      updateStatus(e)
+      {
         if(e.target.checked){
           console.log(this.public_id)
           this.role_id.push(this.public_id)
         }
-        // else{
-        //     console.log(this.public_id)
-        // }
       },
-      deleteContent(content_id){
+      deleteContent(content_id)
+      {
         let _that = this;
 
         axios.delete('contents/delete',{
@@ -408,7 +368,8 @@
 
         })
       },
-      updateContentData(content_id){
+      updateContentData(content_id)
+      {
 
         let _that = this;
         let collection;
@@ -435,33 +396,41 @@
                     'Authorization' : 'Bearer '+localStorage.getItem('authToken')
                   }
                 }).then(function (response) {
-          console.log(response);
           if (response.data.status_code === 200){
-            _that.getCategoryList(_that.aContent.article_id);
             $('#closeModal_3').click();
             $('#roleIdError_2').html("");
+            _that.getCategoryList(_that.aContent.article_id);
+            _that.isMountedSummer     = false;
+            _that.isMounted           = false;
+            // _that.getContentDetails(_that.aContent.id);
+            _that.unSelectAll();
           }
           else if (response.data.status_code === 400){
-            console.log(response.data.errors);
             _that.showServerError(response.data.errors)
           }
         })
       },
-      unSelectAll(){
+      unSelectAll()
+      {
+        let _that = this;
         $('.note-editable').html('');
-        this.role_id          = [];
-        let items=document.querySelectorAll('.check-role');
-        for(let i=0; i<items.length; i++){
-          if(items[i].type=='checkbox'){
-            if (items[i].value !=1){
-              items[i].checked=false;
-            }
-          }
-        }
+        // this.role_id          = [];
+        // let items=document.querySelectorAll('.check-role');
+        // for(let i=0; i<items.length; i++){
+        //   if(items[i].type=='checkbox'){
+        //     if (items[i].value !=1){
+        //       items[i].checked=false;
+        //     }
+        //   }
+        // }
         $('#roleIdError').html("");
         $('#roleIdError_2').html("");
+        _that.roleAccess = [];
+        _that.user_roles = '';
+        _that.getUserRoles()
       },
-      clearAll(){
+      clearAll()
+      {
         let _that               = this;
         _that.isMountedSummer   = false;
         _that.enBodyData        = '';
@@ -470,19 +439,24 @@
         $('#roleIdError').html("");
         $('#roleIdError_2').html("");
       },
-      getContentDetails(content_id){
+
+      getContentDetails(content_id)
+      {
 
         let _that = this;
-
+        _that.unSelectAll();
         axios.get('contents/'+content_id,{
           headers: {
             'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
           },
         }).then(function (response) {
+
           _that.aContent            = response.data.content_info;
+          _that.isMountedSummer     = true;
+          _that.isMounted           = true;
           _that.enBodyData          = _that.aContent.en_body;
           _that.bnBodyData          = _that.aContent.bn_body;
-          _that.isMountedSummer     = true;
+          // _that.isMountedSummer     = true;
           if ((_that.aContent.role_id).includes(',')) {
             _that.roleAccess        = (_that.aContent.role_id).split(',');
             _that.roleAccess        = _that.roleAccess.map(i=>Number(i))
@@ -492,6 +466,7 @@
         })
 
       },
+
       setTimeoutElements()
       {
         // setTimeout(() => this.isLoading = false, 3e3);
@@ -499,7 +474,8 @@
         setTimeout(() => this.error_message = "", 2e3);
       },
 
-      getContentList(articleID){
+      getContentList(articleID)
+      {
         let _that = this;
         // console.log(articleID);
 
@@ -511,22 +487,26 @@
           _that.contentList = response.data.content_list;
         })
       },
-      addContentData(){
-        let _that       = this
+      addContentData()
+      {
+        let _that       = this;
+        let collection;
         let enBody      = $('#en_Body').val();
         let bnBody      = $('#bn_Body').val();
         _that.contentData.id = (Math.round((new Date()).getTime()*10));
         _that.contentData.en_body = enBody;
         _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
-        if (_that.role_id.length ==0){
-          _that.role_id.push(1);
+
+        if (_that.roleAccess.length == 0){
+          _that.roleAccess.push(1);
         }
+        collection = _that.roleAccess.join();
         let formData = new FormData();
         formData.append('id', _that.contentData.id);
         formData.append('article_id', _that.contentData.article_id);
         formData.append('en_body', _that.contentData.en_body);
         formData.append('bn_body', _that.contentData.bn_body);
-        formData.append('role_id', _that.role_id);
+        formData.append('role_id', collection);
 
 
         axios.post('contents',formData,
@@ -543,8 +523,8 @@
             _that.contentData.bn_body     = '';
             _that.getContentList(_that.contentData.article_id);
             _that.success_message         = "Content added successfully";
-            _that.setTimeoutElements();
             _that.unSelectAll();
+            _that.setTimeoutElements();
           }
 
           else if (response.data.status_code === 400){

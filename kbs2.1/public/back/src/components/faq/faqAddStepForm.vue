@@ -90,18 +90,20 @@
                     <div class="form-group mb-2">
                         <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>
 
-                        <ul class="list-unstyled permission-list m-0 p-0">
-                            <li class="text-left pb-2">
+                        <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>
 
-                                <label class="mb-0 ml-2">
-                                    <input type="checkbox" v-model="role_id" value="0"> All
-                                </label>
-                            </li>
-                            <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>
-                                <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>
-                            </li>
-                        </ul>
+<!--                        <ul class="list-unstyled permission-list m-0 p-0">-->
+<!--                            <li class="text-left pb-2">-->
+
+<!--                                <label class="mb-0 ml-2">-->
+<!--                                    <input type="checkbox" v-model="role_id" value="0"> All-->
+<!--                                </label>-->
+<!--                            </li>-->
+<!--                            <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
+<!--                                <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
+<!--                                <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>-->
+<!--                            </li>-->
+<!--                        </ul>-->
                     </div>
 
 <!--                    <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>-->
@@ -115,7 +117,7 @@
                         <li v-for="(a_content,index) in contentList" :key="a_content.id" class="content-list d-flex justify-content-between align-items-center px-10 py-1">
                             <span class="text-black font-12" v-if="a_content.id">Block {{ index+1 }}</span>
                             <div class="action-buttons">
-                                <i @click="getContentDetails(a_content.id)" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
+                                <i @click="getContentDetails(a_content.id), unSelectAll()" data-toggle="modal" data-target="#contentModalEdit" class="fa fa-edit d-inline-block text-black font-12"></i>
                                 <i @click="deleteContent(a_content.id)"  class="fa fa-trash d-inline-block text-red font-12"></i>
                             </div>
                         </li>
@@ -162,46 +164,6 @@
             <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
         </div>
 
-<!--        <div class="modal fade" id="contentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">-->
-<!--            <div class="modal-dialog modal-lg">-->
-<!--                <div class="modal-content">-->
-<!--                    <div class="modal-header">-->
-<!--                        <h5 class="modal-title" id="contentModalLabel">Add New Content</h5>-->
-<!--                    </div>-->
-<!--                    <div class="modal-body" style="max-height: 450px;overflow-y: auto;">-->
-<!--                        <div class="d-inline-block">-->
-<!--                            <input type="checkbox" id="checkbox4" v-model="bangla_checkbox" @change="changeCheckBox()">-->
-<!--                            <label for="checkbox4" class="ml-2">Bangla</label>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label>English Body</label>-->
-<!--                            <input hidden class="form-control" type="text" v-model="contentData.article_id">-->
-<!--                            <Summernote  v-model="contentData.en_body" :idFromParent="enBody" ></Summernote>-->
-<!--                        </div>-->
-
-<!--                        <div class="form-group mb-2" v-if="selected_language=='bangla'">-->
-<!--                            <label >Bangla Body</label>-->
-<!--                            <Summernote  v-model="contentData.en_body" :idFromParent="bnBody"></Summernote>-->
-<!--                        </div>-->
-
-<!--                        <div class="form-group mb-2">-->
-<!--                            <label>Roles <span class="required">*</span><span id="roleIdError" class="text-danger small"></span></label>-->
-
-<!--                            <ul class="list-unstyled permission-list m-0 p-0">-->
-<!--                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">-->
-<!--                                    <label  v-if="a_user.id==1" class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id.checked" :value="a_user.id"  checked disabled> {{ a_user.name }} </label>-->
-<!--                                    <label v-else class="pl-2 mb-0"><input class="check-role" type="checkbox" v-model="role_id" :value="a_user.id"> {{ a_user.name }} </label>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="modal-footer">-->
-<!--                        <button type="button" id="closeModal_2" class="btn btn-danger rounded btn-md m-1 px-15 py-1 text-white" data-dismiss="modal" @click="unSelectAll()">Close</button>-->
-<!--                        <button type="button" class="btn btn-primary rounded btn-md m-1 px-15 py-1 text-white" @click="addContentData()">Add</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
 
         <div class="modal fade" id="contentModalEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -228,34 +190,9 @@
 
                         <div class="form-group mb-0">
                             <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
-                            <ul class="list-unstyled permission-list m-0 p-0">
-                                <li class="text-left pb-2">
-                                    <div v-if="roleAccess.includes(0)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input checked type="checkbox" :value="0"  v-model="roleAccess"> All
-                                        </label>
-                                    </div>
 
-                                    <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input type="checkbox" v-model="roleAccess" :value="0"> All
-                                        </label>
-                                    </div>
-                                </li>
+                            <CustomRoleEdit v-if="user_roles && aContent" :userRoles="user_roles" :banneRoleAccess="aContent.role_id" @granted-roles="getPermissionGrantedAccess"/>
 
-                                <li v-for="a_user in user_roles" :key="a_user.id" class="text-left pb-2">
-                                    <div v-if="roleAccess.includes(a_user.id)" class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2">
-                                            <input v-if="a_user.id==1" disabled checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            <input v-else  checked type="checkbox" :value="a_user.id"  v-model="roleAccess">
-                                            {{ a_user.name }} </label>
-                                    </div>
-                                    <div v-else class="d-flex align-items-center">
-                                        <label class="mb-0 ml-2"><input type="checkbox" v-model="roleAccess" :value="a_user.id"> {{ a_user.name }} </label>
-                                    </div>
-
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -274,6 +211,8 @@
     import Summernote from "@/components/summer-note/summernote";
     import SummernoteEdit from "@/components/summer-note/summernote-edit";
     import TagInput from "../tag/TagComponent";
+    import CustomRoleAdd from '../custom-role/CustomRoleAdd'
+    import CustomRoleEdit from '../custom-role/CustomRoleEdit'
     import Select2 from 'v-select2-component';
     // import select2 from './../select2/select2';
     import $ from "jquery";
@@ -284,7 +223,9 @@
             Summernote,
             SummernoteEdit,
             TagInput,
-            Select2
+            Select2,
+            CustomRoleAdd,
+            CustomRoleEdit
         },
         data() {
             return {
@@ -350,6 +291,12 @@
         },
 
         methods:{
+            getPermissionGrantedAccess(status)
+            {
+                this.roleAccess = status.split(',');
+
+                // this.getUserRoles();
+            },
             prev() {
                 this.step--;
             },
@@ -400,7 +347,8 @@
                 _that.enBodyData = '';
                 _that.roleAccess = [];
             },
-            updateContentData(content_id){
+            updateContentData(content_id)
+            {
 
                 let _that = this;
                 let collection;
@@ -426,14 +374,15 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     if (response.data.status_code === 200){
                         _that.getCategoryList(_that.aContent.article_id);
+                        _that.isMounted = false;
+                        _that.unSelectAll();
                         $('#closeModal_3').click();
                         $('#roleIdError_2').html("");
                     }
                     else if (response.data.status_code === 400){
-                        console.log(response.data.errors);
                         _that.showServerError(response.data.errors)
                     }
                 })
@@ -448,7 +397,8 @@
                     },
                 }).then(function (response) {
                     console.log(response);
-                    _that.isMounted =true;
+                    _that.isMounted = true;
+                    // _that.isContentStatus = true;
                     _that.aContent = response.data.content_info;
                     _that.enBodyData  = _that.aContent.en_body;
                     _that.bnBodyData  = _that.aContent.bn_body;
@@ -477,21 +427,26 @@
                 })
             },
             addContentData(){
-                let _that = this
+                let _that = this;
+                let collection;
                 let enBody      = $('#en_Body').val() ? $('#en_Body').val() : 'n/a';
                 let bnBody      = $('#bn_Body').val();
                 _that.contentData.id = (Math.round((new Date()).getTime()*10));
                 _that.contentData.en_body = enBody;
                 _that.contentData.bn_body = typeof (bnBody) != 'undefined'? bnBody : '';
-                if (_that.role_id.length ==0){
-                    _that.role_id.push(1);
+
+                if (_that.roleAccess.length == 0){
+                    _that.roleAccess.push(1);
                 }
+
+                collection = _that.roleAccess.join();
+
                 let formData = new FormData();
                 formData.append('id', _that.contentData.id);
                 formData.append('article_id', _that.contentData.article_id);
                 formData.append('en_body', _that.contentData.en_body);
                 formData.append('bn_body', _that.contentData.bn_body);
-                formData.append('role_id', _that.role_id);
+                formData.append('role_id', collection);
                 axios.post('contents',formData,
                     {
                         headers: {
@@ -523,15 +478,19 @@
             },
 
             unSelectAll(){
+                let _that = this;
                 $('.note-editable').html('');
-                this.role_id = [];
-                let items=document.querySelectorAll('.check-role');
-                for(let i=0; i<items.length; i++){
-                    if(items[i].type=='checkbox'){
-                        items[i].checked=false;
-                    }
-
-                }
+                _that.roleAccess = [];
+                _that.user_roles = '';
+                _that.getUserRoles()
+                // this.role_id = [];
+                // let items=document.querySelectorAll('.check-role');
+                // for(let i=0; i<items.length; i++){
+                //     if(items[i].type=='checkbox'){
+                //         items[i].checked=false;
+                //     }
+                //
+                // }
             },
             setTimeoutElements()
             {

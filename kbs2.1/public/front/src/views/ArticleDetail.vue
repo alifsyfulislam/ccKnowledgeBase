@@ -108,12 +108,12 @@
                         <div v-if="a_content.role_id.includes('0') && a_content.en_body!='n/a'" class="pb-5" v-html="a_content.en_body"></div>
 
                       </div>
-                      <div><u class="text-primary">Log in read the article.</u></div>
+<!--                      <div><u class="text-primary">Log in read the article.</u></div>-->
 
                     </div>
 
 
-                    <div v-else><u class="text-primary">Log in read the article.</u></div>
+<!--                    <div v-else><u class="text-primary">Log in read the article.</u></div>-->
                   </div>
 
 
@@ -139,11 +139,11 @@
                         <div v-if="a_content.role_id.includes('0') && a_content.bn_body!='n/a'" class="pb-5"  v-html="a_content.bn_body"></div>
 
                       </div>
-                      <div><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
+<!--                      <div><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>-->
 
                     </div>
 
-                    <div v-else><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>
+<!--                    <div v-else><u class="text-primary">নিবন্ধ পড়তে লগ ইন করুন।</u></div>-->
                   </div>
                 </div>
                 <!--              resource block-->

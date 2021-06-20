@@ -18,8 +18,8 @@
             </li>
         </ul>
 
-        <br>
-        Selected items : {{ selectedlang }}
+<!--        <br>-->
+<!--        Selected items : {{ selectedlang }}-->
 
     </div>
 
@@ -62,7 +62,7 @@
 
 
             updateCheckall: function(){
-                console.log(this.languages)
+                // console.log(this.languages)
                 // console.log(this.languages.length)
                 if (this.languages.includes(1)==false){
                     this.languages.push(1)
@@ -95,14 +95,10 @@
                     this.selectedlang += this.languages[key]+",";
                 }
                 this.selectedlang   = this.selectedlang.slice(0, -1)
-
-                console.log(this.languages.length);
-                console.log(this.langsdata.length);
-                // console.log(this.selectedlang );
                 if(this.languages.length > this.langsdata.length){
                     // this.isCheckAll = true;
                     this.checkAll()
-                    console.log('hide')
+                    // console.log('hide')
                 }else{
                     this.isCheckAll = false;
                 }

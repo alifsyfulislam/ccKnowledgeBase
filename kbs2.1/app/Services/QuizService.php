@@ -91,13 +91,13 @@ class QuizService
     public function createItem($request)
     {
         $validator = Validator::make($request->all(),[
-            'article_id' => 'required',
-            'quiz_form_id' => 'required',
-            'name' => 'required|unique:quizzes,name',
-            'duration' => 'required',
-            'total_marks' => 'required',
-            'number_of_questions' => 'required',
-            'status' => 'required',
+            'article_id'            => 'required',
+            'quiz_form_id'          => 'required',
+            'name'                  => 'required|unique:quizzes,name',
+            'duration'              => 'required',
+            'total_marks'           => 'required',
+            'number_of_questions'   => 'required',
+            'status'                => 'required',
         ]);
 
         if($validator->fails()) {
@@ -113,35 +113,41 @@ class QuizService
         $input['slug'] = Helper::slugify($input['name']);
         $input['id']   = time().rand(1000,9000);
 
-//        return  $input['article_id'];
-        $selectedArticleID = array();
 
+        DB::beginTransaction();
+        try {
 
-        foreach ($input['article_id'] as $articleID){
-//            $articleID.implode(',','')
-            if ($articleID["id"] != ''){
-                array_push($selectedArticleID,$articleID['id'].'/'.$articleID['slug']);
-
+            $selectedArticleID = array();
+            foreach ($input['article_id'] as $articleInfo){
+                array_push($selectedArticleID,$articleInfo['id'].'/'.$articleInfo['slug']);
             }
+            $input['article_info'] = join(",",$selectedArticleID);
 
+            $result_array = explode(",",$input['role_id']);
 
+            if (in_array('1',$result_array)){
+                $this->quizRepository->create($input);
+            }else{
+                array_push($result_array,'1');
+                $input['role_id'] = implode(',',$result_array);
+                $this->quizRepository->create($input);
+            }
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Found Exception: ' . $e->getMessage() . ' [Script: ' . __CLASS__ . '@' . __FUNCTION__ . '] [Origin: ' . $e->getFile() . '-' . $e->getLine() . ']');
+
+            return response()->json([
+                'status_code' => 424,
+                'messages'    => config('status.status_code.424'),
+                'error'       => $e->getMessage()
+            ]);
         }
 
-        $list_article_id = join(",",$selectedArticleID);
+        DB::commit();
 
-//        return $list_article_id;
-
-
-
-
-
-
-        $this->quizRepository->create($input,$list_article_id);
-
-        return response()->json([
-            'status_code' => 201,
-            'messages' => config('status.status_code.201')
-        ]);
+        return response()->json(['status_code' => 200, 'messages'=>config('status.status_code.200')]);
     }
 
 
@@ -154,22 +160,20 @@ class QuizService
     {
 
         $validator = Validator::make($request->all(),[
-            'quiz_form_id' => 'required',
-            'article_id' => 'required',
-            'name' => 'required',
-            'duration' => 'required',
-            'total_marks' => 'required',
-            'number_of_questions' => 'required',
-            'status' => 'required',
+            'quiz_form_id'          => 'required',
+            'name'                  => 'required',
+            'duration'              => 'required',
+            'total_marks'           => 'required',
+            'number_of_questions'   => 'required',
+            'status'                => 'required',
 
         ]);
 
         if($validator->fails()) {
-
             return response()->json([
-                'status_code' => 400,
-                'messages'=> config('status.status_code.400'),
-                'errors' => $validator->errors()->all()
+                'status_code'       => 400,
+                'messages'          => config('status.status_code.400'),
+                'errors'            => $validator->errors()->all()
             ]);
         }
 
@@ -177,25 +181,27 @@ class QuizService
 
         try {
 
-            // $result_array =$request->role_id; 
-            // $roleIds =  implode(',',$result_array);
             $input = $request->all();
-            $input['role_id'] = implode(',', $input['role_id']);
             $input['slug'] = Helper::slugify($input['name']);
 
-            $selectedArticleID = array();
-
-            foreach ($input['article_id'] as $articleID){
-                if ($articleID["id"] != ''){
-                    array_push($selectedArticleID,$articleID['id'].'/'.$articleID['slug']);
+            if (!empty($input['article_id'])){
+                $selectedArticleID = array();
+                foreach ($input['article_id'] as $articleInfo){
+                    $articleInfo['slug'] = Helper::slugify($articleInfo['en_title']);
+                    array_push($selectedArticleID,$articleInfo['id'].'/'.$articleInfo['slug']);
                 }
-
-
+//                $input['article_info'] = join(",",$selectedArticleID);
+                $input['article_info'] = join(",",$selectedArticleID);
             }
+            $result_array = explode(",",$input['role_id']);
 
-            $list_article_id = join(",",$selectedArticleID);
-
-            $this->quizRepository->update($input, $request->id, $list_article_id);
+            if (in_array('1',$result_array)){
+                $this->quizRepository->update($input, $request->id);
+            }else{
+                array_push($result_array,'1');
+                $input['role_id'] = implode(',',$result_array);
+                $this->quizRepository->update($input, $request->id);
+            }
 
         } catch (Exception $e) {
 

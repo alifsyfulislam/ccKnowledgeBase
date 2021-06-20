@@ -1,16 +1,16 @@
 <template>
     <div>
         <!-- Check All -->
-        <label><input type='checkbox' @click='checkAll()' v-model='isCheckAll'> Public</label>
+        <label><input class="check-role" type='checkbox' @click='checkAll()' v-model='isCheckAll'> Public</label>
         <!-- Checkboxes list -->
         <ul class="list-unstyled permission-list m-0 p-0" v-if="isCheckAll != true">
             <li class="text-left pb-2" v-for='lang in langsdata'>
                 <label class="pl-2 mb-0" v-if="lang.id==1">
-                    <input disabled type='checkbox' v-bind:value='lang.id' v-model='languages.checked' checked @change='updateCheckall()'> {{ lang.name }}
+                    <input class="check-role" disabled type='checkbox' v-bind:value='lang.id' v-model='languages.checked' checked @change='updateCheckall()'> {{ lang.name }}
                 </label>
 
                 <label class="pl-2 mb-0" v-else>
-                    <input type='checkbox' v-bind:value='lang.id' v-model='languages' @change='updateCheckall()'> {{ lang.name }}
+                    <input class="check-role" type='checkbox' v-bind:value='lang.id' v-model='languages' @change='updateCheckall()'> {{ lang.name }}
                 </label>
             </li>
         </ul>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import $ from 'jquery'
     export default {
         name: "CustomRoleAdd",
 
@@ -57,7 +58,6 @@
                     this.languages.push(1)
                 }
                 if(this.languages.length == this.langsdata.length){
-                    // this.isCheckAll = true;
                     this.checkAll()
                 }else{
                     this.isCheckAll = false;
@@ -78,7 +78,7 @@
 
         created() {
             this.languages.push(1)
-            console.log(this.userRoles)
+            // console.log(this.userRoles)
             this.langsdata = this.userRoles
         }
     }

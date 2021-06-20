@@ -257,7 +257,7 @@
             },
             getAddDataFromChild (status)
             {
-
+                console.log(status)
                 this.success_message = status;
                 this.getQuizList();
                 this.removingRightSideWrapper();

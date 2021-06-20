@@ -65,13 +65,12 @@ class QuizRepository
      * @param array $data
      * @return mixed
      */
-    public function create(array $data, $list_article_id)
+    public function create(array $data)
     {
 
         $dataObj =  new Quiz;
-
         $dataObj->id  = $data['id'];
-        $dataObj->article_id = $list_article_id;
+        $dataObj->article_id = $data['article_info'];
         $dataObj->quiz_form_id = $data['quiz_form_id'];
         $dataObj->name = $data['name'];
         $dataObj->slug = $data['slug'];
@@ -79,14 +78,13 @@ class QuizRepository
         $dataObj->total_marks = $data['total_marks'];
         $dataObj->number_of_questions = $data['number_of_questions'];
         $dataObj->status = $data['status'];
-        $dataObj->is_authorized = $data['is_authorized'];
-        if( $dataObj->is_authorized!==0) {
-            $dataObj->role_id = implode(',',$data['role_id']);
-        }else{
-            $dataObj->role_id = 0;
-        }
-       
-
+//        $dataObj->is_authorized = $data['is_authorized'];
+        $dataObj->role_id = $data['role_id'];
+//        if( $dataObj->is_authorized!==0) {
+//            $dataObj->role_id = implode(',',$data['role_id']);
+//        }else{
+//            $dataObj->role_id = 0;
+//        }
         return $dataObj->save();
     }
 
@@ -96,33 +94,23 @@ class QuizRepository
      * @param $id
      * @return mixed
      */
-    public function update(array $data, $id,$list_article_id)
-    {   
-//        return Quiz::find($id)->update($data);
-        // $quiz = Quiz::find($id);
-        // $quiz->role_id = implode(',',$data['role_id']);
-        // return $quiz->update($data);
+    public function update(array $data, $id)
+    {
 
-        $dataObj = Quiz::find($id);
-        $dataObj->id  = $data['id'];
-        $dataObj->article_id = $list_article_id;
-        $dataObj->quiz_form_id = $data['quiz_form_id'];
-        $dataObj->name = $data['name'];
-        $dataObj->slug = $data['slug'];
-        $dataObj->duration = $data['duration'];
-        $dataObj->total_marks = $data['total_marks'];
-        $dataObj->number_of_questions = $data['number_of_questions'];
-        $dataObj->status = $data['status'];
-        $dataObj->is_authorized = $data['is_authorized'];
-        if( $dataObj->is_authorized!==0) {
-            $dataObj->role_id = implode(',',$data['role_id']);
-        }else{
-            $dataObj->role_id = 0;
+        $dataObj                        = Quiz::find($id);
+        $dataObj->id                    = $data['id'];
+        if(isset($data['article_info'])){
+            $dataObj->article_id            = $data['article_info'];
         }
-
-
+        $dataObj->quiz_form_id          = $data['quiz_form_id'];
+        $dataObj->name                  = $data['name'];
+        $dataObj->slug                  = $data['slug'];
+        $dataObj->duration              = $data['duration'];
+        $dataObj->total_marks           = $data['total_marks'];
+        $dataObj->number_of_questions   = $data['number_of_questions'];
+        $dataObj->status                = $data['status'];
+        $dataObj->role_id               = $data['role_id'];
         return $dataObj->save();
-
     }
 
 
