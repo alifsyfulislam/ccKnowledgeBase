@@ -114,7 +114,6 @@ class ContentService
         return response()->json([
 
             'status_code' => 200,
-            'messages'    => "Content Deleted Successfully",
             'content_list' => $content_list
 
         ]);

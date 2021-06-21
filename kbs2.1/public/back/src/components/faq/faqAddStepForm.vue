@@ -645,9 +645,8 @@
                 // }
             },
 
-            showServerError(errors){
-
-                console.log(errors)
+            showServerError(errors)
+            {
 
                 $('#enTitleError').html("");
                 $('#categoryIDError').html("");
@@ -712,7 +711,8 @@
                 });
             },
 
-            getCategoryList(){
+            getCategoryList()
+            {
 
                 let _that   = this;
 

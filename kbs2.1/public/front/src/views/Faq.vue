@@ -111,10 +111,10 @@
                         </div>
                       </div>
                     </div>
-                    <div><u class="text-primary">Login to read this faq.</u></div>
+<!--                    <div><u class="text-primary">Login to read this faq.</u></div>-->
                   </div>
 
-                  <div v-else><u class="text-primary">Login to read this faq.</u></div>
+<!--                  <div v-else><u class="text-primary">Login to read this faq.</u></div>-->
                 </div>
               </div>
             </div>

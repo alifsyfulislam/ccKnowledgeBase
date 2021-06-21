@@ -59,9 +59,6 @@
                 <div class="col-xl-4 col-lg-4 mb-30" v-for="a_latest_art in allLatestArticles" :key="a_latest_art.id">
                   <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
                     <router-link class="article-item-box d-block bg-white position-relative align-items-stretch h-100 overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: a_latest_art.id,articleSlug: a_latest_art.slug }}">
-                      <!--                    <div class="featured-image" v-if="a_content.en_body.match(regexImg)">-->
-                      <!--                      <img :src="((a_latest_art.contents[0].en_body).match(regexImg) ? (a_latest_art.contents[0].en_body).match(regexImg)[0]: static_image['article'] )" alt="no image" class="img-fluid">-->
-                      <!--                    </div>-->
                       <div class="featured-image" v-if="a_latest_art.contents == ''">
                         <img :src="static_image['article']" alt="no image" class="img-fluid">
                       </div>
@@ -99,42 +96,74 @@
               </div>
 
               <div class="row">
-                <div class="col-lg-12" style="min-height: 350px ; ">
-                  <div v-for="a_faq in all_Faqs" :key="a_faq.id">
-                    <!--                    remove those faqs that has no content-->
-                    <div class="custom-accordion" v-if="a_faq.contents[0].en_body !='n/a' && a_faq.contents[0].bn_body !='n/a'">
+<!--                style="min-height: 350px ; "-->
+                <div class="col-lg-12">
+                  <div style="min-height: 350px">
+                    <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
+
                       <div class="heading">{{a_faq.en_title}}</div>
-                      <!--                      unknown-->
-                      <div v-if="userInformation == ''" class="contents overflow-hidden">
-                        <span>{{a_faq.bn_title}}</span>
-                        <div v-for="a_content in a_faq.contents" :key="a_content.id">
-                          <!--                          bangla body-->
-                          <ul class="nav nav-tabs pt-1 pb-2" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title !='n/a' && a_content.bn_body !='n/a' && a_content.role_id.includes(0)">
-                            <li class="nav-item">
-                              <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
-                            </li>
-                            <li class="nav-item" v-if="a_content.bn_body !='n/a'">
-                              <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
-                            </li>
-                          </ul>
 
+                      <div class="contents overflow-hidden">
+                        <div v-if="userInformation != ''">
+                          <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
+                          <div v-for="a_content in a_faq.contents" :key="a_content.id">
+                            <div v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
+                              <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
 
-                          <div class="tab-content pt-2" :id="'myTabContent_'+a_content.id">
-                            <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(0)">
-                              <div v-html="a_content.en_body"></div>
-                            </div>
+                                <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                                </li>
+                                <li class="nav-item" v-if="a_content.bn_body !='n/a'">
+                                  <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                                </li>
+                              </ul>
 
-                            <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(0)">
-                              <div v-html="a_content.bn_body"></div>
+                              <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
+                                <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
+                                  <div v-html="a_content.en_body"></div>
+                                  <!--                            <div v-if="a_content.en_body != '' && !a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
+                                </div>
+
+                                <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(userInformation.roles[0].id)">
+                                  <div v-html="a_content.bn_body"></div>
+                                  <!--                            <div v-if="!a_content.role_id.includes(userInformation.roles[0].id)">No Access!</div>-->
+                                </div>
+                              </div>
                             </div>
                           </div>
-
                         </div>
+
+                        <div v-else-if="userInformation == ''">
+                          <p class="font-14 pb-10" v-if="a_faq.bn_title != 'n/a'">{{a_faq.bn_title}}</p>
+                          <div v-for="a_content in a_faq.contents" :key="a_content.id">
+                            <ul class="nav nav-tabs" :id="'myTab_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.role_id.includes(0)">
+
+                              <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" :href="'#tabEnglish_'+a_content.id">English</a>
+                              </li>
+                              <li class="nav-item" v-if="a_content.bn_body !='n/a'">
+                                <a class="nav-link" data-toggle="tab" :href="'#tabBangla_'+a_content.id">Bangla</a>
+                              </li>
+                            </ul>
+
+                            <div class="tab-content pt-3" :id="'myTabContent_'+a_content.id">
+                              <div class="tab-pane fade active show" :id="'tabEnglish_'+a_content.id" v-if="a_content.en_body != '' && a_content.en_body != 'n/a' && a_content.role_id.includes(0)">
+                                <div v-html="a_content.en_body"></div>
+                              </div>
+
+                              <div class="tab-pane fade" :id="'tabBangla_'+a_content.id" v-if="a_faq.bn_title != 'n/a' && a_content.bn_body != '' && a_content.bn_body != 'n/a' && a_content.role_id.includes(0)">
+                                <div v-html="a_content.bn_body"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <!--                    <div><u class="text-primary">Login to read this faq.</u></div>-->
+                        </div>
+
+                        <!--                  <div v-else><u class="text-primary">Login to read this faq.</u></div>-->
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
 
             </div>
@@ -151,6 +180,7 @@
   import Loader from "@/components/Loader";
   import SearchForm from "@/components/Search";
   import BannerSlider from "@/components/slider/slider";
+  // import LatestFaq from '../components/faq/LatestFaq'
 
   import $ from 'jquery'
   import axios from "axios";
@@ -166,7 +196,8 @@
     components: {
       Loader,
       SearchForm,
-      BannerSlider
+      BannerSlider,
+      // LatestFaq
     },
     data() {
       return {
@@ -211,7 +242,7 @@
         axios.get('article-list')
                 .then(function (response) {
                   if(response.data.status_code === 200){
-                    console.log(response.data.article_list)
+                    // console.log(response.data.article_list)
                     _that.allLatestArticles = response.data.article_list;
                   }
                 })

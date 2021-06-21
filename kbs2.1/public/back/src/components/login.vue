@@ -11,7 +11,7 @@
 
                             <div class="login-middle-wrapper py-40">
                                 <div class="account-type-status text-center py-10">
-                                    <span class="acc-type text-uppercase">Knowledge Based System</span>
+                                    <span class="acc-type text-uppercase">Knowledge Base System</span>
                                 </div>
 
                                 <div style="min-height:39px"><div v-if="checkedCounter > 0" class="small text-danger pt-20" id="loginStatusError"></div></div>
