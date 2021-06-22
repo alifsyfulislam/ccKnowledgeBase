@@ -24,7 +24,7 @@ export default {
         max-width: 250px;
         min-width: 150px;
         z-index: 10;
-        right: 50px;
+        right: 130px;
         box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
 
