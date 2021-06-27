@@ -8,11 +8,23 @@
             <div v-if="isFinish">
                 <h3 class="text-center font-weight-bold">Your Score: {{ showResult.toFixed(2) }}</h3>
 
-<!--                <div>-->
-<!--                    <a :href="quizInfo.article_id">-->
-<!--                        Article-->
-<!--                    </a>-->
-<!--                </div>-->
+                <div class="pt-3 pb-3" v-if="!(showResult>=passMark)">
+                    <h3 class="pb-5">Please read below articles to improve your knowledge!</h3>
+                    <ul class="text-left">
+                        <li class="text-left" v-for="a_article in article_list" :key="a_article">
+                            <a href="#" @click.prevent="articleDetails(a_article)">{{a_article.split('/')[1]}}</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="text-center" v-if="!userInformation && showResult>=passMark">
+                    <router-link  class="" :to="{ name: 'Registration', query: { quizId:quizInfo.id, score:showResult }}">
+                        Register Now
+                    </router-link>
+                </div>
+
+
+
             </div>
             <div v-else>
                 <div v-if="quizInfo">
@@ -63,12 +75,12 @@
 
                                     <div v-if="a_form_field.f_type === 'Checkbox'">
                                         <div v-for="(a_val,index) in selectBoxOption" :key="a_val">
-                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChange(a_val)"/>
+                                            <input :type="a_form_field.f_type" :name="a_form_field.f_name" :class="a_form_field.f_class" :id="a_form_field.f_id+'_'+index" :required="a_form_field.f_required==0? false: true" v-model="fromData" @click="onChangeCheck(a_val)"/>
                                             <label class="ml-2" :for="a_form_field.f_id+'_'+index">{{ a_val }}</label><br>
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(), finalizeData()">Finish Exam</button>
+                                        <button class="btn btn-common btn-primary px-25 text-white font-16 mt-15" :class="[(itemA == 0) ? 'd-none':'show btn-info']" @click="checkNextData(a_form_field.id), finalizeData(), saveResult()">Finish Exam</button>
                                     </div>
                                 </div>
                                 <div class="mt-0 px-15">
@@ -77,7 +89,7 @@
                                             <div v-if="pagination.total > pagination.per_page" class="col-md-offset-4">
                                                 <ul class="pagination">
                                                     <li :class="[{disabled:!pagination.next_page_url},(itemA == 1) ? 'd-none':'']" class="page-item mx-1">
-                                                        <a @click.prevent="checkNextData(),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
+                                                        <a @click.prevent="checkNextData(a_form_field.id),getQuizFormField(pagination.next_page_url)" href="#" class="btn btn-common btn-primary px-25 text-white font-18"><span>Next</span></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -115,16 +127,22 @@
                 isFinish: false,
                 isRepeat: true,
                 quizInfo: '',
+                userId  :'',
                 quizFormFieldInfo:'',
                 selectBoxOption:'',
+                userInformation:'',
                 itemA : 0,
                 fromData: '',
                 allFromData:[],
+                quesAndAns: [],
                 timeCounter: '',
                 clearCounter:'',
                 markCounter: '',
                 resultArray: [],
                 showResult:'',
+                passMark:'',
+                checkBoxDataArr : [],
+                strToArr : '',
 
                 pagination:{
                     from: '',
@@ -139,31 +157,47 @@
                     per_page: 1,
                     total: ''
                 },
+
+                article_list : ''
             }
         },
 
         methods:{
+            articleDetails(url){
+                this.$router.push('/article-detail/'+url);
+            },
             checkTextAreaData(){
                 this.fromData = this.fromData.replace("\n", "");
 
             },
-            onChange(val) {
+            onChange(val){
                 let _that = this;
                 _that.fromData = val;
             },
-            checkNextData(){
+            onChangeCheck(val) {
+                let _that = this;
+                _that.checkBoxDataArr.push(val)
+                // console.log(_that.checkBoxDataArr);
+                // console.log(_that.strToArr);
+                _that.fromData = _that.checkBoxDataArr.join();
+            },
+            checkNextData(quesId) {
                 let _that = this;
                 _that.allFromData.push(_that.fromData);
+                _that.quesAndAns[quesId] = _that.fromData;
+                //console.log(_that.quizInfo.id);
+                _that.checkBoxDataArr = [];
+                _that.strToArr = [];
                 if (_that.isRepeat == false ){
                     _that.finalizeData();
-                }
-                else{
-                    _that.fromData = '';
                 }
             },
             finalizeData(){
                 let _that = this;
+
+                _that.checkBoxDataArr = [];
                 _that.isFinish = true;
+
                 clearInterval(_that.clearCounter);
                 if (_that.isRepeat==false){
                     console.log(_that.resultArray);
@@ -177,14 +211,42 @@
                     }
                     _that.showResult = score;
                     _that.questionArray = [];
-                    console.log(_that.questionArray);
+                    // console.log(_that.questionArray);
                 }
+            },
+
+            saveResult() {
+
+                let _that = this;
+                if(_that.userInformation) {
+                    _that.userId= _that.userInformation.id;
+                } else{
+                    _that.userId ='';
+                }
+                let ques_and_ans = JSON.stringify({..._that.quesAndAns});
+                console.log('ques and answer',_that.quesAndAns);
+                console.log('ques and answer',ques_and_ans);
+
+                let postData = new FormData();
+                postData.append('user_id', _that.userId);
+                postData.append('quiz_id', _that.quizInfo.id);
+                postData.append('ques_and_ans', ques_and_ans);
+
+                axios.post('result-create',postData).then(function (response){
+                    // console.log(response.data);
+                    if (response.data.status_code ==200){
+                        console.log("Quiz result successfully added")
+
+                    } else {
+                        console.log(response.data.messages);
+                    }
+                })
             },
 
             getQuizFormField(pageUrl) {
                 let _that = this;
                 if (_that.quizInfo.number_of_questions == 1){
-                    console.log("hi");
+                    // console.log("hi");
                     pageUrl = pageUrl == undefined ? '/quiz-form/field-list/'+_that.quizInfo.quiz_form_id+'?page=1' : pageUrl;
                     axios.get(pageUrl)
                         .then(function (response) {
@@ -198,11 +260,12 @@
                                 if (val.f_option_value !=null && val.f_option_value.search(',')){
                                     let str = val.f_option_value;
                                     str = str.split(",");
+                                    // _that.strToArr = Object.values(str);
 
-                                    console.log("before"+ str);
+                                    // console.log("before"+ str);
                                     str = str.sort(() => Math.random() - 0.5);
 
-                                    console.log("after" + str);
+                                    // console.log("after" + str);
 
                                     _that.selectBoxOption = Object.assign({}, str);
                                 }
@@ -236,7 +299,7 @@
                                 _that.pagination  = response.data.quiz_form_field_list;
 
                                 _that.questionArray.push(response.data.quiz_form_field_list.data['0'].id)
-                                console.log(_that.questionArray)
+                                // console.log(_that.questionArray)
 
                                 _that.quizFormFieldInfo.forEach(val =>{
                                     _that.resultArray.push(val.f_default_value);
@@ -244,10 +307,11 @@
                                         let str = val.f_option_value;
                                         str = str.split(",");
 
-                                        console.log("before"+ str);
+                                        // console.log("before"+ str);
                                         str = str.sort(() => Math.random() - 0.5);
+                                        // _that.strToArr = Object.values(str);
 
-                                        console.log("after" + str);
+                                        // console.log("after" + str);
 
                                         _that.selectBoxOption = Object.assign({}, str);
                                     }
@@ -293,11 +357,11 @@
             detectTab(){
                 $(window).on("blur",function () {
                     //do something
-                    console.log("You left this tab");
+                    // console.log("You left this tab");
                     if (this.isFinish==true){
                         window.location.reload();
                     } else{
-                        console.log("you may proceed");
+                        // console.log("you may proceed");
                     }
 
                 })
@@ -306,10 +370,16 @@
 
         created() {
             let _that = this;
+            if(sessionStorage.userInformation) {
+                _that.userInformation = JSON.parse(sessionStorage.userInformation);
+            }
             _that.detectTab();
             if (_that.$route.params.quiz_info){
                 _that.quizInfo = JSON.parse(_that.$route.params.quiz_info);
-                console.log(_that.quizInfo);
+
+                _that.article_list = _that.quizInfo.article_id.split(',');
+                console.log(_that.article_list)
+                _that.passMark =  ( _that.quizInfo.total_marks*40 )/100;
                 let timer = _that.quizInfo.duration*60;
                 _that.printTimer(timer);//total time
                 _that.getQuizFormField();
