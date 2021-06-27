@@ -108,7 +108,7 @@
             this.langsdata      = this.userRoles;
             this.approvedRoles  = this.banneRoleAccess;
             // console.log(this.langsdata)
-            // console.log(this.banneRoleAccess)
+            console.log(this.banneRoleAccess)
             this.checkedPrevData()
         }
     }

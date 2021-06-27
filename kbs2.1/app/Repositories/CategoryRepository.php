@@ -59,6 +59,7 @@ class CategoryRepository implements RepositoryInterface
         $dataObj->slug = Helper::slugify($data['name']);
         $dataObj->parent_id = $data['parent_id'] ?? 0;
         $dataObj->user_id = $data['user_id'] ?? 0;
+        $dataObj->role_id = $data['role_id'];
 
         return $dataObj->save();
     }
@@ -74,7 +75,8 @@ class CategoryRepository implements RepositoryInterface
 
         return Category::where('id', $id )->update([
             'name'      => $data['name'],
-            'parent_id' => $data['parent_id'] ?? 0
+            'parent_id' => $data['parent_id'] ?? 0,
+            'role_id' => $data['role_id']
         ]);
 
     }
