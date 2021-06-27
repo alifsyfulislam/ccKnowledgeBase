@@ -8,6 +8,7 @@
 
                 <div class="topbar-user-info-area">
                     <div class="d-flex align-items-center justify-content-end">
+                        <div class="user-notification px-10 notification-in"><i class="far fa-bell"></i></div>
                         <div class="user-name">{{user_info.first_name+' '+user_info.last_name}}</div>
                         <div class="user-image px-15">
                             <img class="img-fluid" src="@/assets/img/user-image.jpg" alt="root@ccpro">
@@ -25,8 +26,9 @@
             <i class="fa fa-angle-up" aria-hidden="true"></i>
         </div>
         <!-- scroll to top end-->
+        <RealtimeNotification class="RealtimeNotificationComponent" />
 
-        <UserProfileBar></UserProfileBar>
+        <UserProfileBar />
     </div>
 
 </template>
@@ -96,6 +98,10 @@ $(document).on('click','.screen-expand-btn',() => {
     $('.content-wrapper').toggleClass('expandable-content-area');
 });
 
+$(document).on('click','.user-notification',() => {
+    $('.RealtimeNotificationComponent').slideToggle('slow');
+});
+
 function escapeButtonActive(fullScreenEscape){
     $(document).on('keyup',(e)=> {
         if (e.keyCode === 27 && fullScreenEscape === false){
@@ -110,6 +116,7 @@ function escapeButtonActive(fullScreenEscape){
 
 
 
+import RealtimeNotification from '../../components/realtime-notification/RealtimeNotification.vue'
 import UserProfileBar from './UserProfileBar.vue'
 
 export default {
@@ -124,7 +131,8 @@ export default {
     },
 
     components: {
-        UserProfileBar
+        UserProfileBar,
+        RealtimeNotification
     },
     created() {
         this.user_info = JSON.parse(localStorage.getItem("userInformation"));
@@ -133,5 +141,14 @@ export default {
 </script>
 
 <style scoped>
+  .user-notification {
+    cursor: pointer;
+  }
+  .user-notification.notification-in {
+    color: #3a7afe;
+  }
 
+  .RealtimeNotificationComponent {
+      display: none;
+  }
 </style>
