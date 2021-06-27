@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="col-md-12" v-if="categoryHasParent != true">
-                        <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
+                        <label>Roles</label>
 
 
                         <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>

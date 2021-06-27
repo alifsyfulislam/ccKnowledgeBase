@@ -55,7 +55,7 @@
 
 
                     <div class="col-md-12" v-if="categoryHasParent != true">
-                        <label>Roles <span class="required">*</span><span id="roleIdError_2" class="text-danger small"></span></label>
+                        <label>Roles</label>
 
 
 
