@@ -21,7 +21,9 @@ class Faq extends Model
         'slug',
         'en_body',
         'status',
-        'publish_date'
+        'publish_date',
+        'is_notifiable'
+
     ];
 
     /**

@@ -139,7 +139,15 @@
                             <label for="cmmnt_in_active"><input id="cmmnt_in_active" type="radio" value="0" v-model="faqData.commentable"/> Inactive</label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Is Notifiable?</label>
+                        <div>
+                            <label for="cmmnt_active"><input id="cmmnt_active" type="radio" value="1" v-model="faqData.is_notifiable"/> Yes</label>
+                            <label for="cmmnt_in_active"><input id="cmmnt_in_active" type="radio" value="0" v-model="faqData.is_notifiable"/>  No</label>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
             <button class="btn common-gradient-btn ripple-btn px-50" @click.prevent="next()">Next <i class="fas fa-chevron-right"></i></button>
         </div>
@@ -278,7 +286,8 @@
                     tag             : '',
                     en_body         : '',
                     bn_body         : '',
-                    commentable : 1,
+                    commentable     : 1,
+                    is_notifiable   : 0,
                     status          : 'draft'
                 },
 
@@ -687,6 +696,7 @@
                         bn_title            : this.faqData.bn_title,
                         tag                 : this.faqData.tag,
                         commentable_status  : this.faqData.commentable,
+                        is_notifiable       : this.faqData.is_notifiable,
                         status              : this.faqData.status,
                     },
                     {

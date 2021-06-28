@@ -81,6 +81,16 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Is Notifiable?</label>
+                            <div>
+                                <label for="cmmnt_active"><input :checked="faqData.is_notifiable == 1" id="cmmnt_active" type="radio" value="1" v-model="faqData.is_notifiable"/> Yes</label>
+                                <label for="cmmnt_in_active"><input  :checked="faqData.is_notifiable == 0" id="cmmnt_in_active" type="radio" value="0" v-model="faqData.is_notifiable"/> No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Select A Status</label>
                             <select class="form-control" v-model="faqData.status">
                                 <option value="draft">Draft</option>
@@ -248,6 +258,7 @@
                     en_body                 : '',
                     bn_body                 : '',
                     commentable_status      : '',
+                    is_notifiable           : '',
                     status                  : '',
                 },
                 filter                  : {
@@ -653,6 +664,7 @@
                         bn_title        : this.faqData.bn_title,
                         tag             : this.faqData.tag,
                         commentable_status  : this.faqData.commentable,
+                        is_notifiable   : this.faqData.is_notifiable,
                         status          : this.faqData.status,
                     },
                     {
@@ -711,6 +723,7 @@
                             _that.faqData.en_body       = _that.faqDetails.en_body;
                             _that.faqData.bn_body       = _that.faqDetails.bn_body;
                             _that.faqData.commentable_status       = _that.faqDetails.commentable_status;
+                            _that.faqData.is_notifiable       = _that.faqDetails.is_notifiable;
                             // console.log(_that.faqData.commentable_status )
                             _that.faqData.status        = _that.faqDetails.status;
 

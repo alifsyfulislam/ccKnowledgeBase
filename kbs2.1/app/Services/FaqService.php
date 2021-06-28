@@ -72,10 +72,13 @@ class FaqService
         try {
 
             $this->faqRepository->create($input);
-             //notification
-            $faqNotification = $this->sendFaqNotification( $input['id'] , 'add');
-
             $faq = $this->getItemById($input['id']);
+             //notification
+             if($faq->is_notifiable == 1) {
+                $faqNotification = $this->sendFaqNotification(  $faq->id , 'add');
+             }
+           
+
 
             $faq->history()->create([
                 'user_id'           => $input['user_id'],
@@ -175,7 +178,10 @@ class FaqService
             ]);
 
             //notification
-            $faqNotification = $this->sendFaqNotification( $input['id'] , 'update');
+            if($faq->is_notifiable == 1) {
+                $faqNotification = $this->sendFaqNotification( $faq->id , 'update');
+            }
+            
 
         } catch (Exception $e) {
 
@@ -209,9 +215,11 @@ class FaqService
         try {
 
             //notification
-            $faqNotification = $this->sendFaqNotification( $id, 'delete');
-
             $faq = $this->getItemById($id);
+
+            if($faq->is_notifiable == 1) {
+                $faqNotification = $this->sendFaqNotification( $id, 'delete');
+            }
 
             $faq->history()->create([
                 'user_id' => auth()->user()->id,

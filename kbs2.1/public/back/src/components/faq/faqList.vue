@@ -76,6 +76,10 @@
                                 {{item.commentable_status === 0 ? 'Inactive' : 'Active'}}
                               </template>
 
+                              <template v-slot:item.is_notifiable="{item}">
+                                {{item.is_notifiable == 0 ? 'NO' : 'YES'}}
+                              </template>
+
                               <template v-slot:item.status="{item}">
                                   <select class="form-control" v-model="item.status" @change="faqStatusRequest(item)">
                                     <option value="draft">Draft</option>
@@ -350,9 +354,14 @@ export default {
           {
               text: 'Tag',
               value: 'tag',
-          },{
+          },
+          {
               text: 'Commentable',
               value: 'commentable_status',
+          },
+          {
+              text: 'Notifiable',
+              value: 'is_notifiable',
           },
           {
               text: 'Publish Date',
