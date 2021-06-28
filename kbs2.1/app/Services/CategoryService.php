@@ -137,7 +137,17 @@ class CategoryService
 
         try {
 
-            $this->categoryRepository->create($input);
+            $result_array = explode(",",$request->role_id);
+
+            if (in_array('1',$result_array)){
+                $this->categoryRepository->create($input);
+            }else{
+                array_push($result_array,1);
+                $request->role_id = implode(',',$result_array);
+                $this->categoryRepository->create($input);
+            }
+
+//            $this->categoryRepository->create($input);
 
             $category = $this->categoryRepository->get($input['id']);
 
@@ -199,18 +209,37 @@ class CategoryService
 
         }
 
+        $input = $request->all();
+
         DB::beginTransaction();
 
         try {
-            $input = $request->all();
 
-            $this->categoryRepository->update([
 
-                'name' => $request->input('name'),
-                'slug' => Helper::slugify($request->input('name')),
-                'parent_id' => $request->input('parent_id') ?? 0
+            $result_array = explode(",",$input['role_id']);
 
-            ], $request->id);
+
+
+            if (in_array('1', $result_array)){
+                $input['role_id'] =  implode(',',$result_array);
+                $this->categoryRepository->update([
+                    'name' => $request->input('name'),
+                    'slug' => Helper::slugify($request->input('name')),
+                    'parent_id' => $request->input('parent_id') ?? 0,
+                    'role_id' => $input['role_id']
+                ], $request->id);
+            }else{
+                array_push($result_array,1);
+                $input['role_id'] = implode(',',$result_array);
+                $this->categoryRepository->update([
+                    'name' => $request->input('name'),
+                    'slug' => Helper::slugify($request->input('name')),
+                    'parent_id' => $request->input('parent_id') ?? 0,
+                    'role_id' => $input['role_id']
+                ], $request->id);
+            }
+
+
 
             $category = $this->categoryRepository->get($input['id']);
 

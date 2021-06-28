@@ -83,6 +83,8 @@ class CategoryController extends Controller
 
     public function update(Request $request)
     {
+
+//        return $request->role_id;
         
         if(Auth::user()->can('category-edit')) {
 

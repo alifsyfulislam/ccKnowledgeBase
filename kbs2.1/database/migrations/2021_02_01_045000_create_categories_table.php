@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->uuid('parent_id')->default(0);
             $table->string('name')->unique();
             $table->string('slug')->nullable();
+            $table->string('role_id');
             $table->timestamps();
         });
     }
