@@ -134,7 +134,10 @@ class ArticleService
 
             //notification
             // $article_contents =  $this->articleRepository->getArticleContents($article->id);
-            $articleNotification = $this->sendArticleNotification($article->id , 'add');
+            if($article->is_notifiable==1) {
+                $articleNotification = $this->sendArticleNotification($article->id , 'add');
+            }
+           
 
         } catch (Exception $e) {
 
@@ -313,7 +316,11 @@ class ArticleService
                 endforeach;
             }
             //notification
-            $articleNotification = $this->sendArticleNotification($input['id'] , 'update');
+            if($article->is_notifiable == 1) {
+                $articleNotification = $this->sendArticleNotification($input['id'] , 'update');
+            }
+
+           
 
         } catch (Exception $e) {
 
@@ -347,8 +354,10 @@ class ArticleService
         try {
 
             //notification
-            $articleNotification = $this->sendArticleNotification($id , 'delete');
             $article = $this->getItemById($id);
+            if($article->is_notifiable == 1) {
+                $articleNotification = $this->sendArticleNotification($id , 'delete');
+            }
 
             $article->history()->create([
                 'user_id' => auth()->user()->id,

@@ -94,6 +94,7 @@ class ArticleRepository implements RepositoryInterface
 //        $dataObj->en_body     = $data['en_body']? $data['en_body'] : 'n/a';
 //        $dataObj->bn_body     = $data['bn_body']? $data['bn_body'] : 'n/a';
         $dataObj->commentable_status      = $data['commentable_status'];
+        $dataObj->is_notifiable           = $data['is_notifiable'];
         $dataObj->status      = $data['status'] ? $data['status'] :  'draft';
         $dataObj->publish_date = $data['publish_date'];
         $dataObj->en_short_summary = $data['en_short_summary'];

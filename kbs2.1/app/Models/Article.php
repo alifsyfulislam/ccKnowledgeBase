@@ -14,7 +14,7 @@ class Article extends Model
      * @var string[]
      */
     protected $fillable = [
-        'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_short_summary', 'bn_short_summary', 'commentable_status', 'status', 'publish_date'
+        'id', 'user_id', 'category_id', 'en_title', 'bn_title', 'tag', 'slug', 'en_short_summary', 'bn_short_summary', 'commentable_status', 'status', 'publish_date','is_notifiable'
     ];
 
     /*public function media()

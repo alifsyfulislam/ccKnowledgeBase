@@ -128,6 +128,16 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Is Notifiable?</label>
+                            <div>
+                                <label for="is_notifiable"><input id="is_notifiable" type="radio" value="1" v-model="articleData.is_notifiable"/> Yes</label>
+                                <label for="is_notifiable"><input id="is_notifiable" type="radio" value="0" v-model="articleData.is_notifiable"/> No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Select A Status</label>
                             <select class="form-control" v-model="articleData.status">
                                 <option value="draft">Draft</option>
@@ -298,6 +308,7 @@
                     bn_body             : '',
                     commentable         : 1,
                     status              : 'draft',
+                    is_notifiable       :0,
                 },
                 contentData :{
                     id                  : '',
@@ -656,6 +667,7 @@
                 formData.append('bn_short_summary', this.articleData.bn_short_summary);
                 formData.append('commentable_status', this.articleData.commentable);
                 formData.append('status', this.articleData.status);
+                formData.append('is_notifiable', this.articleData.is_notifiable);
 
                 axios.post('articles', formData,
                     {

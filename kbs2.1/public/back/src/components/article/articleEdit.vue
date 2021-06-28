@@ -151,6 +151,16 @@
 
           <div class="col-md-12">
             <div class="form-group">
+              <label>Is Notifiable?</label>
+              <div>
+                <label for="is_notifiable"><input :checked="articleData.is_notifiable == 1" id="cmmnt_active" type="radio" value="1" v-model="articleData.is_notifiable"/> Yes</label>
+                <label for="is_notifiable"><input  :checked="articleData.is_notifiable == 0" id="cmmnt_in_active" type="radio" value="0" v-model="articleData.is_notifiable"/> No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
               <label>Select A Status</label>
               <select class="form-control" v-model="articleData.status">
                 <option value="draft">Draft</option>
@@ -302,6 +312,7 @@
           bn_body                 : '',
           commentable             : '',
           status                  : 'draft',
+          is_notifiable           :''
         },
         validation_error: {
           isTitleStatus           : true,
@@ -730,6 +741,7 @@
         formData.append('en_body', enBody);
         formData.append('bn_body', bnBody);
         formData.append('commentable_status', this.articleData.commentable);
+        formData.append('is_notifiable', this.articleData.is_notifiable);
         formData.append('status', this.articleData.status);
         formData.append('previous_file_list', json_arr);
 
@@ -812,6 +824,7 @@
                     _that.articleData.en_body           =  _that.articleDetails.en_body;
                     _that.articleData.bn_body           =  _that.articleDetails.bn_body;
                     _that.articleData.commentable       =  _that.articleDetails.commentable_status;
+                    _that.articleData.is_notifiable       =  _that.articleDetails.is_notifiable;
                     _that.articleData.status            =  _that.articleDetails.status;
                     _that.enBodyData                    = _that.articleData.en_body;
                     _that.bnBodyData                    = _that.articleData.bn_body;
