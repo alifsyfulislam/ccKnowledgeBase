@@ -25,22 +25,6 @@
                </span>
               </router-link>
             </li>
-            <!--                <li v-if="checkPermission('user-list')">
-                                <router-link :to="{ name: 'customerList'}">
-                           <span class="anim">
-                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
-                                 <g>
-                                    <path id="Icon_awesome-user-tie_1_" class="st0" d="M8.8,10c2.5,0,4.5-2,4.5-4.5s-2-4.5-4.5-4.5S4.2,3,4.2,5.5S6.2,10,8.8,10z
-                                       M12.1,11.2l-1.7,6.8l-1.1-4.8l1.1-2H7.1l1.1,2l-1.1,4.8l-1.7-6.8c-2.5,0.1-4.5,2.2-4.5,4.7v1.5c0,0.9,0.8,1.7,1.7,1.7l0,0H15
-                                       c0.9,0,1.7-0.8,1.7-1.7l0,0v-1.5C16.7,13.4,14.7,11.3,12.1,11.2z"/>
-                                 </g>
-                              </svg>
-                           </span>
-                                    <span class="menu-title">
-                           User
-                           </span>
-                                </router-link>
-                            </li>-->
 
             <li  v-if="checkPermission('category-list')">
               <router-link :to="{ name: 'categoryList'}">
@@ -130,7 +114,9 @@
                 </li>
               </ul>
             </li>
-            <li>
+
+
+            <li v-if="checkPermission('notification-list') || checkPermission('history-list') || checkPermission('result-list')">
               <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
@@ -168,7 +154,16 @@
                 
               </ul>
             </li>
-            <li>
+
+
+            <li
+                    v-if="checkPermission('user-list') ||
+                          checkPermission('role-list') ||
+                          checkPermission('banner-list') ||
+                          checkPermission('comment-list') ||
+                          checkPermission('page-create') ||
+                          checkPermission('email-create')"
+            >
               <a href="#settingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">
                <span class="anim">
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17.5 20" style="enable-background:new 0 0 17.5 20;" xml:space="preserve">
