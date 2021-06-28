@@ -137,6 +137,8 @@
     },
     methods:{
       getCategorySlugFromChild(status){
+        // console.log(status)
+        this.selectedCategory = '';
         this.categorySearch(status);
       },
       getStaticMedia()
@@ -182,7 +184,8 @@
                 .then(function (response) {
                   _that.selectedCategory = response.data.article_list.data;
                   _that.pagination = response.data.article_list;
-                  _that.$router.push('/category-list/'+_that.categoryID).catch(() => {});
+                  // console.log(_that.selectedCategory)
+                  // _that.$router.push('/category-list/'+_that.categoryID).catch(() => {});
                 })
       },
 
@@ -194,7 +197,7 @@
             axios.get('article/search/'+e.target.value)
                     .then(function (res) {
                       _that.suggestedArtiles = res.data.article_list.data;
-                      console.log(_that.suggestedArtiles);
+                      // console.log(_that.suggestedArtiles);
                     })
           },500);
         }

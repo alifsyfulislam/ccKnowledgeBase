@@ -8,7 +8,7 @@
 
                 <div class="topbar-user-info-area">
                     <div class="d-flex align-items-center justify-content-end">
-                        <div class="user-notification px-10 notification-in"><i class="far fa-bell"></i></div>
+<!--                        <div class="user-notification px-10 notification-in"><i class="far fa-bell"></i></div>-->
                         <div class="user-name">{{user_info.first_name+' '+user_info.last_name}}</div>
                         <div class="user-image px-15">
                             <img class="img-fluid" src="@/assets/img/user-image.jpg" alt="root@ccpro">

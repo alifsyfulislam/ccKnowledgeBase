@@ -42,9 +42,6 @@ use App\Http\Controllers\SearchReplaceController;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
 
 Route::get('users/export/', [ExportController::class, 'exportUsers'])->name('users.export_mapping');
 Route::get('categories/export/', [ExportController::class, 'exportCategories'])->name('categories.export_mapping');
@@ -73,8 +70,7 @@ Route::post('customer/username', [CustomerController::class, 'checkUserNameExist
 Route::post('customer/email', [CustomerController::class, 'checkUserEmailExist']);
 Route::post('customer/add',[CustomerController::class, 'store']);
 Route::post('result-create',[UserQuizListController::class, 'storeResult']);
-//Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
-//Route::get('replace', [SearchReplaceController::class, 'searchText']);
+
 
 
 
@@ -82,10 +78,6 @@ Route::post('visitor-login',[VisitorController::class, 'index']);
 //Route::post('visitor-logout',[VisitorController::class, 'logout']);
 Route::post('logout', [UserController::class, 'logout']);
 
-
-// Route::get('results/user-quiz-list', function(){
-//     return 'hi';
-// });
 
 Route::middleware('auth:api')->group(function(){
 
@@ -96,13 +88,11 @@ Route::middleware('auth:api')->group(function(){
 
     Route::apiResource('comments', CommentController::class);
     Route::get('post-comments/{id}', [CommentController::class, 'articleComments']);
-//    Route::get('faq-comments/{id}', [CommentController::class, 'articleComments']);
     Route::post('comment-status', [CommentController::class, 'commentStatus']);
 
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('contents', ContentController::class);
     Route::apiResource('banners', BannerController::class);
-//    Route::post('banner-update', [BannerController::class,'bannerUpdate']);
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('faqs', FaqController::class);
@@ -120,9 +110,6 @@ Route::middleware('auth:api')->group(function(){
     Route::apiResource('notifications', NotificationController::class);
     Route::apiResource('results', ResultController::class);
 
-
-    
-   
     Route::post('category/name', [CategoryController::class, 'checkCategoryNameExist']);
     Route::post('category/update-data', [CategoryController::class, 'update']);
     Route::post('category-list-for-update', [CategoryController::class, 'getCategoryForEdit']);
@@ -158,7 +145,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('histories', [CrudHistoryController::class, 'showAll']);
     Route::post('delete-post-history', [CrudHistoryController::class, 'deleteAllHistory']);
     Route::get('history/{post_id}', [CrudHistoryController::class, 'index']);
-    
+
     Route::get('user-quiz-list', [UserQuizListController::class, 'index']);
     Route::get('user-quiz-result-list', [UserQuizListController::class, 'getQuizResultList']);
     Route::get('result-details', [UserQuizListController::class, 'getQuizResultDetails']);

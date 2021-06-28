@@ -30,7 +30,7 @@ class CategoryController extends Controller
     {
         if(Auth::user()->can('category-list')) {
 
-            if ($request->filled('isAdmin'))
+            if ($request->filled('isAdmin') && $request->filled('isRole'))
                 return $this->categoryService->paginateData($request);
             else
                 return $this->categoryService->getAll();
@@ -121,6 +121,7 @@ class CategoryController extends Controller
 
     public function categoryList()
     {
+//        return $request->filled(isRole);
 
         return $this->categoryService->getAll();
 

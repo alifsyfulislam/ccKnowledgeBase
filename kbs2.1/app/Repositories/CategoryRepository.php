@@ -119,6 +119,12 @@ class CategoryRepository implements RepositoryInterface
                 ->get();
 
         }
+        else if ($request->filled('isRole')){
+            return Category::with('parentRecursive', 'media')
+                ->where('role_id','LIKE','%'.$request->filled('isRole').'%')
+                ->orderBy('id','DESC')
+                ->paginate(20);
+        }
         else{
             return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media','history'])
                 ->orderBy('id','DESC')
@@ -132,14 +138,6 @@ class CategoryRepository implements RepositoryInterface
     {
 
         return Category::with(['article','media', 'childrenRecursive'])->where('parent_id', 0)->orderBy('id','DESC')->get();
-//        ->map(function ($query) {
-//
-//                $query->setRelation('article', $query->article->take(-3));
-//                return $query;
-//
-//        });
-//        return Category::with(['article','media'])->latest()->take(5)->get();
-
     }
 
     public function categoryListForUpdate($request)
