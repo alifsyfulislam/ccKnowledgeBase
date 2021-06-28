@@ -236,6 +236,7 @@ export default {
             downloadUrl         : 'categories/export/',
             user_permissions    : '',
             mappedPermission    : '',
+            userInformation :'',
 
             filter      : {
                 isAdmin         : 1,
@@ -321,6 +322,8 @@ export default {
         getCategoryList(pageUrl)
         {
             let _that = this;
+            // let user_role;
+
             pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
 
             axios.get(pageUrl+'?page='+this.pagination.current,
@@ -330,7 +333,8 @@ export default {
                     },
                     params :
                         {
-                            isAdmin : 1
+                            isAdmin : 1,
+                            isRole : _that.userInformation.roles[0].id
                         },
                 }).then(function (response)
                 {
@@ -440,11 +444,17 @@ export default {
     },
     created()
     {
-        this.isLoading = true;
-        this.getCategoryList();
-        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+
+        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+        if (this.userInformation!= ''){
+            this.isLoading = true;
+            this.getCategoryList();
+            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+        }
+
+        console.log(this.userInformation)
     }
 }
 </script>
