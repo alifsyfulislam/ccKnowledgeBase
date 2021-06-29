@@ -795,7 +795,7 @@
                   params :
                           {
                             isAdmin : 1,
-                            without_pagination : 1
+                            isRole : _that.userInformation.roles[0].id
                           },
 
                 })
@@ -870,15 +870,18 @@
 
     },
 
-    created() {
-      this.articleData.id = this.articleId;
-      this.contentData.article_id = this.articleId;
-      this.getArticleDetails();
-      this.getCategoryList();
-      this.getUserRoles();
-      this.getContentList(this.contentData.article_id);
-      this.$emit('article-edit-id', this.contentData.article_id);
+    created()
+    {
       this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      if (this.userInformation != ''){
+        this.articleData.id = this.articleId;
+        this.contentData.article_id = this.articleId;
+        this.getArticleDetails();
+        this.getCategoryList();
+        this.getUserRoles();
+        this.getContentList(this.contentData.article_id);
+        this.$emit('article-edit-id', this.contentData.article_id);
+      }
     }
   }
 </script>

@@ -170,8 +170,8 @@ class ArticleController extends Controller
 //        return $this->articleService->articleCommentStatusChange($request);
 //    }
 
-    public function articleAll(){
-        return $this->articleService->getAllArticleList();
+    public function articleAll(Request $request){
+        return $this->articleService->getAllArticleList($request);
     }
 
 }

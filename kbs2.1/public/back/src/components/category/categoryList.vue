@@ -299,10 +299,11 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
                         params :
-                            {
-                                isAdmin : 1,
-                                isRole : _that.userInformation.roles[0].id
-                            },
+                        {
+                            isAdmin : 1,
+                            isList: 1,
+                            isRole : _that.userInformation.roles[0].id,
+                        },
                     }).then(function (response)
                 {
                     if(response.data.status_code === 200)

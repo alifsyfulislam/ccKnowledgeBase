@@ -112,26 +112,18 @@ class CategoryRepository implements RepositoryInterface
 
     public function getWithPagination($request)
     {
-        if ($request->filled('without_pagination')) {
-
-            return Category::with('parentRecursive', 'media')
+        if ($request->filled('isAdmin') && $request->filled('isList') && $request->filled('isRole')){
+            return Category::with('parentRecursive')
+                ->where('role_id','LIKE','%'.$request->isRole.'%')
+                ->orderBy('id','DESC')
+                ->paginate(20);
+        }
+        elseif ($request->filled('isAdmin') && $request->filled('isRole')){
+            return Category::with('parentRecursive')
+                ->where('role_id','LIKE','%'.$request->isRole.'%')
                 ->orderBy('id','DESC')
                 ->get();
-
         }
-        else if ($request->filled('isRole')){
-            return Category::with('parentRecursive', 'media','article')
-                ->where('role_id','LIKE','%'.$request->filled('isRole').'%')
-                ->orderBy('id','DESC')
-                ->paginate(20);
-        }
-        else{
-            return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media','history'])
-                ->orderBy('id','DESC')
-                ->paginate(20);
-        }
-
-
     }
 
     public function categoryArticles()

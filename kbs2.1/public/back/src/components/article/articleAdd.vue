@@ -713,7 +713,6 @@
                         params :
                             {
                                 isAdmin : 1,
-                                without_pagination : 1,
                                 isRole : _that.userInformation.roles[0].id
                             },
 
