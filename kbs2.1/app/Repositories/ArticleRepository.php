@@ -180,15 +180,6 @@ class ArticleRepository implements RepositoryInterface
 
     public function search(string $query = "")
     {
-//        return Article::with('category','contents')
-//            ->whereHas('contents', function ($q) use ($query){
-//                $q->where('en_body', 'like', '%'.$query.'%');
-//            })
-//            ->orWhere('en_title', 'like', "%{$query}%")
-//            ->orWhere('tag', 'like', "%{$query}%")
-//            ->orWhere('en_short_summary', 'like', "%{$query}%")
-//            ->where('status', 'public')
-//            ->orderBy('created_at', 'DESC')->paginate(5);
 
 
         $itemsPaginated =  Article::with('category','contents')
@@ -289,19 +280,6 @@ class ArticleRepository implements RepositoryInterface
             ]
         );
 
-
-//            ->map(function ($query) {
-//                $query->setRelation('contents', $query->contents->take(1));
-//                return $query;
-//            });
-
-//        $query = $query->whereHas('category', function ($q) use ($slug) {
-//
-//            $q->where('slug', $slug);
-//
-//        });
-//
-//        return $query->orderBy('id', 'DESC')->paginate(5);
         return $itemsPaginated;
 
     }
@@ -317,11 +295,4 @@ class ArticleRepository implements RepositoryInterface
 
     }
 
-//    public function changeArticleCommentStatus($request){
-//        return Article::where('id', $request->id)->update([
-//
-//            'commentable_status' => $request->commentable_status
-//
-//        ]);
-//    }
 }
