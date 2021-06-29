@@ -465,6 +465,7 @@ export default {
     getAddDataFromChild (status)
     {
       // console.log(status);
+      this.isLoading = true;
       this.success_message = "FAQ added successfully!";
       this.getFaqList();
       this.removingRightSideWrapper();
@@ -474,6 +475,7 @@ export default {
     getEditDataFromChild (status)
     {
       console.log(status);
+      this.isLoading = true;
       this.success_message = "FAQ updated successfully!";
       this.getFaqList();
       this.removingRightSideWrapper();
@@ -559,6 +561,7 @@ export default {
           },
         }).then(function (response) {
         if (response.data.status_code === 200) {
+          _that.isLoading = true;
           _that.getFaqList();
           _that.removingRightSideWrapper();
           _that.success_message = "FAQ deleted successfully!";

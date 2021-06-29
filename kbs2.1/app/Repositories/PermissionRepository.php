@@ -15,7 +15,7 @@ class PermissionRepository implements RepositoryInterface
      */
     public function all()
     {
-        return Permission::orderBy('id', 'DESC')->get();
+        return Permission::orderBy('id', 'ASC')->get();
     }
 
     /**
@@ -63,6 +63,6 @@ class PermissionRepository implements RepositoryInterface
      */
     public function getWithPagination()
     {
-        return Permission::orderBy('id', 'DESC')->get();
+        return Permission::orderBy('id', 'ASC')->get();
     }
 }

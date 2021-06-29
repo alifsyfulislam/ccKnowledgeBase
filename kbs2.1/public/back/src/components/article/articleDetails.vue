@@ -49,7 +49,10 @@
                 </div>
 
 
-                <div class="content-wrapper bg-white">
+                <Loading v-if="isLoading===true"></Loading>
+
+
+                <div class="content-wrapper bg-white" v-if="isLoading == false">
                     <div class="data-content-area px-15 py-10" v-if="aArticle">
                         <h3 class="font-weight-bold">Articles Details Page</h3>
                         <div>
@@ -206,6 +209,7 @@
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
     import SearchReplace from "../replace/SearchReplace";
+    import Loading from "@/components/loader/loading";
     import $ from 'jquery'
     import axios from "axios";
 
@@ -214,7 +218,8 @@
         components: {
             Header,
             Menu,
-            SearchReplace
+            SearchReplace,
+            Loading
         },
         filters:{
             formatFileName(fileName){
@@ -226,6 +231,7 @@
         data(){
 
             return{
+                isLoading : true,
 
                 isCommentEdit : false,
 
@@ -532,6 +538,7 @@
                 let articleSlug = v;
                 axios.get('article-details/'+articleSlug)
                     .then(function (response) {
+                        _that.isLoading = false;
                         _that.aArticle = response.data.article_info;
                         console.log(_that.aArticle);
                         // location.reload()
@@ -571,6 +578,7 @@
         },
 
         created() {
+            this.isLoading = true;
             this.articleID = this.$route.params.id;
             this.articleSlug = this.$route.params.slug;
             this.articleSearch(this.articleSlug);

@@ -78,19 +78,7 @@
 
                                                             </span>
                                                         </div>
-
                                                     </template>
-
-<!--                                                    <template v-slot:item.history="{item}">-->
-
-<!--                                                        <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, category_info=item"-->
-<!--                                                                 v-if="checkPermission('category-edit')">-->
-<!--                                                            <i class="fas fa-book text-white"></i>-->
-<!--                                                        </button>-->
-
-
-<!--                                                    </template>-->
-
                                                     <template v-slot:item.actions="{item}">
                                                         <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, category_info=item"
                                                                 v-if="checkPermission('history-list')">
@@ -101,12 +89,11 @@
                                                             <i class="fas fa-pen"></i>
                                                         </button>
                                                         <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs mx-1"
-                                                                @click="category_id=item.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
+                                                                 @click="category_id=item.id, isDeleteCheck=true" v-if="checkPermission('category-delete')">
                                                             <i class="fas fa-trash-restore-alt"></i>
                                                         </button>
                                                     </template>
                                                 </v-data-table>
-
                                             </v-col>
                                         </v-row>
                                         <v-row justify="end" class="pagination-wrapper">
@@ -130,7 +117,6 @@
         <div class="action-modal-wraper" v-if="success_message">
             <span>{{ success_message }}</span>
         </div>
-
         <div class="action-modal-wraper-error" v-if="error_message">
             <span>{{ error_message }}</span>
         </div>
@@ -171,20 +157,11 @@
                     </div>
                 </div>
             </div>
-
             <div class="right-sidebar-content-wrapper position-relative overflow-hidden" v-if="isHistoryCheck">
                 <div class="right-sidebar-content-area px-2">
 
                     <div class="form-wrapper">
                         <h2 class="section-title text-uppercase mb-20">History List</h2>
-
-<!--                        find category -->
-<!--                        <small>Last updated: {{category_info.updated_at}}</small>-->
-<!--                        <h3 class="text-uppercase mb-20">{{category_info.name}}</h3>-->
-<!--                        <img :src="category_info.media[0].url" style="height:350px; width: auto">-->
-<!--                        <br/>-->
-
-<!--                        find history-->
                         <HistoryList v-if="isHistoryCheck" :isHistoryCheck="isHistoryCheck" :postID="category_info.id"></HistoryList>
                     </div>
                 </div>
@@ -194,153 +171,142 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Menu from '@/layouts/common/Menu'
-import Header from '@/layouts/common/Header'
-import CategoryAdd from "@/components/category/categoryAdd";
-import CategoryEdit from "@/components/category/categoryEdit";
-import Loading from "@/components/loader/loading";
-import HistoryList from "@/components/history/HistoyList";
-
-import $ from "jquery";
-
-export default {
-    name: "categoryList.vue",
-    components: {
-        Header,
-        Menu,
-        CategoryAdd,
-        CategoryEdit,
-        Loading,
-        HistoryList,
-    },
-
-    data() {
-        return {
-            isLoading           : false,
-            isHistoryCheck      : false,
-            isEditCheck         : false,
-            isAddCheck          : false,
-            isDeleteCheck       : false,
-            isExportCheck        :false,
-            isSearch            : false,
-            category_info       : '',
-            category_id         : '',
-            category_parent_id  : '',
-            category_name       : '',
-            success_message     : '',
-            error_message       : '',
-            token               : '',
-            categoryList        : '',
-            userInfo            : '',
-            downloadUrl         : 'categories/export/',
-            user_permissions    : '',
-            mappedPermission    : '',
-            userInformation :'',
-
-            filter      : {
-                isAdmin         : 1,
-                name            : ''
-            },
-            search              :"",
-            pagination  :{
-                current         :1,
-                per_page        : 20,
-                total           : ''
-            },
-            headers: [
-                {
-                    text: 'ID',
-                    value: 'id',
-                },
-                {
-                    text: 'Name',
-                    value: 'name',
-                },
-                {
-                    text: 'Parent Name',
-                    value: 'parent_recursive',
-                },
-                {
-                    text: 'Media',
-                    value: 'media',
-                },
-                {
-                    text: 'Created Date',
-                    value: 'created_at',
-                },
-                // {
-                //     text: 'History',
-                //     value: 'history',
-                // },
-                {
-                    text: 'Actions',
-                    value: 'actions',
-                    sortable:false
-                },
-                
-                
-            ],
-        }
-    },
-    methods: {
-        removingRightSideWrapper()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-            this.isHistoryCheck     = false;
-
-            document.body.classList.remove('open-side-slider');
-            $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+    import axios from 'axios'
+    import Menu from '@/layouts/common/Menu'
+    import Header from '@/layouts/common/Header'
+    import CategoryAdd from "@/components/category/categoryAdd";
+    import CategoryEdit from "@/components/category/categoryEdit";
+    import Loading from "@/components/loader/loading";
+    import HistoryList from "@/components/history/HistoyList";
+    import $ from "jquery";
+    export default {
+        name        : "categoryList.vue",
+        components  : {
+            Header,
+            Menu,
+            CategoryAdd,
+            CategoryEdit,
+            Loading,
+            HistoryList,
         },
 
-        clearAllChecker()
-        {
-            this.isAddCheck         = false;
-            this.isEditCheck        = false;
-            this.isDeleteCheck      = false;
-            this.isHistoryCheck     = false;
-        },
-
-        getAddDataFromChild (status){
-
-            this.success_message = status;
-            this.getCategoryList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-
-        getEditDataFromChild (status)
-        {
-            this.success_message = status;
-            this.getCategoryList();
-            this.removingRightSideWrapper();
-            this.setTimeoutElements();
-        },
-
-        getCategoryList(pageUrl)
-        {
-            let _that = this;
-            // let user_role;
-
-            pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
-
-            axios.get(pageUrl+'?page='+this.pagination.current,
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
+        data() {
+            return {
+                isLoading               : false,
+                isHistoryCheck          : false,
+                isEditCheck             : false,
+                isAddCheck              : false,
+                isDeleteCheck           : false,
+                isExportCheck           :false,
+                isSearch                : false,
+                category_info           : '',
+                category_id             : '',
+                category_parent_id      : '',
+                category_name           : '',
+                success_message         : '',
+                error_message           : '',
+                token                   : '',
+                categoryList            : '',
+                userInfo                : '',
+                downloadUrl             : 'categories/export/',
+                user_permissions        : '',
+                mappedPermission        : '',
+                userInformation         :'',
+                filter                  : {
+                    isAdmin             : 1,
+                    name                : ''
+                },
+                search                  : "",
+                pagination              : {
+                    current             : 1,
+                    per_page            : 20,
+                    total               : ''
+                },
+                headers                 : [
+                    {
+                        text: 'ID',
+                        value: 'id',
                     },
-                    params :
-                        {
-                            isAdmin : 1,
-                            isRole : _that.userInformation.roles[0].id
+                    {
+                        text: 'Name',
+                        value: 'name',
+                    },
+                    {
+                        text: 'Parent Name',
+                        value: 'parent_recursive',
+                    },
+                    {
+                        text: 'Media',
+                        value: 'media',
+                    },
+                    {
+                        text: 'Created Date',
+                        value: 'created_at',
+                    },
+                    {
+                        text: 'Actions',
+                        value: 'actions',
+                        sortable:false
+                    },
+                ],
+            }
+        },
+        methods: {
+            removingRightSideWrapper()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+                this.isHistoryCheck     = false;
+
+                document.body.classList.remove('open-side-slider');
+                $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+            },
+            clearAllChecker()
+            {
+                this.isAddCheck         = false;
+                this.isEditCheck        = false;
+                this.isDeleteCheck      = false;
+                this.isHistoryCheck     = false;
+            },
+            getAddDataFromChild (status)
+            {
+
+                this.success_message = status;
+                this.isLoading = true;
+                this.getCategoryList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            getEditDataFromChild (status)
+            {
+                this.isLoading = true;
+                this.success_message = status;
+                this.getCategoryList();
+                this.removingRightSideWrapper();
+                this.setTimeoutElements();
+            },
+            getCategoryList(pageUrl)
+            {
+                let _that = this;
+                // let user_role;
+
+                pageUrl = pageUrl == undefined ? 'categories' : pageUrl;
+
+                axios.get(pageUrl+'?page='+this.pagination.current,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         },
-                }).then(function (response)
+                        params :
+                            {
+                                isAdmin : 1,
+                                isRole : _that.userInformation.roles[0].id
+                            },
+                    }).then(function (response)
                 {
                     if(response.data.status_code === 200)
                     {
-                        console.log(response.data.category_list.data);
                         _that.pagination.current = response.data.category_list.current_page;
                         _that.pagination.total = response.data.category_list.last_page;
                         _that.categoryList      = response.data.category_list.data;
@@ -355,116 +321,112 @@ export default {
                     }
                 });
 
-        },
-        onPageChange() {
-            this.getCategoryList();
-        },
+            },
+            onPageChange()
+            {
+                this.getCategoryList();
+            },
+            categoryUpdate(categoryId)
+            {
+                let _that = this;
 
-        categoryUpdate(categoryId)
-        {
-            let _that = this;
-
-            axios.put('categories/update', {
-                    id              : categoryId,
-                    name            : this.category_name,
-                    parent_id       : this.category_parent_id,
-                },
-                {
-                    headers: {
-                        'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                    }
-                }).then(function (response) {
-                if (response.data.status_code == 200) {
-                    _that.getCategoryList();
-                    _that.selectedCategory      = '';
-                    _that.error_message         = '';
-                    _that.success_message       = response.data.messages;
-
-                }
-                else {
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.error;
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        },
-
-        deleteCategory()
-        {
-            let _that = this;
-            axios.delete('categories/delete',
-                {
-                    data:
-                        {
-                            id      : this.category_id
-                        },
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                axios.put('categories/update', {
+                        id              : categoryId,
+                        name            : this.category_name,
+                        parent_id       : this.category_parent_id,
                     },
-                }).then(function (response) {
+                    {
+                        headers: {
+                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                        }
+                    }).then(function (response) {
+                    if (response.data.status_code == 200) {
+                        _that.getCategoryList();
+                        _that.selectedCategory      = '';
+                        _that.error_message         = '';
+                        _that.success_message       = response.data.messages;
 
-                if (response.data.status_code == 200) {
-                    _that.getCategoryList();
-                    _that.removingRightSideWrapper();
-                    _that.error_message         = '';
-                    _that.success_message       = "Category Deleted Successfully";
-                    _that.setTimeoutElements();
+                    }
+                    else {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
 
+            },
+            deleteCategory()
+            {
+                let _that = this;
+                axios.delete('categories/delete',
+                    {
+                        data:
+                            {
+                                id      : this.category_id
+                            },
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                        },
+                    }).then(function (response) {
+
+                    if (response.data.status_code == 200) {
+                        _that.isLoading = true;
+                        _that.getCategoryList();
+                        _that.removingRightSideWrapper();
+                        _that.error_message         = '';
+                        _that.success_message       = "Category Deleted Successfully";
+                        _that.setTimeoutElements();
+
+                    } else {
+                        _that.success_message       = "";
+                        _that.error_message         = response.data.error;
+                        _that.removingRightSideWrapper();
+                        _that.setTimeoutElements();
+
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //alert message remove
+            setTimeoutElements()
+            {
+                setTimeout(() => this.success_message = "", 3e3);
+                setTimeout(() => this.error_message = "", 3e3);
+            },
+            checkPermission(permissionForCheck)
+            {
+                if((this.mappedPermission).includes(permissionForCheck) === true) {
+                    return true;
                 } else {
-                    _that.success_message       = "";
-                    _that.error_message         = response.data.error;
-                    _that.removingRightSideWrapper();
-                    _that.setTimeoutElements();
-
+                    return false;
                 }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            },
         },
-
-        //alert message remove
-
-        setTimeoutElements()
+        created()
         {
-            setTimeout(() => this.success_message = "", 3e3);
-            setTimeout(() => this.error_message = "", 3e3);
-        },
 
-        checkPermission(permissionForCheck)
-        {
-            if((this.mappedPermission).includes(permissionForCheck) === true) {
-                return true;
-            } else {
-                return false;
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation!= ''){
+                this.isLoading = true;
+                this.getCategoryList();
+                this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+                this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+                this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
             }
-        },
 
-    },
-    created()
-    {
-
-        this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
-        if (this.userInformation!= ''){
-            this.isLoading = true;
-            this.getCategoryList();
-            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            // console.log(this.userInformation)
         }
-
-        console.log(this.userInformation)
     }
-}
 </script>
 
 <style scoped>
-.mhv-100 {
-    min-height: 50vh;
-}
+    .mhv-100 {
+        min-height: 50vh;
+    }
 
-.preview{
-    height: 150px;
-}
+    .preview{
+        height: 150px;
+    }
 </style>

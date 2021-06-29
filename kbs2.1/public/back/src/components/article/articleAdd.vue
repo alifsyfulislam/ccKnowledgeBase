@@ -153,7 +153,7 @@
                 </div>
 
                 <div class="form-group text-right">
-                    <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
+                    <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Add</button>
                 </div>
             </div>
 
@@ -277,6 +277,7 @@
         },
         data() {
             return {
+                isNotifyUser            : false,
                 isMounted               : false,
                 checked                 : true,
                 enBody                  : "en_Body",
@@ -648,6 +649,9 @@
             },
             articleAdd()
             {
+                if (this.articleData.is_notifiable ==1){
+                    this.isNotifyUser = true;
+                }
 
                 let _that       = this;
                 let formData    = new FormData();
@@ -678,6 +682,7 @@
                     }).then(function (response) {
 
                     if (response.data.status_code === 201) {
+                        _that.isNotifyUser          = false;
                         _that.articleData           = '';
                         _that.selectedCategory      = '';
                         _that.error_message         = '';
@@ -708,7 +713,8 @@
                         params :
                             {
                                 isAdmin : 1,
-                                without_pagination : 1
+                                without_pagination : 1,
+                                isRole : _that.userInformation.roles[0].id
                             },
 
                     })
@@ -761,14 +767,15 @@
         },
         created()
         {
-            this.articleData.id = (Math.round((new Date()).getTime()*10));
-            this.contentData.article_id = (Math.round((new Date()).getTime()*10));
-            this.getCategoryList();
-            this.getUserRoles();
-            this.getContentList(this.articleData.id);
-            this.$emit('article-id', this.articleData.id);
-            // console.log('from child'+this.articleData.id);
             this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation){
+                this.articleData.id = (Math.round((new Date()).getTime()*10));
+                this.contentData.article_id = (Math.round((new Date()).getTime()*10));
+                this.getCategoryList();
+                this.getUserRoles();
+                this.getContentList(this.articleData.id);
+                this.$emit('article-id', this.articleData.id);
+            }
         }
     }
 </script>

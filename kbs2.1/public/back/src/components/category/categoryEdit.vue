@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label>Select A Parent</label>
                             <select class="form-control" v-model="category_parent_id" id="categoryParent">
-                                <option value="0">Select A Category</option>
+                                <option disabled value="0">Select A Category</option>
                                 <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
                                     {{a_category.name}}
                                 </option>
@@ -132,7 +132,7 @@
                     .then(function (response) {
                         if(response.data.status_code === 200){
 
-                            console.log(response);
+                            // console.log(response);
 
                             _that.user_roles = response.data.role_list;
 
@@ -175,7 +175,7 @@
 
                         }
                     }).catch(function (error) {
-                        console.log(error);
+                        // console.log(error);
                     });
                 }
             },
@@ -272,7 +272,7 @@
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
                         }
                     }).then(function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     if (response.data.status_code === 200){
                         _that.category_name           = '',
@@ -301,7 +301,7 @@
                     }
 
                 }).catch(function (error) {
-                    console.log(error);
+                    // console.log(error);
                 });
 
             },
@@ -317,11 +317,14 @@
                     {
                         headers: {
                             'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        }
+                        },
+                        // params:{
+                        //     isRole : _that.userInformation.roles[0].id
+                        // }
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data.category_list);
+                            // console.log(response.data.category_list);
                             _that.categoryList   = response.data.category_list;
 
                         }
@@ -373,10 +376,13 @@
         },
 
         created(){
-            this.category_id = this.categoryId;
-            this.getCategoryList();
-            this.getCategoryDetails(this.category_id);
-            this.getUserRoles();
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation != ''){
+                this.category_id = this.categoryId;
+                this.getCategoryList();
+                this.getCategoryDetails(this.category_id);
+                this.getUserRoles();
+            }
         }
     }
 </script>

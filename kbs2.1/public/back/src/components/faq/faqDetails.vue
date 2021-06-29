@@ -19,10 +19,10 @@
                         <i class="fas fa-arrow-left"></i> Back
                     </router-link>
                 </div>
+                <Loading v-if="isLoading === true"></Loading>
 
-
-                <div class="content-wrapper bg-white" v-if="faqDetails">
-                    <div class="data-content-area px-15 py-10">
+                <div class="content-wrapper bg-white" v-if="isLoading === false" >
+                    <div class="data-content-area px-15 py-10" v-if="faqDetails">
                         <h3 class="font-weight-bold">Faq Details Page</h3>
                         <!-- <h3 class="">{{faqDetails.en_title}}</h3> -->
                         <div>
@@ -156,6 +156,7 @@
 </template>
 
 <script>
+    import Loading from "@/components/loader/loading";
     import Header from "@/layouts/common/Header";
     import Menu from "@/layouts/common/Menu";
     import axios from "axios";
@@ -165,11 +166,13 @@
         name: "faqDetails.vue",
         components: {
             Header,
-            Menu
+            Menu,
+            Loading
         },
 
         data() {
             return {
+                isLoading : '',
                 category_parent_id : '',
                 category_name   : '',
                 success_message : '',
@@ -360,6 +363,7 @@
                     .then(function (response) {
                         if (response.data.status_code === 200) {
                             console.log(response.data.faq_info);
+                            _that.isLoading = false;
                             _that.faqDetails = response.data.faq_info;
                         } else {
                             _that.success_message = "";
@@ -370,7 +374,7 @@
         },
 
         created() {
-
+            this.isLoading = true;
             this.faqID = this.$route.params.id;
             this.faqSlug = this.$route.params.slug;
             this.getFaqDetails();

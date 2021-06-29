@@ -120,7 +120,7 @@ class CategoryRepository implements RepositoryInterface
 
         }
         else if ($request->filled('isRole')){
-            return Category::with('parentRecursive', 'media')
+            return Category::with('parentRecursive', 'media','article')
                 ->where('role_id','LIKE','%'.$request->filled('isRole').'%')
                 ->orderBy('id','DESC')
                 ->paginate(20);

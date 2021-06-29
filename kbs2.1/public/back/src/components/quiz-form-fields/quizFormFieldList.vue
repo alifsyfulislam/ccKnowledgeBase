@@ -256,6 +256,7 @@
 
             getAddDataFromChild (status)
             {
+                this.isLoading = true;
                 this.getQuizFormFieldList();
                 this.success_message = status;
                 this.removingRightSideWrapper();
@@ -264,6 +265,7 @@
 
             getEditDataFromChild (status)
             {
+                this.isLoading = true;
                 this.getQuizFormFieldList();
                 this.success_message = status;
                 this.removingRightSideWrapper();
@@ -287,6 +289,7 @@
 
                     if (response.data.status_code == 200)
                     {
+                        _that.isLoading = true;
                         _that.getQuizFormFieldList();
                         _that.removingRightSideWrapper();
                         _that.error_message     = '';

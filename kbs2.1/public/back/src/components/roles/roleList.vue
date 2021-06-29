@@ -237,6 +237,7 @@ export default {
 
         getAddDataFromChild (status)
         {
+            this.isLoading = true;
             this.getRolesList();
             this.success_message = status;
             this.removingRightSideWrapper();
@@ -245,6 +246,7 @@ export default {
 
         getEditDataFromChild (status)
         {
+            this.isLoading = true;
             this.getRolesList();
             this.success_message = status;
             this.removingRightSideWrapper();
@@ -295,6 +297,7 @@ export default {
                     },
                 }).then(function (response) {
                 if (response.data.status_code == 200){
+                    _that.isLoading = true;
                     _that.getRolesList();
                     _that.removingRightSideWrapper();
                     _that.error_message     = '';

@@ -57,10 +57,6 @@ class ArticleRepository implements RepositoryInterface
         //return Content::select('role_id')->groupBy('role_id')->where('article_id',$id)->get();
     }
 
-    // public function getArticleContents($id)
-    // {
-    //     return Content::select('role_id')->groupBy('role_id')->where('article_id',$id)->get();
-    // }
 
     public function getAllUsers()
     {
@@ -91,8 +87,6 @@ class ArticleRepository implements RepositoryInterface
         $dataObj->bn_title    = $data['bn_title']? $data['bn_title'] : 'n/a';
         $dataObj->tag         = $data['tag'];
         $dataObj->slug        = Helper::slugify($data['en_title']).$randomString;
-//        $dataObj->en_body     = $data['en_body']? $data['en_body'] : 'n/a';
-//        $dataObj->bn_body     = $data['bn_body']? $data['bn_body'] : 'n/a';
         $dataObj->commentable_status      = $data['commentable_status'];
         $dataObj->is_notifiable           = $data['is_notifiable'];
         $dataObj->status      = $data['status'] ? $data['status'] :  'draft';
@@ -147,14 +141,23 @@ class ArticleRepository implements RepositoryInterface
      */
     public function getWithPagination($request)
     {
+        if ($request->filled('isRole'))
+        {
+            $articles = Article::with('category','user','history')
+                ->whereHas('category', function ($q) use ($request){
+                    $q->where('role_id','LIKE','%'.$request->isRole.'%');
+                })->orderBy('created_at','DESC')->paginate(20);
+            return $articles;
+        }
+        else
+            {
+            $query = Article::with('user', 'category','history');
+            $whereFilterList = ['category_id', 'status'];
+            $likeFilterList = ['en_title', 'tag'];
+            $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
 
-        $query = Article::with('user', 'category','history');
-        $whereFilterList = ['category_id', 'status'];
-        $likeFilterList = ['en_title', 'tag'];
-        $query = self::filterArticle($request, $query, $whereFilterList, $likeFilterList);
-
-        return $query->orderBy('id', 'DESC')->paginate(20);
-
+            return $query->orderBy('id', 'DESC')->paginate(20);
+        }
     }
 
 

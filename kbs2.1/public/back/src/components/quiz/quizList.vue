@@ -257,6 +257,7 @@
             },
             getAddDataFromChild (status)
             {
+                this.isLoading = true;
                 console.log(status)
                 this.success_message = status;
                 this.getQuizList();
@@ -265,6 +266,7 @@
             },
             getEditDataFromChild (status)
             {
+                this.isLoading = true;
                 this.success_message = status;
                 this.getQuizList();
                 this.removingRightSideWrapper();
@@ -344,6 +346,7 @@
                     }).then(function (response) {
 
                     if (response.data.status_code == 200) {
+                        _that.isLoading = true;
                         _that.getQuizList();
                         _that.error_message   = '';
                         _that.success_message = "Successfully deleted the Quiz";

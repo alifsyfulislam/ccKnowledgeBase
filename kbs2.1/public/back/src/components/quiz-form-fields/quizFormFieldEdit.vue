@@ -167,7 +167,7 @@
                     isFieldNameStatus       : true,
                     // isFieldIDStatus         : true,
                     // isFieldClassStatus      : true,
-                    isFieldDefaultValue : false,
+                    isFieldDefaultValue : true,
                     isFieldTypeStatus       : true,
                 }
             }
@@ -295,6 +295,7 @@
             },
             validateAndSubmit()
             {
+                // console.log(this.validation_error);
                 if (!this.quizFormFieldDetails.f_label){
                     $('#quizFormFieldLabel').css({
                         'border-color': '#FF7B88',
@@ -309,21 +310,6 @@
                     $('#fieldNameError').html("*field name is required");
                 }
 
-                // if (!this.quizFormFieldDetails.f_id){
-                //
-                //     $('#quizFormFieldID').css({
-                //         'border-color': '#FF7B88',
-                //     });
-                //     $('#fieldIDError').html("*field ID is required");
-                // }
-                //
-                // if (!this.quizFormFieldDetails.f_class){
-                //
-                //     $('#quizFormFieldClass').css({
-                //         'border-color': '#FF7B88',
-                //     });
-                //     $('#fieldClassError').html("*field class is required");
-                // }
                 if (!this.quizFormFieldDetails.f_type){
 
                     $('#quizFormFieldType').css({
@@ -331,13 +317,7 @@
                     });
                     $('#fieldTypeError').html("*field type is required");
                 }
-                // if (this.validation_error.isFieldLabelStatus === true &&
-                //     this.validation_error.isFieldNameStatus === true &&
-                //     this.validation_error.isFieldIDStatus === true &&
-                //     this.validation_error.isFieldClassStatus === true &&
-                //     this.validation_error.isFieldTypeStatus === true){
-                //     this.quizFormFieldUpdate();
-                // }
+
                 if (this.validation_error.isFieldLabelStatus === true &&
                     this.validation_error.isFieldNameStatus === true &&
                     this.validation_error.isFieldDefaultValue === true &&
