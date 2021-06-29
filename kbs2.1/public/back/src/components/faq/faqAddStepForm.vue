@@ -169,7 +169,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
+            <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
         </div>
 
 
@@ -238,6 +238,7 @@
         data() {
             return {
                 step:1,
+                isNotifyUser            : false,
                 isNextStep : false,
                 isToogleModal       : false,
                 isStep :false,
@@ -687,6 +688,10 @@
             {
                 let _that           = this;
 
+                if (this.faqData.is_notifiable == 1){
+                    this.isNotifyUser = true;
+                }
+
                 axios.post('faqs', {
 
                         id                  : this.faqData.id,
@@ -705,6 +710,7 @@
                         }
                     }).then(function (response) {
                     if (response.data.status_code == 201) {
+                        _that.isNotifyUser              = false;
                         _that.faqData                   = '';
                         _that.error_message             = '';
                         _that.success_message           = "FAQ Added Successfully";

@@ -107,7 +107,7 @@
 
 
                 <div class="form-group text-right">
-                    <button class="btn common-gradient-btn ripple-btn px-50" @click="faqUpdate()">Update</button>
+                    <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="faqUpdate()">Update</button>
                 </div>
             </div>
 
@@ -228,6 +228,7 @@
 
         data() {
             return {
+                isNotifyUser            : false,
                 isLoading                   : false,
                 isMounted                   : false,
                 isMountedSummer             : false,
@@ -645,6 +646,11 @@
             {
                 let _that           = this;
                 let faqID           = this.faq_id;
+
+                if (this.faqData.is_notifiable == 1){
+                    this.isNotifyUser = true;
+                }
+
                 let enBody          = document.getElementById('en_Body').value;
 
                 console.log(_that.article_id);
@@ -674,6 +680,7 @@
                     }).then(function (response) {
 
                     if (response.data.status_code == 200) {
+                        _that.isNotifyUser          = false;
                         _that.faqData               = '';
                         _that.selectedCategory      = '';
                         _that.error_message         = '';
