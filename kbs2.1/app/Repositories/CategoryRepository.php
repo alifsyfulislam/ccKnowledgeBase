@@ -22,7 +22,6 @@ class CategoryRepository implements RepositoryInterface
             ->where('parent_id', '=', 0)
             ->orderBy('id','DESC')
             ->get();
-
     }
 
     public function latestCategory(){
@@ -31,20 +30,6 @@ class CategoryRepository implements RepositoryInterface
                 $q->where('id', '!=', NULL);
             })
             ->latest()->first();
-//            ->map(function ($query) {
-//                $query->setRelation('article', $query->article->latest()->first());
-//                return $query;
-//            });
-
-
-
-//            ->where('parent_id', '=', 0)
-//            ->latest()->first();
-//            ->map(function ($query) {
-//                $query->setRelation('article', $query->article->get());
-//                return $query;
-//            });
-
     }
 
     /**

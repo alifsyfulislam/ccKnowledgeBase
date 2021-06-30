@@ -139,6 +139,8 @@
     methods:{
       getCategorySlugFromChild(status){
         // console.log(status)
+        this.routePath = status;
+        // console.log(this.routePath)
         this.selectedCategory = '';
         this.categorySearch(status);
       },
@@ -184,11 +186,11 @@
         if (this.userInformation==""){
           axios.get(pageUrl)
                   .then(function (response) {
-                    console.log(response.data.article_list.data);
+                    // console.log(response.data.article_list.data);
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination = response.data.article_list;
                     // console.log(_that.selectedCategory)
-                    // _that.$router.push('/category-list/'+_that.categorySlug).catch(() => {});
+                    _that.$router.push('/category-list/'+_that.categorySlug).catch(() => {});
                   })
         } else {
           axios.get(pageUrl,
@@ -198,9 +200,10 @@
                     }
                   })
                   .then(function (response) {
-                    console.log(response.data.article_list.data);
+                    // console.log(response.data.article_list.data);
                     _that.selectedCategory = response.data.article_list.data;
                     _that.pagination = response.data.article_list;
+                    _that.$router.push('/category-list/'+_that.categorySlug).catch(() => {});
                   })
         }
       },
