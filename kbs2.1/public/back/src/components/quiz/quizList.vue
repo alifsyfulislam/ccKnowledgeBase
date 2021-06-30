@@ -224,6 +224,14 @@
                         text: 'Number of Questions',
                         value: 'number_of_questions',
                     },
+                     {
+                        text: 'Start Date',
+                        value: 'start_date',
+                    },
+                     {
+                        text: 'End Date',
+                        value: 'end_date',
+                    },
                     {
                         text: 'Status',
                         value: 'status',

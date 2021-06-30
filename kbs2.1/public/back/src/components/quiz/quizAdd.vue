@@ -8,6 +8,20 @@
 
                 <div class="row">
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Start Date <span class="required">*</span></label>
+                            <datepicker class="date-picker" :disabled-dates="disabledDates" v-model="quizData.start_date"></datepicker>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">End Date <span class="required">*</span></label>
+                            <datepicker class="date-picker" :disabled-dates="disabledDates" v-model="quizData.end_date"></datepicker>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="title">Title <span class="required">*</span></label>
@@ -129,6 +143,7 @@
     import $ from "jquery";
     import Multiselect from 'vue-multiselect'
     import CustomRoleAdd from '../custom-role/CustomRoleAdd'
+    import Datepicker from 'vuejs-datepicker';
 
 
     export default {
@@ -136,7 +151,8 @@
         props: ['isAddCheck'],
         components: {
             Multiselect,
-            CustomRoleAdd
+            CustomRoleAdd,
+            Datepicker
         },
 
         data() {
@@ -152,8 +168,12 @@
                 role_id                     : [],
                 quizTotalQuestion           : '',
                 roleAccess                  : [],
-
+                disabledDates: {
+                    to: new Date(Date.now() - 86400000),
+                },
                 quizData            :{
+                    start_date              : new Date(),
+                    end_date                : new Date(),
                     name                    : '',
                     quiz_form_id            : '',
                     duration                : '',
@@ -459,7 +479,11 @@
                         status                  : _that.quizData.status,
                         number_of_questions     : _that.quizData.number_of_questions,
                         // is_authorized           : this.isAuthorized,
-                        role_id                 : collection
+                        role_id                 : collection,
+                        // start_date              : _that.quizData.start_date.toISOString().slice(0,10),
+                        // end_date                 :_that.quizData.end_date.toISOString().slice(0,10)
+                        start_date                 :_that.quizData.start_date,
+                        end_date                 :_that.quizData.end_date
 
                     },
                     {

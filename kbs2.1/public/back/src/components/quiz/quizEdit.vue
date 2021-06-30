@@ -7,6 +7,19 @@
                 <h2 class="section-title text-uppercase mb-20">Quiz Edit</h2>
 
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Start Date <span class="required">*</span></label>
+                            <datepicker class="date-picker" :disabled-dates="disabledDates" v-model="quizData.start_date"></datepicker>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">End Date <span class="required">*</span></label>
+                            <datepicker class="date-picker" :disabled-dates="disabledDates" v-model="quizData.end_date"></datepicker>
+                        </div>
+                    </div>
 
                     <div class="col-md-12">
                         <div class="form-group">
@@ -131,6 +144,7 @@ import axios from "axios";
 import Multiselect from 'vue-multiselect'
 import CustomRoleEdit from '../custom-role/CustomRoleEdit'
 import $ from "jquery";
+import Datepicker from 'vuejs-datepicker';
 
 export default {
     name: "quizEdit",
@@ -138,7 +152,8 @@ export default {
 
     components: {
         Multiselect,
-        CustomRoleEdit
+        CustomRoleEdit,
+        Datepicker
     },
 
     data() {
@@ -166,6 +181,8 @@ export default {
                     total_marks   : '',
                     status        : '',
                     number_of_questions   : '',
+                    start_date    :'',
+                    end_date      : '',
                 },
 
             validation_error :{
@@ -501,6 +518,8 @@ export default {
                     status              : this.quizData.status,
                     number_of_questions : this.quizData.number_of_questions,
                     role_id             : collection,
+                    start_date          :this.quizData.start_date,
+                    end_date            :this.quizData.end_date
                 },
                 {
                     headers: {
@@ -585,6 +604,8 @@ export default {
                         _that.quizData.status               = _that.quizDetails.status;
                         _that.quizData.number_of_questions  = _that.quizDetails.number_of_questions;
                         _that.quizData.role_id              = _that.quizDetails.role_id;
+                        _that.quizData.start_date           = _that.quizDetails.start_date;
+                        _that.quizData.end_date             = _that.quizDetails.end_date;
                         if ((_that.quizData.role_id).includes(',')) {
 
                             _that.roleAccess                = (_that.quizData.role_id).split(',');
