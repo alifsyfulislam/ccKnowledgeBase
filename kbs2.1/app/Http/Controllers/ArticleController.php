@@ -113,10 +113,10 @@ class ArticleController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function articleCategory($id)
+    public function articleCategory(Request $request,$id)
     {
 
-        return $this->articleService->categoryArticle($id);
+        return $this->articleService->categoryArticle($request,$id);
 
     }
 
@@ -127,7 +127,11 @@ class ArticleController extends Controller
     public function articleList(Request $request)
     {
 
-        return $this->articleService->getLatestList($request);
+        if ($request->filled('isRole')){
+            return $this->articleService->getLatestList($request);
+        }else{
+            return $this->articleService->getLatestList($request);
+        }
 
     }
 

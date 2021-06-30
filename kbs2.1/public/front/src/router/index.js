@@ -24,7 +24,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/category-list/:categoryID',
+    path: '/category-list/:categorySlug',
     name: 'CategoryList',
     component: CategoryList
   },

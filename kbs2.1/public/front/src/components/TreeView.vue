@@ -25,7 +25,8 @@ export default {
     return {
       isOpen: false,
       pressedCategoryIdHistory : [],
-      current_slug : ''
+      current_slug : '',
+      current_id : ''
     };
   },
   computed: {
@@ -43,12 +44,14 @@ export default {
       // console.log('hi');
       // this.$router.push({ path: `/category-list/${item.slug}` })
       // localStorage.setItem('category-article-list', JSON.stringify(item));
-      this.$emit('category-slug',item.slug);
+      this.$emit('category-slug',item.slug,item.id);
       this.current_slug = item.slug;
     }
   },
   created() {
     this.current_slug = this.item.slug;
+    this.current_id = this.item.id;
+    // this.current_slug = this.item.slug;
   }
 }
 </script>

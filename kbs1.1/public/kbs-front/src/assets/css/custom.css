@@ -592,8 +592,8 @@ header.fixed-header .navbar .logo img {
 }
 
 .search-input-wrapper .input-group {
-    max-width: 70%;
-    width: 70%;
+    max-width: 60%;
+    width: 60%;
 }
 
 .inner-search-area .search-input-wrapper .input-group {
@@ -636,6 +636,10 @@ header.fixed-header .navbar .logo img {
 
     .banner-area .search-wrapper p {
         font-size: 16px;
+    }
+    .search-input-wrapper .input-group {
+        max-width: 60%;
+        width: 60%;
     }
 }
 

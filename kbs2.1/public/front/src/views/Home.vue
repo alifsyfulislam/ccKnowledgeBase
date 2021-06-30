@@ -32,7 +32,7 @@
               <div class="row text-left">
                 <div class="col-xl-4 col-lg-4 mb-30" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                   <div class="featured-item position-relative overflow-hidden bg-white align-items-stretch h-100">
-                    <router-link :to="{ name: 'CategoryList', params: { categoryID: a_cate_art.slug }}">
+                    <router-link :to="{ name: 'CategoryList', params: { categorySlug: a_cate_art.slug }}">
                       <div class="featured-image" >
                         <img class="img-fluid"  :src="(a_cate_art.media).length > 0 ? a_cate_art.media[0].url  :static_image['category']" alt="no image">
                       </div>
@@ -96,7 +96,7 @@
               </div>
 
               <div class="row">
-<!--                style="min-height: 350px ; "-->
+                <!--                style="min-height: 350px ; "-->
                 <div class="col-lg-12">
                   <div style="min-height: 350px">
                     <div class="custom-accordion" v-for="a_faq in all_Faqs" :key="a_faq.id">
@@ -211,9 +211,9 @@
         // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
         regexImg                : /(http:\/\/[^">]+)/img,
         all_Faqs                : '',
-        userInformation     : '',
-        bannerInformation     : '',
-        isAuthinticate : false,
+        userInformation         : '',
+        bannerInformation       : '',
+        isAuthinticate          : false,
       }
     },
     methods:{
@@ -239,13 +239,29 @@
       {
         let _that =this;
 
-        axios.get('article-list')
-                .then(function (response) {
-                  if(response.data.status_code === 200){
-                    // console.log(response.data.article_list)
-                    _that.allLatestArticles = response.data.article_list;
-                  }
-                })
+        if (_that.userInformation == ''){
+          axios.get('article-list').then(function (response)
+          {
+            if(response.data.status_code === 200){
+              _that.allLatestArticles = response.data.article_list;
+            }
+          })
+        }else{
+          axios.get('article-list',
+          {
+             params : {
+               isRole : 1
+             }
+          }
+          ).then(function (response)
+          {
+            if(response.data.status_code === 200){
+              _that.allLatestArticles = response.data.article_list;
+            }
+          })
+        }
+
+
       },
       getPageDecorationData()
       {

@@ -41,7 +41,21 @@ class ArticleRepository implements RepositoryInterface
                 ->take(5)
                 ->get();
 
-        } else{
+        }
+        elseif ($request->isRole){
+            $articles = Article::with('user','category','contents')
+                ->where('status', 'public')
+                ->orWhere('status', 'private')
+                ->orderBy('created_at', 'DESC')
+                ->take(6)
+                ->get()
+                ->map(function ($query) {
+                    $query->setRelation('contents', $query->contents->take(1));
+                    return $query;
+                });
+            return $articles;
+        }
+        else{
 
             $articles = Article::with('user','category','contents')
                 ->where('status', 'public')
@@ -159,7 +173,7 @@ class ArticleRepository implements RepositoryInterface
             return $articles;
         }
         else
-            {
+        {
             $query = Article::with('user', 'category','history');
             $whereFilterList = ['category_id', 'status'];
             $likeFilterList = ['en_title', 'tag'];
@@ -245,15 +259,29 @@ class ArticleRepository implements RepositoryInterface
 
 
 
-    public function searchCategoryArticle($slug = '')
+    public function searchCategoryArticle($request,$slug = '')
     {
-        $itemsPaginated = Article::with('category','contents')
-            ->whereHas('category', function ($q) use ($slug){
-                $q->where('slug', $slug);
-            })
-            ->where('status', 'public')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(5);
+        if ($request->filled('isRole')){
+
+            $itemsPaginated = Article::with('category','contents')
+                ->whereHas('category', function ($q) use ($slug){
+                    $q->where('slug', $slug);
+                })
+                ->whereNotIn('status', ['draft','hide'])
+                ->orderBy('created_at', 'DESC')
+                ->paginate(5);
+        }
+
+        else
+        {
+            $itemsPaginated = Article::with('category','contents')
+                ->whereHas('category', function ($q) use ($slug){
+                    $q->where('slug', $slug);
+                })
+                ->where('status', 'public')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(5);
+        }
 
         $itemsTransformed = $itemsPaginated
             ->getCollection()
@@ -278,8 +306,6 @@ class ArticleRepository implements RepositoryInterface
                 ];
             })->toArray();
 
-//        return $itemsTransformed;
-
         return $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
             $itemsTransformed,
             $itemsPaginated->total(),
@@ -293,6 +319,7 @@ class ArticleRepository implements RepositoryInterface
         );
 
         return $itemsPaginated;
+
 
     }
 
