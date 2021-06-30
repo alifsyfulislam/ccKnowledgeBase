@@ -26,9 +26,25 @@ class CategoryRepository implements RepositoryInterface
     }
 
     public function latestCategory(){
-        return Category::with('childrenRecursive','media')
-            ->where('parent_id', '=', 0)
+        return Category::with('article')->where('parent_id', '=', 0)
+            ->whereHas('article', function ($q){
+                $q->where('id', '!=', NULL);
+            })
             ->latest()->first();
+//            ->map(function ($query) {
+//                $query->setRelation('article', $query->article->latest()->first());
+//                return $query;
+//            });
+
+
+
+//            ->where('parent_id', '=', 0)
+//            ->latest()->first();
+//            ->map(function ($query) {
+//                $query->setRelation('article', $query->article->get());
+//                return $query;
+//            });
+
     }
 
     /**
@@ -71,7 +87,7 @@ class CategoryRepository implements RepositoryInterface
      */
     public function update(array $data, $id)
     {
-       // dd($data);
+        // dd($data);
 
         return Category::where('id', $id )->update([
             'name'      => $data['name'],
@@ -98,11 +114,11 @@ class CategoryRepository implements RepositoryInterface
      */
     public static function deleteSubcategory($category_id){
 
-       $request = Category::where('parent_id', '=', $category_id)->pluck('id');
+        $request = Category::where('parent_id', '=', $category_id)->pluck('id');
 
-       foreach ($request as $cat){
+        foreach ($request as $cat){
 
-           self::deleteSubcategory($cat);
+            self::deleteSubcategory($cat);
 
         }
         //echo 'hi';
@@ -129,7 +145,10 @@ class CategoryRepository implements RepositoryInterface
     public function categoryArticles()
     {
 
-        return Category::with(['article','media', 'childrenRecursive'])->where('parent_id', 0)->orderBy('id','DESC')->get();
+        return Category::with(['article','media', 'childrenRecursive'])
+            ->where('parent_id', 0)
+            ->orderBy('id','DESC')
+            ->get();
     }
 
     public function categoryListForUpdate($request)
@@ -141,7 +160,7 @@ class CategoryRepository implements RepositoryInterface
 
         $categoryChildArray[] = $request->id;
 
-       // dd($categoryChildArray);
+        // dd($categoryChildArray);
 
         $categoryList = DB::table('categories')
             ->whereNotIn('id', $categoryChildArray)
