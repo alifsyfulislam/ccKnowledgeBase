@@ -176,7 +176,7 @@
         </div>
 
         <div class="form-group text-right">
-          <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
+          <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()">Update</button>
         </div>
       </div>
     </div>
@@ -283,6 +283,7 @@
 
     data() {
       return {
+        isNotifyUser              : false,
         isMountedSummer           : false,
         isMounted                 : false,
         isEdit                    : false,
@@ -572,18 +573,21 @@
                 })
       },
 
-      deleteUploadedFile(index){
+      deleteUploadedFile(index)
+      {
         document.getElementById('files').value= "";
         (this.article_files).splice(index, 1);
       },
 
-      deletePreviousUploadedFile(index){
+      deletePreviousUploadedFile(index)
+      {
         //document.getElementById('files').value= "";
         (this.previous_media_list).splice(index, 1);
         console.log(this.previous_media_list);
       },
 
-      fileUploadChange(e) {
+      fileUploadChange(e)
+      {
         let _that = this;
         const selectedFiles = e.target.files;
 
@@ -594,11 +598,13 @@
 
       },
 
-      collectArticleList(tagList){
+      collectArticleList(tagList)
+      {
         this.articleData.tag = tagList.join();
       },
 
-      changeCheckBox() {
+      changeCheckBox()
+      {
         if (this.bangla_checkbox === true)
           this.selected_language = 'bangla';
         else
@@ -713,6 +719,10 @@
         let _that           = this;
         let formData        = new FormData();
 
+        if (this.articleData.is_notifiable ==1){
+          this.isNotifyUser = true;
+        }
+
         for( var i = 0; i < this.article_files.length; i++ ){
           let file = this.article_files[i];
 
@@ -753,6 +763,7 @@
                   }
                 }).then(function (response) {
           if (response.data.status_code === 200){
+            _that.isNotifyUser          = false;
             _that.articleData           = '';
             _that.error_message         = '';
             _that.success_message       = "Article Updated Successfully";
@@ -784,7 +795,7 @@
                   params :
                           {
                             isAdmin : 1,
-                            without_pagination : 1
+                            isRole : _that.userInformation.roles[0].id
                           },
 
                 })
@@ -859,15 +870,18 @@
 
     },
 
-    created() {
-      this.articleData.id = this.articleId;
-      this.contentData.article_id = this.articleId;
-      this.getArticleDetails();
-      this.getCategoryList();
-      this.getUserRoles();
-      this.getContentList(this.contentData.article_id);
-      this.$emit('article-edit-id', this.contentData.article_id);
+    created()
+    {
       this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      if (this.userInformation != ''){
+        this.articleData.id = this.articleId;
+        this.contentData.article_id = this.articleId;
+        this.getArticleDetails();
+        this.getCategoryList();
+        this.getUserRoles();
+        this.getContentList(this.contentData.article_id);
+        this.$emit('article-edit-id', this.contentData.article_id);
+      }
     }
   }
 </script>

@@ -298,8 +298,9 @@
                 this.getBannerList()
             },
 
-            getAddDataFromChild (status){
-
+            getAddDataFromChild (status)
+            {
+                this.isLoading = true;
                 this.success_message = status;
                 this.getBannerList();
                 this.removingRightSideWrapper();
@@ -308,6 +309,7 @@
 
             getEditDataFromChild (status)
             {
+                this.isLoading = true;
                 this.success_message = status;
                 this.getBannerList();
                 this.removingRightSideWrapper();
@@ -395,6 +397,7 @@
                     }).then(function (response) {
 
                     if (response.data.status_code == 200) {
+                        _that.isLoading = true;
                         _that.getBannerList();
                         _that.removingRightSideWrapper();
                         _that.error_message         = '';

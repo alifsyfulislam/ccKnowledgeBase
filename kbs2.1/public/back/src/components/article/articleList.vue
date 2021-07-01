@@ -292,30 +292,32 @@
         },
         data() {
             return {
-                isHistoryCheck      : false,
-                isArticleStatus     : '',
-                isExportCheck       : false,
-                isLoading           : false,
-                isEditCheck         : false,
-                isAddCheck          : false,
-                isDeleteCheck       : false,
-                isSearchCheck       : false,
-                downloadUrl         : 'articles/export/',
-                user_permissions : '',
-                mappedPermission : '',
-                perPage             :2,
-                currentPage         :1,
-                unstoredArticleID   :'',
-                article_info : '',
-
-                article_id          :'',
-                search              :"",
-                pagination  :{
-                    current         :1,
-                    per_page        : 20,
-                    total           : ''
+                isHistoryCheck          : false,
+                isArticleStatus         : '',
+                isExportCheck           : false,
+                isLoading               : false,
+                isEditCheck             : false,
+                isAddCheck              : false,
+                isDeleteCheck           : false,
+                isSearchCheck           : false,
+                downloadUrl             : 'articles/export/',
+                user_permissions        : '',
+                mappedPermission        : '',
+                userInformation         : '',
+                perPage                 : 2,
+                currentPage             : 1,
+                unstoredArticleID       : '',
+                article_info            : '',
+                article_id              : '',
+                search                  : "",
+                pagination              :{
+                    current             : 1,
+                    per_page            : 20,
+                    total               : ''
                 },
-                headers: [
+                success_message         : '',
+                error_message           : '',
+                headers                 : [
                     {
                         text: 'ID',
                         value: 'id',
@@ -354,34 +356,28 @@
                         value: 'created_at',
                         sortable: true
                     },
-                    // {
-                    //     text: 'History',
-                    //     value: 'history',
-                    // },
                     {
                         text: 'Actions',
                         value: 'actions',
                         sortable: false
 
                     },
-
-
                 ],
-
-                success_message : '',
-                error_message   : '',
             }
         },
         methods: {
-            getArticleIDFromChild(article_id){
+            getArticleIDFromChild(article_id)
+            {
                 // console.log(article_id);
                 this.unstoredArticleID = article_id;
             },
-            articleStatusRequest(selected){
+            articleStatusRequest(selected)
+            {
                 $('#alertModal').modal('show');
                 localStorage.setItem('article_status', JSON.stringify(selected));
             },
-            changeArticleStatus(){
+            changeArticleStatus()
+            {
                 this.isArticleStatus = JSON.parse(localStorage.getItem("article_status"));
                 // alert( this.isArticleStatus.id);
                 $('#alertModal').modal('toggle');
@@ -435,7 +431,7 @@
                 _that.isDeleteCheck      = false;
                 _that.isHistoryCheck      = false;
 
-                console.log("check if"+_that.unstoredArticleID);
+                // console.log("check if"+_that.unstoredArticleID);
 
                 if (_that.unstoredArticleID){
                     axios.get('contents-article-exist/'+this.unstoredArticleID,{
@@ -465,50 +461,51 @@
             //from child
             getAddDataFromChild (status)
             {
-                this.getArticleList();
-                this.setTimeoutElements();
+                this.clearAllChecker();
                 this.removingRightSideWrapper();
                 this.success_message = status;
+                this.isLoading = true;
+                this.getArticleList();
             },
             getEditDataFromChild (status)
             {
+                this.isLoading = true;
                 this.getArticleList();
                 this.success_message = status;
                 this.removingRightSideWrapper();
                 this.setTimeoutElements();
             },
-            //category list
-            getCategoryList()
-            {
-                let _that =this;
-                axios.get('categories',
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params :
-                            {
-                                isAdmin     : 1,
-                                without_pagination : 1
-                            },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            //console.log(response.data);
-                            _that.categoryList = response.data.category_list;
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
+            // category list
+            // getCategoryList()
+            // {
+            //     let _that =this;
+            //     axios.get('categories',
+            //         {
+            //             headers: {
+            //                 'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+            //             },
+            //             params :
+            //                 {
+            //                     isAdmin     : 1,
+            //                     isRole      : _that.userInformation.roles[0].id
+            //                 },
+            //         })
+            //         .then(function (response) {
+            //             if(response.data.status_code === 200){
+            //                 console.log(response.data);
+            //                 _that.categoryList      = response.data.category_list;
+            //             }
+            //             else{
+            //                 _that.success_message   = "";
+            //                 _that.error_message     = response.data.error;
+            //             }
+            //         })
+            // },
             getArticleList(pageUrl)
             {
                 let _that = this;
 
                 pageUrl = pageUrl == undefined ? 'articles' : pageUrl;
-
                 axios.get(pageUrl+'?page='+this.pagination.current,
                     {
                         headers: {
@@ -516,31 +513,29 @@
                         },
                         params :
                             {
-                                isAdmin         : 1
-                                // category_id     : this.filter.category_id,
-                                // status          : this.filter.status,
-                                // en_title        : this.filter.en_title,
-                                // tag             : this.filter.tag,
+                                isAdmin             : 1,
+                                isRole              : _that.userInformation.roles[0].id
                             },
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            // console.log(response.data.article_list);
-                            _that.pagination.current = response.data.article_list.current_page;
-                            _that.pagination.total = response.data.article_list.last_page;
-                            _that.articleList       = response.data.article_list.data;
-                            _that.isLoading         = false;
-                            _that.isExportCheck     = true;
+                            console.log(response.data.article_list);
+                            _that.pagination.current    = response.data.article_list.current_page;
+                            _that.pagination.total      = response.data.article_list.last_page;
+                            _that.articleList           = response.data.article_list.data;
+                            _that.isLoading             = false;
+                            _that.isExportCheck         = true;
                             _that.setTimeoutElements();
 
                         }
                         else{
-                            _that.success_message   = "";
-                            _that.error_message     = response.data.error;
+                            _that.success_message       = "";
+                            _that.error_message         = response.data.error;
                         }
                     })
             },
-            onPageChange() {
+            onPageChange()
+            {
                 this.getArticleList();
             },
             setTimeoutElements()
@@ -564,6 +559,7 @@
                     }).then(function (response) {
                     if (response.data.status_code == 200)
                     {
+                        _that.isLoading = true;
                         _that.getArticleList();
                         _that.removingRightSideWrapper();
                         _that.error_message         = '';
@@ -582,13 +578,17 @@
                 });
             },
         },
-        created() {
+        created()
+        {
             this.isLoading = true;
-            this.getArticleList();
-            this.getCategoryList();
-            this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-            this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-            this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation != ''){
+                this.getArticleList();
+                // this.getCategoryList();
+                this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+                this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+                this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+            }
         }
     }
 </script>

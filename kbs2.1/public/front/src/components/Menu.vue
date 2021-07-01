@@ -16,7 +16,7 @@
                     <div class="collapse navbar-collapse" id="mainNavigation">
                         <ul class="navbar-nav ml-auto align-items-center">
                             <li class="nav-item" v-if="userInformation">
-                                <router-link class="nav-link px-0 py-0" :to="{ name: 'CategoryList', params: { categoryID: recentCategory.slug }}">
+                                <router-link class="nav-link px-0 py-0" :to="{ name: 'CategoryList', params: { categorySlug: recentCategory.slug }}">
                                     <span>CATEGORIES</span>
                                 </router-link>
                             </li>

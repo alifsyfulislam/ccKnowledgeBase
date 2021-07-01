@@ -52,11 +52,11 @@ class ArticleService
         ]);
     }
 
-    public function getAllArticleList(){
+    public function getAllArticleList($request){
         return response()->json([
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'article_list' => $this->articleRepository->all()
+            'article_list' => $this->articleRepository->allWithRole($request)
         ]);
     }
 
@@ -428,14 +428,14 @@ class ArticleService
     }
 
 
-    public function categoryArticle($id)
+    public function categoryArticle($request,$id)
     {
 
         return response()->json([
 
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'article_list' => $this->articleRepository->searchCategoryArticle($id)
+            'article_list' => $this->articleRepository->searchCategoryArticle($request,$id)
 
         ]);
 

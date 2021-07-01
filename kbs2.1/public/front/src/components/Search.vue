@@ -2,7 +2,7 @@
   <div>
     <div class="search-input-wrapper mt-40">
       <div class="input-group">
-        <input type="text" class="form-control" v-on:keyup.enter="fromData.search ? searchData() : ''" v-model="fromData.search" v-on:keyup="autoSuggetion" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
+        <input style="text-align: center" type="text" class="form-control" v-on:keyup.enter="fromData.search ? searchData() : ''" v-model="fromData.search" v-on:keyup="autoSuggetion" placeholder="Search Article Here" aria-label="Search Here" aria-describedby="searchBtn">
 
 
         <div class="input-group-append">

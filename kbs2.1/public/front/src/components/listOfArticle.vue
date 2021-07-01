@@ -1,5 +1,5 @@
 <template>
-    <div v-if="selectedCategory">
+    <div v-if="selectedCategory !=''">
         <div class="row article-list-items" v-for="(has_article) in selectedCategory" :key="has_article.id">
             <div class="col-lg-12 mb-15">
                 <router-link class="article-item-list-box d-sm-flex position-relative overflow-hidden" :to="{ name: 'ArticleDetail', params: { articleID: has_article.id,articleSlug: has_article.slug }}">
@@ -57,6 +57,7 @@
             </div>
         </div>
     </div>
+    <div v-else>No Article Found!</div>
 </template>
 
 <script>

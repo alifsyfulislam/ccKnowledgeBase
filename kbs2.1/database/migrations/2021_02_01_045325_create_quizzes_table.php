@@ -23,6 +23,7 @@ class CreateQuizzesTable extends Migration
             $table->decimal('total_marks',10,2);
             $table->integer('number_of_questions');
             $table->tinyInteger('status');
+            $table->string('role_id');
             $table->timestamps();
         });
     }

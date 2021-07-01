@@ -105,14 +105,23 @@ class FaqRepository implements RepositoryInterface
      */
     public function getWithPagination($request)
     {
+        if ($request->filled('isRole'))
+        {
+            $faqs = Faq::with('category','user','history')
+                ->whereHas('category', function ($q) use ($request){
+                    $q->where('role_id','LIKE','%'.$request->isRole.'%');
+                })->orderBy('created_at','DESC')->paginate(20);
+            return $faqs;
+        }else{
 
-        $query = Faq::with( 'user', 'category','history');
-        $whereFilterList = ['category_id', 'status'];
-        $likeFilterList  = ['en_title', 'tag'];
-        $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
+            $query = Faq::with( 'user', 'category','history');
+            $whereFilterList = ['category_id', 'status'];
+            $likeFilterList  = ['en_title', 'tag'];
+            $query = self::filterFaq($request, $query, $whereFilterList, $likeFilterList);
 
-        return $query->orderBy('id','DESC')->paginate(20);
+            return $query->orderBy('id','DESC')->paginate(20);
 
+        }
     }
 
     public function getFaqListForFrontend($request)

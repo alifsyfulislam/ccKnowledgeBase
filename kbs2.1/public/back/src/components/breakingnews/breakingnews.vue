@@ -43,8 +43,8 @@ export default {
         //     this.news.push(val);
         // })
         setInterval(this.updateTicker, 5000);
-        console.log(this.articles)
-        console.log(this.news)
+        // console.log(this.articles)
+        // console.log(this.news)
     },
     methods: {
         updateTicker: function() {

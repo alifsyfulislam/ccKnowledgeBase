@@ -22,12 +22,13 @@ class CategoryRepository implements RepositoryInterface
             ->where('parent_id', '=', 0)
             ->orderBy('id','DESC')
             ->get();
-
     }
 
     public function latestCategory(){
-        return Category::with('childrenRecursive','media')
-            ->where('parent_id', '=', 0)
+        return Category::with('article')->where('parent_id', '=', 0)
+            ->whereHas('article', function ($q){
+                $q->where('id', '!=', NULL);
+            })
             ->latest()->first();
     }
 
@@ -71,7 +72,7 @@ class CategoryRepository implements RepositoryInterface
      */
     public function update(array $data, $id)
     {
-       // dd($data);
+        // dd($data);
 
         return Category::where('id', $id )->update([
             'name'      => $data['name'],
@@ -98,11 +99,11 @@ class CategoryRepository implements RepositoryInterface
      */
     public static function deleteSubcategory($category_id){
 
-       $request = Category::where('parent_id', '=', $category_id)->pluck('id');
+        $request = Category::where('parent_id', '=', $category_id)->pluck('id');
 
-       foreach ($request as $cat){
+        foreach ($request as $cat){
 
-           self::deleteSubcategory($cat);
+            self::deleteSubcategory($cat);
 
         }
         //echo 'hi';
@@ -112,32 +113,27 @@ class CategoryRepository implements RepositoryInterface
 
     public function getWithPagination($request)
     {
-        if ($request->filled('without_pagination')) {
-
-            return Category::with('parentRecursive', 'media')
+        if ($request->filled('isAdmin') && $request->filled('isList') && $request->filled('isRole')){
+            return Category::with('parentRecursive')
+                ->where('role_id','LIKE','%'.$request->isRole.'%')
+                ->orderBy('id','DESC')
+                ->paginate(20);
+        }
+        elseif ($request->filled('isAdmin') && $request->filled('isRole')){
+            return Category::with('parentRecursive')
+                ->where('role_id','LIKE','%'.$request->isRole.'%')
                 ->orderBy('id','DESC')
                 ->get();
-
         }
-        else if ($request->filled('isRole')){
-            return Category::with('parentRecursive', 'media')
-                ->where('role_id','LIKE','%'.$request->filled('isRole').'%')
-                ->orderBy('id','DESC')
-                ->paginate(20);
-        }
-        else{
-            return Category::with(['parentRecursive' => function($q) {$q->select('id','name');}, 'media','history'])
-                ->orderBy('id','DESC')
-                ->paginate(20);
-        }
-
-
     }
 
     public function categoryArticles()
     {
 
-        return Category::with(['article','media', 'childrenRecursive'])->where('parent_id', 0)->orderBy('id','DESC')->get();
+        return Category::with(['article','media', 'childrenRecursive'])
+            ->where('parent_id', 0)
+            ->orderBy('id','DESC')
+            ->get();
     }
 
     public function categoryListForUpdate($request)
@@ -149,7 +145,7 @@ class CategoryRepository implements RepositoryInterface
 
         $categoryChildArray[] = $request->id;
 
-       // dd($categoryChildArray);
+        // dd($categoryChildArray);
 
         $categoryList = DB::table('categories')
             ->whereNotIn('id', $categoryChildArray)

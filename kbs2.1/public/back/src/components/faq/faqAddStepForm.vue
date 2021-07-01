@@ -169,7 +169,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
+            <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="validateAndSubmit()"><i class="far fa-save"></i> Save</button>
         </div>
 
 
@@ -238,6 +238,7 @@
         data() {
             return {
                 step:1,
+                isNotifyUser            : false,
                 isNextStep : false,
                 isToogleModal       : false,
                 isStep :false,
@@ -540,7 +541,8 @@
                         'Authorization': 'Bearer '+localStorage.getItem('authToken')
                     },
                     params : {
-                        isAdmin : 1,
+                        isAdmin             : 1,
+                        isRole              : _that.userInformation.roles[0].id
                     },}).then(function (response) {
                     console.log(response.data.article_list)
                     response.data.article_list.forEach(val => {
@@ -633,25 +635,6 @@
             validateAndSubmit(){
                 console.log('here');
                 this.faqAdd();
-
-                // if (!this.faqData.en_title){
-                //     $('#enTitle').css({
-                //         'border-color': '#FF7B88',
-                //     });
-                //     $('#enTitleError').html("title field is required");
-                // }
-                //
-                // if (!this.selectedCategory){
-                //     $('#categoryID').css({
-                //         'border-color': '#FF7B88',
-                //     });
-                //     $('#categoryIDError').html("category field is required");
-                // }
-                //
-                // if (this.validation_error.isTitleStatus    === true &&
-                //     this.validation_error.isCategoryStatus === true ){
-                //     this.faqAdd();
-                // }
             },
 
             showServerError(errors)
@@ -687,6 +670,10 @@
             {
                 let _that           = this;
 
+                if (this.faqData.is_notifiable == 1){
+                    this.isNotifyUser = true;
+                }
+
                 axios.post('faqs', {
 
                         id                  : this.faqData.id,
@@ -705,6 +692,7 @@
                         }
                     }).then(function (response) {
                     if (response.data.status_code == 201) {
+                        _that.isNotifyUser              = false;
                         _that.faqData                   = '';
                         _that.error_message             = '';
                         _that.success_message           = "FAQ Added Successfully";
@@ -721,44 +709,48 @@
                 });
             },
 
-            getCategoryList()
-            {
-
-                let _that   = this;
-
-                axios.get('categories',
-                    {
-                        headers     : {
-                            'Authorization'         : 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params      :
-                            {
-                                isAdmin             : 1,
-                                without_pagination  : 1
-                            },
-
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200) {
-                            _that.categoryList          = response.data.category_list;
-                        }
-                        else{
-                            _that.success_message       = "";
-                            _that.error_messages        = response.data.errors;
-                        }
-                    })
-            },
+            // getCategoryList()
+            // {
+            //
+            //     let _that   = this;
+            //
+            //     axios.get('categories',
+            //         {
+            //             headers     : {
+            //                 'Authorization'         : 'Bearer '+localStorage.getItem('authToken')
+            //             },
+            //             params      :
+            //                 {
+            //                     isAdmin             : 1,
+            //                     without_pagination  : 1
+            //                 },
+            //
+            //         })
+            //         .then(function (response) {
+            //             if(response.data.status_code === 200) {
+            //                 _that.categoryList          = response.data.category_list;
+            //             }
+            //             else{
+            //                 _that.success_message       = "";
+            //                 _that.error_messages        = response.data.errors;
+            //             }
+            //         })
+            // },
         },
         created() {
-            this.isNextStep = false;
-            this.faqData.id = (Math.round((new Date()).getTime()*10));
-            this.contentData.article_id = (Math.round((new Date()).getTime()*10));
-            this.getCategoryList();
-            this.getAllArticleList();
-            this.getUserRoles();
-            this.getContentList(this.faqData.id);
-            this.$emit('faq-id', this.faqData.id);
-            console.log('from child'+this.faqData.id);
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation != ''){
+                this.isNextStep = false;
+                this.faqData.id = (Math.round((new Date()).getTime()*10));
+                this.contentData.article_id = (Math.round((new Date()).getTime()*10));
+                // this.getCategoryList();
+                this.getAllArticleList();
+                this.getUserRoles();
+                this.getContentList(this.faqData.id);
+                this.$emit('faq-id', this.faqData.id);
+                // console.log('from child'+this.faqData.id);
+            }
+
         }
     }
 </script>

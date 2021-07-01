@@ -3,7 +3,6 @@
         <div class="right-sidebar-content-area px-2">
             <div class="form-wrapper">
                 <h2 class="section-title text-uppercase mb-20">Add New Category</h2>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -14,40 +13,32 @@
                             </span>
                         </div>
                     </div>
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Select A Parent</label>
                             <select class="form-control" v-model="selectedCategory" @change="getParentRolesAccess()">
-                                <option value="">Select A Category</option>
+                                <option disabled value="">Select A Category</option>
                                 <option v-for="a_category in categoryList" :value="a_category.id" :key="a_category.id">
                                     {{a_category.name}}
                                 </option>
                             </select>
                         </div>
                     </div>
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="d-block">Image</label>
                             <input type="file" id="files" ref="files" @change="onLogoFileChange" accept="image/*">
                         </div>
                     </div>
-
                     <div class="col-md-12" v-if="logo_url">
                         <div class="form-group" >
                             <img class="preview" style="height:250px; width: auto" :src="logo_url"/>
                         </div>
                     </div>
-
                     <div class="col-md-12" v-if="categoryHasParent != true">
                         <label>Roles</label>
-
-
                         <CustomRoleAdd v-if="user_roles" :userRoles="user_roles" @granted-roles="getPermissionGrantedAccess"/>
                     </div>
-
-
                 </div>
                 <div class="form-group text-right">
                     <button class="btn common-gradient-btn ripple-btn px-50" @click="dataValidate()">Add</button>
@@ -59,40 +50,39 @@
 </template>
 
 <script>
-
     import CustomRoleAdd from './../custom-role/CustomRoleAdd'
     import axios from 'axios'
     import $ from "jquery";
-
     export default {
 
-        name: "categoryAdd.vue",
-        props: ['isAddCheck'],
-        components : {
+        name        : "categoryAdd.vue",
+        props       : ['isAddCheck'],
+        components  : {
             CustomRoleAdd
         },
         data() {
             return {
-                success_message  : '',
-                error_messages   : [],
-                token            : '',
-                categoryList     : '',
-                selectedCategory : '',
-                userInfo         : '',
-                logo_file        : '',
-                logo_url         : '',
-                user_roles : '',
-                roleAccess          : [],
-                parent_role_id : '',
-                categoryHasParent : false,
-
-                categoryData     : {
+                success_message         : '',
+                error_messages          : [],
+                token                   : '',
+                categoryList            : '',
+                selectedCategory        : '',
+                userInfo                : '',
+                logo_file               : '',
+                logo_url                : '',
+                user_roles              : '',
+                roleAccess              : [],
+                parent_role_id          : '',
+                categoryHasParent       : false,
+                userInformation         : '',
+                categoryData            : {
                     name                : '',
                 },
             }
         },
         methods: {
-            getParentRolesAccess(){
+            getParentRolesAccess()
+            {
                 let _that   = this;
                 let apiUrl  = "categories/";
                 axios.get(apiUrl+_that.selectedCategory,
@@ -144,13 +134,13 @@
                         }
                     })
             },
-
-            onLogoFileChange(e) {
+            onLogoFileChange(e)
+            {
                 this.logo_file = e.target.files[0];
                 this.logo_url = URL.createObjectURL(this.logo_file);
             },
-
-            checkCategoryNameExist(categoryInfo){
+            checkCategoryNameExist(categoryInfo)
+            {
                 let _that = this;
                 let category_info  =  categoryInfo.trim();
                 if (category_info == null){
@@ -178,9 +168,9 @@
                     });
                 }
             },
-
             //keyup validation
-            checkAndChangeValidation(){
+            checkAndChangeValidation()
+            {
 
                 let _that = this;
                 if (!_that.categoryData.name){
@@ -193,9 +183,9 @@
                     _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
                 }
             },
-
             //server validation
-            showServerError(errors){
+            showServerError(errors)
+            {
 
                 $('#categoryNameError').html("");
                 $('#categoryName').css({'border-color': '#ced4da'});
@@ -206,9 +196,9 @@
                     }
                 })
             },
-
             //client side validation
-            dataValidate(){
+            dataValidate()
+            {
 
                 let _that = this;
                 if (!_that.categoryData.name){
@@ -221,9 +211,9 @@
                     _that.error_messages[0]     = "*The name must be between 3 to 100 charecter";
                 }
             },
-
             //category add
-            categoryAdd(){
+            categoryAdd()
+            {
 
                 let _that = this;
                 let formData = new FormData();
@@ -269,9 +259,9 @@
                 }).catch(errors => console.log(errors));
 
             },
-
             //category list
-            getCategoryList(){
+            getCategoryList()
+            {
 
                 let _that =this;
 
@@ -283,13 +273,13 @@
                         params :
                             {
                                 isAdmin : 1,
-                                without_pagination : 1
+                                isRole : _that.userInformation.roles[0].id
                             },
 
                     })
                     .then(function (response) {
                         if(response.data.status_code === 200){
-                            console.log(response.data);
+                            // console.log(response.data);
                             _that.categoryList = response.data.category_list;
                         }
                         else{
@@ -299,10 +289,13 @@
                     })
             },
         },
-
-        created(){
-            this.getCategoryList();
-            this.getUserRoles();
+        created()
+        {
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation != ''){
+                this.getCategoryList();
+                this.getUserRoles();
+            }
         }
     }
 </script>

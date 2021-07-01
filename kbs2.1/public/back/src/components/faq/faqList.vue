@@ -64,69 +64,69 @@
                     </v-row>
                     <v-row>
                       <v-col class="customer-data-table-wrapper">
-                          <v-data-table :headers="headers" :items="faqList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
-                            <template v-slot:item.user.first_name="{item}">
-                                  {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
-                              </template>
-                              <template v-slot:item.category="{item}">
-                                  {{ item.category ? item.category.name : ''  }}
-                              </template>
+                        <v-data-table :headers="headers" :items="faqList" :search="search" :hide-default-footer=true  class="elevation-1" :items-per-page="20">
+                          <template v-slot:item.user.first_name="{item}">
+                            {{ item.user ? (item.user.first_name +' '+ item.user.last_name) : '' }}
+                          </template>
+                          <template v-slot:item.category="{item}">
+                            {{ item.category ? item.category.name : ''  }}
+                          </template>
 
-                              <template v-slot:item.commentable_status="{item}">
-                                {{item.commentable_status === 0 ? 'Inactive' : 'Active'}}
-                              </template>
+                          <template v-slot:item.commentable_status="{item}">
+                            {{item.commentable_status === 0 ? 'Inactive' : 'Active'}}
+                          </template>
 
-                              <template v-slot:item.is_notifiable="{item}">
-                                {{item.is_notifiable == 0 ? 'NO' : 'YES'}}
-                              </template>
+                          <template v-slot:item.is_notifiable="{item}">
+                            {{item.is_notifiable == 0 ? 'NO' : 'YES'}}
+                          </template>
 
-                              <template v-slot:item.status="{item}">
-                                  <select class="form-control" v-model="item.status" @change="faqStatusRequest(item)">
-                                    <option value="draft">Draft</option>
-                                    <option value="hide">Hide</option>
-                                    <option value="private">Private</option>
-                                    <option value="public">Public</option>
-                                  </select>
-                              </template>
+                          <template v-slot:item.status="{item}">
+                            <select class="form-control" v-model="item.status" @change="faqStatusRequest(item)">
+                              <option value="draft">Draft</option>
+                              <option value="hide">Hide</option>
+                              <option value="private">Private</option>
+                              <option value="public">Public</option>
+                            </select>
+                          </template>
 
-<!--                              <template v-slot:item.history="{item}">-->
+                          <!--                              <template v-slot:item.history="{item}">-->
 
-<!--                                <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, faq_info=item"-->
-<!--                                      v-if="checkPermission('faq-edit')">-->
-<!--                                  <i class="fas fa-book text-white"></i>-->
-<!--                                </button>-->
+                          <!--                                <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, faq_info=item"-->
+                          <!--                                      v-if="checkPermission('faq-edit')">-->
+                          <!--                                  <i class="fas fa-book text-white"></i>-->
+                          <!--                                </button>-->
 
 
-<!--                            </template>-->
+                          <!--                            </template>-->
 
-                              <template v-slot:item.actions="{item}" >
-                                <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, faq_info=item"
-                                        v-if="checkPermission('history-list')">
-                                  <i class="fas fa-book text-white"></i>
-                                </button>
-                                  <router-link :to="{ name: 'faqDetails', params: { id: item.id, slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
-                                    <i class="fas fa-eye text-white"></i>
-                                  </router-link>
-                                  <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
-                                          @click="faq_id=item.id, isEditCheck = true"
-                                          v-if="checkPermission('faq-edit')">
-                                    <i class="fas fa-pen"></i>
-                                  </button>
+                          <template v-slot:item.actions="{item}" >
+                            <button class="btn btn-primary ripple-btn right-side-common-form btn-xs mx-1" @click="isHistoryCheck=true, faq_info=item"
+                                    v-if="checkPermission('history-list')">
+                              <i class="fas fa-book text-white"></i>
+                            </button>
+                            <router-link :to="{ name: 'faqDetails', params: { id: item.id, slug: item.slug }}" class="btn btn-secondary btn-xs m-1">
+                              <i class="fas fa-eye text-white"></i>
+                            </router-link>
+                            <button class="btn btn-success ripple-btn right-side-common-form btn-xs m-1"
+                                    @click="faq_id=item.id, isEditCheck = true"
+                                    v-if="checkPermission('faq-edit')">
+                              <i class="fas fa-pen"></i>
+                            </button>
 
-                                  <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
-                                          @click="faq_id=item.id, isDeleteCheck = true"
-                                          v-if="checkPermission('faq-delete')">
-                                    <i class="fas fa-trash-restore-alt"></i>
-                                  </button>
-                              </template>
+                            <button  class="btn btn-danger ripple-btn right-side-common-form btn-xs m-1"
+                                     @click="faq_id=item.id, isDeleteCheck = true"
+                                     v-if="checkPermission('faq-delete')">
+                              <i class="fas fa-trash-restore-alt"></i>
+                            </button>
+                          </template>
 
-                          </v-data-table>
+                        </v-data-table>
                       </v-col>
                     </v-row>
                     <v-row justify="end" class="pagination-wrapper">
                       <v-col>
-                          <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
-                          </v-pagination>
+                        <v-pagination :total-visible="7" v-model="pagination.current" :length="pagination.total" @input="onPageChange">
+                        </v-pagination>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -156,7 +156,7 @@
         </button>
       </div>
       <!--            add-->
-<!--      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>-->
+      <!--      <FaqAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqAdd>-->
       <FaqStepAdd v-if="isAddCheck" :isAddCheck= "isAddCheck"  @faq-id="getFaqIDFromChild" @faq-slide-close="getAddDataFromChild()"></FaqStepAdd>
       <!--            edit-->
       <FaqEdit v-if="isEditCheck" :isEditCheck="isEditCheck" :faqId="faq_id"  @faq-edit-id="getFaqIDFromChild" @faq-slide-close="getEditDataFromChild()"></FaqEdit>
@@ -280,151 +280,151 @@
 </template>
 
 <script>
-import Header from "@/layouts/common/Header";
-import Menu from "@/layouts/common/Menu";
-import FaqAdd from "@/components/faq/faqAdd";
-import FaqStepAdd from "@/components/faq/faqAddStepForm";
-import FaqEdit from "@/components/faq/faqEdit";
-import Loading from "@/components/loader/loading";
-import HistoryList from "@/components/history/HistoyList";
-import axios from "axios";
-import $ from "jquery";
+  import Header from "@/layouts/common/Header";
+  import Menu from "@/layouts/common/Menu";
+  import FaqAdd from "@/components/faq/faqAdd";
+  import FaqStepAdd from "@/components/faq/faqAddStepForm";
+  import FaqEdit from "@/components/faq/faqEdit";
+  import Loading from "@/components/loader/loading";
+  import HistoryList from "@/components/history/HistoyList";
+  import axios from "axios";
+  import $ from "jquery";
 
-export default {
-  name: "faqList.vue",
-  components: {
-    Header,
-    Menu,
-    FaqAdd,
-    FaqEdit,
-    Loading,
-    HistoryList,
-    FaqStepAdd
-  },
+  export default {
+    name: "faqList.vue",
+    components: {
+      Header,
+      Menu,
+      FaqAdd,
+      FaqEdit,
+      Loading,
+      HistoryList,
+      FaqStepAdd
+    },
 
-  data() {
-    return {
-      isHistoryCheck      : false,
-      isFaqStatus         : '',
-      isLoading           : false,
-      isEditCheck         : false,
-      unstoredFaqID       : '',
-      isAddCheck          : false,
-      isDeleteCheck       : false,
-      isSearchCheck       : false,
-      isExportCheck        :false,
-      downloadUrl         : 'faqs/export/',
-      success_message     : '',
-      error_message       : '',
-      token               : '',
-      categoryList        : '',
-      user_permissions    : '',
-      mappedPermission    : '',
-      faqList             : '',
-      faq_id              : '',
-      faq_info            : '',
+    data() {
+      return {
+        isHistoryCheck      : false,
+        isFaqStatus         : '',
+        isLoading           : false,
+        isEditCheck         : false,
+        unstoredFaqID       : '',
+        isAddCheck          : false,
+        isDeleteCheck       : false,
+        isSearchCheck       : false,
+        isExportCheck        :false,
+        downloadUrl         : 'faqs/export/',
+        success_message     : '',
+        error_message       : '',
+        token               : '',
+        categoryList        : '',
+        user_permissions    : '',
+        mappedPermission    : '',
+        faqList             : '',
+        faq_id              : '',
+        faq_info            : '',
 
-      search              :"",
-      pagination          :{
+        search              :"",
+        pagination          :{
           current         :1,
           per_page        : 20,
           total           : ''
-      },
-      headers: [
+        },
+        headers: [
           {
-              text: 'ID',
-              value: 'id',
-          },
-            {
-              text: 'Title',
-              value: 'en_title',
+            text: 'ID',
+            value: 'id',
           },
           {
-              text: 'Author',
-              value: 'user.first_name',
+            text: 'Title',
+            value: 'en_title',
           },
           {
-              text: 'Category',
-              value: 'category',
+            text: 'Author',
+            value: 'user.first_name',
           },
           {
-              text: 'Status',
-              value: 'status',
+            text: 'Category',
+            value: 'category',
           },
           {
-              text: 'Tag',
-              value: 'tag',
+            text: 'Status',
+            value: 'status',
           },
           {
-              text: 'Commentable',
-              value: 'commentable_status',
+            text: 'Tag',
+            value: 'tag',
           },
           {
-              text: 'Notifiable',
-              value: 'is_notifiable',
+            text: 'Commentable',
+            value: 'commentable_status',
           },
           {
-              text: 'Publish Date',
-              value: 'created_at',
+            text: 'Notifiable',
+            value: 'is_notifiable',
+          },
+          {
+            text: 'Publish Date',
+            value: 'created_at',
           },
           // {
           //   text: 'History',
           //   value: 'history',
           // },
           {
-              text: 'Actions',
-              value: 'actions',
-              sortable:false
+            text: 'Actions',
+            value: 'actions',
+            sortable:false
           },
-          
-          
-      ],
-      
-    }
-  },
-  methods: {
-    getFaqIDFromChild(faq_id){
+
+
+        ],
+
+      }
+    },
+    methods: {
+      getFaqIDFromChild(faq_id){
         console.log(faq_id);
         this.unstoredFaqID = faq_id;
-    },
-    faqStatusRequest(selected){
-      $('#alertModal').modal('show');
-      localStorage.setItem('faq_status', JSON.stringify(selected));
-    },
-    changeFaqStatus(){
-      this.isFaqStatus = JSON.parse(localStorage.getItem("faq_status"));
-      $('#alertModal').modal('toggle');
-      axios.post('change-faq-status',
-        {
-          id          : this.isFaqStatus.id,
-          status      : this.isFaqStatus.status,
-        },
-        {
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('authToken')
+      },
+      faqStatusRequest(selected){
+        $('#alertModal').modal('show');
+        localStorage.setItem('faq_status', JSON.stringify(selected));
+      },
+      changeFaqStatus(){
+        this.isFaqStatus = JSON.parse(localStorage.getItem("faq_status"));
+        $('#alertModal').modal('toggle');
+        axios.post('change-faq-status',
+                {
+                  id          : this.isFaqStatus.id,
+                  status      : this.isFaqStatus.status,
+                },
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  }
+                }).then(function (response) {
+          if (response.data.status_code === 200){
+            // this.getArticleList();
+            // this.success_message   = "Article status changed successfully!";
+            localStorage.removeItem("faq_status");
           }
-        }).then(function (response) {
-        if (response.data.status_code === 200){
-          // this.getArticleList();
-          // this.success_message   = "Article status changed successfully!";
-          localStorage.removeItem("faq_status");
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
-    },
-    clearFilter()
-    {
-      this.filter.category_id     = "";
-      this.filter.status          = "";
-      this.filter.en_title        = "";
-      this.filter.tag             = "";
-      this.success_message        = "";
-      this.error_message          = "";
-      this.getFaqList();
-    },
-    clearAllChecker()
-    {
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      clearFilter()
+      {
+        this.filter.category_id     = "";
+        this.filter.status          = "";
+        this.filter.en_title        = "";
+        this.filter.tag             = "";
+        this.success_message        = "";
+        this.error_message          = "";
+        this.getFaqList();
+      },
+      clearAllChecker()
+      {
         let _that = this;
         _that.isSearchCheck      = false;
         _that.isAddCheck         = false;
@@ -442,163 +442,166 @@ export default {
             _that.unstoredFaqID = '';
           })
         }
-    },
-    setTimeoutElements()
-    {
-      // setTimeout(() => this.isLoading = false, 3e3);
-      setTimeout(() => this.success_message = "", 2e3);
-      setTimeout(() => this.error_message = "", 2e3);
-    },
+      },
+      setTimeoutElements()
+      {
+        // setTimeout(() => this.isLoading = false, 3e3);
+        setTimeout(() => this.success_message = "", 2e3);
+        setTimeout(() => this.error_message = "", 2e3);
+      },
 
-    removingRightSideWrapper()
-    {
-      this.isAddCheck         = false;
-      this.isEditCheck        = false;
-      this.isDeleteCheck      = false;
-      this.isSearchCheck      = false;
-      this.isHistoryCheck      = false;
+      removingRightSideWrapper()
+      {
+        this.isAddCheck         = false;
+        this.isEditCheck        = false;
+        this.isDeleteCheck      = false;
+        this.isSearchCheck      = false;
+        this.isHistoryCheck      = false;
 
-      document.body.classList.remove('open-side-slider');
-      $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
-    },
+        document.body.classList.remove('open-side-slider');
+        $('.right-sidebar-wrapper').toggleClass('right-side-common-form-show');
+      },
 
-    getAddDataFromChild (status)
-    {
-      // console.log(status);
-      this.success_message = "FAQ added successfully!";
-      this.getFaqList();
-      this.removingRightSideWrapper();
-      this.setTimeoutElements();
-    },
-
-    getEditDataFromChild (status)
-    {
-      console.log(status);
-      this.success_message = "FAQ updated successfully!";
-      this.getFaqList();
-      this.removingRightSideWrapper();
-      this.setTimeoutElements();
-    },
-
-    getCategoryList()
-    {
-      let _that   = this;
-      axios.get('categories',
-        {
-          headers : {
-            'Authorization' : 'Bearer '+localStorage.getItem('authToken')
-          },
-          params  :
-            {
-              isAdmin             : 1,
-              without_pagination  : 1
-            },
-
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            _that.categoryList          = response.data.category_list;
-          }
-          else{
-            _that.success_message       = "";
-            _that.error_message         = response.data.error;
-          }
-        })
-    },
-
-    getFaqList(pageUrl)
-    {
-      let _that =this;
-      pageUrl = pageUrl == undefined ? 'faqs' : pageUrl;
-
-      axios.get(pageUrl+'?page='+this.pagination.current,
-        {
-          headers: {
-            'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
-          },
-          params :
-            {
-              isAdmin         : 1
-              // category_id     : this.filter.category_id,
-              // status          : this.filter.status,
-              // en_title        : this.filter.en_title,
-              // tag             : this.filter.tag,
-            },
-
-        })
-        .then(function (response) {
-          if(response.data.status_code === 200){
-            console.log(response.data);
-            _that.pagination.current = response.data.faq_list.current_page;
-            _that.pagination.total   = response.data.faq_list.last_page;
-            _that.faqList            = response.data.faq_list.data;
-            // _that.pagination         = response.data.faq_list;
-            _that.isLoading          = false;
-            _that.isExportCheck      = true;
-          }
-          else{
-            _that.success_message   = "";
-            _that.error_message     = response.data.error;
-          }
-        })
-    },
-    onPageChange() {
+      getAddDataFromChild (status)
+      {
+        // console.log(status);
+        this.isLoading = true;
+        this.success_message = "FAQ added successfully!";
         this.getFaqList();
-    },
+        this.removingRightSideWrapper();
+        this.setTimeoutElements();
+      },
 
-    deleteFaq()
-    {
-      let _that = this;
-      axios.delete('faqs/delete',
-        {
-          data        : {
-            id      : this.faq_id
-          },
-          headers     : {
-            'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
-          },
-        }).then(function (response) {
-        if (response.data.status_code === 200) {
-          _that.getFaqList();
-          _that.removingRightSideWrapper();
-          _that.success_message = "FAQ deleted successfully!";
-          _that.error_message   = '';
-          _that.setTimeoutElements();
+      getEditDataFromChild (status)
+      {
+        console.log(status);
+        this.isLoading = true;
+        this.success_message = "FAQ updated successfully!";
+        this.getFaqList();
+        this.removingRightSideWrapper();
+        this.setTimeoutElements();
+      },
+
+      getCategoryList()
+      {
+        let _that   = this;
+        axios.get('categories',
+                {
+                  headers : {
+                    'Authorization' : 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params  :
+                          {
+                            isAdmin             : 1,
+                            without_pagination  : 1
+                          },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    _that.categoryList          = response.data.category_list;
+                  }
+                  else{
+                    _that.success_message       = "";
+                    _that.error_message         = response.data.error;
+                  }
+                })
+      },
+
+      getFaqList(pageUrl)
+      {
+        let _that =this;
+        pageUrl = pageUrl == undefined ? 'faqs' : pageUrl;
+
+        axios.get(pageUrl+'?page='+this.pagination.current,
+                {
+                  headers: {
+                    'Authorization'     : 'Bearer '+localStorage.getItem('authToken')
+                  },
+                  params : {
+                    isAdmin         : 1,
+                    isRole          : _that.userInformation.roles[0].id
+                  },
+
+                })
+                .then(function (response) {
+                  if(response.data.status_code === 200){
+                    console.log(response.data);
+                    _that.pagination.current = response.data.faq_list.current_page;
+                    _that.pagination.total   = response.data.faq_list.last_page;
+                    _that.faqList            = response.data.faq_list.data;
+                    // _that.pagination         = response.data.faq_list;
+                    _that.isLoading          = false;
+                    _that.isExportCheck      = true;
+                  }
+                  else{
+                    _that.success_message   = "";
+                    _that.error_message     = response.data.error;
+                  }
+                })
+      },
+      onPageChange() {
+        this.getFaqList();
+      },
+
+      deleteFaq()
+      {
+        let _that = this;
+        axios.delete('faqs/delete',
+                {
+                  data        : {
+                    id      : this.faq_id
+                  },
+                  headers     : {
+                    'Authorization'     : 'Bearer ' + localStorage.getItem('authToken')
+                  },
+                }).then(function (response) {
+          if (response.data.status_code === 200) {
+            _that.isLoading = true;
+            _that.getFaqList();
+            _that.removingRightSideWrapper();
+            _that.success_message = "FAQ deleted successfully!";
+            _that.error_message   = '';
+            _that.setTimeoutElements();
+          }
+          else
+          {
+            _that.success_message = "";
+            _that.error_message   = response.data.error;
+          }
+
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      checkPermission(permissionForCheck)
+      {
+
+        if((this.mappedPermission).includes(permissionForCheck) === true) {
+          return true;
+        } else {
+          return false;
         }
-        else
-        {
-          _that.success_message = "";
-          _that.error_message   = response.data.error;
-        }
-
-      }).catch(function (error) {
-        console.log(error);
-      });
+      },
     },
-    checkPermission(permissionForCheck)
+    created()
     {
-
-      if((this.mappedPermission).includes(permissionForCheck) === true) {
-        return true;
-      } else {
-        return false;
+      this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+      if(this.userInformation!='')
+      {
+        this.isLoading = true;
+        this.getFaqList();
+        this.getCategoryList();
+        this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
+        this.mappedPermission = (this.user_permissions ).map(x => x.slug);
+        this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
       }
-    },
-  },
-  created()
-  {
-    this.isLoading = true;
-    this.getFaqList();
-    this.getCategoryList();
-    this.user_permissions = JSON.parse(localStorage.getItem("userPermissions"));
-    this.mappedPermission = (this.user_permissions ).map(x => x.slug);
-    this.downloadUrl = axios.defaults.baseURL+this.downloadUrl;
+    }
   }
-}
 </script>
 
 <style scoped>
-.mhv-100 {
-  min-height: 50vh;
-}
+  .mhv-100 {
+    min-height: 50vh;
+  }
 </style>

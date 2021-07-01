@@ -269,6 +269,7 @@
 
             getAddDataFromChild (status)
             {
+                this.isLoading = true;
                 this.success_message = status;
                 this.getUsersList();
                 this.removingRightSideWrapper();
@@ -276,6 +277,7 @@
             },
 
             getEditDataFromChild (status) {
+                this.isLoading = true;
                 this.success_message = status;
                 this.getUsersList();
                 this.removingRightSideWrapper();
@@ -347,6 +349,7 @@
 
                     if (response.data.status_code == 200)
                     {
+                        _that.isLoading = true;
                         _that.getUsersList();
                         _that.removingRightSideWrapper();
                         _that.error_message         = '';

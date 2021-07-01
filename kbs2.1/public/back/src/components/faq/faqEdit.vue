@@ -107,7 +107,7 @@
 
 
                 <div class="form-group text-right">
-                    <button class="btn common-gradient-btn ripple-btn px-50" @click="faqUpdate()">Update</button>
+                    <button :disabled="isNotifyUser==true ? true : false" class="btn common-gradient-btn ripple-btn px-50" @click="faqUpdate()">Update</button>
                 </div>
             </div>
 
@@ -228,6 +228,8 @@
 
         data() {
             return {
+                userInformation : '',
+                isNotifyUser            : false,
                 isLoading                   : false,
                 isMounted                   : false,
                 isMountedSummer             : false,
@@ -498,6 +500,7 @@
                     },
                     params : {
                         isAdmin : 1,
+                        isRole              : _that.userInformation.roles[0].id
                     },}).then(function (response) {
                     response.data.article_list.forEach(val => {
                         _that.article_options.push({
@@ -645,6 +648,11 @@
             {
                 let _that           = this;
                 let faqID           = this.faq_id;
+
+                if (this.faqData.is_notifiable == 1){
+                    this.isNotifyUser = true;
+                }
+
                 let enBody          = document.getElementById('en_Body').value;
 
                 console.log(_that.article_id);
@@ -674,6 +682,7 @@
                     }).then(function (response) {
 
                     if (response.data.status_code == 200) {
+                        _that.isNotifyUser          = false;
                         _that.faqData               = '';
                         _that.selectedCategory      = '';
                         _that.error_message         = '';
@@ -739,46 +748,50 @@
                     })
             },
 
-            getCategoryList()
-            {
-
-                let _that =this;
-
-                axios.get('categories',
-                    {
-                        headers: {
-                            'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                        },
-                        params :
-                            {
-                                isAdmin : 1,
-                                without_pagination : 1
-                            },
-                    })
-                    .then(function (response) {
-                        if(response.data.status_code === 200){
-                            //console.log(response.data);
-                            _that.categoryList = response.data.category_list;
-                        }
-                        else{
-                            _that.success_message = "";
-                            _that.error_message   = response.data.error;
-                        }
-                    })
-            },
+            // getCategoryList()
+            // {
+            //
+            //     let _that =this;
+            //
+            //     axios.get('categories',
+            //         {
+            //             headers: {
+            //                 'Authorization': 'Bearer '+localStorage.getItem('authToken')
+            //             },
+            //             params :
+            //                 {
+            //                     isAdmin : 1,
+            //                     without_pagination : 1
+            //                 },
+            //         })
+            //         .then(function (response) {
+            //             if(response.data.status_code === 200){
+            //                 //console.log(response.data);
+            //                 _that.categoryList = response.data.category_list;
+            //             }
+            //             else{
+            //                 _that.success_message = "";
+            //                 _that.error_message   = response.data.error;
+            //             }
+            //         })
+            // },
 
         },
 
         created()
         {
-            this.faq_id = this.faqId;
-            this.contentData.article_id = this.faqId;
-            this.getFaqDetails(this.faq_id);
-            this.getCategoryList();
-            this.getAllArticleList();
-            this.getUserRoles();
-            this.getContentList(this.contentData.article_id);
-            this.$emit('faq-edit-id', this.contentData.article_id);
+            this.userInformation = JSON.parse(localStorage.getItem("userInformation"));
+            if (this.userInformation!=''){
+                this.faq_id = this.faqId;
+                this.contentData.article_id = this.faqId;
+                this.getFaqDetails(this.faq_id);
+                // this.getCategoryList();
+                this.getAllArticleList();
+                this.getUserRoles();
+                this.getContentList(this.contentData.article_id);
+                this.$emit('faq-edit-id', this.contentData.article_id);
+            }
+
         }
     }
 </script>

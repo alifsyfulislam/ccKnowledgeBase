@@ -41,11 +41,11 @@
                     </router-link>
                   </li>
                   <li class="list-inline-item">
-                    <router-link :to="{ name: 'CategoryList', params: { categoryID: routePath ? routePath : categoryID }}">
+                    <router-link :to="{ name: 'CategoryList', params: { categorySlug: routePath ? routePath : categorySlug }}">
                       categories
                     </router-link>
                   </li>
-                  <li class="list-inline-item">{{ routePath ? routePath : categoryID }}</li>
+                  <li class="list-inline-item">{{ routePath ? routePath : categorySlug }}</li>
                 </ul>
               </div>
             </div>
@@ -61,7 +61,7 @@
 
                   <div class="nav nav-pills flex-column d-block px-15" v-for="a_cate_art in categoryHasArticle" :key="a_cate_art.id">
                     <ul class="list-unstyled list-inline mb-0">
-                      <tree-view class="item" :item="a_cate_art" :router_path="categoryID" @category-slug="getCategorySlugFromChild"></tree-view>
+                      <tree-view class="item" :item="a_cate_art" :router_path="categorySlug" @category-slug="getCategorySlugFromChild"></tree-view>
                     </ul>
 
                   </div>
@@ -107,28 +107,29 @@
     },
     data(){
       return{
-        categoryArticleList : '',
-        routePath : '',
-        isLoading: true,
-        allCategoryArticle:'',
-        categoryHasArticle:[],
-        categoryID:'',
-        suggestedArtiles:[],
-        categoryIDArr:[],
-        selectedCategory:'',
-        selectedCategoryArr : [],
-        query_string:'',
-        regexImg : /(http:\/\/[^">]+)/img,
-        static_image : [],
-        pagination:{
-          from: '',
-          to: '',
-          first_page_url: '',
-          last_page: '',
-          last_page_url: '',
-          next_page_url:'',
-          prev_page_url: '',
-          path: '',
+        categoryArticleList       : '',
+        routePath                 : '',
+        isLoading                 : true,
+        allCategoryArticle        : '',
+        categoryHasArticle        : [],
+        categorySlug              : '',
+        suggestedArtiles          : [],
+        categoryIDArr             : [],
+        selectedCategory          : '',
+        userInformation           : '',
+        selectedCategoryArr       : [],
+        query_string              : '',
+        regexImg                  : /(http:\/\/[^">]+)/img,
+        static_image              : [],
+        pagination                : {
+          from                    : '',
+          to                      : '',
+          first_page_url          : '',
+          last_page               : '',
+          last_page_url           : '',
+          next_page_url           : '',
+          prev_page_url           : '',
+          path                    : '',
           per_page: 5,
           total: ''
         },
@@ -138,6 +139,8 @@
     methods:{
       getCategorySlugFromChild(status){
         // console.log(status)
+        this.routePath = status;
+        // console.log(this.routePath)
         this.selectedCategory = '';
         this.categorySearch(status);
       },
@@ -177,16 +180,32 @@
 
       categorySearch(v) {
         let _that = this;
-        _that.categoryID = v;
         let pageUrl;
-        pageUrl = pageUrl == undefined ? 'article/category/'+_that.categoryID+'?page=1' : pageUrl;
-        axios.get(pageUrl)
-                .then(function (response) {
-                  _that.selectedCategory = response.data.article_list.data;
-                  _that.pagination = response.data.article_list;
-                  // console.log(_that.selectedCategory)
-                  // _that.$router.push('/category-list/'+_that.categoryID).catch(() => {});
-                })
+        _that.categorySlug = v;
+        pageUrl = pageUrl == undefined ? 'article/category/'+_that.categorySlug+'?page=1' : pageUrl;
+        if (this.userInformation==""){
+          axios.get(pageUrl)
+                  .then(function (response) {
+                    // console.log(response.data.article_list.data);
+                    _that.selectedCategory = response.data.article_list.data;
+                    _that.pagination = response.data.article_list;
+                    // console.log(_that.selectedCategory)
+                    _that.$router.push('/category-list/'+_that.categorySlug).catch(() => {});
+                  })
+        } else {
+          axios.get(pageUrl,
+                  {
+                    params : {
+                      isRole : 1
+                    }
+                  })
+                  .then(function (response) {
+                    // console.log(response.data.article_list.data);
+                    _that.selectedCategory = response.data.article_list.data;
+                    _that.pagination = response.data.article_list;
+                    _that.$router.push('/category-list/'+_that.categorySlug).catch(() => {});
+                  })
+        }
       },
 
       autoSuggetion(e) {
@@ -204,22 +223,25 @@
 
       },
 
-      changeCategoryArticlePage(categoryID,pageUrl){
+      changeCategoryArticlePage(categorySlug,pageUrl){
         window.scrollTo(0, 0);
         let _that = this;
-        pageUrl = pageUrl == undefined ? 'article/category/'+categoryID+'?page=1' : pageUrl;
+        pageUrl = pageUrl == undefined ? 'article/category/'+categorySlug+'?page=1' : pageUrl;
         axios.get(pageUrl)
                 .then(function (response) {
                   _that.selectedCategory = response.data.article_list.data;
                   _that.pagination = response.data.article_list;
-                  _that.$router.push('/category-list/'+_that.categoryID)
+                  _that.$router.push('/category-list/'+_that.categorySlug)
                 })
       },
     },
     created() {
-      this.categoryID = this.$route.params.categoryID;
+      if (sessionStorage.userInformation) {
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
+      }
+      this.categorySlug = this.$route.params.categorySlug;
       this.getCategoryArticleList();
-      this.categorySearch(this.categoryID);
+      this.categorySearch(this.categorySlug);
       this.getStaticMedia();
     }
   }
