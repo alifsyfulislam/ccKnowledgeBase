@@ -201,17 +201,14 @@
             searchData(pageUrl){
                 let _that = this;
                 let query_string = _that.query_string;
-                console.log(query_string)
                 // _that.allSearchQuery.push(_that.query_string);
                 // localStorage.setItem("query_string",_that.query_string);
                 pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
                 axios.get(pageUrl).then((response)=>{
-                    console.log(response.data)
-
                     _that.isLoading= false;
                     _that.allArticles = response.data.article_list.data;
-                    console.log(_that.allArticles)
                     _that.pagination  = response.data.article_list;
+                    localStorage.clear("query_string");
                 })
             },
             autoSuggetion(e) {
