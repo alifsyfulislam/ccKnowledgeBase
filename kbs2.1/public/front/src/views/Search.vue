@@ -156,6 +156,7 @@
         data(){
             return{
                 isLoading: true,
+                user_info : '',
                 query_string:'',
                 allArticles:'',
                 articleSlug : '',
@@ -203,20 +204,35 @@
                 let query_string = _that.query_string;
                 // _that.allSearchQuery.push(_that.query_string);
                 // localStorage.setItem("query_string",_that.query_string);
-                pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
-                axios.get(pageUrl).then((response)=>{
-                    _that.isLoading= false;
-                    _that.allArticles = response.data.article_list.data;
-                    _that.pagination  = response.data.article_list;
-                    localStorage.clear("query_string");
-                })
+
+                if (_that.user_info == ''){
+                    pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
+                    axios.get(pageUrl).then((response)=>{
+                        _that.isLoading= false;
+                        _that.allArticles = response.data.article_list.data;
+                        _that.pagination  = response.data.article_list;
+                        localStorage.setItem("query_string", _that.query_string);
+                    })
+                } else{
+                    pageUrl = pageUrl == undefined ? 'article/search/'+query_string+'?page=1' : pageUrl;
+                    axios.get(pageUrl,{
+                        params:{
+                            isRole : 1
+                        }
+                    }).then((response)=>{
+                        _that.isLoading= false;
+                        _that.allArticles = response.data.article_list.data;
+                        _that.pagination  = response.data.article_list;
+                        localStorage.setItem("query_string", _that.query_string);
+                    })
+                }
             },
             autoSuggetion(e) {
                 let _that = this;
                 _that.suggestedArtiles = [];
                 if(e.target.value.length>3){
                     setTimeout(()=>{
-                        if (this.userInformation ==''){
+                        if (this.userInformation == ''){
                             axios.get('article/search/'+e.target.value)
                                 .then(function (res) {
                                     _that.suggestedArtiles = res.data.article_list.data;
@@ -246,6 +262,9 @@
         },
         created()
         {
+            if (sessionStorage.userInformation) {
+                this.user_info = JSON.parse(sessionStorage.userInformation);
+            }
             this.query_string = localStorage.getItem("query_string");
             // console.log(this.query_string);
             this.searchData();
