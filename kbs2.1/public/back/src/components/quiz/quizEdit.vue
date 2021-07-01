@@ -172,6 +172,9 @@ export default {
             isAuthorized    : 0,
             userRoles       :[],
             role_id         :[],
+            disabledDates: {
+                    to: new Date(Date.now() - 86400000),
+                },
             quizData        :
                 {
                     name          : '',

@@ -61,14 +61,14 @@ class Quiz extends Model
         return date('j M, Y', strtotime($date));
     }
 
-    public function getStartDateAttribute($date)
-    {
-        return date('j M, Y', strtotime($date));
-    }
+    // public function getStartDateAttribute($date)
+    // {
+    //     return date('j M, Y', strtotime($date));
+    // }
 
-    public function getEndDateAttribute($date)
-    {
-        return date('j M, Y', strtotime($date));
-    }
+    // public function getEndDateAttribute($date)
+    // {
+    //     return date('j M, Y', strtotime($date));
+    // }
 
 }
