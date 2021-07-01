@@ -303,15 +303,14 @@
                   headers: {
                     'Authorization': 'Bearer '+localStorage.getItem('authToken')
                   },
-                  params :
-                          {
-                            isAdmin : 1,
-                          },
+                  params :{
+                    isAdmin : 1,
+                    isRole : _that.current_user_role_id
+                  },
 
-                })
-                .then(function (response) {
-                  if(response.data.status_code === 200){
-
+                }).then(function (response){
+                  if(response.data.status_code === 200)
+                  {
                     _that.isArticleList = true;
                     _that.articleList = response.data.article_list;
                   }
@@ -347,31 +346,32 @@
                 })
       },
 
-      getBannerList(){
+      getBannerList()
+      {
         let _that =this;
 
         axios.post('role-banners',
-          {
-            role_id : this.current_user_role_id
-          },
-          {
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('authToken')
-            },
+                {
+                  role_id : this.current_user_role_id
+                },
+                {
+                  headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
+                  },
 
-          })
-          .then(function (response) {
+                })
+                .then(function (response) {
 
-            _that.isBannerStatus = true;
-            if(response.data.status_code === 200){
-              // console.log(response.data.banner_list)
-              _that.bannerList = response.data.banner_list;
-            }
-            else{
-              _that.success_message = "";
-              _that.error_message   = response.data.error;
-            }
-          })
+                  _that.isBannerStatus = true;
+                  if(response.data.status_code === 200){
+                    // console.log(response.data.banner_list)
+                    _that.bannerList = response.data.banner_list;
+                  }
+                  else{
+                    _that.success_message = "";
+                    _that.error_message   = response.data.error;
+                  }
+                })
       }
 
     },
@@ -384,14 +384,18 @@
 
     created()
     {
-      this.getArticleList();
-      // this.getCategoryList();
-      this.getAllTotalCount();
+
       this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
-      // this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));
-      // this.mappedPermission   = (this.user_permissions ).map(x => x.slug);
-      this.current_user_role_id = this.user_info.roles[0].id
-      this.getBannerList();
+      if (this.user_info != ''){
+
+        // this.getCategoryList();
+
+        this.current_user_role_id = this.user_info.roles[0].id
+        this.getAllTotalCount();
+        this.getBannerList();
+        this.getArticleList();
+      }
+
     }
   }
 </script>

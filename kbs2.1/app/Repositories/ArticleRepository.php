@@ -35,9 +35,13 @@ class ArticleRepository implements RepositoryInterface
 
     public function latestArticleList($request)
     {
-        if ($request->isAdmin){
+        if ($request->isAdmin && $request->filled('isRole')){
 
-            return Article::with('user','category')->orderBy('created_at', 'DESC')
+            return Article::with('user','category','contents')
+                ->whereHas('category', function ($q) use ($request){
+                    $q->where('role_id','LIKE','%'.$request->isRole.'%');
+                })
+                ->orderBy('created_at', 'DESC')
                 ->take(5)
                 ->get();
 
