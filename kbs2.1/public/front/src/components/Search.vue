@@ -81,10 +81,10 @@
           setTimeout(()=>{
             if (this.userInformation ==''){
               axios.get('article/search/'+e.target.value)
-                      .then(function (res) {
-                        _that.suggestedArtiles = res.data.article_list.data;
-                        console.log(_that.suggestedArtiles);
-                      })
+              .then(function (res) {
+                _that.suggestedArtiles = res.data.article_list.data;
+                console.log(_that.suggestedArtiles);
+              })
             } else{
               axios.get('article/search/'+e.target.value,{
                 params : {

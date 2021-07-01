@@ -80,6 +80,8 @@ class QuizRepository
         $dataObj->status = $data['status'];
 //        $dataObj->is_authorized = $data['is_authorized'];
         $dataObj->role_id = $data['role_id'];
+        $dataObj->start_date = $data['start_date'];
+        $dataObj->end_date = $data['end_date'];
 //        if( $dataObj->is_authorized!==0) {
 //            $dataObj->role_id = implode(',',$data['role_id']);
 //        }else{
@@ -110,6 +112,8 @@ class QuizRepository
         $dataObj->number_of_questions   = $data['number_of_questions'];
         $dataObj->status                = $data['status'];
         $dataObj->role_id               = $data['role_id'];
+        $dataObj->start_date            = $data['start_date'];
+        $dataObj->end_date              = $data['end_date'];
         return $dataObj->save();
     }
 

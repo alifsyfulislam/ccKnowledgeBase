@@ -25,6 +25,8 @@ class Quiz extends Model
         "status",
         "is_authorized",
         "role_id",
+        'start_date',
+        'end_date'
     ];
 
     /**
@@ -58,5 +60,15 @@ class Quiz extends Model
     {
         return date('j M, Y', strtotime($date));
     }
+
+    // public function getStartDateAttribute($date)
+    // {
+    //     return date('j M, Y', strtotime($date));
+    // }
+
+    // public function getEndDateAttribute($date)
+    // {
+    //     return date('j M, Y', strtotime($date));
+    // }
 
 }
