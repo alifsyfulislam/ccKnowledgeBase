@@ -152,6 +152,7 @@
                 role_id                     : [],
                 quizTotalQuestion           : '',
                 roleAccess                  : [],
+                userInformation             : '',
 
                 quizData            :{
                     name                    : '',
@@ -188,6 +189,7 @@
                     },
                     params : {
                         isAdmin : 1,
+                        isRole : _that.userInformation.roles[0].id
                     },}).then(function (response) {
                     console.log(response.data.article_list)
                     response.data.article_list.forEach(val => {
@@ -577,6 +579,7 @@
         },
         created() {
             /*  this.isAdd = this.isAddCheck;*/
+            this.userInformation          = JSON.parse(localStorage.getItem("userInformation"));
             this.getQuizFormList();
             this.getUserRoles();
             this.getAllArticleList();

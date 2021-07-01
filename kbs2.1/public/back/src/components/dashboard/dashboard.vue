@@ -221,7 +221,7 @@
         success_message       : '',
         error_message         : '',
         token                 : '',
-        categoryList          : '',
+        // categoryList          : '',
         articleList           : '',
         userInfo              : '',
         recentArticles        : '',
@@ -267,31 +267,32 @@
         this.error_message        = "";
       },
 
-      getCategoryList()
-      {
-        let _that =this;
-
-        axios.get('categories',
-                {
-                  headers: {
-                    'Authorization': 'Bearer '+localStorage.getItem('authToken')
-                  },
-                  params :
-                          {
-                            isAdmin : 1
-                          },
-
-                })
-                .then(function (response) {
-                  if(response.data.status_code === 200){
-                    _that.categoryList = response.data.category_list.data;
-                  }
-                  else{
-                    _that.success_message = "";
-                    _that.error_message   = response.data.error;
-                  }
-                })
-      },
+      // getCategoryList()
+      // {
+      //   let _that =this;
+      //
+      //   axios.get('categories',
+      //           {
+      //             headers: {
+      //               'Authorization': 'Bearer '+localStorage.getItem('authToken')
+      //             },
+      //             params :
+      //                     {
+      //                       isAdmin : 1
+      //                     },
+      //
+      //           })
+      //           .then(function (response) {
+      //             if(response.data.status_code === 200){
+      //               console.log(response.data)
+      //               _that.categoryList = response.data.category_list.data;
+      //             }
+      //             else{
+      //               _that.success_message = "";
+      //               _that.error_message   = response.data.error;
+      //             }
+      //           })
+      // },
 
       getArticleList()
       {
@@ -384,7 +385,7 @@
     created()
     {
       this.getArticleList();
-      this.getCategoryList();
+      // this.getCategoryList();
       this.getAllTotalCount();
       this.user_info          = JSON.parse(localStorage.getItem("userInformation"));
       // this.user_permissions   = JSON.parse(localStorage.getItem("userPermissions"));

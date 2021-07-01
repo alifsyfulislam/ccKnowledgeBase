@@ -18,14 +18,14 @@ class CategoryRepository implements RepositoryInterface
 
     public function all()
     {
-        return Category::with('childrenRecursive')
+        return Category::with('childrenRecursive','media')
             ->where('parent_id', '=', 0)
             ->orderBy('id','DESC')
             ->get();
     }
 
     public function latestCategory(){
-        return Category::with('article')->where('parent_id', '=', 0)
+        return Category::with('article','media')->where('parent_id', '=', 0)
             ->whereHas('article', function ($q){
                 $q->where('id', '!=', NULL);
             })
@@ -114,13 +114,13 @@ class CategoryRepository implements RepositoryInterface
     public function getWithPagination($request)
     {
         if ($request->filled('isAdmin') && $request->filled('isList') && $request->filled('isRole')){
-            return Category::with('parentRecursive')
+            return Category::with('parentRecursive','media')
                 ->where('role_id','LIKE','%'.$request->isRole.'%')
                 ->orderBy('id','DESC')
                 ->paginate(20);
         }
         elseif ($request->filled('isAdmin') && $request->filled('isRole')){
-            return Category::with('parentRecursive')
+            return Category::with('parentRecursive','media')
                 ->where('role_id','LIKE','%'.$request->isRole.'%')
                 ->orderBy('id','DESC')
                 ->get();

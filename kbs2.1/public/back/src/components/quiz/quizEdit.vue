@@ -151,6 +151,7 @@ export default {
             quizTotalQuestion : '',
             user_roles      : '',
             roleAccess : [],
+            userInformation : '',
 
             quiz_id         : '',
             quizDetails     : '',
@@ -196,6 +197,7 @@ export default {
                 },
                 params : {
                     isAdmin : 1,
+                    isRole : _that.userInformation.roles[0].id
                 },}).then(function (response) {
                 console.log(response.data.article_list);
                 response.data.article_list.forEach(val => {
@@ -647,6 +649,7 @@ export default {
     },
 
     created() {
+        this.userInformation          = JSON.parse(localStorage.getItem("userInformation"));
 
         this.quiz_id = this.quizId;
         this.getQuizDetails();
