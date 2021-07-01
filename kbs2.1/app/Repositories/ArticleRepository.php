@@ -206,44 +206,32 @@ class ArticleRepository implements RepositoryInterface
 
     public function search($request,string $query = "")
     {
-//        return $query;
+        $articleStatus = [];
 
         if ($request->filled('isRole'))
         {
-            $itemsPaginated =  Article::with('category','contents')
-                ->where(function($q) use ($query){
-                    $q->where('en_title', "like", '%'.$query.'%')
-                        ->orWhere('tag', "like", '%'.$query.'%')
-                        ->orWhere('en_short_summary', "like", '%'.$query.'%')
-
-                        ->orWhereHas('contents', function ($sq) use ($query){
-                            $sq->where('en_body','LIKE','%'.$query.'%');
-                        })
-                        ->orWhereHas('category', function ($sq) use ($query){
-                            $sq->where('name','LIKE','%'.$query.'%');
-                        });
-                })
-                ->whereIn('status', ['public','private' ])
-                ->orderBy('created_at', 'DESC')->paginate(5);
+            $articleStatus = ['public','private'];
         }
         else{
-
-            $itemsPaginated =  Article::with('category','contents')
-                ->where(function($q) use ($query){
-                    $q->where('en_title', "like", '%'.$query.'%')
-                        ->orWhere('tag', "like", '%'.$query.'%')
-                        ->orWhere('en_short_summary', "like", '%'.$query.'%')
-
-                        ->orWhereHas('contents', function ($sq) use ($query){
-                            $sq->where('en_body','LIKE','%'.$query.'%');
-                        })
-                        ->orWhereHas('category', function ($sq) use ($query){
-                            $sq->where('name','LIKE','%'.$query.'%');
-                        });
-                })
-                ->whereIn('status', ['public'])
-                ->orderBy('created_at', 'DESC')->paginate(5);
+            $articleStatus = ['public'];
         }
+
+
+        $itemsPaginated =  Article::with('category','contents')
+            ->where(function($q) use ($query){
+                $q->where('en_title', "like", '%'.$query.'%')
+                    ->orWhere('tag', "like", '%'.$query.'%')
+                    ->orWhere('en_short_summary', "like", '%'.$query.'%')
+
+                    ->orWhereHas('contents', function ($sq) use ($query){
+                        $sq->where('en_body','LIKE','%'.$query.'%');
+                    })
+                    ->orWhereHas('category', function ($sq) use ($query){
+                        $sq->where('name','LIKE','%'.$query.'%');
+                    });
+            })
+            ->whereIn('status', $articleStatus)
+            ->orderBy('created_at', 'DESC')->paginate(5);
 
 
         $itemsTransformed = $itemsPaginated
