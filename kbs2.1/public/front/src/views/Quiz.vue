@@ -11,7 +11,9 @@
                             <h2 class="text-center font-weight-bold pb-20 pb-md-40">Quiz List</h2>
                             <!--                            v-if="userInformation.roles ? a_quiz.role_id.includes(userInformation.roles[0].id) : a_quiz.role_id.includes(0)"-->
                             <div  v-for="a_quiz in allQuizzes" :key="a_quiz.id">
-                                <div class="quiz-item mb-20" v-if="new Date().toISOString().slice(0,10)>=new Date(a_quiz.start_date).toISOString().slice(0,10) && new Date(a_quiz.end_date).toISOString().slice(0,10)>=new Date().toISOString().slice(0,10)">
+                                <div class="quiz-item mb-20">
+
+                
                                     <div class="q-featured-caption">
                                         <div class="q-icon">
                                             <i class="fa fa-desktop" aria-hidden="true"></i>
@@ -57,6 +59,17 @@
                                         </div>
                                     </div>
                                     <div class="q-featured-caption">
+                                        <div class="q-icon">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="q-feature">
+                                            <h4 class="my-0 pb-1 q-title">
+                                              Start/End Date
+                                            </h4>
+                                            <p class="mb-0">{{ a_quiz.start_date }}/{{a_quiz.end_date}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="q-featured-caption"  v-if="new Date().toISOString().slice(0,10)>=new Date(a_quiz.start_date).toISOString().slice(0,10) && new Date(a_quiz.end_date).toISOString().slice(0,10)>=new Date().toISOString().slice(0,10)">
                                         <button class="btn btn-common btn-primary px-25 text-white font-16" @click="quizStart(a_quiz)"><span>Start</span></button>
                                     </div>
                                 </div>
