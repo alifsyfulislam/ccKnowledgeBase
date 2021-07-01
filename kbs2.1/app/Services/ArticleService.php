@@ -414,14 +414,14 @@ class ArticleService
         return $notifications = Helper::sendArticleNotification($article, $users, $type);
     }
 
-    public function searchArticle($searchString)
+    public function searchArticle($request,$searchString)
     {
 
         return response()->json([
 
             'status_code'  => 200,
             'messages'     => config('status.status_code.200'),
-            'article_list' => $this->articleRepository->search($searchString)
+            'article_list' => $this->articleRepository->search($request,$searchString)
 
         ]);
 

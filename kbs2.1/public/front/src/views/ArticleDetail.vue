@@ -495,11 +495,23 @@
         _that.suggestedArtiles = [];
         if(e.target.value.length>3){
           setTimeout(()=>{
-            axios.get('article/search/'+e.target.value)
-                    .then(function (res) {
-                      _that.suggestedArtiles = res.data.article_list.data;
-                      // console.log(_that.suggestedArtiles);
-                    })
+            if (this.userInformation ==''){
+              axios.get('article/search/'+e.target.value)
+                      .then(function (res) {
+                        _that.suggestedArtiles = res.data.article_list.data;
+                        console.log(_that.suggestedArtiles);
+                      })
+            } else{
+              axios.get('article/search/'+e.target.value,{
+                params : {
+                  isRole :  _that.userInformation.roles[0].id
+                }
+              }).then(function (res) {
+                _that.suggestedArtiles = res.data.article_list.data;
+                console.log(_that.suggestedArtiles);
+              })
+            }
+
           },500);
         }
 

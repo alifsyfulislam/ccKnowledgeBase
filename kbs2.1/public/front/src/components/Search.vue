@@ -21,7 +21,7 @@
 
         <li v-for="a_suggestion in suggestedArtiles" :key="a_suggestion.id">
           <router-link :to="{ name: 'ArticleDetail', params: { articleID: a_suggestion.id,articleSlug: a_suggestion.slug }}">
-              {{a_suggestion.en_title.length == 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
+            {{a_suggestion.en_title.length == 50 ? a_suggestion.en_title : (a_suggestion.en_title).substring(0,50)+"..."}}
           </router-link>
         </li>
 
@@ -56,7 +56,8 @@
         fromData: {
           search:''
         },
-        suggestedArtiles:[]
+        suggestedArtiles:[],
+        userInformation : ''
       }
     },
 
@@ -78,14 +79,31 @@
         _that.suggestedArtiles = [];
         if(e.target.value.length>3){
           setTimeout(()=>{
-            axios.get('article/search/'+e.target.value)
-                    .then(function (res) {
-                      _that.suggestedArtiles = res.data.article_list.data;
-                      console.log(_that.suggestedArtiles);
-                    })
+            if (this.userInformation ==''){
+              axios.get('article/search/'+e.target.value)
+                      .then(function (res) {
+                        _that.suggestedArtiles = res.data.article_list.data;
+                        console.log(_that.suggestedArtiles);
+                      })
+            } else{
+              axios.get('article/search/'+e.target.value,{
+                params : {
+                  isRole :  _that.userInformation.roles[0].id
+                }
+              }).then(function (res) {
+                _that.suggestedArtiles = res.data.article_list.data;
+                console.log(_that.suggestedArtiles);
+              })
+            }
+
           },500);
         }
 
+      }
+    },
+    created() {
+      if (sessionStorage.userInformation) {
+        this.userInformation = JSON.parse(sessionStorage.userInformation);
       }
     }
   }
