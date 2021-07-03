@@ -9,12 +9,14 @@
       <div v-cloak v-else class="display min-height-wrapper">
         <main>
           <section class="banner-area d-flex align-items-center py-70 py-md-150" :style="{ backgroundImage: 'url(' + (frontPageData ? frontPageData.banner : static_image['banner']) + ')' }">
-            <div class="container d-flex justify-content-center justify-content-md-start">
-              <div class="search-wrapper position-relative">
-                <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData ? frontPageData.title : 'Knowledge Based System' }}</h1>
-                <p class="text-center">{{ frontPageData ? frontPageData.description : 'A knowledge-based system is a computer program that reasons and uses a knowledge base to solve complex problems.' }}</p>
-                <!--              display search form-->
-                <SearchForm/>
+            <div class="container">
+              <div class="mxw-575">
+                <div class="search-wrapper position-relative">
+                  <h1 class="section-title pb-10 mb-0 text-center">{{ frontPageData ? frontPageData.title : 'Knowledge Based System' }}</h1>
+                  <p class="text-center">{{ frontPageData ? frontPageData.description : '' }}</p>
+                  <!--              display search form-->
+                  <SearchForm/>
+                </div>
               </div>
             </div>
           </section>
@@ -344,4 +346,6 @@
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link,
   .nav-tabs .nav-link{padding: 5px 20px;}
+  .mxw-575 {max-width: 575px;}
+  @media (max-width: 767px){.mxw-575{margin: 0 auto;}}
 </style>
