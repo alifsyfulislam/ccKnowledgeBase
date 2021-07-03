@@ -131,6 +131,7 @@ Route::middleware('auth:api')->group(function(){
 
     Route::post('user/update-password', [UserController::class,'changePassword']);
     Route::post('user/username', [UserController::class, 'checkUserNameExist']);
+    Route::post('user/email', [UserController::class, 'checkUserEmailExist']);
 
     Route::post('total-count-data', [TotalCountController::class, 'totalCount']);
 
