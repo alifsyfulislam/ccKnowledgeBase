@@ -1,3 +1,15 @@
+.note-modal{
+    z-index: 9999;
+    background: rgb(0 0 0 / 38%);
+}
+
+
+.note-modal-footer {
+    height: 55px !important;
+    padding: 10px;
+    text-align: center;
+}
+
 ::-webkit-scrollbar {
     width: 4px;
     background: #fff;
@@ -338,7 +350,7 @@ input[type="file"]:focus {
 
 .sidebar-wrapper {
     position: fixed;
-    z-index: 99;
+    z-index: 1;
 }
 
 .topbar-wrapper {
@@ -346,7 +358,7 @@ input[type="file"]:focus {
     top: 0;
     right: 0;
     width: calc(100% - 227px);
-    z-index: 99;
+    z-index: 1;
     box-shadow: 20px 0px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.4s;
 }
