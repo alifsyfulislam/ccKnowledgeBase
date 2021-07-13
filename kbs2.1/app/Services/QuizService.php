@@ -122,7 +122,6 @@ class QuizService
                 array_push($selectedArticleID,$articleInfo['id'].'/'.$articleInfo['slug']);
             }
             $input['article_info'] = join(",",$selectedArticleID);
-
             $result_array = explode(",",$input['role_id']);
 
             if (in_array('1',$result_array)){
