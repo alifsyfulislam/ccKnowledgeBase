@@ -71,7 +71,7 @@
             return{
                 selectedCategory : '',
                 static_image : [],
-                regexImg : /(http:\/\/[^">]+)/img,
+                regexImg : /(https:\/\/[^">]+)/img,
                 pagination:{
                     from: '',
                     to: '',

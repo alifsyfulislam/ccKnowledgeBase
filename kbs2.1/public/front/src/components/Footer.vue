@@ -10,11 +10,11 @@
                   <span>SITEMAP</span>
                 </router-link>
               </li>
-              <li class="list-inline-item">
-                <router-link class="nav-item" :to="{ name: 'Contact'}">
-                  <span>CONTACT</span>
-                </router-link>
-              </li>
+<!--              <li class="list-inline-item">-->
+<!--                <router-link class="nav-item" :to="{ name: 'Contact'}">-->
+<!--                  <span>CONTACT</span>-->
+<!--                </router-link>-->
+<!--              </li>-->
             </ul>
           </div>
           <div class="col-sm-6 order-sm-1 text-sm-left text-center">

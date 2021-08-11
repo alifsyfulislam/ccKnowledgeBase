@@ -260,10 +260,6 @@
     import CustomRoleEdit from '../custom-role/CustomRoleEdit'
     import $ from "jquery";
 
-
-
-
-
     export default {
         name: "articleAdd.vue",
         props: ['isAddCheck'],

@@ -211,7 +211,7 @@
         allLatestArticles       : '',
         countBanner : 0,
         // regexImg                : /<img[^>]+src="(http:\/\/[^">]+)"/g,
-        regexImg                : /(http:\/\/[^">]+)/img,
+        regexImg                : /(https:\/\/[^">]+)/img,
         all_Faqs                : '',
         userInformation         : '',
         bannerInformation       : '',

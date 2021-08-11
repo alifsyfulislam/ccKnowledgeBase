@@ -8,7 +8,7 @@ import Quiz from "../views/Quiz";
 import Search from "../views/Search";
 import StartExam from "../views/StartExam";
 import Sitemap from "../views/Sitemap";
-import Contact from "@/views/Contact";
+// import Contact from "@/views/Contact";
 import Registration from "@/views/Registration";
 import DetailsResult from "../views/quizHistory/DetailsResult";
 import UserQuizHistory from "../views/quizHistory/UserQuizHistory";
@@ -58,11 +58,11 @@ const routes = [
     name: 'Sitemap',
     component: Sitemap
   },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: Contact
-  },
+  // {
+  //   path: '/contact',
+  //   name: 'Contact',
+  //   component: Contact
+  // },
   {
     path: '/registration',
     name: 'Registration',

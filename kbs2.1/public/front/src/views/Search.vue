@@ -162,7 +162,7 @@
                 articleSlug : '',
                 suggestedArtiles:[],
                 allSearchQuery:[],
-                regexImg                : /(http:\/\/[^">]+)/img,
+                regexImg                : /(https:\/\/[^">]+)/img,
                 static_image : [],
                 pagination:{
                     from: '',

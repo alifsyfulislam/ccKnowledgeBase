@@ -340,7 +340,7 @@
 
 
         static_image            : [],
-        regexImg                : /(http:\/\/[^">]+)/g,
+        regexImg                : /(https:\/\/[^">]+)/g,
         // articleImageArray       : []
       }
     },

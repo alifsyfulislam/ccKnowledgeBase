@@ -119,7 +119,7 @@
         userInformation           : '',
         selectedCategoryArr       : [],
         query_string              : '',
-        regexImg                  : /(http:\/\/[^">]+)/img,
+        regexImg                : /(https:\/\/[^">]+)/img,
         static_image              : [],
         pagination                : {
           from                    : '',

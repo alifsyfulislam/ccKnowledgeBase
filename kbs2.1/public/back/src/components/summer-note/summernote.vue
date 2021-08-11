@@ -9,6 +9,7 @@
 
 <script>
 import $ from 'jquery'
+
 import '../../../node_modules/summernote/dist/summernote-lite.min.js'
 import '../../../node_modules/summernote/dist/summernote-lite.min.css'
 import axios from 'axios'
@@ -49,6 +50,9 @@ props: ['idFromParent'],
       ]
     };
 
+    // ['insert', ['link', 'picture', 'video']],
+
+
     options.callbacks = {
 
       onChange: (contents)=> {
@@ -58,6 +62,8 @@ props: ['idFromParent'],
       },
 
       onImageUpload: function (files) {
+
+        // $('#contentModal').css({display : 'none'})
 
 
         let data = new FormData();
@@ -127,6 +133,10 @@ props: ['idFromParent'],
     };
 
     $('textarea.summernote').summernote(options);
+
+    $('.note-btn.note-icon-picture').on('click',()=>{
+      console.log('hiiii')
+    })
 
   },
 }
